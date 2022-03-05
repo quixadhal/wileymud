@@ -146,6 +146,8 @@ sub get_boards {
 sub get_board_topics {
     my $board_url = shift;
     my $current_page = shift; # pass in 1 to begin
+
+    die "Invalid board URL." if !defined $board_url;
     $board_url =~ s!\.html\?.*$!.html!;
     $board_url =~ s!\.\./smf/!!;
 
@@ -153,20 +155,25 @@ sub get_board_topics {
     die "File $file not found." if ! -r $file;
     my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
     my $pagelinks = $root->look_down(class => 'pagelinks') or die "No page list found in $file.";
-    my @page_links = $pagelinks->look_down(class => 'navPages');
+
     my $next_page_url = undef;
     my $next_page = undef;
 
-    if((scalar @page_links) < 1) {
-        #warn "No navigation links in $board_url";
-        #return undef;
-    } else {
-        foreach my $link (@page_links) {
-            my $page_number = $link->as_text;
-            next if $page_number <= $current_page;
-            $next_page = $page_number;
-            $next_page_url = $link->attr('href');
-            last;
+    # If there's no pagelinks section at all, then there must BE only one page.
+    if(defined $pagelinks) {
+        my @page_links = $pagelinks->look_down(class => 'navPages');
+
+        if((scalar @page_links) < 1) {
+            #warn "No navigation links in $board_url";
+            #return undef;
+        } else {
+            foreach my $link (@page_links) {
+                my $page_number = $link->as_text;
+                next if $page_number <= $current_page;
+                $next_page = $page_number;
+                $next_page_url = $link->attr('href');
+                last;
+            }
         }
     }
 
@@ -246,6 +253,13 @@ sub get_board_topics {
         };
     }
 
+    # At this point, we can either walk down the topic's post chain
+    # to collect them all here... or do it later.
+    foreach my $topic (@topic_data) {
+        my $post_data = get_a_topic($topic->{topic_url}, 1);
+        $topic->{posts} = $post_data;
+    }
+
     return {
         current_page            => $current_page,
         current_page_url        => $board_url,
@@ -255,39 +269,110 @@ sub get_board_topics {
     };
 }
 
-sub show_board_data {
-    my $board_results = shift;
+sub get_a_topic {
+    #index5b35.html?topic=1638.0
+    my $topic_url = shift;
+    my $current_page = shift; # pass in 1 to begin
 
-    foreach my $category (
-        map { $board_results->{$_} } (
-            sort { $a <=> $b } keys %$board_results
-        )
-    ) {
-        # insert into categories (id, name) values (?,?)
-        printf "Category            %02d\n", $category->{category_id};
-        printf "    NAME            %s\n", $category->{category_name};
-        foreach my $board (
-            map { $category->{$_} } (
-                sort { $a <=> $b } grep {!/^category_/} keys %$category
-            )
-        ) {
-            # insert into categories_boards (category_id, board_id) values (?,?)
-            # insert into boards (id, name, url, title) values (?,?,?,?)
-            printf "    Board           %02d\n", $board->{board_id};
-            printf "        NAME        %s\n", $board->{board_name};
-            printf "        TITLE       %s\n", $board->{board_title};
-            printf "        TOPICS      %d\n", $board->{topics};
-            printf "        POSTS       %d\n", $board->{posts};
-            printf "        LAST POST   %s\n", $board->{last_post}{post_date};
-            printf "            Author  %s (user %d)\n",
-                $board->{last_post}{profile_name},
-                $board->{last_post}{profile_id};
-            printf "            Post    %s (topic %d, message %d)\n",
-                $board->{last_post}{post_title},
-                $board->{last_post}{post_topic_id},
-                $board->{last_post}{post_message_id};
+    #printf "%s\n", $topic_url;
+
+    die "Invalid topic URL." if !defined $topic_url;
+    $topic_url =~ /topic=(\d+)\.\d+$/;
+    my $topic_id = $1;
+    $topic_url =~ s!\.html\?.*$!.html!;
+    $topic_url =~ s!\.\./smf/!!;
+
+    my @posts = ();
+
+    my $file = "$file_prefix/smf/$topic_url";
+    die "File $file not found." if ! -r $file;
+    my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
+    my $pagelinks = $root->look_down(class => 'pagelinks');
+
+    my $next_page_url = undef;
+    my $next_page = undef;
+
+    # If there's no pagelinks section at all, then there must BE only one page.
+    if(defined $pagelinks) {
+        my @page_links = $pagelinks->look_down(class => 'navPages');
+
+        if((scalar @page_links) < 1) {
+            #warn "No navigation links in $board_url";
+            #return undef;
+        } else {
+            foreach my $link (@page_links) {
+                my $page_number = $link->as_text;
+                next if $page_number <= $current_page;
+                $next_page = $page_number;
+                $next_page_url = $link->attr('href');
+                last;
+            }
         }
     }
+
+    my $forumposts = $root->look_down(id => 'forumposts') or die "Can't find any posts in $file.";
+    my @post_wrappers = $forumposts->look_down(class => 'post_wrapper');
+    foreach my $pw (@post_wrappers) {
+        my $post = {};
+
+        # poster
+        my $poster = $pw->look_down(class => 'poster');
+        if(defined $poster) {
+            my $profile_a = $poster->look_down(_tag => 'a');
+            if(defined $profile_a) {
+                $post->{profile_name} = trim $profile_a->as_text;
+                my $url = $profile_a->attr('href');
+                if(defined $url) {
+                    $url =~ /profile;u=(\d+)/;
+                    $post->{profile_id} = $1;
+                }
+            } else {
+                #<div class="poster"><h4> Kalinash </h4><ul class="reset smalltext" id="msg_6848_extra_info"><li class="membergroup">Guest</ul></div>
+                my $profile_h4 = $poster->look_down(_tag => 'h4');
+                if(defined $profile_h4) {
+                    $post->{profile_name} = trim $profile_h4->as_text;
+                } else {
+                    die "No profile a OR h4 found in $file\nwrapper " . $poster->as_HTML;
+                }
+            }
+            my $profile_ul = $poster->look_down(_tag => 'ul');
+            if(defined $profile_ul) {
+                my $profile_title = $profile_ul->look_down(class => 'title');
+                $post->{profile_title} = trim $profile_title->as_text if(defined $profile_title);
+                my $profile_group = $profile_ul->look_down(class => 'membergroup');
+                $post->{profile_group} = trim $profile_group->as_text if(defined $profile_group);
+                my $profile_avatar = $profile_ul->look_down(class => 'avatar');
+                if(defined $profile_avatar) {
+                    my $profile_avatar_img = $profile_avatar->look_down(_tag => 'img');
+                    $post->{avatar_url} = $profile_avatar_img->attr('src') if defined $profile_avatar_img;
+                }
+                my $profile_postcount = $profile_ul->look_down(class => 'postcount');
+                if(defined $profile_postcount) {
+                    my $postcount = $profile_postcount->as_text;
+                    $postcount =~ /Posts:\s+(\d+)/;
+                    $post->{profile_postcount} = $1;
+                }
+                my $profile_blurb = $profile_ul->look_down(class => 'blurb');
+                $post->{profile_blurb} = trim $profile_blurb->as_text if(defined $profile_blurb);
+            } else {
+                die "No profile ul found in $file\nwrapper " . $poster->as_HTML;
+            }
+        } else {
+            die "No poster found in $file\nwrapper " . $pw->as_HTML;
+        }
+
+        # postarea
+        # moderatorbar
+        # done
+        push @posts, $post;
+    }
+
+    return {
+        topic_id    => $topic_id,
+        topic_url   => $topic_url,
+        post_count  => (scalar @posts),
+        posts       => \@posts,
+    };
 }
 
 my $board_results = get_boards();
