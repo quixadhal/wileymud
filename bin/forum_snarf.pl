@@ -152,7 +152,8 @@ sub get_board_topics {
     $board_url =~ s!\.\./smf/!!;
 
     my $file = "$file_prefix/smf/$board_url";
-    die "File $file not found." if ! -r $file;
+    warn "File $file not found." if ! -r $file;
+    return undef if ! -r $file;
     my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
     my $pagelinks = $root->look_down(class => 'pagelinks') or die "No page list found in $file.";
 
@@ -257,6 +258,7 @@ sub get_board_topics {
     # to collect them all here... or do it later.
     foreach my $topic (@topic_data) {
         my $post_data = get_a_topic($topic->{topic_url}, 1);
+        next unless defined $post_data;
         $topic->{posts} = $post_data;
     }
 
@@ -312,6 +314,7 @@ sub get_a_topic {
 
     my $forumposts = $root->look_down(id => 'forumposts') or die "Can't find any posts in $file.";
     my @post_wrappers = $forumposts->look_down(class => 'post_wrapper');
+    return undef unless (scalar @post_wrappers) > 0;
     foreach my $pw (@post_wrappers) {
         my $post = {};
 
