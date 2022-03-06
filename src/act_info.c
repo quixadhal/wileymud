@@ -2799,9 +2799,9 @@ int do_spells(struct char_data *ch, const char *argument, int cmd)
 
 int do_world(struct char_data *ch, const char *argument, int cmd)
 {
-    time_t ct = (time_t)0;
+    //time_t ct = (time_t)0;
     time_t ot = (time_t)0;
-    char *tmstr = NULL;
+    //char *tmstr = NULL;
     char *otmstr = NULL;
     int i = 0;
     int mob_count = 0;
@@ -2819,11 +2819,10 @@ int do_world(struct char_data *ch, const char *argument, int cmd)
     ot = Uptime;
     otmstr = asctime(localtime(&ot));
     *(otmstr + strlen(otmstr) - 1) = '\0';
-    cprintf(ch, "Wiley start time was: %s\r\n", otmstr);
 
-    ct = time(0);
-    tmstr = asctime(localtime(&ct));
-    *(tmstr + strlen(tmstr) - 1) = '\0';
+    //ct = time(0);
+    //tmstr = asctime(localtime(&ct));
+    //*(tmstr + strlen(tmstr) - 1) = '\0';
 
     for (i = 0; i <= top_of_mobt; i++)
     {
@@ -2876,10 +2875,13 @@ int do_world(struct char_data *ch, const char *argument, int cmd)
     total_obj_size = avg_obj_size * obj_count;
     total_mob_size = avg_mob_size * mob_count;
 
-    cprintf(ch, "Wiley's time is: %s\r\n", tmstr);
-    cprintf(ch, "Total rooms: %d [%d bytes]\r\n", room_db.klistlen, total_room_size);
-    cprintf(ch, "Total objects: %d (%d instances) [%d bytes]\r\n", top_of_objt + 1, obj_count, total_obj_size);
-    cprintf(ch, "Total mobiles: %d (%d instances) [%d bytes]\r\n", top_of_mobt + 1, mob_count, total_mob_size);
+    cprintf(ch, "WileyMUD:                 %s (%s)\r\n", VERSION_BUILD, VERSION_DATE);
+    cprintf(ch, "      Boot time:          %s\r\n", otmstr);
+    cprintf(ch, "      Uptime:             %s\r\n", timestamp_elapsed(Uptime, 0));
+    cprintf(ch, "Total rooms:              %d [%d bytes each]\r\n", room_db.klistlen, avg_room_size);
+    cprintf(ch, "Total objects:            %d (%d instances) [%d bytes each]\r\n", top_of_objt + 1, obj_count, avg_obj_size);
+    cprintf(ch, "Total mobiles:            %d (%d instances) [%d bytes each]\r\n", top_of_mobt + 1, mob_count, avg_mob_size);
+    cprintf(ch, "Total estimated RAM:      %-9.3f KB\r\n", (float)(total_room_size + total_obj_size + total_mob_size) / 1024.0);
     cprintf(ch, "Total (existing) players: %d\r\n", number_of_players);
     return TRUE;
 }
