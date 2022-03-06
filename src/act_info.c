@@ -2806,6 +2806,12 @@ int do_world(struct char_data *ch, const char *argument, int cmd)
     int i = 0;
     int mob_count = 0;
     int obj_count = 0;
+    int avg_room_size = 0;
+    int avg_mob_size = 0;
+    int avg_obj_size = 0;
+    int total_room_size = 0;
+    int total_mob_size = 0;
+    int total_obj_size = 0;
 
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -2837,11 +2843,44 @@ int do_world(struct char_data *ch, const char *argument, int cmd)
             obj_count += oi->number;
     }
 
+    avg_room_size = sizeof(struct room_data);
+    avg_room_size += 700;
+    // description is a long string, assume 500 bytes
+    // sound, distant_sound are shorter strings, assume 100 bytes average
+    avg_room_size += sizeof(struct extra_descr_data) * 2;
+    avg_room_size += sizeof(struct room_direction_data) * 6;
+
+    avg_obj_size = sizeof(struct obj_data);
+    avg_obj_size += sizeof(struct obj_flag_data);
+    avg_obj_size += sizeof(struct obj_affected_type) * MAX_OBJ_AFFECT;
+    avg_obj_size += 700;
+    // description is a long string, assume 500 bytes
+    // short_description, action_description are shorter assume 100 bytes
+
+    avg_mob_size = sizeof(struct char_data);
+    avg_mob_size += sizeof(struct char_player_data);
+    avg_mob_size += 1500;
+    // This has long_descr, assume 500 bytes
+    // It also has 10 shorter strings, assume 100 bytes
+
+    avg_mob_size += sizeof(struct char_ability_data);
+    avg_mob_size += sizeof(struct char_ability_data);
+    avg_mob_size += sizeof(struct char_point_data);
+    avg_mob_size += sizeof(struct char_special_data);
+    avg_mob_size += sizeof(struct char_skill_data) * MAX_SKILLS;
+
+    // assume 4 affects on average?
+    avg_mob_size += sizeof(struct affected_type) * 4;
+
+    total_room_size = avg_room_size * room_db.klistlen;
+    total_obj_size = avg_obj_size * obj_count;
+    total_mob_size = avg_mob_size * mob_count;
+
     cprintf(ch, "Wiley's time is: %s\r\n", tmstr);
-    cprintf(ch, "Total number of rooms: %d\r\n", room_db.klistlen);
-    cprintf(ch, "Total number of objects: %d (%d instances)\r\n", top_of_objt + 1, obj_count);
-    cprintf(ch, "Total number of mobiles: %d (%d instances)\r\n", top_of_mobt + 1, mob_count);
-    cprintf(ch, "Total number of players: %d\r\n", number_of_players);
+    cprintf(ch, "Total rooms: %d [%d bytes]\r\n", room_db.klistlen, total_room_size);
+    cprintf(ch, "Total objects: %d (%d instances) [%d bytes]\r\n", top_of_objt + 1, obj_count, total_obj_size);
+    cprintf(ch, "Total mobiles: %d (%d instances) [%d bytes]\r\n", top_of_mobt + 1, mob_count, total_mob_size);
+    cprintf(ch, "Total (existing) players: %d\r\n", number_of_players);
     return TRUE;
 }
 
@@ -3002,6 +3041,24 @@ int do_map(struct char_data *ch, const char *argument, int cmd)
                            "                           | %-20.20s |\r\n"
                            "                           | %-6.6s  %12.12s |\r\n"
                            "                           +----------------------+\r\n";
+#if 0
+    const char *map_data2 = "\r\n"
+                           "    U                   +---------------+   +---------------+   +---------------+\r\n"
+                           "    | N                /               /---/               /---/               /\r\n"
+                           "    |/                +-------+-------+   +-------+-------+   +-------+-------+\r\n"
+                           "W---/---E                    /                   /                   /\r\n"
+                           "   /|                       /                   /                   /\r\n"
+                           "  S |                      /                   /                   /\r\n"
+                           "    D             +-------+-------+   +-------+-------+   +-------+-------+\r\n"
+                           "                 /               /---/               /---/               /\r\n"
+                           "                +-------+-------+   +-------+-------+   +-------+-------+\r\n"
+                           "                       /                   /                   /\r\n"
+                           "                      /                   /                   /\r\n"
+                           "                     /                   /                   /\r\n"
+                           "             +-------+-------+   +-------+-------+   +-------+-------+\r\n"
+                           "            /               /---/               /---/               /\r\n"
+                           "           +-------+-------+   +-------+-------+   +-------+-------+\r\n";
+#endif
     int door = -1;
     struct room_direction_data *exitdata = NULL;
     char name[MAX_NUM_EXITS][21];
