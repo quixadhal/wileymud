@@ -203,9 +203,9 @@ function fetch_page_data_by_time($db, $query_start_time = NULL, $query_end_time 
             $message_orig = $row['message'];
             //$message = htmlentities($message, ENT_QUOTES|ENT_SUBSTITUTE, 'UTF-8');
             if( $row['speaker'] == 'Cron@WileyMUD' || $row['speaker'] == 'Cron') {
-                $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~\:])*)/i', '<a href="$1" target="_self">$1</a>', $message_orig);
+                $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~\:\@])*)/i', '<a href="$1" target="_self">$1</a>', $message_orig);
             } else {
-                $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~\:])*)/i', '<a href="$1" target="I3-link">$1</a>', $message_orig);
+                $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~\:\@])*)/i', '<a href="$1" target="I3-link">$1</a>', $message_orig);
             }
             if($message != $message_orig) {
                 $row['message'] = $message;
