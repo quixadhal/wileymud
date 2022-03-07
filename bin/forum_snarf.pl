@@ -285,30 +285,25 @@ sub get_a_topic {
     $topic_url =~ s!\.\./smf/!!;
 
     my @posts = ();
+    my $next_page_url = undef;
+    my $next_page = undef;
 
     my $file = "$file_prefix/smf/$topic_url";
     die "File $file not found." if ! -r $file;
     my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
-    my $pagelinks = $root->look_down(class => 'pagelinks');
-
-    my $next_page_url = undef;
-    my $next_page = undef;
+    my $main_section = $root->look_down(id => 'main_content_section') or die "No main content section in $file.";
+    my $pagelinks = $main_section->look_down(class => 'pagelinks floatleft') or die "No pagelinks in $file.";
 
     # If there's no pagelinks section at all, then there must BE only one page.
     if(defined $pagelinks) {
         my @page_links = $pagelinks->look_down(class => 'navPages');
 
-        if((scalar @page_links) < 1) {
-            #warn "No navigation links in $board_url";
-            #return undef;
-        } else {
-            foreach my $link (@page_links) {
-                my $page_number = $link->as_text;
-                next if $page_number <= $current_page;
-                $next_page = $page_number;
-                $next_page_url = $link->attr('href');
-                last;
-            }
+        foreach my $link (@page_links) {
+            my $page_number = $link->as_text;
+            next if $page_number <= $current_page;
+            $next_page = $page_number;
+            $next_page_url = $link->attr('href');
+            last;
         }
     }
 
@@ -365,9 +360,83 @@ sub get_a_topic {
         }
 
         # postarea
+        my $postarea = $pw->look_down(class => 'postarea');
+        my $post_id = undef;
+        if(defined $postarea) {
+            my $keyinfo = $postarea->look_down(class => 'keyinfo');
+            if(defined $keyinfo) {
+                my $h5 = $keyinfo->look_down(_tag => 'h5');
+                if(defined $h5) {
+                    $post->{post_subject} = trim $h5->as_text;
+                    my $subject_a = $h5->look_down(_tag => 'a');
+                    if(defined $subject_a) {
+                        $post->{post_url} = $subject_a->attr('href');
+                        # index48ec.html?topic=1455.msg7771#msg7771
+                        $post->{post_url} =~ /topic=(\d+)\.msg(\d+)\#/;
+                        ($post->{topic_id}, $post->{post_id}) = ($1,$2);
+                        $post_id = $post->{post_id};
+                    }
+                }
+                my $subject_blob = $keyinfo->look_down(class => 'smalltext');
+                if(defined $subject_blob) {
+                    $post->{post_date} = trim $subject_blob->as_text;
+                    $post->{post_date} =~ /on:\s+(.*[ap]m)/;
+                    $post->{post_date} = $1;
+                }
+            }
+        } else {
+            die "No post area found in $file\nwrapper " . $pw->as_HTML;
+        }
+
+        # post
+        my $post_blob = $pw->look_down(class => 'post');
+        if(defined $post_blob) {
+            my $post_inner = $post_blob->look_down(class => 'inner');
+            if(defined $post_inner) {
+                if(!defined $post_id) {
+                    $post_id = $post_inner->attr('id');
+                    $post_id =~ s/^msg_//;
+                }
+                my $start_tag = $post_inner->starttag('');
+                my $end_tag = $post_inner->endtag();
+                $post->{post_html} = $post_inner->as_HTML;
+                # Hmmmm, do I leave the div tag wrappers, or strip them?
+                $post->{post_html} =~ s/^$start_tag//;
+                $post->{post_html} =~ s/$end_tag$//;
+            } else {
+                die "No post inner found in $file\nwrapper " . $post_blob->as_HTML;
+            }
+        } else {
+            die "No post found in $file\nwrapper " . $pw->as_HTML;
+        }
+
         # moderatorbar
+        my $moderatorbar = $pw->look_down(class => 'moderatorbar');
+        if(defined $moderatorbar and defined $post_id) {
+            my $modified_blob = $moderatorbar->look_down(id => "modified_$post_id");
+            if(defined $modified_blob) {
+                my $modified_date = trim $modified_blob->as_text;
+                my $modified_by = undef;
+                $modified_date =~ /Edit:\s+(.*[ap]m)\s+by\s+(.*)$/;
+                ($modified_date, $modified_by) = ($1, $2);
+                $post->{post_modified_date} = $modified_date if defined $modified_date;
+                $post->{post_modified_by} = $modified_by if defined $modified_by;
+            }
+        }
+
         # done
         push @posts, $post;
+    }
+
+    # At this point, we need to recurse in and do all this again for $next_page_url
+    if(defined $next_page and defined $next_page_url) {
+        #warn "Found page $next_page! $next_page_url";
+        my $results = get_a_topic($next_page_url, $next_page);
+        push @posts, @{ $results->{posts} } if defined $results;
+    } else {
+        #warn "$current_page was the last page.";
+        #warn "Next page should have been $next_page." if defined $next_page;
+        #warn "Next page should have been $next_page_url." if defined $next_page_url;
     }
 
     return {
@@ -376,6 +445,12 @@ sub get_a_topic {
         post_count  => (scalar @posts),
         posts       => \@posts,
     };
+}
+
+sub get_profile {
+    my $profile_url = shift;
+    die "Invalid profile URL." if !defined $profile_url;
+    #indexa82d.html?action=profile;u=185
 }
 
 my $board_results = get_boards();
