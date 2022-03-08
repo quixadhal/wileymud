@@ -10,6 +10,8 @@ $Data::Dumper::Sortkeys = 1;
 #my $file_prefix = '/space/stuff/Mirrors/MudMirror-2021-10-16/lpmuds.net';
 my $file_prefix = '/space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net';
 
+my $profile_data = {};
+
 sub trim {
     my $str = shift;
     return undef unless defined $str;
@@ -117,6 +119,7 @@ sub get_boards {
                     $last_post_data->{profile_url} = $url;
                     $url =~ /profile;u=(\d+)/;
                     $last_post_data->{profile_id} = $1;
+                    $profile_data->{$last_post_data->{profile_id}} = get_profile($url);
                 } elsif ($url_count == 1) {
                     $last_post_data->{post_title} = $text;
                     $last_post_data->{post_url} = $url;
@@ -239,6 +242,7 @@ sub get_board_topics {
             #indexa82d.html?action=profile;u=185
             $last_post_data->{profile_url} =~ /profile;u=(\d+)/;
             $last_post_data->{profile_id} = $1;
+            $profile_data->{$last_post_data->{profile_id}} = get_profile($last_post_data->{profile_url});
         }
 
         push @topic_data, {
@@ -323,6 +327,7 @@ sub get_a_topic {
                 if(defined $url) {
                     $url =~ /profile;u=(\d+)/;
                     $post->{profile_id} = $1;
+                    $profile_data->{$post->{profile_id}} = get_profile($url);
                 }
             } else {
                 #<div class="poster"><h4> Kalinash </h4><ul class="reset smalltext" id="msg_6848_extra_info"><li class="membergroup">Guest</ul></div>
@@ -450,7 +455,63 @@ sub get_a_topic {
 sub get_profile {
     my $profile_url = shift;
     die "Invalid profile URL." if !defined $profile_url;
+    my $profile = {};
+
     #indexa82d.html?action=profile;u=185
+    $profile->{url} = $profile_url;
+    $profile->{url} =~ /profile;u=(\d+)/;
+    $profile->{id} = $1;
+    $profile->{url} =~ s!\.html\?.*$!.html!;
+    $profile->{url} =~ s!\.\./smf/!!;
+
+    my $file = "$file_prefix/smf/" . $profile->{url};
+    my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
+    my $profileview = $root->look_down(id => 'profileview') or die "No profileview in $file.";
+    my $basicinfo = $profileview->look_down(id => 'basicinfo') or die "No basicinfo in $file.";
+    my $username = $basicinfo->look_down(class => 'username') or die "No username in $file.";
+    my $user_h4 = $username->look_down(_tag => 'h4') or die "No h4 in $file.";
+
+    $profile->{name} = trim $user_h4->as_text;
+    $profile->{name} =~ /^(\S+)\s+(.*)\s*$/;
+    ($profile->{name}, $profile->{position}) = ($1,$2);
+
+    my $avatar = $basicinfo->look_down(_tag => 'img') or die "No avatar in $file.";
+    $profile->{avatar_url} = $avatar->attr('src');
+
+    my $detailedinfo = $profileview->look_down(id => 'detailedinfo') or die "No detailedinfo in $file.";
+    my $content = $detailedinfo->look_down(class => 'content') or die "No content in $file.";
+    my $first_dl = $content->look_down(_tag => 'dl') or die "No initial dl in $file.";
+    my $second_dl = $content->look_down(class => 'noborder') or die "No second dl in $file.";
+
+    my @first_dt = $first_dl->look_down(_tag => 'dt');
+    my @first_dd = $first_dl->look_down(_tag => 'dd');
+    for (my $i = 0; $i < (scalar @first_dt); $i++) {
+        my $k = trim $first_dt[$i]->as_text;
+        my $v = trim $first_dd[$i]->as_text;
+        $k =~ s/:\s*$//;
+        $k =~ s/\s+/_/g;
+        $profile->{lc $k} = $v;
+    }
+
+    my @second_dt = $second_dl->look_down(_tag => 'dt');
+    my @second_dd = $second_dl->look_down(_tag => 'dd');
+    for (my $i = 0; $i < (scalar @second_dt); $i++) {
+        my $k = trim $second_dt[$i]->as_text;
+        my $v = trim $second_dd[$i]->as_text;
+        $k =~ s/:\s*$//;
+        $k =~ s/\s+/_/g;
+        $profile->{lc $k} = $v;
+    }
+
+    my $sig_div = $content->look_down(class => 'signature');
+    if(defined $sig_div) {
+        my $sig_img = $sig_div->look_down(_tag => 'img');
+        if(defined $sig_img) {
+            $profile->{signature_url} = $sig_img->attr('src');
+        }
+    }
+
+    return $profile;
 }
 
 my $board_results = get_boards();
@@ -505,10 +566,16 @@ foreach my $category (
         #    $board->{board_id}, $board->{board_name},
         #    (scalar @topics);
         $board_results->{$category->{category_id}}{$board->{board_id}}{topics} = \@topics;
+
+        #$profile_data->{$board->{last_post}{profile_url}} = 
+        #    get_profile($board->{last_post}{profile_url})
+        #    if exists $profile_data->{$board->{last_post}{profile_url}};
     }
 }
 
-my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode($board_results);
+my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode(
+    { board_data => $board_results, profile_data => $profile_data }
+);
 print "$json_dump\n";
 
 # Interesting.. /space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net/smf/index0e50.html
