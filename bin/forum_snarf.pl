@@ -11,6 +11,7 @@ $Data::Dumper::Sortkeys = 1;
 my $file_prefix = '/space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net';
 
 my $profile_data = {};
+my $missing_profiles = {};
 
 sub trim {
     my $str = shift;
@@ -234,6 +235,8 @@ sub get_board_topics {
             # December 16, 2009, 01:49:20 pm by Kalinash
             $last_blob =~ /^(.*?\s+[ap]m)\s+by\s+(.*)\s*$/;
             ($last_post_data->{post_date}, $last_post_data->{profile_name}) = ($1,$2);
+            warn "No profile exists for " . $last_post_data->{profile_name};
+            $missing_profiles->{$last_post_data->{profile_name}}++;
         } else {
             $last_post_data->{profile_url} = $last_urls[1]->attr('href');
             $last_post_data->{profile_name} = trim $last_urls[1]->as_text;
@@ -334,6 +337,8 @@ sub get_a_topic {
                 my $profile_h4 = $poster->look_down(_tag => 'h4');
                 if(defined $profile_h4) {
                     $post->{profile_name} = trim $profile_h4->as_text;
+                    warn "No profile exists for " . $post->{profile_name};
+                    $missing_profiles->{$post->{profile_name}}++;
                 } else {
                     die "No profile a OR h4 found in $file\nwrapper " . $poster->as_HTML;
                 }
@@ -566,11 +571,26 @@ foreach my $category (
         #    $board->{board_id}, $board->{board_name},
         #    (scalar @topics);
         $board_results->{$category->{category_id}}{$board->{board_id}}{topics} = \@topics;
-
-        #$profile_data->{$board->{last_post}{profile_url}} = 
-        #    get_profile($board->{last_post}{profile_url})
-        #    if exists $profile_data->{$board->{last_post}{profile_url}};
     }
+}
+
+my $max_id = 0;
+foreach (keys %$profile_data) {
+    $max_id = $_ if $_ > $max_id;
+}
+
+foreach (keys %$missing_profiles) {
+    $max_id++;
+    $profile_data->{$max_id} = {
+        age                 => 'N/A',
+        id                  => $max_id,
+        name                => $_,
+        position            => 'Guest',
+        posts               => $missing_profiles->{$_} . " (0.001 per day)",
+        date_registered     => "November 30, 2006, 07:18:43 pm",
+        last_active         => "November 30, 2006, 07:18:43 pm",
+        local_time          => "October 15, 2021, 05:13:18 am",
+    };
 }
 
 my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode(
@@ -578,7 +598,3 @@ my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode(
 );
 print "$json_dump\n";
 
-# Interesting.. /space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net/smf/index0e50.html
-# Looks like the format changed?  We may have to adapt, as the forum might have started
-# using a newer format for the last entries...
-#
