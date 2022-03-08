@@ -12,6 +12,7 @@ my $file_prefix = '/space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net';
 
 my $profile_data = {};
 my $missing_profiles = {};
+my $posts_by_id = {};
 
 sub trim {
     my $str = shift;
@@ -22,7 +23,7 @@ sub trim {
     return $str;
 }
 
-sub get_boards {
+sub get_categories {
     my $file = "$file_prefix/forum/index.html";
     die "File $file not found." if ! -r $file;
     my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
@@ -30,58 +31,30 @@ sub get_boards {
 
     my @categories = $table->look_down(id => qr/category_\d+_boards/);
     die "No categories found in $file." if (scalar @categories) < 1;
-    my $board_results = {};
-    foreach my $cat (@categories) {
-        my $cat_id = $cat->attr('id');
-        $cat_id =~ /category_(\d+)_boards/;
-        my $cat_number = $1;
-        my $parent = $cat->look_up(class => 'table_list') or die "Cannot find table list for category $cat_id.";
-        my $cat_head = $parent->look_down(id => "category_$cat_number") or die "Cannot find category_$cat_number.";
-        my $cat_info = $cat_head->look_down(class => 'catbg') or die "Cannot get category name for $cat_id.";
-        my $cat_name = trim $cat_info->as_text;
+    my $category_data = {};
+    foreach my $category (@categories) {
+        my $category_id = $category->attr('id');
+        $category_id =~ /category_(\d+)_boards/;
+        $category_id = $1;
 
-        $board_results->{$cat_number} = {
-            category_id     => $cat_number,
-            category_name   => $cat_name,
+        my $parent = $category->look_up(class => 'table_list') or die "Cannot find table list for category $category_id.";
+        my $cat_head = $parent->look_down(id => "category_$category_id") or die "Cannot find category_$category_id.";
+        my $cat_info = $cat_head->look_down(class => 'catbg') or die "Cannot get category name for $category_id.";
+        my $category_name = trim $cat_info->as_text;
+
+        $category_data->{$category_id} = {
+            category_id     => $category_id,
+            category_name   => $category_name,
         };
 
-        my @boards = $cat->look_down(id => qr/board_\d+/);
-        die "No boards found in category $cat_name." if (scalar @boards) < 1;
+        my @boards = $category->look_down(id => qr/board_\d+/);
+        die "No boards found in category $category_name." if (scalar @boards) < 1;
         foreach my $board (@boards) {
             my $board_id = $board->attr('id');
             $board_id =~ /board_(\d+)/;
-            my $board_number = $1;
-
-            #<tr class="windowbg2" id="board_1">
-            #  <td class="icon windowbg">
-            #    <a href="../smf/indexa950.html?PHPSESSID=atphbp79901okvnth7h9oh9jq8&amp;board=1.0">
-            #    <img alt="No New Posts" src="Themes/default/images/off.png" title="No New Posts" />
-            #    </a>
-            #  </td>
-            #  <td class="info">
-            #    <a class="subject" href="../smf/indexa950.html?PHPSESSID=atphbp79901okvnth7h9oh9jq8&amp;board=1.0" name="b1">General
-            #    </a>
-            #    <p>A forum for general LPC, LPmud, mostly-on-topic stuff.
-            #  </td>
-            #  <td class="stats windowbg">
-            #    <p>1621 Posts <br /> 271 Topics
-            #  </td>
-            #  <td class="lastpost">
-            #    <p><strong>Last post</strong> by
-            #    <a href="../smf/index8615.html?PHPSESSID=atphbp79901okvnth7h9oh9jq8&amp;action=profile;u=312">Adam</a>
-            #    <br /> in 
-            #    <a href="../smf/index7910.html?PHPSESSID=atphbp79901okvnth7h9oh9jq8&amp;topic=1641.msg9147#new" title="MOVED: I3 flakiness...">MOVED: I3 flakiness...</a>
-            #    <br /> on April 11, 2020, 06:24:26 pm
-            #  </td>
-            #</tr>
+            $board_id = $1;
 
             my $info = $board->look_down(class => 'info') or die "Cannot get info for board $board_id.";
-            #<td class="info">
-            #  <a class="subject" 
-            #  href="../smf/indexa950.html?PHPSESSID=atphbp79901okvnth7h9oh9jq8&amp;board=1.0" name="b1">
-            #  General</a>
-            #  <p>A forum for general LPC, LPmud, mostly-on-topic stuff.
-            #</td>
 
             my $anchor = $info->look_down(class => 'subject') or die "Cannot get url for board $board_id.";
             my $board_url = $anchor->attr('href');
@@ -97,7 +70,7 @@ sub get_boards {
             my $p2 = $stats->look_down(_tag => 'p') or die "Cannot get stats for $board_name.";
             my $counts = $p2->as_text;
             $counts =~ /(\d+)\s+Posts\s+(\d+)\s+Topics/;
-            my ($posts, $topics) = ($1, $2);
+            my ($post_count, $topic_count) = ($1, $2);
 
             #  <td class="lastpost">
             #    <p><strong>Last post</strong> by
@@ -132,19 +105,19 @@ sub get_boards {
             $last_blob =~ /\s+on\s+(.*)\s+/;
             $last_post_data->{post_date} = $1;
 
-            my $data = {
-                board_id    => $board_number,
-                board_name  => $board_name,
-                board_url   => $board_url,
-                board_title => $board_title,
-                posts       => $posts,
-                topics      => $topics,
-                last_post   => $last_post_data,
+            my $board_data = {
+                board_id                => $board_id,
+                board_name              => $board_name,
+                board_url               => $board_url,
+                board_title             => $board_title,
+                expected_post_count     => $post_count,
+                expected_topic_count    => $topic_count,
+                last_post               => $last_post_data,
             };
-            $board_results->{$cat_number}{$board_number} = $data;
+            $category_data->{$category_id}{$board_id} = $board_data;
         }
     }
-    return $board_results;
+    return $category_data;
 }
 
 sub get_board_topics {
@@ -371,25 +344,25 @@ sub get_a_topic {
 
         # postarea
         my $postarea = $pw->look_down(class => 'postarea');
-        my $post_id = undef;
+        my $message_id = undef;
         if(defined $postarea) {
             my $keyinfo = $postarea->look_down(class => 'keyinfo');
             if(defined $keyinfo) {
                 my $h5 = $keyinfo->look_down(_tag => 'h5');
                 if(defined $h5) {
-                    $post->{post_subject} = trim $h5->as_text;
-                    my $subject_a = $h5->look_down(_tag => 'a');
-                    if(defined $subject_a) {
-                        $post->{post_url} = $subject_a->attr('href');
+                    $post->{post_title} = trim $h5->as_text;
+                    my $title_a = $h5->look_down(_tag => 'a');
+                    if(defined $title_a) {
+                        $post->{post_url} = $title_a->attr('href');
                         # index48ec.html?topic=1455.msg7771#msg7771
                         $post->{post_url} =~ /topic=(\d+)\.msg(\d+)\#/;
-                        ($post->{topic_id}, $post->{post_id}) = ($1,$2);
-                        $post_id = $post->{post_id};
+                        ($post->{topic_id}, $post->{message_id}) = ($1,$2);
+                        $message_id = $post->{message_id};
                     }
                 }
-                my $subject_blob = $keyinfo->look_down(class => 'smalltext');
-                if(defined $subject_blob) {
-                    $post->{post_date} = trim $subject_blob->as_text;
+                my $title_blob = $keyinfo->look_down(class => 'smalltext');
+                if(defined $title_blob) {
+                    $post->{post_date} = trim $title_blob->as_text;
                     $post->{post_date} =~ /on:\s+(.*[ap]m)/;
                     $post->{post_date} = $1;
                 }
@@ -403,9 +376,9 @@ sub get_a_topic {
         if(defined $post_blob) {
             my $post_inner = $post_blob->look_down(class => 'inner');
             if(defined $post_inner) {
-                if(!defined $post_id) {
-                    $post_id = $post_inner->attr('id');
-                    $post_id =~ s/^msg_//;
+                if(!defined $message_id) {
+                    $message_id = $post_inner->attr('id');
+                    $message_id =~ s/^msg_//;
                 }
                 my $start_tag = $post_inner->starttag('');
                 my $end_tag = $post_inner->endtag();
@@ -422,8 +395,8 @@ sub get_a_topic {
 
         # moderatorbar
         my $moderatorbar = $pw->look_down(class => 'moderatorbar');
-        if(defined $moderatorbar and defined $post_id) {
-            my $modified_blob = $moderatorbar->look_down(id => "modified_$post_id");
+        if(defined $moderatorbar and defined $message_id) {
+            my $modified_blob = $moderatorbar->look_down(id => "modified_$message_id");
             if(defined $modified_blob) {
                 my $modified_date = trim $modified_blob->as_text;
                 my $modified_by = undef;
@@ -435,7 +408,10 @@ sub get_a_topic {
         }
 
         # done
-        push @posts, $post;
+        #$post->{post_id} = sprintf "%d.%d", $post->{topic_id}, $post->{message_id};
+        $post->{post_id} = sprintf "%d", $post->{message_id};
+        push @posts, $post->{post_id};
+        $posts_by_id->{$post->{post_id}} = $post;
     }
 
     # At this point, we need to recurse in and do all this again for $next_page_url
@@ -519,7 +495,7 @@ sub get_profile {
     return $profile;
 }
 
-my $board_results = get_boards();
+my $category_data = get_categories();
 
 # For each board, the url to show topics looks like
 # lpmuds.net/smf/indexd0e9.html?board=1.0
@@ -547,8 +523,8 @@ my $board_results = get_boards();
 #
 
 foreach my $category (
-    map { $board_results->{$_} } (
-        sort { $a <=> $b } keys %$board_results
+    map { $category_data->{$_} } (
+        sort { $a <=> $b } keys %$category_data
     )
 ) {
     foreach my $board (
@@ -570,7 +546,7 @@ foreach my $category (
         #    $category->{category_id}, $category->{category_name},
         #    $board->{board_id}, $board->{board_name},
         #    (scalar @topics);
-        $board_results->{$category->{category_id}}{$board->{board_id}}{topics} = \@topics;
+        $category_data->{$category->{category_id}}{$board->{board_id}}{topics} = \@topics;
     }
 }
 
@@ -580,6 +556,7 @@ foreach (keys %$profile_data) {
 }
 
 foreach (keys %$missing_profiles) {
+    # Check here to see if a name already exists in the profile data?
     $max_id++;
     $profile_data->{$max_id} = {
         age                 => 'N/A',
@@ -594,7 +571,11 @@ foreach (keys %$missing_profiles) {
 }
 
 my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode(
-    { board_data => $board_results, profile_data => $profile_data }
+    {
+        category_data => $category_data,
+        post_data => $posts_by_id,
+        profile_data => $profile_data,
+    }
 );
 print "$json_dump\n";
 
