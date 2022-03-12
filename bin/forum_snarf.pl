@@ -7,9 +7,10 @@ use JSON qw(encode_json);
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
-#my $file_prefix = '/space/stuff/Mirrors/MudMirror-2021-10-16/lpmuds.net';
-my $file_prefix = '/space/stuff/Mirrors/MudMirror-2020-05-11/lpmuds.net';
+my $filename_pattern = '/space/stuff/Mirrors/MudMirror-%s/lpmuds.net';
+my @data_sets = (qw( 2020-05-11 2021-10-16 ));
 
+my $merged_data = {};
 my $profile_data = {};
 my $missing_profiles = {};
 my $posts_by_id = {};
@@ -23,7 +24,190 @@ sub trim {
     return $str;
 }
 
+sub process_files {
+    my $file_set_number = 0;
+
+    foreach my $file_set (@data_sets) {
+        my $filepath = sprintf $filename_pattern, $file_set;
+        my $category_data = get_categories($filepath);
+
+        foreach my $category (
+            map { $category_data->{$_} } (
+                sort { $a <=> $b } keys %$category_data
+            )
+        ) {
+            my $category_id = $category->{category_id};
+
+            foreach my $board (
+                map { $category->{$_} } (
+                    sort { $a <=> $b } grep {!/^category_/} keys %$category
+                )
+            ) {
+                my $board_id = $board->{board_id};
+
+                my @topics = ();
+                my $url = $board->{board_url};
+                my $page = 1;
+
+                while( my $topic_chunk = get_board_topics($filepath, $url, $page) ) {
+                    $page = $topic_chunk->{next_page};
+                    $url = $topic_chunk->{next_page_url};
+                    push @topics, ( @{ $topic_chunk->{topics} } );
+                    last if !defined $url;
+                }
+                $category_data->{$category_id}{$board_id}{topics} = \@topics;
+            }
+        }
+
+        if($file_set_number > 0) {
+            # Once we've collected all the data from the new file set
+            # we need to merge it into the overall data set.
+            foreach my $category (
+                map { $category_data->{$_} } (
+                    sort { $a <=> $b } keys %$category_data
+                )
+            ) {
+                my $category_id = $category->{category_id};
+
+                foreach my $board (
+                    map { $category->{$_} } (
+                        sort { $a <=> $b } grep {!/^category_/} keys %$category
+                    )
+                ) {
+                    my $board_id = $board->{board_id};
+
+                    # Make sure the category exists, in case it didn't in the last run.
+                    $merged_data->{$category_id} = {}
+                        unless exists $merged_data->{$category_id};
+                    # Make sure the board exists, in case it didn't in the last run.
+                    $merged_data->{$category_id}{$board_id} = {}
+                        unless exists $merged_data->{$category_id}{$board_id};
+
+                    # Now, if we want to keep the older data, we skip things that
+                    # already exist... if we want to overwrite, we do so.
+                    $merged_data->{$category_id}{$board_id}{board_id} = $board_id;
+
+                    $merged_data->{$category_id}{$board_id}{board_name} = $board->{board_name}
+                        if !exists $merged_data->{$category_id}{$board_id}{board_name};
+
+                    $merged_data->{$category_id}{$board_id}{board_title} = $board->{board_title}
+                        if !exists $merged_data->{$category_id}{$board_id}{board_title};
+
+                    # We want the URL from the most recent data set
+                    $merged_data->{$category_id}{$board_id}{board_url} = $board->{board_url};
+
+                    #expected_post_count and expected_topic_count only make sense within
+                    #a single data set, so skip both of those.
+
+                    # We want the last_post from the most recent data set
+                    $merged_data->{$category_id}{$board_id}{last_post} = $board->{last_post};
+
+                    # At this point, we have to loop through all the topics
+                    # and merge posts from the new data set into the old one, if
+                    # the topic exists... or just toss the entire topic in if it's new
+                    $merged_data->{$category_id}{$board_id}{topics} = []
+                        unless exists $merged_data->{$category_id}{$board_id}{topics};
+
+                    # topics are an array, so we may have ordering issues, but we'll do
+                    # what we can... missing ones will end up merging in between existing
+                    # ones, if they weren't at the bottom of the new set.
+
+                    foreach my $topic (@{ $board->{topics} }) {
+                        my $topic_id = $topic->{topic_id};
+
+                        my $found = undef;
+                        my $found_index = 0;
+                        foreach my $c (keys %$category_data) {
+                            foreach my $b (keys %{ $category_data->{$c} }) {
+                                foreach my $t (@{ $merged_data->{$c}{$b}{topics} }) {
+                                    $found = $t->{posts} if $t->{topic_id} == $topic_id;
+                                    last if $found;
+                                    $found_index++;
+                                }
+                                last if $found;
+                                $found_index = 0;
+                            }
+                            last if $found;
+                            $found_index = 0;
+                        }
+
+                        # OK, if did NOT find the topic, just add it and we're good.
+                        # Otherwise, we need to merge fields.
+                        if(!$found) {
+                            push @{ $merged_data->{$category_id}{$board_id}{topics} }, $topic;
+                        } else {
+                            # Merge it is!
+                            warn "Merging posts for $topic_id";
+                            my $merged_topic = {
+                                last_post               => $topic->{last_post},
+                                posts                   => $found,
+                                topic_id                => $topic->{topic_id},
+                                topic_message_id        => $topic->{topic_message_id},
+                                topic_replies           => $topic->{topic_replies},
+                                topic_started_by_name   => $topic->{topic_started_by_name},
+                                topic_started_by_url    => $topic->{topic_started_by_url},
+                                topic_title             => $topic->{topic_title},
+                                topic_url               => $topic->{topic_url},
+                                topic_views             => $topic->{topic_views},
+                            };
+
+                            $merged_topic->{posts}{topic_url} = $topic->{posts}{topic_url};
+                            # Now, we have to add in things from the new posts section.
+                            foreach my $p (@{ $topic->{posts}{posts} }) {
+                                next if grep {/^$p$/} (@{ $merged_topic->{posts}{posts} });
+                                warn "    Merged in post #$p";
+                                push @{ $merged_topic->{posts}{posts} }, $p;
+                                $merged_topic->{posts}{post_count}++;
+                            }
+
+                            warn "Found index == $found_index";
+                            $merged_data->{$category_id}{$board_id}{topics}[$found_index] = $merged_topic;
+                        }
+                    } #topic
+                } #board
+            } #category
+        } #file_set_number > 0
+
+        $file_set_number++;
+    }
+
+    # Now, we have ALL the profiles collected, so fill in anyone who's
+    # only know by name due to corrupted source data.
+    my $max_id = 0;
+    foreach (keys %$profile_data) {
+        $max_id = $_ if $_ > $max_id;
+    }
+
+    foreach my $name (keys %$missing_profiles) {
+        # Check here to see if a name already exists in the profile data?
+        next if grep {/^$name$/} 
+            map { $profile_data->{$_}{name} }
+            (keys %$profile_data);
+        $max_id++;
+        $profile_data->{$max_id} = {
+            age                 => 'N/A',
+            id                  => $max_id,
+            name                => $name,
+            position            => 'Guest',
+            posts               => $missing_profiles->{$name} . " (0.001 per day)",
+            date_registered     => "January 1, 2006, 12:00:00 am",
+            last_active         => "January 1, 2006, 12:00:00 am",
+            local_time          => "October 15, 2021, 05:13:18 am",
+        };
+    }
+
+    # And finally, JSON encode and output everything
+    my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode({
+            merged_data     => $merged_data,
+            post_data       => $posts_by_id,
+            profile_data    => $profile_data,
+    });
+    print "$json_dump\n";
+}
+
 sub get_categories {
+    my $file_prefix = shift or die "No file prefix provided.";
+
     my $file = "$file_prefix/forum/index.html";
     die "File $file not found." if ! -r $file;
     my $root = HTML::TreeBuilder->new_from_file($file) or die "Can't parse $file.";
@@ -93,7 +277,7 @@ sub get_categories {
                     $last_post_data->{profile_url} = $url;
                     $url =~ /profile;u=(\d+)/;
                     $last_post_data->{profile_id} = $1;
-                    $profile_data->{$last_post_data->{profile_id}} = get_profile($url);
+                    $profile_data->{$last_post_data->{profile_id}} = get_profile($file_prefix, $url);
                 } elsif ($url_count == 1) {
                     $last_post_data->{post_title} = $text;
                     $last_post_data->{post_url} = $url;
@@ -102,8 +286,15 @@ sub get_categories {
                 }
                 $url_count++;
             }
-            $last_blob =~ /\s+on\s+(.*)\s+/;
+            #$last_blob =~ /\s+on\s+(.*)\s+/;
+            #$last_blob =~ /\s+on\s+(.*?\s+\d+,\s+\d+,\s+\d+:\d+:\d+(?:\s+[ap]m)?)\s+/;
+            # "post_date" : "line 291: modern ... on May 25, 2020, 03:54:44",
+            $last_blob =~ /\s+on\s+((?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec).*)\s+/;
+            #$last_post_data->{post_date} = "line 291: $1";
             $last_post_data->{post_date} = $1;
+            $last_post_data->{post_date} =~ /(\d+):\d+:\d+$/;
+            my $hour = $1;
+            $last_post_data->{post_date} .= ($hour < 12) ? " am" : " pm";
 
             my $board_data = {
                 board_id                => $board_id,
@@ -121,6 +312,7 @@ sub get_categories {
 }
 
 sub get_board_topics {
+    my $file_prefix = shift or die "No file prefix provided.";
     my $board_url = shift;
     my $current_page = shift; # pass in 1 to begin
 
@@ -207,18 +399,22 @@ sub get_board_topics {
         if((scalar @last_urls) < 2) {
             # December 16, 2009, 01:49:20 pm by Kalinash
             $last_blob =~ /^(.*?\s+[ap]m)\s+by\s+(.*)\s*$/;
+            #$last_blob =~ /^(.*?\s+\d+,\s+\d+,\s+\d+:\d+:\d+(?:\s+[ap]m)?)\s+by\s+(.*)\s*$/;
+            #($last_post_data->{post_date}, $last_post_data->{profile_name}) = ("line 397: $1",$2);
             ($last_post_data->{post_date}, $last_post_data->{profile_name}) = ($1,$2);
-            warn "No profile exists for " . $last_post_data->{profile_name};
+            warn "$file_prefix - No profile exists for " . $last_post_data->{profile_name} if !exists $missing_profiles->{$last_post_data->{profile_name}};
             $missing_profiles->{$last_post_data->{profile_name}}++;
         } else {
             $last_post_data->{profile_url} = $last_urls[1]->attr('href');
             $last_post_data->{profile_name} = trim $last_urls[1]->as_text;
             $last_blob =~ /^(.*?\s+[ap]m)\s+by/;
+            #$last_blob =~ /^(.*?\s+\d+,\s+\d+,\s+\d+:\d+:\d+(?:\s+[ap]m)?)\s+by$/;
+            #$last_post_data->{post_date} = "line 405: $1";
             $last_post_data->{post_date} = $1;
             #indexa82d.html?action=profile;u=185
             $last_post_data->{profile_url} =~ /profile;u=(\d+)/;
             $last_post_data->{profile_id} = $1;
-            $profile_data->{$last_post_data->{profile_id}} = get_profile($last_post_data->{profile_url});
+            $profile_data->{$last_post_data->{profile_id}} = get_profile($file_prefix, $last_post_data->{profile_url});
         }
 
         push @topic_data, {
@@ -237,7 +433,7 @@ sub get_board_topics {
     # At this point, we can either walk down the topic's post chain
     # to collect them all here... or do it later.
     foreach my $topic (@topic_data) {
-        my $post_data = get_a_topic($topic->{topic_url}, 1);
+        my $post_data = get_a_topic($file_prefix, $topic->{topic_url}, 1);
         next unless defined $post_data;
         $topic->{posts} = $post_data;
     }
@@ -253,6 +449,7 @@ sub get_board_topics {
 
 sub get_a_topic {
     #index5b35.html?topic=1638.0
+    my $file_prefix = shift or die "No file prefix provided.";
     my $topic_url = shift;
     my $current_page = shift; # pass in 1 to begin
 
@@ -303,14 +500,14 @@ sub get_a_topic {
                 if(defined $url) {
                     $url =~ /profile;u=(\d+)/;
                     $post->{profile_id} = $1;
-                    $profile_data->{$post->{profile_id}} = get_profile($url);
+                    $profile_data->{$post->{profile_id}} = get_profile($file_prefix, $url);
                 }
             } else {
                 #<div class="poster"><h4> Kalinash </h4><ul class="reset smalltext" id="msg_6848_extra_info"><li class="membergroup">Guest</ul></div>
                 my $profile_h4 = $poster->look_down(_tag => 'h4');
                 if(defined $profile_h4) {
                     $post->{profile_name} = trim $profile_h4->as_text;
-                    warn "No profile exists for " . $post->{profile_name};
+                    warn "$file_prefix - No profile exists for " . $post->{profile_name} if !exists $missing_profiles->{$post->{profile_name}};
                     $missing_profiles->{$post->{profile_name}}++;
                 } else {
                     die "No profile a OR h4 found in $file\nwrapper " . $poster->as_HTML;
@@ -364,6 +561,8 @@ sub get_a_topic {
                 if(defined $title_blob) {
                     $post->{post_date} = trim $title_blob->as_text;
                     $post->{post_date} =~ /on:\s+(.*[ap]m)/;
+                    #$post->{post_date} =~ /on:\s+(.*?\s+\d+,\s+\d+,\s+\d+:\d+:\d+(?:\s+[ap]m)?)/;
+                    #$post->{post_date} = "line 557: $1";
                     $post->{post_date} = $1;
                 }
             }
@@ -401,6 +600,7 @@ sub get_a_topic {
                 my $modified_date = trim $modified_blob->as_text;
                 my $modified_by = undef;
                 $modified_date =~ /Edit:\s+(.*[ap]m)\s+by\s+(.*)$/;
+                #$modified_date =~ /Edit:\s+(.*?\s+\d+,\s+\d+,\s+\d+:\d+:\d+(?:\s+[ap]m)?)\s+by\s+(.*)$/;
                 ($modified_date, $modified_by) = ($1, $2);
                 $post->{post_modified_date} = $modified_date if defined $modified_date;
                 $post->{post_modified_by} = $modified_by if defined $modified_by;
@@ -417,7 +617,7 @@ sub get_a_topic {
     # At this point, we need to recurse in and do all this again for $next_page_url
     if(defined $next_page and defined $next_page_url) {
         #warn "Found page $next_page! $next_page_url";
-        my $results = get_a_topic($next_page_url, $next_page);
+        my $results = get_a_topic($file_prefix, $next_page_url, $next_page);
         push @posts, @{ $results->{posts} } if defined $results;
     } else {
         #warn "$current_page was the last page.";
@@ -434,6 +634,7 @@ sub get_a_topic {
 }
 
 sub get_profile {
+    my $file_prefix = shift or die "No file prefix provided.";
     my $profile_url = shift;
     die "Invalid profile URL." if !defined $profile_url;
     my $profile = {};
@@ -495,87 +696,5 @@ sub get_profile {
     return $profile;
 }
 
-my $category_data = get_categories();
-
-# For each board, the url to show topics looks like
-# lpmuds.net/smf/indexd0e9.html?board=1.0
-# and we can see the 1 is the board ID number
-# and the .0 part is the message number to start displaying from...
-#
-# However, the way this was scraped, the file itself varies...
-# lpmuds.net/smf/index318d.html?board=1.20
-#
-# So, instead, we'll have to harvest the link from the tiny navbar bit.
-# There is no "next page" though, so instead we have to know where we are
-# via the URL we have, and then divide by 20 and look for the next highest
-# number in the Pages: entry
-#
-
-# div class="pagelinks floatleft"
-#   Pages: [
-#       <string>1</strong>
-#   ] 
-#   a class="navPages" href="url">2</a>
-#
-# Seems like we either need to search for the newPages links and find one whose
-# text is the next number up... if none, then we hit the end.
-# The other option is to search the URL part and do (X-1*20).
-#
-
-foreach my $category (
-    map { $category_data->{$_} } (
-        sort { $a <=> $b } keys %$category_data
-    )
-) {
-    foreach my $board (
-        map { $category->{$_} } (
-            sort { $a <=> $b } grep {!/^category_/} keys %$category
-        )
-    ) {
-        my @topics = ();
-        my $url = $board->{board_url};
-        my $page = 1;
-
-        while( my $topic_chunk = get_board_topics($url, $page) ) {
-            $page = $topic_chunk->{next_page};
-            $url = $topic_chunk->{next_page_url};
-            push @topics, ( @{ $topic_chunk->{topics} } );
-            last if !defined $url;
-        }
-        #printf "Category %d (%s), Board %d (%s), Topics: %d\n",
-        #    $category->{category_id}, $category->{category_name},
-        #    $board->{board_id}, $board->{board_name},
-        #    (scalar @topics);
-        $category_data->{$category->{category_id}}{$board->{board_id}}{topics} = \@topics;
-    }
-}
-
-my $max_id = 0;
-foreach (keys %$profile_data) {
-    $max_id = $_ if $_ > $max_id;
-}
-
-foreach (keys %$missing_profiles) {
-    # Check here to see if a name already exists in the profile data?
-    $max_id++;
-    $profile_data->{$max_id} = {
-        age                 => 'N/A',
-        id                  => $max_id,
-        name                => $_,
-        position            => 'Guest',
-        posts               => $missing_profiles->{$_} . " (0.001 per day)",
-        date_registered     => "November 30, 2006, 07:18:43 pm",
-        last_active         => "November 30, 2006, 07:18:43 pm",
-        local_time          => "October 15, 2021, 05:13:18 am",
-    };
-}
-
-my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode(
-    {
-        category_data => $category_data,
-        post_data => $posts_by_id,
-        profile_data => $profile_data,
-    }
-);
-print "$json_dump\n";
+process_files();
 
