@@ -64,6 +64,7 @@ $ICON_BASE              = 64;
 $FONT_BASE              = 14;   // 24pt 39px, 18pt 30px, 14pt 24px, 10pt 17px, 1.7 seems close
 
 $ICON_SIZE              = sprintf("%dpx", (int)($ICON_BASE * $SCALE));
+$SMALL_ICON_SIZE        = sprintf("%dpx", (int)($ICON_BASE * $SCALE * 0.75));
 $FONT_SIZE              = sprintf("%dpt", (int)($FONT_BASE * $SCALE));
 $SMALL_FONT_SIZE        = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.90));
 $TINY_FONT_SIZE         = sprintf("%dpt", (int)($FONT_BASE * $SCALE * 0.70));

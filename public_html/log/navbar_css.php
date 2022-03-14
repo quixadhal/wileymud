@@ -18,6 +18,15 @@ header("Content-type: text/css");
     max-width: <?php echo $ICON_SIZE; ?>;
     min-width: <?php echo $ICON_SIZE; ?>;
 }
+.nav-small-img {
+    border: none;
+    height: <?php echo $SMALL_ICON_SIZE; ?>;
+    max-height: <?php echo $SMALL_ICON_SIZE; ?>;
+    min-height: <?php echo $SMALL_ICON_SIZE; ?>;
+    width: <?php echo $SMALL_ICON_SIZE; ?>;
+    max-width: <?php echo $SMALL_ICON_SIZE; ?>;
+    min-width: <?php echo $SMALL_ICON_SIZE; ?>;
+}
 #fake-navbar {
     font-family: Consolas, "Lucida Console", Monaco, Courier, monospace;
     font-size: <?php echo $FONT_SIZE; ?>;

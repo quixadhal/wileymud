@@ -12,15 +12,34 @@ var SpecialImageList = <?php echo json_encode($special_image_list); ?>;
 var TodayDirExists = <?php echo $today_dir_exists ? "1" : "0"; ?>;
 var VisitorIP = "<?php echo $VISITOR_IP; ?>";
 var OnePixelBG = "<?php echo $ONE_PIXEL_ICON; ?>";
+var BG_ON = "<?php echo $BG_ON_ICON; ?>";
+var BG_OFF = "<?php echo $BG_OFF_ICON; ?>";
 
-if(VisitorIP === "142.113.220.26") {
-    Cookies.set("nobackground", true);
-    //Cookies.remove("nobackground");
-}
-
-var NoBackground = Cookies.get('nobackground') || false;
+//if(VisitorIP === "142.113.220.26") {
+//    Cookies.set("nobackground", true);
+//    //Cookies.remove("nobackground");
+//}
 
 var Random = new MersenneTwister();
+var NoBackground = Cookies.get('nobackground') || false;
+
+function toggleBackground() {
+    NoBackground = Cookies.get('nobackground') || false;
+    if(NoBackground) {
+        // Turn it on now.
+        Cookies.remove("nobackground");
+        NoBackground = false;
+        $("#navbar-button-background").attr("src", BG_ON);
+        $("#navbar-button-background").attr("title", "Make boring.");
+    } else {
+        Cookies.set("nobackground", true);
+        NoBackground = true;
+        $("#navbar-button-background").attr("src", BG_OFF);
+        $("#navbar-button-background").attr("title", "Make kawaii!");
+    }
+    randomizeBackground();
+}
+
 function randomizeBackground() {
     if(NoBackground) {
         $("#background-img").attr("src", OnePixelBG);

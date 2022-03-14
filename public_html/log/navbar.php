@@ -33,6 +33,8 @@ $FORUM_ICON             = "$URL_HOME/gfx/skull.png";
 $SERVER_ICON            = "$URL_HOME/gfx/server_icon.png";
 $GITHUB_ICON            = "$URL_HOME/gfx/github1600.png";
 $DISCORD_ICON           = "$URL_HOME/gfx/discord.png";
+$BG_ON_ICON             = "$URL_HOME/gfx/painting_on.png";
+$BG_OFF_ICON            = "$URL_HOME/gfx/painting_off.png";
 
 $NAVBAR_FILE            = "$FILE_HOME/log/navbar_css.php";
 $NAVBAR_TIME            = filemtime($NAVBAR_FILE);
