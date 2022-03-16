@@ -362,6 +362,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                 $('#page-load-time').html(timeSpent);
                 showDiv('page-load-time');
                 dim(document.getElementById('navbar-button-server'));
+                syncBackgroundToggleIcon();
                 randomizeBackground();
                 updateRefreshTime();
                 backgroundTimer = setInterval(randomizeBackground, 1000 * 60 * 5);

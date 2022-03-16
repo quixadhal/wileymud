@@ -84,6 +84,7 @@ $MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
                 $('#page-load-time').html(timeSpent);
                 showDiv('page-load-time');
                 dim(document.getElementById('navbar-button-mudlist'));
+                syncBackgroundToggleIcon();
                 randomizeBackground();
                 updateRefreshTime();
                 backgroundTimer = setInterval(randomizeBackground, 1000 * 60 * 5);

@@ -525,6 +525,7 @@ if(array_key_exists('togglebg', $_GET)) {
                 hideDiv('page-source');
                 //showDiv('page-load-time');
                 $("#datepicker").val(queryDate);
+                syncBackgroundToggleIcon();
                 on_scroll(); // Call once, in case the page cannot scroll
                 if(TheDate == "") {
                     dim(document.getElementById("navbar-button-home"));
@@ -552,7 +553,7 @@ if(array_key_exists('togglebg', $_GET)) {
             <img class="nav-img glowing" id="navbar-button-themudorg" title="Another I3 Log Page" src="<?php echo $OTHER_LOG_ICON; ?>" onclick="window.location.href='<?php echo $OTHER_LOG_URL; ?>';" />
             <img class="nav-img glowing" id="navbar-button-pie" title="Everyone loves PIE!" src="<?php echo $PIE_ICON; ?>" onclick="window.location.href='<?php echo $PIE_URL; ?>';" />
             <img class="nav-img glowing spinning" id="navbar-button-forum" title="Dead Forums" src="<?php echo $FORUM_ICON; ?>" onclick="window.location.href='<?php echo $FORUM_URL; ?>';" />
-            <img class="nav-small-img glowing" id="navbar-button-background" title="Make boring." src="<?php echo $BG_ON_ICON; ?>" onclick="toggleBackground();" />
+            <img class="nav-small-img glowing" id="navbar-button-background" title="Make kawaii!" src="<?php echo $BG_OFF_ICON; ?>" onclick="toggleBackground();" />
             <img class="nav-small-img glowing" id="navbar-button-question" title="???!" src="<?php echo $QUESTION_ICON; ?>" onclick="window.location.href='<?php echo $QUESTION_URL; ?>';" />
         </div>
         <div id="navbar-center">

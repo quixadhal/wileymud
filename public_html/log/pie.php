@@ -145,6 +145,7 @@ $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SU
                 $('#page-load-time').html(timeSpent);
                 showDiv('page-load-time');
                 dim(document.getElementById('navbar-button-pie'));
+                syncBackgroundToggleIcon();
                 randomizeBackground();
                 updateRefreshTime();
                 backgroundTimer = setInterval(randomizeBackground, 1000 * 60 * 5);
