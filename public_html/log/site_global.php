@@ -8,6 +8,9 @@ function is_local_ip() {
         return 1;
     return 0;
 }
+function https() {
+    return isset($_SERVER['HTTPS']) ? 'https' : 'http';
+}
 function pcmd($command) {
     $data = "";
     $fp = popen("$command", "r");
@@ -23,7 +26,7 @@ if(is_local_ip()) {
     $isLocal = true;
 }
 
-$URL_HOME               = "http://wileymud.themud.org/~wiley";
+$URL_HOME               = https() . "://wileymud.themud.org/~wiley";
 //$URL_HOME               = "http://104.156.100.167/~wiley";
 $FILE_HOME              = "/home/wiley/public_html";
 

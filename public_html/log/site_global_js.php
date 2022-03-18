@@ -135,3 +135,6 @@ function query_parameters() {
         );
     return queryParams;
 }
+function https() {
+    return "<?php echo https(); ?>";
+}
