@@ -14,6 +14,7 @@ my $merged_data = {};
 my $profile_data = {};
 my $missing_profiles = {};
 my $posts_by_id = {};
+my $groups = {};
 
 sub trim {
     my $str = shift;
@@ -196,10 +197,17 @@ sub process_files {
         };
     }
 
+    # At this point, let's gather all the "position" or group data just
+    # to have counts in one spot.
+    foreach (keys %$profile_data) {
+        $groups->{$profile_data->{$_}{position}}++;
+    }
+
     # And finally, JSON encode and output everything
     my $json_dump = JSON->new->utf8->allow_nonref->canonical->pretty->encode({
             merged_data     => $merged_data,
             post_data       => $posts_by_id,
+            group_data      => $groups,
             profile_data    => $profile_data,
     });
     print "$json_dump\n";
@@ -698,3 +706,11 @@ sub get_profile {
 
 process_files();
 
+# To prepare for data ouput, we need to group things a bit.
+#
+# We first need to map SMF user groups to the target user groups.
+#
+# Then we need to map user profiles.
+#
+# Then we figure out the category/board/topic/post hierarchy and adjust that.
+#
