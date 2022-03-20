@@ -54,10 +54,12 @@
 #define WILEY_ADDRESS "wileymud.themud.org"
 #define WILEY_PORT 3000
 
+// We want to move the log pags to a system area, so make sure
+// the target directory is writeable by the MUD process!
 #define JSON_MUDLIST_PAGE                                                                                              \
-    "../public_html/"                                                                                                  \
+    "/var/www/html/log/data/"                                                                                                  \
     "mudlist.json"
-#define NEW_JSON_MUDLIST_PAGE                                                                                          \
+#define OLD_JSON_MUDLIST_PAGE                                                                                          \
     "../public_html/log/"                                                                                              \
     "mudlist.json"
 

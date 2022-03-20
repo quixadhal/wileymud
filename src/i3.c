@@ -21612,7 +21612,7 @@ void i3_daily_summary()
     char output[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     int messages = 0;
     int speakers = 0;
-    char logpage_url[MAX_INPUT_LENGTH] = "http://wileymud.themud.org/~wiley/log/";
+    char logpage_url[MAX_INPUT_LENGTH] = "http://wileymud.themud.org/log/";
     char yesterday[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yesterfile[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yesternuke[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
