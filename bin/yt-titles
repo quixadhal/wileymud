@@ -4,8 +4,8 @@ use utf8;
 use strict;
 
 my $GOOGLE_API_KEY_FILE = '/home/wiley/.google-api.key';
-my $AUTOPLAYLIST_FILE = '/home/wiley/public_html/autoplaylist.txt';
-my $RESULT_FILE = '/home/wiley/public_html/autoplaylist_titles.txt';
+my $AUTOPLAYLIST_FILE = '/var/www/html/log/data/autoplaylist.txt';
+my $RESULT_FILE = '/var/www/html/log/data/autoplaylist_titles.txt';
 no warnings 'utf8';
 use English qw( −no_match_vars );
 use JSON;
@@ -332,29 +332,28 @@ if($prog eq 'yt-titles') {
 }
 
 my $OLDDIR = cwd();
-
-chdir "/home/wiley/";
-system "/usr/bin/tar", "-Jcf", "/home/wiley/public_html/video_list.tar.xz",
-    "bin/yt-titles",
-    "bin/expand-playlist.pl",
-    "bin/youtube-dl",
-    ".config/youtube-dl/config",
-    "public_html/all_videos.php",
-    "public_html/autoplaylist.txt",
-    "public_html/autoplaylist_titles.txt",
-    "public_html/jquery.js",
-    "public_html/js.cookie.min.js",
-    "public_html/js.random.js",
-    "public_html/gfx/navhome.png",
-    "public_html/gfx/nav/green/top.png",
-    "public_html/gfx/nav/green/bottom.png",
-    "public_html/gfx/question_girl3.png",
-    "public_html/gfx/download.png",
-    "public_html/gfx/wallpaper/1b55d287ad5261031a91f5fa747f3fd7.png",
-    "public_html/gfx/wallpaper/1eee6874a1db6aa8210ec4dc2020d38c.jpg",
-    "public_html/gfx/wallpaper/4a080c7f2f3cd9efc5ab9583b7692309.jpg",
-    "public_html/gfx/wallpaper/5c3d280ddcb9a49385c6bc7bd989f5e3.jpg",
-    "public_html/gfx/wallpaper/7d2064eaefb6858aa5723400332d31ec.jpg"
+chdir "/var/www/html/log/";
+system "/usr/bin/tar", "-Jcf", "/var/www/html/log/data/video_list.tar.xz",
+    "/home/wiley/bin/yt-titles",
+    "/home/wiley/bin/expand-playlist.pl",
+    "/home/wiley/bin/youtube-dl",
+    "/home/wiley/.config/youtube-dl/config",
+    "/var/www/html/log/all_videos.php",
+    "/var/www/html/log/data/autoplaylist.txt",
+    "/var/www/html/log/data/autoplaylist_titles.txt",
+    "/var/www/html/log/inc/jquery-3.3.1.min.js",
+    "/var/www/html/log/inc/js.cookie.min.js",
+    "/var/www/html/log/inc/js.random.js",
+    "/var/www/html/log/gfx/nav/home.png",
+    "/var/www/html/log/gfx/nav/top.png",
+    "/var/www/html/log/gfx/nav/bottom.png",
+    "/var/www/html/log/gfx/bar/question_girl3.png",
+    "/var/www/html/log/gfx/download.png",
+    "/var/www/html/log/gfx/wallpaper/1b55d287ad5261031a91f5fa747f3fd7.png",
+    "/var/www/html/log/gfx/wallpaper/1eee6874a1db6aa8210ec4dc2020d38c.jpg",
+    "/var/www/html/log/gfx/wallpaper/4a080c7f2f3cd9efc5ab9583b7692309.jpg",
+    "/var/www/html/log/gfx/wallpaper/5c3d280ddcb9a49385c6bc7bd989f5e3.jpg",
+    "/var/www/html/log/gfx/wallpaper/7d2064eaefb6858aa5723400332d31ec.jpg"
     ;
 chdir $OLDDIR;
 
