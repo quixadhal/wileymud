@@ -127,6 +127,9 @@ sub dump_average {
 }
 
 my $PG_DB           = 'speedtest';
+# These are actually symbolic links to a samba share of my windows box
+#   /share/leninbackup/speedtest*.json
+# The web services see them as /var/www/html/log/data/*
 my $LINUX_FILE      = '/share/leninbackup/speedtest_wifi.json';
 my $WINDOWS_FILE    = '/share/leninbackup/speedtest.json';
 my $AVERAGE_FILE    = '/share/leninbackup/speedtest_avg.json';

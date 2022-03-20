@@ -20,12 +20,14 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 # 
 # m h  dom mon dow   command
-1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-0,15,30,45 * * * *          /home/wiley/bin/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1 &
-4,19,34,49 * * * *          /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
-1,5,10 0 * * *              /home/wiley/bin/mklogpages.pl --no-pages --censor --no-json --no-pause >/dev/null 2>&1 &
-55 4 * * *                  /usr/bin/speedtest -s 6199 -uMbps -fjson-pretty >/home/wiley/public_html/speedtest_wifi.json 2>&1 &
-5 5 * * *                   /home/wiley/bin/upload_speedtest.pl >/dev/null 2>&1 &
-#3 1 * * *                   /home/wiley/bin/do_backup >/dev/null 2>&1
-3 1 * * *                   /home/wiley/bin/do_backup >/home/wiley/backup.log 2>&1
+#0,15,30,45 * * * *          /home/wiley/bin/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1 &
+#1,5,10 0 * * *              /home/wiley/bin/mklogpages.pl --no-pages --censor --no-json --no-pause >/dev/null 2>&1 &
+#3 1 * * *                   /home/wiley/bin/do_backup >/home/wiley/backup.log 2>&1
 
+0,15,30,45 * * * *          /home/wiley/bin/update_log_stuff.pl >/dev/null 2>&1 &
+2,5,10,20,25 0 * * *        /home/wiley/bin/update_log_stuff.pl >/dev/null 2>&1 &
+1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+4,19,34,49 * * * *          /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
+33 3 * * *                  /usr/bin/speedtest -uMbps -fjson-pretty >/var/www/html/log/data/speedtest_wifi.json 2>/dev/null &
+45 3,5 * * *                /home/wiley/bin/upload_speedtest.pl >/dev/null 2>&1 &
+7 */2 * * *                 /usr/bin/mtr -c 10 -r -w kelly >/var/www/html/log/data/kelly.mtr 2>/dev/null &
