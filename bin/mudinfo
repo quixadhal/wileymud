@@ -1,0 +1,162 @@
+#!/usr/bin/perl -w
+
+use strict;
+use utf8;
+use English qw( −no_match_vars );
+use JSON qw(encode_json decode_json);
+use Getopt::Long;
+
+my $mudlist_file = "/home/www/log/data/mudlist.json";
+
+my $show_wiley      = 1;    # verison->build and version->date and uptime
+my $show_time       = 1;    # time
+my $show_count      = 1;    # <count of muds>
+
+my $show_name       = 1;    # mudlist->[]->name
+my $show_md5        = 0;    # mudlist->[]->md5
+my $show_type       = 1;    # mudlist->[]->type
+my $show_mudlib     = 1;    # mudlist->[]->mudlib
+my $show_ip         = 1;    # mudlist->[]->ipaddress
+my $show_port       = 1;    # mudlist->[]->port
+my $show_online     = 1;    # mudlist->[]->online
+
+my $only_ip         = 0;    # shortcut to just show the ip address for single
+                            # or name and ip address for multiple
+
+sub do_help {
+    print STDERR <<EOM
+usage:  $PROGRAM_NAME [-h] [-wtc] [-nymipo5] [mud name]
+long options:
+    --help              - This helpful help!
+
+    --wiley             - Show WileyMUD info
+    --time              - Show time of last mudlist data dump
+    --count             - Show count of muds listed
+
+    --name              - Show mud name
+    --md5               - Show mud md5
+    --type              - Show mud type
+    --mudlib            - Show mudlib details
+    --ip                - Show mud ipaddress
+    --port              - Show mud port
+    --online            - Show mud online status
+EOM
+    ;
+    exit(1);
+}
+
+Getopt::Long::Configure("gnu_getopt");
+Getopt::Long::Configure("auto_version");
+GetOptions(
+    'help|h'            => sub { do_help() },
+
+    'wiley|w!'          => \$show_wiley,
+    'time|t!'           => \$show_time,
+    'count|c!'          => \$show_count,
+
+    'name|n!'           => \$show_name,
+    'md5|5!'            => \$show_md5,
+    'type|y!'           => \$show_type,
+    'mudlib|m!'         => \$show_mudlib,
+    'ipaddress|ip|i!'   => \$show_ip,
+    'port|p!'           => \$show_port,
+    'online|status|o!'  => \$show_online,
+
+    'onlyip|I!'         => \$only_ip,
+);
+
+my $mudlist_data = '';
+open FP, "<$mudlist_file" or die "Cannot open mudlist $mudlist_file: $!";
+{
+    local $/ = undef;
+    $mudlist_data = <FP>;
+}
+close FP;
+
+my $mudlist = decode_json($mudlist_data);
+my $total_count = (scalar @{ $mudlist->{mudlist} });
+my $mud = shift;
+
+if (defined $mud and grep { lc $_->{name} eq lc $mud } (@{ $mudlist->{mudlist} })) {
+    # We only want to see ONE mud's data
+    my @rows = grep { lc $_->{name} eq lc $mud } (@{ $mudlist->{mudlist} });
+    my $match_count = 1;
+
+    if ($only_ip) {
+        printf "%s\n", $rows[0]->{ipaddress};
+        exit 0;
+    }
+
+    printf "%-20s %s\n", "Last Update:", $mudlist->{time} if $show_time;
+    printf "%-20s %s %s\n", "WileyMUD:", $mudlist->{version}{build}, $mudlist->{version}{date} if $show_wiley;
+    printf "%-20s %d of %d\n", "MUDs Listed:", $match_count, $total_count if $show_count;
+    print  "\n";
+    printf "%-20s %s\n", "Name:",   $rows[0]->{name}        if $show_name;
+    printf "%-20s %s\n", "MD5",     $rows[0]->{md5}         if $show_md5;
+    printf "%-20s %s\n", "Type",    $rows[0]->{type}        if $show_type;
+    printf "%-20s %s\n", "Mudlib",  $rows[0]->{mudlib}      if $show_mudlib;
+    printf "%-20s %s\n", "IP",      $rows[0]->{ipaddress}   if $show_ip;
+    printf "%-20s %s\n", "Port",    $rows[0]->{port}        if $show_port;
+    printf "%-20s %s\n", "Online",  $rows[0]->{online}      if $show_online;
+} else {
+    # We want to see many
+    my @rows = grep { $_->{name} =~ /.*$mud.*/i } (@{ $mudlist->{mudlist} });
+    my $match_count = (scalar @rows);
+
+    if ($only_ip) {
+        $show_wiley = 0;
+        $show_time = 0;
+        $show_count = 0;
+
+        $show_name = 1;
+        $show_ip = 1;
+        $show_port = 1;
+        $show_type = 0;
+        $show_mudlib = 0;
+        $show_online = 0;
+    }
+
+    printf "%-20s %s\n", "Last Update:", $mudlist->{time} if $show_time;
+    printf "%-20s %s %s\n", "WileyMUD:", $mudlist->{version}{build}, $mudlist->{version}{date} if $show_wiley;
+    printf "%-20s %d of %d\n", "MUDs Listed:", $match_count, $total_count if $show_count;
+
+    my @formatting = ();
+    push @formatting, '%-30.30s'    if $show_name;
+    push @formatting, '%-10.10s'    if $show_type;
+    push @formatting, '%-20.20s'    if $show_mudlib;
+    push @formatting, '%-15.15s'    if $show_ip;
+    push @formatting, '%-5.5s'      if $show_port;
+    push @formatting, '%-2.2s'      if $show_online;
+    my $format = join(' ', @formatting) . "\n";
+
+    unshift @rows, (
+        {
+            name        => 'NAME',
+            type        => 'TYPE',
+            mudlib      => 'MUDLIB',
+            ipaddress   => 'IP',
+            port        => 'PORT',
+            online      => 'UP',
+        },
+        {
+            name        => '-'x30,
+            type        => '-'x10,
+            mudlib      => '-'x20,
+            ipaddress   => '-'x15,
+            port        => '-'x5,
+            online      => '-'x2,
+        },
+    );
+
+    foreach my $row (@rows) {
+        my @row_data = ();
+        push @row_data, $row->{name}        if $show_name;
+        push @row_data, $row->{type}        if $show_type;
+        push @row_data, $row->{mudlib}      if $show_mudlib;
+        push @row_data, $row->{ipaddress}   if $show_ip;
+        push @row_data, $row->{port}        if $show_port;
+        push @row_data, $row->{online}      if $show_online;
+        printf $format, @row_data;
+    }
+}
+
