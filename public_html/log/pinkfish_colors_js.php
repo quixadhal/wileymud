@@ -14,6 +14,5 @@ function handle_colors(s) {
     for([k,v] of Object.entries(PinkfishMap)) {
         result = result.split(k).join(v);
     }
-    //result = result.replace('%^RESET%^', '');
     return result;
 }

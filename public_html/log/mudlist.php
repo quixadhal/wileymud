@@ -5,9 +5,9 @@ require_once 'page_source.php';
 require_once 'random_background.php';
 require_once 'navbar.php';
 
-$MUDLIST_FILE       = "$FILE_HOME/mudlist_css.php";
+$MUDLIST_FILE       = "$FILE_HOME/log/mudlist_css.php";
 $MUDLIST_TIME       = filemtime($MUDLIST_FILE);
-$MUDLIST_CSS        = "$URL_HOME/mudlist_css.php?version=$MUDLIST_TIME";
+$MUDLIST_CSS        = "$URL_HOME/log/mudlist_css.php?version=$MUDLIST_TIME";
 ?>
 
 <html>

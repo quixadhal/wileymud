@@ -5,11 +5,11 @@ require_once 'page_source.php';
 require_once 'random_background.php';
 require_once 'navbar.php';
 
-$PIE_FILE               = "$FILE_HOME/pie_css.php";
+$PIE_FILE               = "$FILE_HOME/log/pie_css.php";
 $PIE_TIME               = filemtime($PIE_FILE);
-$PIE_CSS                = "$URL_HOME/pie_css.php?version=$PIE_TIME";
+$PIE_CSS                = "$URL_HOME/log/pie_css.php?version=$PIE_TIME";
 
-$PIE_JSON               = "$FILE_HOME/data/pie.json";
+$PIE_JSON               = "$FILE_HOME/log/pie.json";
 $pie_text               = file_get_contents($PIE_JSON);
 $pie_data               = json_decode($pie_text, true, 512, JSON_INVALID_UTF8_SUBSTITUTE);
 

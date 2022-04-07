@@ -41,16 +41,16 @@ function checkDate(date) {
 function gotoNewPage(dateString) {
     if(dateString == Today) {
         if(querySearch !== null && querySearch !== undefined && querySearch !== '') {
-            window.location.href = "<?php echo $URL_HOME; ?>/?search=" + querySearch;
+            window.location.href = "<?php echo $URL_HOME; ?>/log/?search=" + querySearch;
         } else {
-            window.location.href = "<?php echo $URL_HOME; ?>/";
+            window.location.href = "<?php echo $URL_HOME; ?>/log/";
         }
     } else {
         // We could also go to the static pages...
         if(querySearch !== null && querySearch !== undefined && querySearch !== '') {
-            window.location.href = "<?php echo $URL_HOME; ?>/?noscroll&pause&date=" + dateString + "&search=" + querySearch;
+            window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString + "&search=" + querySearch;
         } else {
-            window.location.href = "<?php echo $URL_HOME; ?>/?noscroll&pause&date=" + dateString;
+            window.location.href = "<?php echo $URL_HOME; ?>/log/?noscroll&pause&date=" + dateString;
         }
     }
 }

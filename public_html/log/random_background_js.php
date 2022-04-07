@@ -17,6 +17,11 @@ var BG_CUTE = "<?php echo $BG_CUTE_ICON; ?>";
 var BG_ON = "<?php echo $BG_ON_ICON; ?>";
 var BG_OFF = "<?php echo $BG_OFF_ICON; ?>";
 
+//if(VisitorIP === "142.113.220.26") {
+//    Cookies.set("nobackground", true);
+//    //Cookies.remove("nobackground");
+//}
+
 var Random = new MersenneTwister();
 var NoBackground = Cookies.get('nobackground') || false;
 var BoringBackground = Cookies.get('boringbackground') || false;
