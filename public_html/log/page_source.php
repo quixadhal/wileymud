@@ -16,7 +16,7 @@ function numbered_source($filename)
     return "<table><tr><td class=\"source-line-number\">\n$lines\n</td><td class=\"source-code\">\n$content\n</td></tr></table>"; 
 }
 
-$PAGE_SOURCE_FILE       = "$FILE_HOME/log/page_source_css.php";
+$PAGE_SOURCE_FILE       = "$FILE_HOME/page_source_css.php";
 $PAGE_SOURCE_TIME       = filemtime($PAGE_SOURCE_FILE);
-$PAGE_SOURCE_CSS        = "$URL_HOME/log/page_source_css.php?version=$PAGE_SOURCE_TIME";
+$PAGE_SOURCE_CSS        = "$URL_HOME/page_source_css.php?version=$PAGE_SOURCE_TIME";
 ?>

@@ -16,7 +16,7 @@ function load_date_counts($filename) {
     return null;
 }
 
-$DATE_CACHE     = "$FILE_HOME/log/date_counts.json";
+$DATE_CACHE     = "$FILE_HOME/data/date_counts.json";
 $date_counts    = load_date_counts($DATE_CACHE);
 $first_date     = $date_counts[array_key_first($date_counts)]['the_date'];
 $last_date      = $date_counts[array_key_last($date_counts)]['the_date'];
@@ -37,7 +37,7 @@ if( $last_date !== $today ) {
     $no_data = true;
 }
 
-$LOG_NAV_DATES_JS       = "$URL_HOME/log/log_navigation_dates.js";
-$LOG_NAV_JS             = "$URL_HOME/log/log_navigation_js.php";
-$LOG_NAV_CSS            = "$URL_HOME/log/log_navigation_css.php";
+$LOG_NAV_DATES_JS       = "$URL_HOME/data/log_navigation_dates.js";
+$LOG_NAV_JS             = "$URL_HOME/log_navigation_js.php";
+$LOG_NAV_CSS            = "$URL_HOME/log_navigation_css.php";
 ?>

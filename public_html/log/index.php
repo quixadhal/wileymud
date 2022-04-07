@@ -9,7 +9,7 @@ require_once 'log_navigation.php';
 
 $do_extra_ajax          = 1;
 
-$DATA_URL               = "$URL_HOME/log/log_chunk.php";
+$DATA_URL               = "$URL_HOME/log_chunk.php";
 $RESULT_LIMIT           = 400;  // Fetch no more than this many per request
 $DISPLAY_LIMIT          = 1200; // Keep no more than this many in the table
 
@@ -317,15 +317,15 @@ if(array_key_exists('togglebg', $_GET)) {
                         var yesterMoment = newMoment.clone().add(-1, 'hours');
                         var yesterDate = yesterMoment.format('YYYY-MM-DD');
                         // I3 Activity on 2021-11-11: 74 messages from 5 speakers.  Logs and MUD-list at <a href="http://wileymud.themud.org/~wiley/log/" target="I3-link">http://wileymud.themud.org/~wiley/log/</a>
-                        var yesterRegex = /Logs and MUD-list at <a href="https?:\/\/wileymud.themud.org\/\~wiley\/log\/"/;
+                        var yesterRegex = /Logs and MUD-list at <a href="https?:\/\/wileymud.themud.org\/\~wiley\/log\/.*"/;
 
                         if(row.speaker == 'Cron@WileyMUD' && yesterRegex.test(row.message)) {
                             // A log URL without a date is here...
                             //alert(row.speaker);
-                            var yesterChomp = /at <a href="https?:\/\/wileymud.themud.org\/\~wiley\/log\/".*/;
+                            var yesterChomp = /at <a href="https?:\/\/wileymud.themud.org\/\~wiley\/log\/.*/;
                             row.message = row.message.replace(yesterChomp,
-                                'at <a href="' + https() + '://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
-                                '" target="_self">' + https() + '://wileymud.themud.org/~wiley/log/?noscroll&date='+ yesterDate +
+                                'at <a href="' + https() + '://wileymud.themud.org/log/?noscroll&date='+ yesterDate +
+                                '" target="_self">' + https() + '://wileymud.themud.org/log/?noscroll&date='+ yesterDate +
                                 '</a>');
                         }
 

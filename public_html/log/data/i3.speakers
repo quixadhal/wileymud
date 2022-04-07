@@ -1,0 +1,15345 @@
+#COUNT
+Count   3068
+End
+
+#SPEAKER
+Name    'admin
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    8=====d
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    8=====d↝↝ ↝
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    a brutal orc
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    a bull
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a chicken
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    a cow
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    a gargantuan bird
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a grassland wolf
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    a hat
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    a lamb
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    a mariner
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    a mountain giant
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    a nesting chicken
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a perched chicken
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    a presence
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    a prometheus host
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a prometheus host (prometheus in gv)
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a rg us
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    a scrawny cat
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a scrawny cat (wop in gv)
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    a shadow
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    a shadow(invis)
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    a small rabbit
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    a villager
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    a wild fighter
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    a zombie
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    aaa
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    aadin
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    aagbb
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    aammfdjagil
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    aarewin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    aarinfel
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    aaronr
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ab
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    abhishek
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    abigale
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    abilfmekoj
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    abinidi
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    abjgmomijna
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    abmhofjngh
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    abner
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    abraxas
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    abreu
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    abulia
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    acantha
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ace
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    acerr
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    acgmhgogi
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    achille
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    acoma tibet
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    acomatibet
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    actar airis
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    adaephon
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    adam
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    adamish
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    adgfngm
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    admin
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    admin (myelinalpha in gv)
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    administrator
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    aduwen
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    advant
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    advtech
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    ae
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    aegir
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    aegora
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    aell
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    aelyah
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    aeneas
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    aerelus
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    aeris
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    aerlindir
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aero
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    aeroc
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aesc
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    aethion
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    agathezol
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ageor
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    aghbenmdke
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    agrarian
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    agrippa
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ahimoth
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ahti
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ahumado
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    aiasa
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    aidil
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    aikanaro
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    aim
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ainvar
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    air
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    airin
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    airk
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    aisling
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    aithne
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ajd
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ajhk
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    akana
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    akane
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    akiinobu
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    akira
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    akkjbk
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    akva
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    al
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    alaedra
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    alan
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    albiorix
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    albus
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    alecksy
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alena03
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    alena03 (grapevine in gv)
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    aleph
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    aleric
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    alerion
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    alessandra
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    alex
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    alexander
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    alexi
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alexia
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    alfe
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alien
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    alixandra
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aljhhjhkim
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    aljldjge
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    alper
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alphoen
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    alphonse
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alric
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    alt
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alton
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    alzghamael
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    am
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    amaaboaa
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    amanda
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    amaranth
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    amariner
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    amaterasu
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    amazon
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ambros
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ambrosius
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ameliabrooks
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    amerikranian
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    amethyst
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    amok
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    amun-ra
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    amylase
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    amythist
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    an acolyte
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    an attack droid
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    an attack droid (wop in gv)
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    an invisible immortal
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    an ugly half-orc
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    anaiah
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    analjesus
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    anamika
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    anarto
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    anastrad
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    anaythea
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    andeddu
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    andras
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    andress
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    andrew
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    andrewh
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    andril
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    andro
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    andschana
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    anfauglir
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    angadar
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    angel
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    angela
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    angelin
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    angette
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    angus
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    aniline
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    animalia
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ankit
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    anna
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    annabeth
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    annihilator
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    annoyance
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    anodyne
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    anodyne (myelinalpha in gv)
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    anomander
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    anonymous
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    antisocial
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    antoha
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    anubis
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    apache
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aphid
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    aphrodite
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    apollo
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    apostle
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    appelhof
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    apresence
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    april
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    april (neonmoo in gv)
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aquilo
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    araex
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    aragon
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    aragorn
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    araltaln
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    aram
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    aransa
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    aransus
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    arasiel
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    araska
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    arbu
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    arcand
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    archaegeo
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    archbaron
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    archimedes
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    archon
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    arde
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ardneh
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    are
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ares
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    aresian
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    argh
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    argis
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    argus
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    argyll
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    arianna
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    arias
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    arielle
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    aries
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ariex
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    arioch
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    arisoth
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aristophanes
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    arithorn
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    arithorn (rm in gv)
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ark
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    arkon
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    armadillo
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    armok
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    armrha
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    arnold
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    arnvorax
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    aron
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    arons
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    arren
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    arruns
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    artanis
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    artemis
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    arthmoor
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    arthur
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    arturos
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    artymis
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    arukor
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    arwyn
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    aryabutta
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    arynth
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    as time winds itself to a standstill, shadyman
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    asaph
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    asgeroth
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    asha
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    asha*
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ashadow
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ashelyn
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    asher
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ashi
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ashleep
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ashon
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ashron
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ashtons
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ashtons (grapevine in gv)
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    asilor
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    asmodean
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    asmodeo
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    asmodeus
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    asmoth
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    asp
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    asparagus
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    aspiring hobo
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aspiringhobo
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    assyri
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    astep
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aster
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    asteris
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    astofingas
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    astohamas
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    astrum
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    asura
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    aten
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    athalaus
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    athame
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    atheistx
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    athen
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    athena
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    atheos
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    athi
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    atlordrith
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    atomic
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    atothek
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    atricus
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    atrus
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    atticus
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    augustus
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    auran
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    aureus
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    avant
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    avarice
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    avarra
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    avatar
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    ave
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    avenged
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    averros
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    avila
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    axent
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ayala
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ayane
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ayesha
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aynin
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    aysel swan
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    azagur
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    azash
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    azathoth
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    azazel
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    azile
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    aziz
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    azoshin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    azru
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    baal
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    babycat
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    babylon
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    bac
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bacchus
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    back
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    baguette
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    baguette (sindome in gv)
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    bah
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bailey
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    baiwuchang
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    balev
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    balmung
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    balor
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    balrog
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    balthazar
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    bambooshoots
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ban
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    bane
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    banokles
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bardioc
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    barek
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    barnabus
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    barrick
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    barrien
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bartleby
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    basso
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    bastetx
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bastian
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    batastrophe
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    batxi
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bayard
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    bazain klzaid
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    bazainklzaid
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    bbc
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bbcscience
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    bbcsport
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    bbctech
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bbigfglf
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    bct
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    beale
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    beandip (sindome in gv)
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    bear
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    becky
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    bedcjkakdgg
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    beefstick
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    befjadan
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    beldin
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    beleqwaya
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    belias
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    belron
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ben
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    benabik
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    benden
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    benedick
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    beohn
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    beren
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    berg
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    berke
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    berun
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bessus
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    beth
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    betta
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    beyonder
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    bgamlk
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    bgkmbf
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bgknji
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    bigb
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    bigd
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    biggus dickus
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    biggusdickus
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bilar
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    billy
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bimbletrot
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    bitch-hitter
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bixby
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bjcnh
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    blackfoot
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    blackjack
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    blackraven
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    blain
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blake
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blargh
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blarghy
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    blaze
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    blink
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blitz
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    blitzkrieg
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blizzard
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blizzard (wop in gv)
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blkcandy
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    blkcandy (sindome in gv)
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    blood wolf
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    blue
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bluewolf
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    bluius
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bmgl
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    bncd
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    bob
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bobby
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    bodea
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    boga
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bonehead
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bonehead (sindome in gv)
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    bones
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    bonobo
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bonta
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    boogeyman
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    boot
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    boraleas
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    borat
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    borealis
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    borsch
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    borsch gorval
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    bossman
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    boyo
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    brad
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    brahmus
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    brain
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    brainstorm
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    brainy
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    brak
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    branded
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    brandon
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    branitar
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    brashen
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    brawndel
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    braxus
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    breezy
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    breia
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    breia (neonmoo in gv)
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    brent
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    brettkelly
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    brettkelly (grapevine in gv)
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    brian
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    brisko
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    brodbane
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    brog
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    brogon
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    bruc
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bruhlicious
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bruhlicious (sindome in gv)
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    brutus
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bryanbkm
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bryantos
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bubba
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    bula
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    bunabiros
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bunny
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    bunnywolf
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cab
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    caelreth
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cain
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    caitlynn
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    caldor
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    calevaro
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    calevaro (neonmoo in gv)
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    calis
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    calroth
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    calvin
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    cam
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    caminus
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    camlorn
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    capita
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    capo
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    capricorn
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    captainstormblade
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    captainstormblade (grapevine in gv)
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    carazz
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    carbon
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    carcer
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    carino
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    carl
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    carmine
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    carnifex
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    carter
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    casey
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    cash
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    catbro
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cavrone
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    caya
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    cayleath
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cbaker
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    cc
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    cclbiehlim
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ceayo
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    ceazer
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cecil
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ceetar
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    celeo
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    celestial
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    celoril
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    celt
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    celthric
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    cenn
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    centollo
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    centuari
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ceres
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cerihan
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cerkres
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    chagrin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    chainsol
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    chanemiemm
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    chaostriad
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    charchess
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    charity
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    charles
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    charon
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    chat
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    chat_d
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cheeky
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    cheeky*
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cheeseball
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    chef
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    chemizt
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    chet
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    cheyenne
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    cheyenne (grapevine in gv)
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cheyne
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    chil
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    chilalin
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    chilidog
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    chimara
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    chinaski
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    chislev
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    choddesh
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    chosen
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    chowmein
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    chris
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    chris bailey
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    chrisnan
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    chromaldt
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    chronos
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    chuck
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    cicy
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cin
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cinaeeddnol
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cindel
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    cinnamon
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ciras
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    circe
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cirdan
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cize
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cjcgafg
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    clanger
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    claudius
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    clayton
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    clerk
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    clicken
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    clint
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    cobalt
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cochise
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    code
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    codesmith
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    codesmith (smithymoo in gv)
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    cody
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    coffeebreak
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    coffeepot
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    coffeymug
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cole
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    cole (apotheosisdev in gv)
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    colone
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    communist
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    conan
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    confuto
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    connick
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    constructus
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    coogan
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    cordwangle
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    corey
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    corneliusv
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    corrik
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    corsair
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    cortest
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    corvin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    cotoharla
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    courie
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    coy
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    coyote
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    cozminsky
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    craig
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    craigifer
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    crakadmin
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    crash
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    crashbot
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cratylus
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    crayn
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    crayron
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    crazyweasl
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    creepy joe
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    crickets
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    crilly
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    crisis
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    crisis (neonmoo in gv)
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    crism
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    croaker
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cromulent quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    cron
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cronus
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    crow
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    crowbar
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    cruentus
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    crunch
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    cruxis
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    crysrothe
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    cthulhu
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cuddledragon
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    culex
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    curious
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    cuzz
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cyberbob
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cybertiger
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cyix
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    cylis
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    cynique
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    cyric
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    cyric the bloody eyed
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    cyteo
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    cyto
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    czyrxis
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    daburgermeista
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dacrian
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    daddy
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    daddywolf
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    daelas
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    daem
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    daffy
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    daggerwind
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    daglo
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dagorsul
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    daihsan
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dain
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    dainnil
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    daius
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    dakra
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dalmuros
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dalsor
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dameon
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    damia
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    damian
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    damien
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    damouze
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dan
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    danaer
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    danatos
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    danduin
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    daneel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    daniel
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    daos
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dara
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darb
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    darclas
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darian
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    darih
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    dark rider
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    darkangel
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    darkarn
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    darkbane
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    darkchaos
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    darken
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darkhelmet
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    darkman
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    darknaj
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darkstar
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    darkwalker
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    darkytoo
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darloth
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darneth
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    darrant
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    darren
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dartal
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    dartonion
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    dartos
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    dasquian
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    dastuun
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    dave
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    davian
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    davidhaley
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    davidian
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    davion
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    davroar
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    davy jones
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    davyjones
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    dax
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    daxhall
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    dayian
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    dd
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ddaickfo
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ddread quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    deadcultist
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    deadcultist (grapevine in gv)
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    deadman
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    deakan
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    death
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    deathknight
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    deb
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    debug
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    deckard
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    dedalus
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    deepspawn
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    default
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    deforce
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    deisz
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    deklax
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    delojo
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    delphi
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    delphini
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    deltreey
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    dementia
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    demetri
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    deminetix
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    deminetix (grapevine in gv)
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    demitris
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    demona
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    demonic
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    densux
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    denzil
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dergrinch
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    derision
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    derpy
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    deruk
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    des
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    descartes
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    deschain
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    designa
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    detah
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    deus
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    devet
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    devo
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    devonin
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dextar
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    dexter
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    dextrose
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    dgleks
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    dgleks (dgleksmoo in gv)
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dhaos
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    dhavid
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dheianarah
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    dheroan
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    dhruv
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    diablo
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    diaden
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    dias
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    dibcdhlbona
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    diggle
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dillon
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    din
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    dinchak
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    dinin
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    dior
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    directrix
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dirt
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    diruces
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    disaster
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    discworks
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    diskus
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    dizz-e
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    django
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    djin
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    djoan
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dklcaoaa
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    dlloyd
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    dm
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    dmiedm
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    dobbin
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    doc
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    doctore
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dodo
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dogbolter
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    dogsbody
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    dolk
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    domino
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dommg
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    don
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    donk
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    donky
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    donnel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    donpon
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    doodoobumface
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    doris
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    douhnin
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    doulos
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dove
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dowaito
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dozy
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    dracmas
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    draconius
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    draeand
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    drakkos
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    drassk
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    draun
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    dravon
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dread lord quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    dread quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    dreamweaver
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    drek
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    drek (grapevine in gv)
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    drekion
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    drenon
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    drifter
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    drixaen
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    driznit
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    droid
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    dryade
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    duck
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dummius
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    dunkelheit
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    durak
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    durandal
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    duriel
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    dusk
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dusk's ghost
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    duuk
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    dux syphiral
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    dvinn
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    dvykian
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    dwarian
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    dworkin
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    dyorion
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    dzsoker
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    ea
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    earin
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ebersar
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ecaeldlm
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ecb
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    echlori
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    echnos
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    echo
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    eclipse
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ecru
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ecthelion
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eddard
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    edesar
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    edge
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    eeeg
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    eek
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    eerr
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    egfmghdjn
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    egnis
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    egon
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eh
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    ehlana
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ejibke
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ekcahf
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ekoygugu
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    el
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    eladriell
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    elaine
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    elaine benes
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    elanor
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    elastica
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    elbereth
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    eldermeer
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    eldermoor
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    elera
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    elfindrol
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eli
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    eli the priest
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eli*
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    elise
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    elitter
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    elixir
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    elixx
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    elixx (drastical in gv)
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eliza
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    elo'him
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    elohim
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    elomis
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    elora
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    elorf
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    elrad
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    elrad (dev in gv)
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    elrad (elvindir in gv)
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    elroy
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    elsha
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    elspeth
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eltari
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    elysium
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    ember
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    emes
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    emiko
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    emily
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    emkjdfgeng
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    emknaps
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    emma
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    emn
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    emperor trumpu
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    emporer mamious
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    emporer manious
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    emraef
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    emsenn
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    enathep
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    encryption
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    engywuck
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    enigma
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    enker
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    enker (ef in gv)
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    enkidu
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    enkil
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    enkill
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    ennis
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    enraged, elastica
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    enter
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    eoedmfl
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    eonwe
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    epic
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    epitaph
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    epoch
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eprius
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    eral
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    erebos
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    erebus
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    erganil
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    eric
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    eriol
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    erion
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eris
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ermintrude
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ero
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    errdegahr
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    eru
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    esmene
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    espn
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    essense
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    estinevial
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    estoufee
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ethan
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ethin
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    etranger
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eugenides
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    eugine
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    evagrius
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    evan
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    evensong
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    evhor
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    evil mog
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    evilmog
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    evis
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    eviscerator
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ewt
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    exash
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    exodia
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    exor
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    exorn
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    exote
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    expresso
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eycibiem
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    eyediya
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    eyekiller
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ezaco
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ezekiel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    fabulous
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    fado
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    fafdihancog
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    faggot
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    fain
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fal
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    falerin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    fallen
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    famp
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fantom
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    fastfinge
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    faye
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    faylen
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    fayte
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    feantur
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    feef
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    feldegast
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    felice
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    felix
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fengshui
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    fengshui (sindome in gv)
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    fewms
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    fiasco
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    figgs
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    fille
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fin
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fiona
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    fire
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    fireblade
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    firefly
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    firestarman
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    firican
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    fishie
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    five
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fizban
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    fizzle
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fjga
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    flak
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    flammweiss
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    flamore
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    flaterectomy
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    fleacircus
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    flembobs
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    flexure
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    flip
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    floor
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    flumpy
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    flurble
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    flyboy
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    flypadre
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fmgmdljkj
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    foaly
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    foh
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fokke
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    fol
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    foo
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    fooboy
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    forcestar
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    forlan
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    fortunado
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    fortune
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    four
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fox
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    foxer
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    foxnews
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    foxworth
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    fozzie
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    frazyl
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    freddy
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    frey
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    freyalise
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fritos
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    frobozz
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    frog
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    frogleap
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    frutsel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ftang
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    fthmdg
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    fubar
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fuchur
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    fumanchu
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    function
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    fury
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    futility
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    fuzz
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    fyda
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fyra
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    fyrwen
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gabe
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gaborn
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gabriel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    gabrio
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    gaebfok
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    gaelen
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    gafney
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    gaidin
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    gakbkii
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    gal
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    galahad
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    galawin
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    galbraith
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    galderas
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    galgorin
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gambol
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    gamemaster
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    gammler
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gammon
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    gan
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    gand
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    gandalf
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    gandalph
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gaokaafkd
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    garett
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    garland
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    garrett
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    garrion
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    gatz
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    gavin
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    gawain
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gaz
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    gbdela
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    gbifboclido
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gdabmbkh
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    gdh
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    geekman
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    gellan
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    genericadmin
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    gentry
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    george
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gerkstrom
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    geryon
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    gesph
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    gesslar
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gesslar (grapevine in gv)
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ghaleon
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ghaleon (apotheosis in gv)
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ghidorah
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ghost
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ghost of quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    gicker
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gidget
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gidsey
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    giggles
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    gilaed
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    gimlet
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    gin
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    giric
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    girkan
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    github
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    gix
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    gkdoifgffnl
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    glalofkfeh
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    glister
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    glyvmort
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gnash
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    gncfc
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gnews
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gnillot
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    god
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    godhand
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    gongoliar
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    goober
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    goose
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gorgar007
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    gorgar007 (grapevine in gv)
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    gorm
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    gornac
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gorto
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    gothmasterflash
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gouzz
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    grandfather
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    grannymi
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    grannymii
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    grave
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    graveluth
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    gravior
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gravity
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    greatland
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    grek
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grendel
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    grey
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gribbles
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    griffen
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grimrak
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    grisheen
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    grishna
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grissom
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grommet
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gronk
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    groo
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grr
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    gruad
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grukar
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    grym
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    guest
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    guest1
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    guff
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    guido
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    guiver
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gungho
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gushi
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    gustav
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    gwyndrith
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gypsie
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    gyre
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    habngffib
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    haderach
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    hades
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hafbkfgkhb
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    haggis
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    hagi
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    hair
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hairam
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    halayko
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    halcyon
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    haldir
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    halodge
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    hambone
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hambone*
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hamish
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hamlet
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    hanarra
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hannazus
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    hanse
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hansel
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    harik
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    harrigen
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    harry
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    harun
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hassan
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    hatchytt
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    hatori
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    haug
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    havelock
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    haven
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    havok
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    heakda
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    heilig
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    helaena
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    helbragga
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hellmonger
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    hells
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    hellspawned
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    helm
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hemjold
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    hemperion
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    hennes
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    henrey
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    henry
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    hensetsu
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    herb
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hercules
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    heresiarch
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    heretics
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hesiod
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hexous
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    hfi
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    hfox
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    hg
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    higgs
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    hilapdatus
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    hilden
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    hinalllljb
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    hirad
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hirandu
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    hitchhiker
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    hitsurume
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    hiuchiishi
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    hlij
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hoebmnig
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    hogan
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    holando
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    holborn
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    holger
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    holister
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    holyph
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    homo
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    hope
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    hortin
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    horus
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    horyd
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    host
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hotaru
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    hugo
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hugs
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    hurukan
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    huuntyr
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    huwenchao
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    hymael
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    hypereye
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    hypo
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    hytophian
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    i3bot
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    i3bot2_irc
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    i3client
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    i3ircbot_irc
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    iambe
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    icaros
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    icebear
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    icewolfz
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    ichthus
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    id
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    idb
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    ideysus
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    iel
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    igabod
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    ignoredguy
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    igoehddkao
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    ihledo
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ihsahn
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    iilak
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    iinconfh
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    iituem
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ikke
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ilanax
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ilenore
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    illari
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    illaris
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    illuminati
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    illura
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    illvei
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ilmarinen
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    ilyasviel
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    imrik
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    imrix
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    inari
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    incoherent
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    indeed
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    inform_bureau.freenode
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    inige
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    inlbmea
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    inome
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    inpho
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    insanctus
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    insanity
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    intchanter
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    intermud
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    io
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ioakecgbf
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    irc_bridge
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    irian
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    irmo
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ironman
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    ironmaster
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    isaac
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    isha
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ishako
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    isham
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ishap
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    isis
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    isla
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    istabo
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    isth
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    isus
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ith
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    ithagua
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ithicar
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    iuz
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    ivory
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ixliam
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    iyrs
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    izzard
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jaak
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    jacintha
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    jack hooligan
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jackel
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    jacob
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    jadon
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jadsm
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jae
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jaeyd
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    jair
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jakalas
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jake
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    jake (neonmoo in gv)
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    jakubczajka
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    james
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    jandice
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jane
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    janet
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    janua
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    japoo
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    jared
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jasih
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jasih (apotheosis in gv)
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    jasmin
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    jasmyn
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jason
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    jave
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    javelin
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    jazhi
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jcdenton
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    jeanie
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jeb
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jebus
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    jeebies
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jeff
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jeffy
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jensen
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    jentr
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    jericho
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jerin
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    jerran
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    jess
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    jessica
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    jester
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    jewels
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    jezu
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jg
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    jian
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jianh
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jianhua
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    jim
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    jimorie
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    jindrak
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jinx
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jjelabmjcj
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jjldcjkcgjc
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jm
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    joe
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    joffie
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    johan
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    john
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    johnnie walker
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    johnny
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    johnny (sindome in gv)
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    johnnywalker
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jonas
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    jornalrecord
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    jorril
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    joseph
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    joshua
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    joth
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    jozne
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    jub
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    jude
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    juju
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    jules
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    julnar
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    jumpsteady
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    juneaux
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    jupiter
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    juppie
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    justinjm
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    jym
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    k'azdean
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kaatil
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kabalah
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kadaan
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kaden
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    kaea
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kaedok
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    kaedok (grapevine in gv)
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kairehn
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    kaiser
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kaitan
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    kalahami
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kaldhal
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kalibarr
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    kalinash
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    kalinice
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kall
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    kalmar
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kalyth
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kamarihi
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kamigo
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    kamikaze
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    kana
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kane
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kang
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kaon
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kara
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kari
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    karka
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    karos
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    karri
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    karthius
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kashis
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kasji
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    katana
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    kataro
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kathaaa
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kathor
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    katia
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    katiara
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    katniss
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    katsuun
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    katta
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    katton
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    kaven
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    kawakisan
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    kayjay
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    kaylar
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kayle
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    kaylus
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    kaytone
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    kayuq
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kazdean
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kaziem
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kce
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kcocm
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    keb
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    keegan
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    keeperofkeys
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    kefka
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    keg
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kegalstrength
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    keill
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    keiran
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    keita
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kejab
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kejope
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kelli
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kelnale
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    kelton
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    kelvin
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kelvin:_canadians_and_northerners
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kenny
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    kenobi
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kenon
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kensei
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    kenton
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    ker
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    kerrie
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kerrigan
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    kesler
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kesric
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    kevin
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    kevina
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kevren
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kfednhmof
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    kg
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    kgagbjodb
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    kgnbili
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    khadija
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    khairn
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    khajed
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    khaos
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    kheoinn
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    khnemu
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    khronos
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    kibbits
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kieve
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    kiki
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kikon
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kikusadaru no yuurei
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    kikusadaru no yuurie
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    kill
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kina
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kisaki
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kisaki (sindome in gv)
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kit
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kivo
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kiyo
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kizayaen
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kizeren
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kj
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kju
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kknobgojeke
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    klobnb
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    klok
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    knladob
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    knucklehead
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    knutselmaaster
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kobol
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kogana
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kogar
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kohl
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    komalictor
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kong-fu-zi
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    koofle
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    koopa
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    korentsu
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    koresh
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    korsario
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    kotaku
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    kraiven
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    krazel
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kreezxi
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kreezxil
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kreldin
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    krem
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    krhonos
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    krilzhin
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    krimpal
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    krinata
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    krisela
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    kristus
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kriton
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    krokken
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    krylin
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kshito
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kudde
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    kujuta
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    kulyax
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    kurique
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    kuurus
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kvarim
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kyou
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kyr
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    kyra
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    kyrrodi
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    kythorn
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    kyurama
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    lady
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lag
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lallander
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lambert
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lamir
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    lancustran
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    lanikai
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    lanstri
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    laoise
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    laotzu
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    largo
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    lark
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    lars
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lash
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    lateralus
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    laurelen
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lauryn
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    lautrec
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    layla
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    laylle
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    lazarus
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ldfnhcbdl
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ldkkhjjn
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    le
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    leanna
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    left
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    legumie
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lei
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    leibek
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    leibek (grapevine in gv)
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    lemonseural
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lenaric
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    leona
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    leonidas
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lesa
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    lesik
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    letitia
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    leto
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    levinon
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    leviticus
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    lexus
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lexx
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    lez
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lfdje
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    lfdodagio
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    lfgajmnokejcdo
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    lhamffhnk
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lhckhka
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    liam
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    liandra
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    liara
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    liard
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    liasa
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lidia
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    lifeless
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lilcutie
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    lilithsucci
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lily
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    lingeng
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    link
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    links
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    linoge
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    liondriel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    lipseng
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    liquidpotatoes
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    littlehoward
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lividity
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    lix
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    lixi
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lizard
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    lkagboi
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    lkcoe
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lkknacagld
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    ll
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    llama
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    lleirdale
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    llhorian
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    llondkb
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    llylia
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    llyr
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    llyrtest
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    lobster
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    locke
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    logaer
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    logras
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    loki
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    longrifle
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    looking totally pissed, adam
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lord cron
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lord shentino
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lotherig
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    lotherio
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    lothlorian
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    lotus
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    loutre
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lovenkraft
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lowell
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    lox
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lpmuds
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    lucid
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    lucks
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    lucretia
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    luedre
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    luggage
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lumeria
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    luna
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lunch
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    luthor
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lutt
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ly'nx
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    lyanic
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    lycaon
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    lyeith
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lynne
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lynne (grapevine in gv)
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lynx
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    lynxo
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    lyoc
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    lyra
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    lysergic
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    mactorg
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    madison
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    madness
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    madoc
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    madoc (grapevine in gv)
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    madrox
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    maeko
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    maelin
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    maestro
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    magearus
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    maggy
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    magiko
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    magnis
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    magstant
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    mahain
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mahayana
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mahkefel
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    maimonides
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    majin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    maka
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    makan the white
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    makhar
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mal
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    malaclypse
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    malady
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    malak
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    malakanator
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    malcynthis
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    maldrin
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    malegnis
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    malek
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    malic
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    malice
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    maliene
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    mallaggar
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    malthe
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    malveron
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mandos
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    maniacalrage
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    manicdep
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    manious
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    manwe
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    mar
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    marajin
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    marbelle
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    mardin
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    mariah
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mariana
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    marianna
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    marina
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    mariner
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    mark
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    marlin
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    marqii
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    marroc phineas sandybanks
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    martaigne
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    martinez
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mason
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    master
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    matillo
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    matroid
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mavven
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    maw
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    maximus
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    maya
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    mayhem
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    maynard
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    mazir
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mazor
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mazu
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    mbcolhfnk
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    mc
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mcfuck
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mdagcegim
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    mdca
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    mdegakm
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    me
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mecha
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mediok
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    meep
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    meister
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    mel
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    mel gibson
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    melchezidek
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    melkor
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    memnoch
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    memnon
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    memrosh
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mench
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    mench (sindome in gv)
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    menouthis
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mercutio
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    mercy
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    merlin
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mermaid
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    mester
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    metaplace
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    methelius
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    methos
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    metiscus
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    mezfir
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mgd
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mi
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    michael
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    micky
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    miff
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mike
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    miko
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mimer
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    minerva
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    minion
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    minori
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    miramar
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    miranda
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mirial
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mirodar
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    miryks
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    misfit
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    mishal
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    misja
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    miskar
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mister
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    mistermoxxie
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    misuzu
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    mithleidh
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    mithyr
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    mitonic
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    mitsukai
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    mitsuko
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mitsuko (neonmoo in gv)
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    miyagi
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mizar
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    mjbeeki
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mkmjlkoc
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ml
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mldbhmnaakh
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    moab
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    moaeadgj
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    mod george
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mog
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mogwai
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    moiroth
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mojo
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    molmkhgelhe
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    monad
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    money
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    monika
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    monkey
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    monkeyx
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    monkitron
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    montresor
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    monzoo
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    moraless
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    morbid
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    mordain
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mordecai
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    morfon
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    morgaine
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    morgan
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mori
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    moridin
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mork
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    morkar
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    morkin
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    morlock
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    morpheus
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mors
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    mortanius
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mortifi
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mortuus
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    morvudd
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    mourdrydd
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    mourningstar
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    mouse
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    moyer
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mrwolf
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mudadmin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    mudbytes
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    mudbytes-files
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mudgamers
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    mudmagic
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    mudportal
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mudren
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    mudren (grapevine in gv)
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    mudruck
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    mudstandards
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    muirrum
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    muldavia
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    mulder
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    mumpfi
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    mung
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    munku
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    murdoc
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    muskard
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    mylon
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    myndzi
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    myoko
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    myr
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    myranda
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    myrddin
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    myrna
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mysterio
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    mystic spiritus
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    mythica
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    mythl
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    naefar
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    nafe
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    namazu
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    nasa
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nat
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    nathan
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    natsuko
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    naud
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    naughtymuffin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    naughtymuffin (grapevine in gv)
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nav
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    navouri
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ndah
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    needad
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    nefret
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    neic
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    neimad
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    neinittz
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    neo
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nerull
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    neven
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    nevin
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nevvyn
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    newscientist
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    newt
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nexes
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    nexuiz
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    niakeeh
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    nib
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nick
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    niels
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    nightcrawler
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nightdemon
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nightian
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    nightmare
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    nightmask
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    nightstalker
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    niijel
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    nika
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    nikavanova
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    nikeos
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    nikita
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nikita (neonmoo in gv)
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    nilheim
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nilrin
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    nim
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    nimdeh
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    nimrod
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    ninetenths
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    ninja
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    ninka
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    niraya
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    nirethil
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nirilil
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    nitupsar
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nkidloddh
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    nlodjcnofk
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nnbljljfb
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nnih
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nnivel
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    no
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    noblesse
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    nogod
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    noibbjo
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    noiram
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    noise
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    noisome
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    noliojeobfg
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    nomad
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nono
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    nonx
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    nosmo
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nospeedy
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nospeedy (sindome in gv)
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    notnull
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    nova
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nox
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    nslm
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nubtest
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    nuggiewuggie
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    nuggs
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    nuit
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    nullinfinite
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    nulvect
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    numair
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    numhitzu
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    nuryan
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    nvader
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    nymeria
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    nyx
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    oarien
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    obelix
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    obhnmkncn
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    obliki
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    oblisgr
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    oblisgr (grapevine in gv)
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    oblivion
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    obsidian
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ochfkfk
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    ochthuit
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    oddmint
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    odeen
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    odin
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    odoth
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    off-topic quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ofk
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    og
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ogguur
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ogma
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    ohijaebhl
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    ohm
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ohtar
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    oiolhnge
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    oki
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    okjcjbjk
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    okomaefbfle
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ol
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    oldes
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    olgar
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    oliver
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    oljbhffk
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    omachron
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    omega
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    omni
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    omorthan
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    one
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    oni
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    oots
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ooze
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    orang
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    orange
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    orange julius
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    ordaith
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    oreo
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    oriam
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    origen
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    orion
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    orpheo
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    osiris
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    osore
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    osuvox
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ourania
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ouroboros
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    overseer
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    ow! tatianna
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    owner
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    paddy
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    paff
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pakaran
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pakrat
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    paladine
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    pan
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pancracker
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    panther
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    paranoia
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    parham
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    pariah
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    parillon
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    parnell
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    parthenon
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    patch
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    patientfox
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    patriot
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    pauline
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    paulkami
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    paven
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pazreal
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    peacock
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    pellaeon
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pendrake
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    penguin
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    penguxn_irc
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    perallen
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    percussor
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    pete
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    petri
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    petriomelony
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    petrov
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    phabian
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    phaedo
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    phaerus
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pham
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    phanku
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    phantom
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pharm
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    phil
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    phreak
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    phrynicus
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pieter
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    pigsty
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    pinkfish
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    pip
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    pirate
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    pirch
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pit
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    pite
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    pius
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    planetmuddev
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    plato
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    pli
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    ploo
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ploosk
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ploppaz
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    plugh
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    plugh's mom
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pluie
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    plunderer
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    pmuut
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    pocok
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    poet
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    poi
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    polatrite
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    pollux
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pommes
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    poncho
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    pondscum
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    poseidon
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    positrix
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    pp
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    prada
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pragmatic
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    pranka
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    presto
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pridda
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    prime
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    princesy
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    pringles
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    priscilla
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    prool
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    prophecy
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    psitian
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    psmurf
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pso
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    psycho
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    psylo
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    psylocybin
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ptah
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ptenisnet
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    pthag
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    ptol
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    ptoley
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ptorgoth
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    pulp
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pulse
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    punisher
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    pure
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    purlow
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pyra
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    pyromaniac
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pyron
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    pyros
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    pythium
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    pytlak
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    qiuyan
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    qrzx
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    qualin
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    quaril
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    quetzalcoatl
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    quiverclaw
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    quixadhal
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    quixadhal, the lost
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    quneloso
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    quorthon
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    quotid
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    qwer
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    qzxetrq
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rabenmire
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    radyth
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    rae
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    rafiki
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    rafjaesol
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    raganim
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rain
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    rainy
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    raistlin
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    raize
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    raja
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rajana
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    raleigh
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ralph
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    ramgo
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ramuki
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    rand
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    randuin
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ranneko
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    rarity
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    rascal
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rasputin
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    rastakwer
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rathe
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ratman
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    raudhrskal
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    raver
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    ravnos
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rawls
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    rawr
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    raycaster
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    raycaster (grapevine in gv)
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    raydj
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    rayvn
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    realedazed
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    rebirth
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    recca
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    recluse
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    red
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    red (neonmoo in gv)
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    redacted
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    redhaven
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    redih
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    reefermadness
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    reefermadness (sindome in gv)
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    reeve
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    reflection
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    reflex
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    regulus
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    reika
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    reimi
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rek
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    rek (grapevine in gv)
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    reku
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    relayne
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    relg
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    remcon
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    remmy
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    renent
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    reno
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    renras
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    reseph
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    retisos
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    retrogt
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    reuters
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    reva
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    revan
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    revathiest
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    reverend
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    revreese
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    reyne
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    reythirren
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    rezeul
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rezo
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rhale
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    rhavin
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    rhayam
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    rhea
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rhea (sindome in gv)
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rhgh
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    rhinehold
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rhudoc
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    riagn
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ricorn
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rijer
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    riker
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    rikluz
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    rikudo
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rikudo sennin
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    rince
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    riper
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    rire makar
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    riverphoenix
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rob
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    robgea
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    rock
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    rodaith
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    rodgerly
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    roger
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    rogre
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    roku
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    roland
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rommel
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    ron
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    rondros
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ronny
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    rook
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    roon
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    root
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    rorix
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    rotas
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    roy
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    rss_bot
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    rssbot
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    ruben
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    rue
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    ruhsbaar
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    rum
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    runtime
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    rushnak
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    russu
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    rusul
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ruthe
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    ryan
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    rylo
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    rynthas
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    rystal
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ryuo
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    ryuzaki4days
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ryuzaki4days (sindome in gv)
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ryzoth
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    saaur
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sabach
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    sabbathiel
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    sabreur
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sakari
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sakashima
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    sake
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    sake (grapevine in gv)
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sako
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    salabena
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    salanor
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    salem
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    salin
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    salius
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    salvatore
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    salwork
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    samantha
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    sampedro
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    samson
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    samuel
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    sandon
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sandon (myelinalpha in gv)
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    sapid
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sapidlib
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    sapphicubus
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    saquivor
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    saradac
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    sarak
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    saraneth
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    sarkkan
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    sarmonsiill
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sartok
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    sarulen
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sasha
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    sasha (neonmoo in gv)
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sasquatch
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sasuke
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    saul
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sbaitso
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    scary face
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    scaryface
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    scathach
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sceir choireeil
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    scifi
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    scintill
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    scorch
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    scorpious
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    scott
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    scout
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    scout (apotheosis in gv)
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    scouter
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    scoyn
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    scream
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    scrubb
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    scruff
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    sead
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    seerlock
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    sekh
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    sekkite
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sektor
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    selena
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    selfe
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    selwyn
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    semei
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    senorlarn
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    seoman
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    serack
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    seraku
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    seraph
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    serenity
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sergio
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    serimia
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    set
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    setzer
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    seuss
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    seva
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    seven
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shabradingo
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    shademaster
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    shadimar
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shadow
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shadownoichi
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    shadowseeker
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    shadox
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shadyfake
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    shadyman
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    shaggy
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    shaitan
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    shaitan (apotheosisdev in gv)
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    shak
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    shamira
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    shandara
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shandrilla
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    shaned
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    shanrou
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    shard
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    shattuc
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    shayna
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    shea
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sheanar
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    shem
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    shentino
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    sheril
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shhasum
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shifter
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    shigs
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    shinde
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shinji
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    shinobi
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    shio
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    shitfingers
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    shodan
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    shu
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    shunamaji
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sicarius
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sickgut
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    sicness
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    sicness (apotheosis in gv)
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    sid
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    sidnee
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sifu
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    sigee
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sighfigh
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    sigil
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    siilaan
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    silbago
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    silbago doom
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    silencher
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    silent
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    silenus
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    silvanus
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    silverblood
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    silverware
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    silvyar
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sim
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    simbion
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    simon
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    sined
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sinistrad
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    sionnach
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sipher
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    sir-hack.freenode
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sircuri
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sirdar
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    sirdude
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    sisko
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    skiboo
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    skitzo
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    skiver
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    skout
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    skrin
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    skrylar
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    skullslayer
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    skunkaroony
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sky
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    skye
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    skyfire
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    skynet
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    skysports
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    slashdot
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    slayer
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    slayradio
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    sledge
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    sleffie
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    sleipnir
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    slikk
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    slip
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    slitwristz
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    sluggy
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    slush
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    slymenstra
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    slynick
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    slypaw
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    smartie
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    smaugmuds
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    smdm
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    smegg
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    smith
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    snagglepants
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    snagglepants (grapevine in gv)
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    snert
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    snivell
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    snow
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    snowy
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    snowyowl
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    snoyl
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    so-so.freenode
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    sobowen
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sojan
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    solaris
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    solia
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    solo
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    solomirath
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    solstarn
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    soludix
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    somebody
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    someone
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    somerville32.freenode
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    something_wicked
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    something_wicked (sindome in gv)
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    somnar
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    somotaw
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sonyc
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    sorbitol
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    sorin
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sorisor
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sorressean
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sorrow
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    sos
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sothis
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    space.com
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    spamspanker
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sparhawk
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    sparkles
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    spartacus
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    spawn
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    spindle
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    splorch
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    spontaneous
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    spontiff
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    spooky9168
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    spooky9168 (grapevine in gv)
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    spoons
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    spoonster
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    spoony
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    sprudleglut
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sprynx
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    squ
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    squid
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sryth
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    ss
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    stan
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    stanach
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    stanley
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    star
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    starbuck
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    starck
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    stardust
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    stark
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    starker
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    starr
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    stavros
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    stephen
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    sterm
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    stern
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    steve
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    stiza13
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    stiza13 (sindome in gv)
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    stofilia
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    stoli
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    stormy
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    storyhost shentino
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    straightwire
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    stray
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    streetpizza
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    streetpizza (grapevine in gv)
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    strikehunter
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    styx
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    styxx
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    subversion
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    succubus
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sugarfi
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sulfurado
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    sulfurado (sindome in gv)
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    sumsum
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sunaris
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sunbeam
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    supra
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    supramud
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    surge
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    surt
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    suskaforn
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    suturb
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    swallow
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    swallow (myelinalpha in gv)
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    swan
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    swiper
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    swnh
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    swnh (grapevine in gv)
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    swyrd
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sydney
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sylvan
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    sylvani
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    sylvie
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    symon
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    syn
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    syphon
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    syriac
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    syrron
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    sys
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    system
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tab
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tacitus
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    taepha
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    taffyd
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    tahin
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    taint
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    takahari
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    takhisis
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    tal'anis
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    talanthis
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    talder
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    talen
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tales
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    talge
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tali
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    talidarania
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    taliesin
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    talin
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    talis
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    talli
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    tallman
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    talsin
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    talven
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tamesis
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    tamsin
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    tanar
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tangescence
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tanis
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    tanya
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    tapeworm
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    taplash
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tarathiel
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tareek
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tarken
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tarlyn
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tarr
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tartaros
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    taruska
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tarvos
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tasm
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    tatianna
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    taure
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tauron
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tavish
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    tax
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    tax (sindome in gv)
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tay
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tbamud
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tbonta
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tcikoritys
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    tea
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    teknion
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    teknovyking
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    telchur
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    tempest
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tempus
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    temujin
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    temuthril
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tenjin
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tenny
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    teny
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tera
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    terano
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    terra
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    terraco
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    test
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    test123344321_irc
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    testchar
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    testcharfour
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    testcre
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tester
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tester (wop in gv)
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    testham
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    testhamlet
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    testwiz
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    testycre
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    testylus
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tetrikitty
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    teveshszat
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tha
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thalann
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    thalasso
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    thales
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thanatos
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    thanitos
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tharios
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    the bobcat
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    the ethereal presence
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    the jarred
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    the kobold
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    the real quixadhal
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    thebird
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    thecreator
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thegrauniad
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    theinquirer
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    theis
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    theman
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    theodosius
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    theonion
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    theophage
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    theramon
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    theregister
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    thian
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    thingol
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thirsha
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thog
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thoin
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thor
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    thoreau
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    thoreksken
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thorgal
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    thrakkozz
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    three
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thresh
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    thrym
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    thulin
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    thulsa
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    thulsa doom
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    thyrr
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tiamat
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tibalt
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tibet
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    tibolt
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tidal
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    tigran
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    tigwyk
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    tijer
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tijntje
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tim
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    timbo
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    timbot
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    tinfoilhat
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tique
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tisane
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    titan
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tiz
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tizen
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tkkyj
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    tlaloc
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tlny
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    tmc
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tms
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tms_feed
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    toast
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    toaster
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    toffeecake
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tok
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    tokie
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    tokugawa
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tomeglow
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    tomio
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    toneloc
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    toninno
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tony
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    torak
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    torako
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    toric
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    torture
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    toshinama
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    towns
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    tozan
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tragard
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tranin
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    traveller
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    traven
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    treble
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    trebor
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tria
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    tricky
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    tricky bows to someone
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tricky kicks cratylus
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tricky kills drakkos
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tricky looks at shadyman
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tricky pats tigwyk
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tricky pats yeik
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tricky.freenode
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tricky1702
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    trilogy
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    trimaster
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    trip
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    triq
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    triskal
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tristan
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    tristen
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tritan
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    triviabot
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    trix
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    trixar
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    trixen
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    troll
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    troponin
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    truk77
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    trusty
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    tsarenzi
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tsath
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tsion
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    tsme
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    tsonu
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    tuan
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    tuck
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    tulkas
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    tumbug
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tumeski
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    turk
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    turkey
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    turok
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    turvity
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    tux
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    two
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    txiv
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    tyler
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    typhon
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    tyre
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    tyrin
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    tyson
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    tywywllch
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    tzekiat
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    uae
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    ugh
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ulmo
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ulrik
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ulysses
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    umbramancer
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    umbrella wizard
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    uneche
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    unhappycupcake
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    unhappycupcake (grapevine in gv)
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    unicoi
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    unimatrix
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    unloved
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    unslidge
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    urien
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    urlbot
+Color   %^YELLOW%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    urlbot 3000
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    urlbot3000
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    uurdin
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    uxue
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    vaencor
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    val
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    valandel
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    valen
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    valentino
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    valerian
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    valerin
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    valkor
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    valkorian
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    valyn
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    vance
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vanderbos
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    vandretta
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vang
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    vanilor
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    vardogr
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vargon the insane
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    varmel
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    varreus
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    varu
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    vash
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    vashta
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    vashti
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    vayl
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    vega
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    velmin
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    venar
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    vengence
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    venoch
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    verement
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vernius
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    veros
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    vestian
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vestian (myelinalpha in gv)
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    viakla
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    victor
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vikiq
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    viktor
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    vilci
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vilhien
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    villa (sindome in gv)
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    villanus
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    vinez
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    viper
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    virax
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    viriato
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    viriato (grapevine in gv)
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    virtual
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    virus
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    visceral
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    viscous
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    visenya
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    vivi
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vivid
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    viwiel
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vlad
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    vladaar
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vleemad
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    volen
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    volk
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    volkov
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    volothamp
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    vonkeebler
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    vorlin
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    vorpal
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    vorric
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    vortex
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    vott
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    vova
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vox
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    voxoo
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    vuleive
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    vulture
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vulusion
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    vx
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    vyuk
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    wacko
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    wade
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    wallsy
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    walrii
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    warcas
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    warfal
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    warh
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    warhammer
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    warmonger
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    warpdongle
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    warper
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wasdrogan
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    watcher
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wayyne
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    weary
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    wedric
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    weeks
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    weiqi
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    well blow me down! reflection
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    werehamster
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    westley
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    whisper
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    whisperwillow
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    whome
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    why
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    wick
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wiebman
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    wiebman (sindome in gv)
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    wierd
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    wildchild
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    will
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    william
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    willot
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    willy
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    windel
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    windigo
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    windrider
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    winds
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wintermute
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wiz
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    wizard
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    wizzard
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wobble
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    wodan
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    wodantest
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    wolf
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    wolves
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    wolvesbane
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    womble
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    woom
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    wordgod
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    world as myth
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    wow
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    wyre
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    xadrian
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xalin
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    xameil
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    xanieth
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xanthar
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xar
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    xarg
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xashitetsu
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    xavier
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xcogi
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xcogi (eugormud in gv)
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xdarkknightx
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xenophanes
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    xeon
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    xephon
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    xerbil
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xero
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xii
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    xiron
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    xirote
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    xoarvvath
+Color   %^BLACK%^%^B_RED%^
+End
+
+#SPEAKER
+Name    xodeidhiur
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    xola
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    xoral
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    xrakisis
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    xytras
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    xyzzy
+Color   %^BLUE%^
+End
+
+#SPEAKER
+Name    xzystance
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    yady
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    yakon
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    yakuza
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    yan
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    yanna
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yarpsnesan
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    yase
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    yebtelnyal
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yebtelnyal (myelinalpha in gv)
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    yeik
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    yen
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ylapirrynag
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    yldannan
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yoda
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    yoinkles
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yorkie
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ythrangil
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yucong sun
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    yucongsun
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yun
+Color   %^YELLOW%^
+End
+
+#SPEAKER
+Name    yuna
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    yyy
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zac
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zadious
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    zadok
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    zaerth
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zahir
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    zakarowyn
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zaknafein
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    zalbar
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    zanadu
+Color   %^BLACK%^%^B_CYAN%^
+End
+
+#SPEAKER
+Name    zanatos
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    zaphod
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zapper
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    zari
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zaroth
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zax
+Color   %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zaya
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    zealxp
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    zecred
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    zed
+Color   %^BLACK%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    zeddicus
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    zedzo
+Color   %^BLACK%^%^B_YELLOW%^
+End
+
+#SPEAKER
+Name    zeke
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    zell
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    zendakath
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    zengo
+Color   %^WHITE%^%^B_BLUE%^
+End
+
+#SPEAKER
+Name    zenik
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zennik
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zeno
+Color   %^ORANGE%^
+End
+
+#SPEAKER
+Name    zephran
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    zephyros
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zero
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    zeron
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    zeus
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    zhaan
+Color   %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zhouxu
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zhuuraan
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    zifnab
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    zigzag
+Color   %^WHITE%^%^B_RED%^
+End
+
+#SPEAKER
+Name    zilch
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zion
+Color   %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zmax
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zod
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zoe
+Color   %^RED%^
+End
+
+#SPEAKER
+Name    zolomon
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zolvranzix
+Color   %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zombie
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    zonbi
+Color   %^CYAN%^
+End
+
+#SPEAKER
+Name    zorn
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zorn, the old mage
+Color   %^GREEN%^
+End
+
+#SPEAKER
+Name    zrothum
+Color   %^WHITE%^
+End
+
+#SPEAKER
+Name    zrothum (grapevine in gv)
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zrutu
+Color   %^WHITE%^%^B_MAGENTA%^
+End
+
+#SPEAKER
+Name    ztest
+Color   %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name    ztilly
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zube
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    zvim
+Color   %^WHITE%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    zyll
+Color   %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name    zyren
+Color   %^MAGENTA%^
+End
+
+#SPEAKER
+Name    zyx
+Color   %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name    �4�4tricky1702�r
+Color   %^BLACK%^%^B_GREEN%^
+End
+
+#SPEAKER
+Name    きけさだる
+Color   %^BLACK%^%^B_WHITE%^
+End
+
+#SPEAKER
+Name    キクサダルの幽霊
+Color   %^BLACK%^%^BOLD%^
+End
+
+#END

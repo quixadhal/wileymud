@@ -8,14 +8,16 @@ require_once 'navbar.php';
 $SERVER_CASE            = "$URL_HOME/gfx/server_case.png";
 $SERVER_GUTS            = "$URL_HOME/gfx/server_guts.jpg";
 
-$SPEEDTEST_FILE         = "$FILE_HOME/speedtest.json";
-$SPEEDTEST_WIFI_FILE    = "$FILE_HOME/speedtest_wifi.json";
-$SPEEDTEST_AVG_FILE     = "$FILE_HOME/speedtest_avg.json";
+$SPEEDTEST_FILE         = "$FILE_HOME/data/speedtest.json";
+$SPEEDTEST_WIFI_FILE    = "$FILE_HOME/data/speedtest_wifi.json";
+$SPEEDTEST_AVG_FILE     = "$FILE_HOME/data/speedtest_avg.json";
 
 $SPEEDTEST_HEIGHT_BASE  = 200;
 $SPEEDTEST_WIDTH_BASE   = 375;
 $SPEEDTEST_HEIGHT       = sprintf("%dpx", (int)($SPEEDTEST_HEIGHT_BASE * $SCALE));
 $SPEEDTEST_WIDTH        = sprintf("%dpx", (int)($SPEEDTEST_WIDTH_BASE * $SCALE));
+
+$KELLY_MTR              = "$FILE_HOME/data/kelly.mtr";
 
 $PG_DB      = "speedtest";
 $PG_USER    = "wiley";
@@ -585,6 +587,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                             <pre>Blacklist entries: <?php pcmd("/bin/cat /etc/iptables/ipset.blacklist | /usr/bin/grep -v 'create blacklist' | /usr/bin/wc -l"); ?></pre>
                             <pre><?php pcmd("/usr/bin/nmcli -f 'DEVICE,CHAN,BARS,SIGNAL,RATE,SSID' dev wifi | /usr/bin/egrep '(\s+SSID|\s+Dread_.748)'"); ?></pre>
                             <pre>Wifi Connection in use: <?php pcmd("/sbin/iwconfig wlp1s0 | grep ESSID"); ?></pre>
+                            <pre>External IPv4 address: <?php pcmd("/home/wiley/bin/mudinfo -I wileymud"); ?></pre>
                             <pre><?php
                                     printf("%s %s\n",         "Wired Speedtest performed on", $speedtest["the_time"]);
                                     printf("%s %s:%s\n",      "                interface   ", $speedtest["interface"]["internalIp"], $speedtest["interface"]["name"]);
@@ -603,7 +606,7 @@ $speedtest_avg = json_decode($speedtest_avg_text, true, 512, JSON_INVALID_UTF8_S
                                     printf("%s %-.2f Mbps\n", "                upload      ", ($speedtest_wifi["upload"]["bandwidth"] * 8.0 / 1000000.0));
                                  ?>
                             </pre>
-                            <pre><?php echo htmlentities(file_get_contents("/home/wiley/public_html/log/kelly.ascii")); ?></pre>
+                            <pre><?php echo htmlentities(file_get_contents($KELLY_MTR)); ?></pre>
                             <hr class="hr-100" />
                     </td>
                     <td>&nbsp;</td>
