@@ -441,7 +441,7 @@ cJSON *process_item_worn(cJSON *this_obj, objects *Objects, int i)
 
 cJSON *process_obj_type_info(cJSON *this_obj, objects *Objects, int i)
 {
-    cJSON *type_details = NULL;
+    //cJSON *type_details = NULL;
 
     // Type
     // AffectCount, Affect[]
@@ -449,59 +449,59 @@ cJSON *process_obj_type_info(cJSON *this_obj, objects *Objects, int i)
     switch (Objects->Object[i].Type)
     {
     case ITEM_LIGHT:
-        type_details = process_item_light(this_obj, Objects, i);
+        process_item_light(this_obj, Objects, i);
         break;
     case ITEM_SCROLL:
     case ITEM_POTION:
-        type_details = process_item_scroll_potion(this_obj, Objects, i);
+        process_item_scroll_potion(this_obj, Objects, i);
         break;
     case ITEM_WAND:
     case ITEM_STAFF:
-        type_details = process_item_wand_staff(this_obj, Objects, i);
+        process_item_wand_staff(this_obj, Objects, i);
         break;
     case ITEM_WEAPON:
     case ITEM_FIREWEAPON:
     case ITEM_MISSILE:
-        type_details = process_item_weapon(this_obj, Objects, i);
+        process_item_weapon(this_obj, Objects, i);
         break;
     case ITEM_ARMOR:
-        type_details = process_item_armor(this_obj, Objects, i);
+        process_item_armor(this_obj, Objects, i);
         break;
     case ITEM_TRAP:
-        type_details = process_item_trap(this_obj, Objects, i);
+        process_item_trap(this_obj, Objects, i);
         break;
     case ITEM_CONTAINER:
-        type_details = process_item_container(this_obj, Objects, i);
+        process_item_container(this_obj, Objects, i);
         break;
     case ITEM_DRINKCON:
-        type_details = process_item_drink(this_obj, Objects, i);
+        process_item_drink(this_obj, Objects, i);
         break;
     case ITEM_NOTE:
-        type_details = process_item_note(this_obj, Objects, i);
+        process_item_note(this_obj, Objects, i);
         break;
     case ITEM_KEY:
-        type_details = process_item_key(this_obj, Objects, i);
+        process_item_key(this_obj, Objects, i);
         break;
     case ITEM_FOOD:
-        type_details = process_item_food(this_obj, Objects, i);
+        process_item_food(this_obj, Objects, i);
         break;
     case ITEM_MONEY:
-        type_details = process_item_money(this_obj, Objects, i);
+        process_item_money(this_obj, Objects, i);
         break;
     case ITEM_TRASH:
-        type_details = process_item_trash(this_obj, Objects, i);
+        process_item_trash(this_obj, Objects, i);
         break;
     case ITEM_PEN:
-        type_details = process_item_pen(this_obj, Objects, i);
+        process_item_pen(this_obj, Objects, i);
         break;
     case ITEM_BOARD:
-        type_details = process_item_board(this_obj, Objects, i);
+        process_item_board(this_obj, Objects, i);
         break;
     case ITEM_BOAT:
-        type_details = process_item_boat(this_obj, Objects, i);
+        process_item_boat(this_obj, Objects, i);
         break;
     case ITEM_WORN:
-        type_details = process_item_worn(this_obj, Objects, i);
+        process_item_worn(this_obj, Objects, i);
         break;
     default:
         cJSON_AddNullToObject(this_obj, "type_details");

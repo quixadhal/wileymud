@@ -382,7 +382,7 @@ int main(int argc, char **argv)
         {
             fprintf(stderr, "Dumping Format %s from %s\n", of_type(of_mask("json")), if_type(if_mask("wiley")));
             printf("Dumping Format %s from %s\n", of_type(of_mask("json")), if_type(if_mask("wiley")));
-            snprintf(tmp, MAX_STRING_LEN, "%s/%s/wileymud.json", OutputDir, JSON_SUBDIR);
+            snprintf(tmp, MAX_STRING_LEN, "%s/%s", OutputDir, JSON_SUBDIR);
             dump_as_json(Zones, Rooms, Objects, Mobs, Shops, tmp);
         }
     }

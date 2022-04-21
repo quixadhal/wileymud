@@ -16332,8 +16332,10 @@ int I3_connection_open(ROUTER_DATA *router)
     memset(&sa, 0, sizeof(sa));
     sa.sin_family = AF_INET;
 
+    // 45.64.56.66
     if (!inet_aton(router->ip, &sa.sin_addr))
     {
+        // kelly.irn.themud.org
         hostp = gethostbyname(router->ip);
         if (!hostp)
         {

@@ -828,17 +828,19 @@ cJSON *process_zone_resets(cJSON *this_zone, rooms *Rooms, zones *Zones, int j, 
     return resets;
 }
 
-void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops, char *outfile)
+void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shops *Shops, char *outdir)
 {
     FILE *ofp = NULL;
     char *output = NULL;
     cJSON *root = NULL;
-    cJSON *rooms = NULL;
     cJSON *zones = NULL;
-    cJSON *mobiles = NULL;
-    cJSON *objects = NULL;
+    //cJSON *rooms = NULL;
+    //cJSON *mobiles = NULL;
+    //cJSON *objects = NULL;
     int **reset_checkoffs = NULL;
+    char outfile[MAX_STRING_LEN];
 
+    snprintf(outfile, MAX_STRING_LEN, "%s/wileymud.json", outdir);
     root = cJSON_CreateObject();
 
     // When we process resets for each room, we will check them
@@ -866,9 +868,9 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
         process_zone_header(this_zone, Zones, i);
         // process_zone_resets(this_zone, Rooms, Zones, i, Objects, Mobs);
 
-        rooms = process_rooms_in_zone(this_zone, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
-        mobiles = process_mobs_in_zone(this_zone, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
-        objects = process_objs_in_zone(this_zone, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
+        process_rooms_in_zone(this_zone, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
+        process_mobs_in_zone(this_zone, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
+        process_objs_in_zone(this_zone, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
 
         if (!Quiet)
         {
@@ -891,6 +893,44 @@ void dump_as_json(zones *Zones, rooms *Rooms, objects *Objects, mobs *Mobs, shop
     fclose(ofp);
 
     cJSON_Delete(root);
+
+    // Here, we output to individual zone files, so repeat the same work again.
+    for (int i = 0; i < Zones->Count; i++)
+    {
+        cJSON *sub_root = NULL;
+        FILE *sub_fp = NULL;
+        char *sub_output = NULL;
+
+        if (!Quiet)
+        {
+            status(stderr, "RE-Dumping zone #%d (%s)...", Zones->Zone[i].Number, zone_name(Zones, Zones->Zone[i].Number));
+            spin(stderr);
+        }
+
+        sub_root = cJSON_CreateObject();
+        process_zone_header(sub_root, Zones, i);
+        process_rooms_in_zone(sub_root, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
+        process_mobs_in_zone(sub_root, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
+        process_objs_in_zone(sub_root, Zones, i, Rooms, Objects, Mobs, reset_checkoffs);
+        //process_orphaned_resets(sub_root, Rooms, Zones, Objects, Mobs, reset_checkoffs);
+        sub_output = cJSON_Print(sub_root);
+
+        snprintf(outfile, MAX_STRING_LEN, "%s/%s.json", outdir,
+                zone_name(Zones, Zones->Zone[i].Number));
+        sub_fp = open_file(outfile, "w");
+        fprintf(sub_fp, "%s", sub_output);
+        fclose(sub_fp);
+        cJSON_Delete(sub_root);
+        // sub_output would leak briefly, but who cares?
+
+        if (!Quiet)
+        {
+            status(stderr, "done.");
+            fprintf(stderr, "\r");
+            fflush(stderr);
+        }
+    }
+
     if (!Quiet)
         fprintf(stderr, "done.\n");
 }

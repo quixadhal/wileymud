@@ -286,7 +286,7 @@ int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs)
 {
     int FoundResets = 0;
     int LastMob = -1;
-    int LastLoc = -1;
+    //int LastLoc = -1;
     int LastObj = -1;
     int LeaderMob = -1;
 
@@ -298,7 +298,7 @@ int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs)
             // continue;
         }
         LastMob = -1;
-        LastLoc = -1;
+        //LastLoc = -1;
         LastObj = -1;
         LeaderMob = -1;
         for (int k = 0; k < Zones->Zone[j].Count; k++)
@@ -310,7 +310,7 @@ int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs)
                     break;
                 FoundResets++;
                 LastMob = Zones->Zone[j].Cmds[k].Arg[ZONE_MOBILE];
-                LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
+                //LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
                 LeaderMob = LastMob;
                 reset_checkoffs[j][k] = 1;
                 break;
@@ -319,7 +319,7 @@ int find_room_resets(rooms *Rooms, int i, zones *Zones, int **reset_checkoffs)
                     break;
                 FoundResets++;
                 LastObj = Zones->Zone[j].Cmds[k].Arg[ZONE_OBJECT];
-                LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
+                //LastLoc = Zones->Zone[j].Cmds[k].Arg[ZONE_ROOM];
                 reset_checkoffs[j][k] = 1;
                 break;
             case ZONE_CMD_GIVE:

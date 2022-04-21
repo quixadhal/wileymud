@@ -690,7 +690,6 @@ void game_loop(int s)
             // We now use a PHP page to parse the JSON data, so we don't need to
             // recompile for EVERY little change to the web page.
             generate_json_mudlist(JSON_MUDLIST_PAGE);
-            generate_json_mudlist(OLD_JSON_MUDLIST_PAGE);
         }
         if ((--pulse_url) <= 0)
         {

@@ -57,10 +57,7 @@
 // We want to move the log pags to a system area, so make sure
 // the target directory is writeable by the MUD process!
 #define JSON_MUDLIST_PAGE                                                                                              \
-    "/var/www/html/log/data/"                                                                                                  \
-    "mudlist.json"
-#define OLD_JSON_MUDLIST_PAGE                                                                                          \
-    "../public_html/log/"                                                                                              \
+    "/home/www/log/data/"                                                                                                  \
     "mudlist.json"
 
 struct whod_data
