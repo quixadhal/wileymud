@@ -2201,9 +2201,10 @@ void I3_process_mudlist(I3_HEADER *header, char *s)
     }
     I3_saverouters();
 
+    // No, this is bad... only do this every 5 minutes under pulse control
     // If we haven't processed the mudlist recently, do it now!
-    if (pulse_mudlist > (PULSE_MUDLIST / 10))
-        pulse_mudlist = 0;
+    //if (pulse_mudlist > (PULSE_MUDLIST / 10))
+    //    pulse_mudlist = 0;
 
     ps = next_ps;
     ps += 2;

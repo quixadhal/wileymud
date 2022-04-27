@@ -19,7 +19,7 @@
 #define _BUG_C
 #include "bug.h"
 
-const char *LogNames[] = {"INFO", "ERROR", "FATAL", "BOOT", "AUTH", "KILL", "DEATH", "RESET", "IMC", "SQL", "NOSQL"};
+const char *LogNames[] = {"INFO", "ERROR", "FATAL", "BOOT", "AUTH", "KILL", "DEATH", "RESET", "IMC", "SQL", "NOSQL", "I3"};
 
 /* Handy query for checking logs:
  *

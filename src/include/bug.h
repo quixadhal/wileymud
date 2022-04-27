@@ -13,6 +13,7 @@
 #define LOG_IMC 8
 #define LOG_SQL 9
 #define LOG_NOSQL 10
+#define LOG_I3 11
 
 #ifndef _BUG_C
 extern char *LogNames[];
@@ -45,6 +46,9 @@ extern char *LogNames[];
                ##__VA_ARGS__)
 #define log_nosql(Str, ...)                                                                                            \
     bug_logger(LOG_NOSQL, NULL, __FILE__, __PRETTY_FUNCTION__, __LINE__, NULL, 0, NULL, NULL, GREATER_GOD, (Str),      \
+               ##__VA_ARGS__)
+#define log_i3(Str, ...)                                                                                             \
+    bug_logger(LOG_I3, NULL, __FILE__, __PRETTY_FUNCTION__, __LINE__, NULL, 0, NULL, NULL, GREATER_GOD, (Str),       \
                ##__VA_ARGS__)
 
 void bug_logger(unsigned int Type, const char *BugFile, const char *File, const char *Func, int Line,

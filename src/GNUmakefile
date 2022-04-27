@@ -446,11 +446,6 @@ obj/sql.o: sql.c include/global.h include/bug.h include/comm.h \
 obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
   include/interpreter.h include/handler.h include/db.h include/comm.h \
   include/multiclass.h include/modify.h
-obj/i3_testing.o: i3_testing.c include/global.h include/mudlimits.h \
-  include/sql.h include/bug.h include/utils.h include/db.h \
-  include/multiclass.h include/comm.h include/modify.h \
-  include/interpreter.h include/version.h include/stringmap.h \
-  include/scheduler.h include/i3.h
 obj/i3.o: i3.c include/global.h include/mudlimits.h include/sql.h \
   include/bug.h include/utils.h include/db.h include/multiclass.h \
   include/comm.h include/modify.h include/interpreter.h \

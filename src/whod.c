@@ -946,6 +946,9 @@ void generate_json_mudlist(const char *filename)
         fprintf(fp, "            \"port\"      : %d,\n", mud->player_port);
         fprintf(fp, "            \"online\"    : %d\n", mud->status == -1 ? 1 : 0);
         fprintf(fp, "        }");
+        if(mud->name && !strcasecmp(mud->name, "WileyMUD")) {
+            log_i3("PULSE %d, MUD %s, Status %d", pulse_mudlist, mud->name, mud->status);
+        }
     }
     if (did_one)
     {
