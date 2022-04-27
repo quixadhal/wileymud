@@ -15295,6 +15295,227 @@ void I3_load_ucache(void)
     I3FCLOSE(fp);
 }
 
+void setup_i3_tables(void)
+{
+    setup_i3_config_table();
+}
+
+void setup_i3_config_table(void)
+{
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS i3_config ( "
+                // General config values
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    thismud TEXT NOT NULL, "
+                "    autoconnect BOOLEAN NOT NULL DEFAULT false, "
+                "    telnet TEXT, "
+                "    web TEXT, "
+                "    adminemail TEXT, "
+                "    openstatus TEXT, "
+                "    mudtype TEXT, "
+                "    mudlib TEXT, "
+                "    minlevel INTEGER NOT NULL DEFAULT 0, "
+                "    immlevel INTEGER NOT NULL DEFAULT 0, "
+                "    adminlevel INTEGER NOT NULL DEFAULT 0, "
+                "    implevel INTEGER NOT NULL DEFAULT 0, "
+                // Services, true means supported
+                "    tell BOOLEAN NOT NULL DEFAULT false, "
+                "    beep BOOLEAN NOT NULL DEFAULT false, "
+                "    emoteto BOOLEAN NOT NULL DEFAULT false, "
+                "    who BOOLEAN NOT NULL DEFAULT false, "
+                "    finger BOOLEAN NOT NULL DEFAULT false, "
+                "    locate BOOLEAN NOT NULL DEFAULT false, "
+                "    channel BOOLEAN NOT NULL DEFAULT false, "
+                "    news BOOLEAN NOT NULL DEFAULT false, "
+                "    mail BOOLEAN NOT NULL DEFAULT false, "
+                "    file BOOLEAN NOT NULL DEFAULT false, "
+                "    auth BOOLEAN NOT NULL DEFAULT false, "
+                "    ucache BOOLEAN NOT NULL DEFAULT false, "
+                // Port numbers, 0 means not supported
+                "    smtp INTEGER NOT NULL DEFAULT 0, "
+                "    ftp INTEGER NOT NULL DEFAULT 0, "
+                "    nntp INTEGER NOT NULL DEFAULT 0, "
+                "    http INTEGER NOT NULL DEFAULT 0, "
+                "    pop3 INTEGER NOT NULL DEFAULT 0, "
+                "    rcp INTEGER NOT NULL DEFAULT 0, "
+                "    amrcp INTEGER NOT NULL DEFAULT 0 "
+                "); ";
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot create i3_config table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void save_i3_config(void)
+{
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "INSERT INTO i3_config ( "
+                // General config values
+                "    thismud, "
+                "    autoconnect, "
+                "    telnet, "
+                "    web, "
+                "    adminemail, "
+                "    openstatus, "
+                "    mudtype, "
+                "    mudlib, "
+                "    minlevel, "
+                "    immlevel, "
+                "    adminlevel, "
+                "    implevel, "
+                // Services, true means supported
+                "    tell, "
+                "    beep, "
+                "    emoteto, "
+                "    who, "
+                "    finger, "
+                "    locate, "
+                "    channel, "
+                "    news, "
+                "    mail, "
+                "    file, "
+                "    auth, "
+                "    ucache, "
+                // Port numbers, 0 means not supported
+                "    smtp, "
+                "    ftp, "
+                "    nntp, "
+                "    http, "
+                "    pop3, "
+                "    rcp, "
+                "    amrcp"
+                ") VALUES ("
+                // General config values
+                "    $1, $2::BOOLEAN, $3, $4, $5, $6, $7, $8, "
+                "    $9, $10, $11, $12, "
+                // Services, true means supported
+                "    $13::BOOLEAN, $14::BOOLEAN, $15::BOOLEAN, $16::BOOLEAN, "
+                "    $17::BOOLEAN, $18::BOOLEAN, $19::BOOLEAN, $20::BOOLEAN, "
+                "    $21::BOOLEAN, $22::BOOLEAN, $23::BOOLEAN, $24::BOOLEAN, "
+                // Port numbers, 0 means not supported
+                "    $25, $26, $27, $28, $29, $30, $31 "
+                "); ";
+
+    const char *param_val[31];
+    int param_len[31];
+    int param_bin[31] = {
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+        0, 0, 0, 0, 0, 0, 0
+    };
+    char minlevel[MAX_INPUT_LENGTH];
+    char immlevel[MAX_INPUT_LENGTH];
+    char adminlevel[MAX_INPUT_LENGTH];
+    char implevel[MAX_INPUT_LENGTH];
+    char smtp[MAX_INPUT_LENGTH];
+    char ftp[MAX_INPUT_LENGTH];
+    char nntp[MAX_INPUT_LENGTH];
+    char http[MAX_INPUT_LENGTH];
+    char pop3[MAX_INPUT_LENGTH];
+    char rcp[MAX_INPUT_LENGTH];
+    char amrcp[MAX_INPUT_LENGTH];
+
+    param_val[0] = (this_i3mud->name[0]) ? this_i3mud->name : NULL;
+    param_len[0] = (this_i3mud->name[0]) ? strlen(this_i3mud->name) : 0;
+    param_val[1] = (this_i3mud->autoconnect) ? "1": "0";
+    param_len[1] = 1;
+    param_val[2] = (this_i3mud->telnet[0]) ? this_i3mud->telnet : NULL;
+    param_len[2] = (this_i3mud->telnet[0]) ? strlen(this_i3mud->telnet) : 0;
+    param_val[3] = (this_i3mud->web[0]) ? this_i3mud->web : NULL;
+    param_len[3] = (this_i3mud->web[0]) ? strlen(this_i3mud->web) : 0;
+    param_val[4] = (this_i3mud->admin_email[0]) ? this_i3mud->admin_email : NULL;
+    param_len[4] = (this_i3mud->admin_email[0]) ? strlen(this_i3mud->admin_email) : 0;
+    param_val[5] = (this_i3mud->open_status[0]) ? this_i3mud->open_status : NULL;
+    param_len[5] = (this_i3mud->open_status[0]) ? strlen(this_i3mud->open_status) : 0;
+    param_val[6] = (this_i3mud->mud_type) ? this_i3mud->mud_type : NULL;
+    param_len[6] = (this_i3mud->mud_type) ? strlen(this_i3mud->mud_type) : 0;
+    param_val[7] = (this_i3mud->mudlib) ? this_i3mud->mudlib : NULL;
+    param_len[7] = (this_i3mud->mudlib) ? strlen(this_i3mud->mudlib) : 0;
+
+    snprintf(minlevel, MAX_INPUT_LENGTH, "%d", this_i3mud->minlevel);
+    param_val[8] = (this_i3mud->minlevel > 0) ? minlevel: "0";
+    param_len[8] = (this_i3mud->minlevel > 0) ? strlen(minlevel) : 1;
+    snprintf(immlevel, MAX_INPUT_LENGTH, "%d", this_i3mud->immlevel);
+    param_val[9] = (this_i3mud->immlevel > 0) ? immlevel: "0";
+    param_len[9] = (this_i3mud->immlevel > 0) ? strlen(immlevel) : 1;
+    snprintf(adminlevel, MAX_INPUT_LENGTH, "%d", this_i3mud->adminlevel);
+    param_val[10] = (this_i3mud->adminlevel > 0) ? adminlevel: "0";
+    param_len[10] = (this_i3mud->adminlevel > 0) ? strlen(adminlevel) : 1;
+    snprintf(implevel, MAX_INPUT_LENGTH, "%d", this_i3mud->implevel);
+    param_val[11] = (this_i3mud->implevel > 0) ? implevel: "0";
+    param_len[11] = (this_i3mud->implevel > 0) ? strlen(implevel) : 1;
+
+    param_val[12] = (this_i3mud->tell) ? "1": "0";
+    param_len[12] = 1;
+    param_val[13] = (this_i3mud->beep) ? "1": "0";
+    param_len[13] = 1;
+    param_val[14] = (this_i3mud->emoteto) ? "1": "0";
+    param_len[14] = 1;
+    param_val[15] = (this_i3mud->who) ? "1": "0";
+    param_len[15] = 1;
+    param_val[16] = (this_i3mud->finger) ? "1": "0";
+    param_len[16] = 1;
+    param_val[17] = (this_i3mud->locate) ? "1": "0";
+    param_len[17] = 1;
+    param_val[18] = (this_i3mud->channel) ? "1": "0";
+    param_len[18] = 1;
+    param_val[19] = (this_i3mud->news) ? "1": "0";
+    param_len[19] = 1;
+    param_val[20] = (this_i3mud->mail) ? "1": "0";
+    param_len[20] = 1;
+    param_val[21] = (this_i3mud->file) ? "1": "0";
+    param_len[21] = 1;
+    param_val[22] = (this_i3mud->auth) ? "1": "0";
+    param_len[22] = 1;
+    param_val[23] = (this_i3mud->ucache) ? "1": "0";
+    param_len[23] = 1;
+
+    snprintf(smtp, MAX_INPUT_LENGTH, "%d", this_i3mud->smtp);
+    param_val[24] = (this_i3mud->smtp > 0) ? smtp: "0";
+    param_len[24] = (this_i3mud->smtp > 0) ? strlen(smtp) : 1;
+    snprintf(ftp, MAX_INPUT_LENGTH, "%d", this_i3mud->ftp);
+    param_val[25] = (this_i3mud->ftp > 0) ? ftp: "0";
+    param_len[25] = (this_i3mud->ftp > 0) ? strlen(ftp) : 1;
+    snprintf(nntp, MAX_INPUT_LENGTH, "%d", this_i3mud->nntp);
+    param_val[26] = (this_i3mud->nntp > 0) ? nntp: "0";
+    param_len[26] = (this_i3mud->nntp > 0) ? strlen(nntp) : 1;
+    snprintf(http, MAX_INPUT_LENGTH, "%d", this_i3mud->http);
+    param_val[27] = (this_i3mud->http > 0) ? http: "0";
+    param_len[27] = (this_i3mud->http > 0) ? strlen(http) : 1;
+    snprintf(pop3, MAX_INPUT_LENGTH, "%d", this_i3mud->pop3);
+    param_val[28] = (this_i3mud->pop3 > 0) ? pop3: "0";
+    param_len[28] = (this_i3mud->pop3 > 0) ? strlen(pop3) : 1;
+    snprintf(rcp, MAX_INPUT_LENGTH, "%d", this_i3mud->rcp);
+    param_val[29] = (this_i3mud->rcp > 0) ? rcp: "0";
+    param_len[29] = (this_i3mud->rcp > 0) ? strlen(rcp) : 1;
+    snprintf(amrcp, MAX_INPUT_LENGTH, "%d", this_i3mud->amrcp);
+    param_val[30] = (this_i3mud->amrcp > 0) ? amrcp: "0";
+    param_len[30] = (this_i3mud->amrcp > 0) ? strlen(amrcp) : 1;
+
+    res = PQexecParams(db_wileymud.dbc, sql, 31, NULL, param_val, param_len, param_bin, 0);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot update i3 config table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void load_i3_config(void)
+{
+}
+
 void I3_saveconfig(void)
 {
     FILE *fp;
@@ -15352,6 +15573,7 @@ void I3_saveconfig(void)
     fprintf(fp, "%s", "end\n");
     fprintf(fp, "%s", "$END\n");
     I3FCLOSE(fp);
+    save_i3_config();
 }
 
 void I3_fread_config_file(FILE *fin)
@@ -15613,6 +15835,7 @@ bool I3_read_config(int mudport)
         this_i3mud->web = I3STRALLOC("Address not configured");
 
     // I3_THISMUD = this_i3mud->name;
+    save_i3_config();
     return TRUE;
 }
 

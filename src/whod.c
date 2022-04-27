@@ -807,14 +807,10 @@ int do_whod(struct char_data *ch, const char *arg, int cmd)
 // The mess down here is what makes the JSON files our web page uses
 // to make pretty mudlist info along with our who data.
 
-#define WEB_DIR "../public_html/"
-#define MUDLIST_PAGE WEB_DIR "mudlist.html"
-#define PUBLIC_GFX "gfx/mud/"
-#define MUDLIST_GFX WEB_DIR PUBLIC_GFX
 #define MUDLIST_WIDTH 192  // 240
 #define MUDLIST_HEIGHT 120 // 150
 
-#define URL_HOME "http://wileymud.themud.org/~wiley"
+#define URL_HOME "http://wileymud.themud.org/log"
 #define MUDLIST_ICON URL_HOME "/gfx/mud.png"
 #define LOG_ICON URL_HOME "/gfx/log.png"
 #define DISCORD_ICON URL_HOME "/gfx/discord.png"
@@ -827,7 +823,6 @@ int do_whod(struct char_data *ch, const char *arg, int cmd)
 #define WILEY_HEIGHT 32
 
 #define MUDLIST_URL URL_HOME "/mudlist.html"
-#define LOG_URL URL_HOME "/logpages"
 #define DISCORD_URL "https://discord.gg/kUduSsJ"
 #define SERVER_URL URL_HOME "/server.php"
 

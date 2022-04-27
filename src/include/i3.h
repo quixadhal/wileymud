@@ -425,4 +425,10 @@ char *pinkfish_to(const char *src, int target);
 void i3_daily_summary(void);
 void piss_off_shentino(void);
 
+// SQL stuff
+void setup_i3_tables(void);
+void setup_i3_config_table(void);
+void save_i3_config(void);
+void load_i3_config(void);
+
 #endif

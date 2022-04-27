@@ -142,6 +142,11 @@ void sql_startup(void)
     setup_help_table();
     setup_whod_table();
     setup_board_table();
+
+    // I3 stuff.
+#ifdef I3
+    setup_i3_tables();
+#endif
 }
 
 void sql_shutdown(void)
