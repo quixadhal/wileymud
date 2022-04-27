@@ -17,6 +17,7 @@ logger = Logger()
 
 from Mud.cli_args import CLI_Args
 from Mud.signals import setup_signals
+from Mud.game_data import Game_Data
 
 def changedir(pathname):
     if pathname is not None:
@@ -78,6 +79,8 @@ if __name__ == '__main__':
     # set descriptor list to empty
     setup_signals()
     # s = init_socket(port) # Main socket connection
+    gameData = Game_Data()
+    gameData.import_wileymud()
     # load_db()
     # init_whod(port) # web server who daemon
     # i3_startup(false, 3000, false)
