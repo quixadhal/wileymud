@@ -1117,3 +1117,8 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     once and pick the one you want.  So, two reboots later, it seems to be
     working.
 
+    ALSO, might as well do this to try and keep apt from breaking things...
+
+        apt-mark manual linux-image-5.16.0-6-amd64 linux-headers-5.16.0-6-amd64
+            linux-headers-5.16.0-6-common linux-kbuild-5.16 r8168-dkms
+
