@@ -997,3 +997,123 @@ I did set it to NOT run if we don't think we have a network connection...
 
     So, munge stuff to make /etc/apt/trusted.gpg.d/packagecloud.io.asc
 
+2022-03-08
+    apt install nethack-console
+
+2022-03-17
+    Messing around with phpBB.
+        adduser wiley www-data
+
+        Download and unpack phpBB-3.3.7.tar.bz2
+        Download and merge in style Carbon.zip
+        Download and merge in language japanese_1_3_4.zip
+            Remember to copy the ja files from prosilfer to Carbon too
+        Tweak .htaccess to comment out the -Multiviews option, as
+            apache throws a fit unless we do it at the server level
+
+        Move those into place in public_html
+        createdb phpbb3
+
+        chown -R wiley.www-data phpBB3
+        find phpBB3 -type d | xargs chmod 6775
+        find phpBB3 -type f | xargs chmod 664
+
+        Do the web install thingy at http://wileymud.themud.org/~wiley/phpBB3
+
+        Disable the vigilink crap
+        Install Carbon as a selectable theme
+        Install Japanese as a selectable language
+        Set Carbon as the default theme
+            Tweak the header for Carbon to use our own graphics later
+        Allow users to disable silly naughty word filter
+        Set default date format to be "Y-m-d H:i:s T"
+            which should look like "2022-03-17 14:52:00 PDT"
+        Change user registration to requires admin approval.
+            Look into the idea of letting the board do email based
+            registration, if we can find a way to get the board to do it.
+
+    Hmmmm, control panel worked and seems ok, but then it won't let you log
+    in, nor send an "i forgot my email" message, so something is stil unhappy.
+
+2022-03-19
+    I'm officially done with apache.
+
+    apt purge apache2
+    apt install php-fpm
+    apt install geoip-bin
+    apt install nginx-full nginx-doc
+
+    We'll have a day or two of downtime while I adapt all my stuff to
+    the new web server AND also move it out of wiley's home directory.
+
+2022-03-27
+    apt install libavif-bin libavif-dev
+
+2022-04-16
+    Yay, open source breaking my stuff again for no real reason....
+
+openssh (1:9.0p1-1) unstable; urgency=medium
+
+  OpenSSH 9.0 includes a number of changes that may affect existing
+  configurations:
+
+   * This release switches scp(1) from using the legacy scp/rcp protocol to
+     using the SFTP protocol by default.
+
+     Legacy scp/rcp performs wildcard expansion of remote filenames (e.g.
+     "scp host:* .") through the remote shell. This has the side effect of
+     requiring double quoting of shell meta-characters in file names
+     included on scp(1) command-lines, otherwise they could be interpreted
+     as shell commands on the remote side.
+
+     This creates one area of potential incompatibility: scp(1) when using
+     the SFTP protocol no longer requires this finicky and brittle quoting,
+     and attempts to use it may cause transfers to fail. We consider the
+     removal of the need for double-quoting shell characters in file names
+     to be a benefit and do not intend to introduce bug-compatibility for
+     legacy scp/rcp in scp(1) when using the SFTP protocol.
+
+     Another area of potential incompatibility relates to the use of remote
+     paths relative to other user's home directories, for example - "scp
+     host:~user/file /tmp". The SFTP protocol has no native way to expand a
+     ~user path. However, sftp-server(8) in OpenSSH 8.7 and later support a
+     protocol extension "expand-path@openssh.com" to support this.
+
+     In case of incompatibility, the scp(1) client may be instructed to use
+     the legacy scp/rcp using the -O flag.
+
+ -- Colin Watson <cjwatson@debian.org>  Sat, 09 Apr 2022 14:14:10 +0100
+
+2022-05-06
+    Yet more annoyances with modern Linux...
+
+    Apparently the wifi module either failed to build, wasn't auto-built,
+    or maybe wasn't even included in the latest 5.17.0-1 version of the
+    Debian kernel.  This, of course, means the wifi card was not recognized,
+    and since that is the only network connection available, no networking.
+
+    Trudge into closet, work on console, take ibuprofen for back pain...
+
+    No easy fix for this yet, but as a workaround to buy more time....
+
+    Edit /etc/default/grub:
+
+        #GRUB_DEFAULT=0
+
+        # This tells grub to use the last selected entry instead of the top one
+        GRUB_SAVEDEFAULT=true
+        GRUB_DEFAULT=saved
+
+    Commenting out the normal default of the first entry and adding those
+    lines allows you to pick one from the menu (in advanced options) and
+    it will become "sticky", and be used for subsequent unattended boots.
+
+    It probably saves the NUMBER somewhere, so if a new kernel is installed
+    or built, it will likely screw this up.
+
+    But it gives me (or Debian) time to figure out what went wrong.
+
+    Of course, you have to run update-grub after this, and then also reboot
+    once and pick the one you want.  So, two reboots later, it seems to be
+    working.
+
