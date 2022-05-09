@@ -1122,3 +1122,66 @@ openssh (1:9.0p1-1) unstable; urgency=medium
         apt-mark manual linux-image-5.16.0-6-amd64 linux-headers-5.16.0-6-amd64
             linux-headers-5.16.0-6-common linux-kbuild-5.16 r8168-dkms
 
+    ----
+
+    Just as an exercise that we hopefully won't NEED to do...
+
+    To build a kernel from scratch, since Debian no longer keeps older
+    source packages around...
+
+    apt install bzip2 xz build-essential kernel-package libncurses5-dev
+    
+    Download the kernel source from kernel.org:
+
+        https://cdn.kernel.org/pub/linux/kernel/v5.x/linux-5.16.20.tar.xz
+
+    Unpack it somewhere and go into it.
+
+        make-kpkg --rootcmd fakeroot --config menuconfig --initrd --us --uc kernel_image
+
+        --us do not sign source
+        --uc do not sign changelog
+        --initrd perform any actions necessary for a kernel loaded using initrd
+        -- rootcmd fakeroot command that provides a means of gaining super user access
+        --config menuconfig will use menuconfig as a configuration tool where default is oldconfig
+
+    I copied /boot/config-5.16.0-6-amd64 into the kernel tree as .config and
+        can then in theory do:
+
+        make-kpkg --rootcmd fakeroot  --initrd --us --uc kernel_image
+
+    This is also helpful if you get a version mismatch....
+
+        cp include/generated/utsrelease.h include/linux/
+
+    In theory, that should spit out a .deb package you can install...
+
+    ---
+    Of course those directions are out of date...
+
+    apt install libncurses5 libncurses5-dev
+    apt install fakeroot build-essential devscripts
+    #apt install build-dep linux
+
+    ---
+    also out of date, since build-dep doesn't exist.
+
+2022-05-09
+    apt-mark hold linux-image-5.16.0-6-amd64 linux-headers-5.16.0-6-amd64
+        linux-headers-5.16.0-6-common linux-kbuild-5.16
+
+    sudo cp -rp /boot/grub /root/boot-grub-backup
+
+    This should keep debian from nuking the kernel that we know works,
+    and probably prevent kernel updates.... making a copy of the raw
+    grub config files just in case it does install a new kernel and
+    messed up the grub bootloader
+
+    Actually might as well just...
+
+    sudo cp -rp /boot /root/boot
+    sudo cp -rp /etc/default/grub* /root/etc-default-grub/
+
+    Then if shit hits the fan, in theory you can copy it back into place
+    from the console and re-run grub again
+
