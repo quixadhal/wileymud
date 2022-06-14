@@ -461,6 +461,8 @@ A recent update broke python 2 by removing the soft-link to it, so...
     pg_dumpall --cluster 13/main >new_13.sql
     pg_dumpall --cluster 12/main >backup_12.sql
 
+--- Oh yeah, don't forget to apt install postgresql-plperl-13
+
     pg_dropcluster --stop 13 main
     systemctl daemon-reload
     pg_upgradecluster 12 main
@@ -472,6 +474,7 @@ A recent update broke python 2 by removing the soft-link to it, so...
     crontab -e # restore the commented out entries
 
 --- Fun huh?  Well, it seems to have worked.
+
     Probably go bzip2 the backup and keep it around for a bit...
 
 --- New stuff to prep for VM conversion back to this hardware.
@@ -1184,4 +1187,104 @@ openssh (1:9.0p1-1) unstable; urgency=medium
 
     Then if shit hits the fan, in theory you can copy it back into place
     from the console and re-run grub again
+
+2022-05-18
+    Well, it looks like someone updated the wifi driver package, as it now
+    builds correctly for 5.17.0.  In theory, we could now unhold the 5.16
+    stuff, but I'm inclined to leave it as is.
+
+    If it works as I suspect, a new kernel being installed may result in 3
+    choices in grub, since 5.16 won't be removed, even if we get more newer
+    versions.  We might want to reset grub to always pick the new one, but
+    I'm kinda curious to see what happens when a newer kernel shows up.
+
+2022-05-30
+    Forgot to include this in the HACKLOG.... this should be added to
+        /etc/ssh/sshd_config
+
+        # Date: Mon, 21 Feb 2022 07:12:36 -0800
+        #
+        # openssh (1:8.8p1-1) unstable; urgency=medium
+        #
+        #   OpenSSH 8.8 includes a number of changes that may affect existing
+        #   configurations:
+        #
+        #    * This release disables RSA signatures using the SHA-1 hash algorithm by
+        #      default. This change has been made as the SHA-1 hash algorithm is
+        #      cryptographically broken, and it is possible to create chosen-prefix
+        #      hash collisions for <USD$50K.
+        #
+        #      For most users, this change should be invisible and there is no need to
+        #      replace ssh-rsa keys. OpenSSH has supported RFC8332 RSA/SHA-256/512
+        #      signatures since release 7.2 and existing ssh-rsa keys will
+        #      automatically use the stronger algorithm where possible.
+        #
+        #      Incompatibility is more likely when connecting to older SSH
+        #      implementations that have not been upgraded or have not closely tracked
+        #      improvements in the SSH protocol. For these cases, it may be necessary
+        #      to selectively re-enable RSA/SHA1 to allow connection and/or user
+        #      authentication via the HostkeyAlgorithms and PubkeyAcceptedAlgorithms
+        #      options. For example, the following stanza in ~/.ssh/config will enable
+        #      RSA/SHA1 for host and user authentication for a single destination
+        #      host:
+        #
+        #          Host old-host
+        #              HostkeyAlgorithms +ssh-rsa
+        #              PubkeyAcceptedAlgorithms +ssh-rsa
+        #
+        #      We recommend enabling RSA/SHA1 only as a stopgap measure until legacy
+        #      implementations can be upgraded or reconfigured with another key type
+        #      (such as ECDSA or Ed25519).
+        #
+        #  -- Colin Watson <cjwatson@debian.org>  Tue, 15 Feb 2022 19:20:21 +0000
+        
+        HostkeyAlgorithms +ssh-rsa
+        PubkeyAcceptedAlgorithms +ssh-rsa
+
+    Of course, in an ideal world, we'd not want to do this, but Putty doesn't support
+    the newer RSA checks, and I don't port forward SSH anyways.
+
+2022-06-05
+    Open source annoyances for the future....
+        apt-listchanges: News
+        ---------------------
+
+        isc-dhcp-client (4.4.3-1) unstable; urgency=medium
+
+          ISC has decided to stop maintaining the client and relay parts of isc-dhcp,
+          and they will be removed after the 4.4.3 release, keeping only the server
+          component. Please, consider using an alternative for isc-dhcp-client
+          (dhclient).
+
+          More information can be found in the ISC official announcement:
+          https://www.isc.org/blogs/dhcp-client-relay-eom/
+
+         -- Santiago Ruano Rincón <santiago@debian.org>  Thu, 17 Mar 2022 16:43:03 +0100
+
+    apt install libxml-xpath-perl
+    cpan
+        install Sort::Key::Natural
+
+
+2022-06-14
+    Yay, open source!
+
+    So, from now on, the dkms module my system depends on for networking will always
+    be broken when a new kernel releases, and may (or may not) be fixed days or weeks
+    later.
+
+    This means we now have to always mark working kernels as "manual" via
+    apt-mark, so they can't be uninstalled automatically.  AND, we need to also
+    ensure grub stays in "use the last selected" mode, rather than "use the newest"
+    one.  Of course, that means to actually switch to the newer one when it DOES
+    become working, we have to walk to the machine, like in dinosaur times.
+
+    apt-mark manual
+        linux-headers-5.17.0-1-amd64
+        linux-headers-5.17.0-1-common
+        linux-image-5.17.0-1-amd64
+
+        broadcom-sta-dkms
+        dkms
+        r8168-dkms
 
