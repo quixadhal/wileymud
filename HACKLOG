@@ -1299,3 +1299,35 @@ openssh (1:9.0p1-1) unstable; urgency=medium
 
     *sigh*
 
+2022-06-21
+
+    wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb 
+    dpkg -i packages-microsoft-prod.deb
+    apt install dotnet-sdk-6.0 dotnet-sdk-5.0 dotnet-sdk-3.1
+    #apt install dotnet-runtime-6.0 dotnet-runtime-5.0 dotnet-runtime-3.1
+
+    THEN I can help the Distant Worlds 2 devs out by submitting my CPU data
+    via their little .net application.
+
+    git clone git@github.com:Tyler-IN/CpuCheck.git cpucheck_dw2
+    cd cpucheck_dw2/CpuCheck/
+    dotnet build -c Release
+    cd bin/Release/net6.0/
+    ./CpuCheck
+
+        wiley@lenin:~/cpucheck_dw2/CpuCheck/bin/Release/net6.0$ ./CpuCheck
+        .NET 6.0.6
+        RuntimeIdentifier = debian-x64
+        OSDescription = Linux 5.17.0-1-amd64 #1 SMP PREEMPT Debian 5.17.3-1 (2022-04-18)
+        ProcessorCount = 2
+        PhysicalCoreCount = 2
+        PhysicalCoreThreadProcessorAffinityMask = 0x3
+        Vendor(s) = GenuineIntel
+        CPU(s) = Intel(R) Pentium(R) CPU G630 @ 2.70GHz
+        === BEGIN CPUID SNAPSHOT BR ===
+        C1oCoJ4FdjtyUAppMdOCN+mt+CIegnv37v4apWNiYlngieffLMHiRCMIAlrXnBND23jifxSaO9HcA5rw/xJ2fV+HByAjSywMKKIQTzxKpng84PGgBwthbieQ2Mg4mlaFtAEw4X54/kDx9UdNJIBXnWjXvH+a/3vLgHjwXoAvBaAl4NJh3+Ij4UAFuMG1oMDZRQ14QqIDNMBqweig0QOKNjOov1djAAQCAhgQKJGIBAxIACRgQAGAAjCgBEAJGPUhC2hZAECMDe3ak7GAc8TkIok3V7CAq5geDvLyemTxRW+6UteFUaPMRFsUSTMbjf9UUAAAauwFuK0JaCwJ4mGNS4YkkkgiOZVkAA==
+        === END CPUID SNAPSHOT BR ===
+
+        Press any key to exit.
+
+
