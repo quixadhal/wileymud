@@ -4,6 +4,7 @@ use strict;
 use English qw( −no_match_vars );
 use HTML::TreeBuilder;
 use JSON qw(encode_json);
+use HTML::BBReverse;
 use Data::Dumper;
 $Data::Dumper::Sortkeys = 1;
 
@@ -15,6 +16,8 @@ my $profile_data = {};
 my $missing_profiles = {};
 my $posts_by_id = {};
 my $groups = {};
+
+my $output_profiles = {};
 
 sub trim {
     my $str = shift;
@@ -593,6 +596,14 @@ sub get_a_topic {
                 # Hmmmm, do I leave the div tag wrappers, or strip them?
                 $post->{post_html} =~ s/^$start_tag//;
                 $post->{post_html} =~ s/$end_tag$//;
+                my $bbr = HTML::BBReverse->new(reverse_for_edit => 0);
+                $post->{post_bbcode} = $bbr->reverse($post->{post_html});
+                $post->{post_bbcode} =~ s/<\s*?br\s*?\/?>/[br]/gi;
+                $post->{post_bbcode} =~ s/<\s*?\/br\s*?>/[\/br]/gi;
+                $post->{post_bbcode} =~ s/<\s*?hr\s*?\/?>/[hr]/gi;
+                $post->{post_bbcode} =~ s/<\s*?\/hr\s*?>/[\/hr]/gi;
+                $post->{post_bbcode} =~ s/<\s*?p\s*?\/?>/[p]/gi;
+                $post->{post_bbcode} =~ s/<\s*?\/p\s*?>/[\/p]/gi;
             } else {
                 die "No post inner found in $file\nwrapper " . $post_blob->as_HTML;
             }
@@ -713,4 +724,108 @@ process_files();
 # Then we need to map user profiles.
 #
 # Then we figure out the category/board/topic/post hierarchy and adjust that.
+
+
+# So, now that we have phpBB running, there's a user_add() funciton in it.
+# Looks lke it requires: username, group_id, user_email, and user_type.
+#       forum/includes/functions_user.php
 #
+# Required values
+#
+#       'username'                  => $user_row['username'],
+#       'username_clean'            => $username_clean,
+#       'user_password'             => (isset($user_row['user_password'])) ? $user_row['user_password'] : '',
+#       'user_email'                => strtolower($user_row['user_email']),
+#       'group_id'                  => $user_row['group_id'],
+#       'user_type'                 => $user_row['user_type'],
+#
+# Then there are lots of optional values
+#
+#       'user_permissions'          => '',
+#       'user_timezone'             => $config['board_timezone'],
+#       'user_dateformat'           => $config['default_dateformat'],
+#       'user_lang'                 => $config['default_lang'],
+#       'user_style'                => (int) $config['default_style'],
+#       'user_actkey'               => '',
+#       'user_ip'                   => '',
+#       'user_regdate'              => time(),
+#       'user_passchg'              => time(),
+#       'user_options'              => 230271,
+#       // We do not set the new flag here - registration scripts need to specify it
+#       'user_new'                  => 0,
+#
+#       'user_inactive_reason'      => 0,
+#       'user_inactive_time'        => 0,
+#       'user_lastmark'             => time(),
+#       'user_lastvisit'            => 0,
+#       'user_lastpost_time'        => 0,
+#       'user_lastpage'             => '',
+#       'user_posts'                => 0,
+#       'user_colour'               => '',
+#       'user_avatar'               => '',
+#       'user_avatar_type'          => '',
+#       'user_avatar_width'         => 0,
+#       'user_avatar_height'        => 0,
+#       'user_new_privmsg'          => 0,
+#       'user_unread_privmsg'       => 0,
+#       'user_last_privmsg'         => 0,
+#       'user_message_rules'        => 0,
+#       'user_full_folder'          => PRIVMSGS_NO_BOX,
+#       'user_emailtime'            => 0,
+#
+#       'user_notify'               => 0,
+#       'user_notify_pm'            => 1,
+#       'user_notify_type'          => NOTIFY_EMAIL,
+#       'user_allow_pm'             => 1,
+#       'user_allow_viewonline'     => 1,
+#       'user_allow_viewemail'      => 1,
+#       'user_allow_massemail'      => 1,
+#
+#       'user_sig'                  => '',
+#       'user_sig_bbcode_uid'       => '',
+#       'user_sig_bbcode_bitfield'  => '',
+#
+#       'user_form_salt'            => unique_id(),
+#
+
+# What we've harvested from the dump...
+#
+#       "age" : "49",
+#       "avatar_url" : "http://ebspso.dnsalias.org/lpmuds/images/avatar_80y.png",
+#    or "avatar_url" : "../forum/Themes/default/images/useroff.gif",
+#       "date_registered" : "N/A",
+#    or "date_registered" : "January 01, 2007, 11:29:30 am",
+#       "gender" : "Male",
+#       "id" : "10",
+#       "last_active" : "April 09, 2014, 03:37:55 pm",
+#       "local_time" : "October 15, 2021, 08:01:09 am",
+#       "location" : "UK",
+#       "name" : "Tricky",
+#       "personal_text" : "I like what I code and I code what I like!",
+#       "position" : "BFF",
+#       "posts" : "189 (N/A per day)",
+#       "url" : "index7e35.html"
+
+# So, remap....
+#       id          -> user_id (but this is returned by user_add)
+#       name        -> username
+#       position    -> group_id ?
+#       avatar_url  -> user_avatar + user_avatar_type + 
+#                      user_avatar_width + user_avatar_height
+#       last_active -> user_lastpost_time (epoch)
+#
+# And we don't appar to care about gender, birthday, personal text
+# We'll have to fudge an email address and figue otu what user_type is.
+# I also think we'll probably have to use last_active for the user_regdate.
+
+# The forum software uses a utf8_clean_string() wrapper for usernames, and it
+# keeps the text entererd for display purposes.  I suspect we have the display
+# text, since we scraped the data from the HTML side.  Thus, we may need to
+# replicate the forum's php function here...
+#
+# includes/utf/utf_tools.php
+#
+
+
+
+

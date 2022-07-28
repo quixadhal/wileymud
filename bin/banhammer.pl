@@ -13,7 +13,7 @@ use Getopt::Long;
 # You might want to omit the older (gzipped) ones if you want to let
 # people make more "mistakes" before being banned.
 #
-#[Sat Jan 12 01:09:28.335163 2019] [:error] [pid 26727] [client 193.112.73.100:56810] script '/var/www/html/cmdd.php' not found or unable to stat
+#[Sat Jan 12 01:09:28.335163 2019] [:error] [pid 26727] [client 193.112.73.100:56810] script '/hoem/www/cmdd.php' not found or unable to stat
 
 my $log_path = "/var/log/apache2";
 my $blacklist = "/etc/iptables/ipset.blacklist";

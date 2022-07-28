@@ -42,45 +42,50 @@ sub add_result {
     my $db = shift;
     my $data = shift;
 
-    my $insert_sql = $db->prepare( qq!
-        INSERT INTO speedtest (
-            local,
-            ping,
-            download,
-            upload,
-            internal_ip,
-            external_ip,
-            server_id,
-            name,
-            location,
-            country,
-            host,
-            host_ip,
-            result_url,
-            wifi
-        )
-        VALUES (timezone('US/Pacific', ?),?,?,?,?,?,?,?,?,?,?,?,?,?);
-        !);
-    my $rv = $insert_sql->execute(
-        $data->{timestamp},
-        $data->{ping}{latency},
-        sprintf("%.2f", ($data->{download}{bandwidth} * 8.0 / 1000000.0)),
-        sprintf("%.2f", ($data->{upload}{bandwidth} * 8.0 / 1000000.0)),
-        $data->{interface}{internalIp},
-        $data->{interface}{externalIp},
-        $data->{server}{id},
-        $data->{server}{name},
-        $data->{server}{location},
-        $data->{server}{country},
-        $data->{server}{host},
-        $data->{server}{ip},
-        $data->{result}{url},
-        ($data->{interface}{internalIp} eq '192.168.0.11' ? 1 : 0)
-    );
-    if($rv) {
-        printf "Added result from %s at %s\n", $data->{interface}{internalIp}, $data->{timestamp};
+    if( exists $data->{interface} and exists $data->{interface}{internalIp} ) {
+        my $insert_sql = $db->prepare( qq!
+            INSERT INTO speedtest (
+                local,
+                ping,
+                download,
+                upload,
+                internal_ip,
+                external_ip,
+                server_id,
+                name,
+                location,
+                country,
+                host,
+                host_ip,
+                result_url,
+                wifi
+            )
+            VALUES (timezone('US/Pacific', ?),?,?,?,?,?,?,?,?,?,?,?,?,?);
+            !);
+        my $rv = $insert_sql->execute(
+            $data->{timestamp},
+            $data->{ping}{latency},
+            sprintf("%.2f", ($data->{download}{bandwidth} * 8.0 / 1000000.0)),
+            sprintf("%.2f", ($data->{upload}{bandwidth} * 8.0 / 1000000.0)),
+            $data->{interface}{internalIp},
+            $data->{interface}{externalIp},
+            $data->{server}{id},
+            $data->{server}{name},
+            $data->{server}{location},
+            $data->{server}{country},
+            $data->{server}{host},
+            $data->{server}{ip},
+            $data->{result}{url},
+            ($data->{interface}{internalIp} eq '192.168.0.11' ? 1 : 0)
+        );
+        if($rv) {
+            printf "Added result from %s at %s\n", $data->{interface}{internalIp}, $data->{timestamp};
+        } else {
+            print STDERR $DBI::errstr."\n";
+        }
     } else {
-        print STDERR $DBI::errstr."\n";
+        printf "Invalid data, nothing useful to add.\n";
+        return;
     }
 }
 
@@ -129,7 +134,7 @@ sub dump_average {
 my $PG_DB           = 'speedtest';
 # These are actually symbolic links to a samba share of my windows box
 #   /share/leninbackup/speedtest*.json
-# The web services see them as /var/www/html/log/data/*
+# The web services see them as /home/www/log/data/*
 my $LINUX_FILE      = '/share/leninbackup/speedtest_wifi.json';
 my $WINDOWS_FILE    = '/share/leninbackup/speedtest.json';
 my $AVERAGE_FILE    = '/share/leninbackup/speedtest_avg.json';

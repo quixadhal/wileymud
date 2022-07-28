@@ -4,9 +4,9 @@ NOW=`date '+%Y-%m-%d %H:%M:%S %Z'`
 if [ -f ./VERSION ]; then
     VER=`head -1 ./VERSION | awk -F"\t" '{print $1}'`
     if [ -z "$VER" ]; then
-        VER=0.00
+        VER=0.000
     fi
-    NVER=`printf '%4.2f\n' $(echo "$VER + 0.01" | bc)`
+    NVER=`printf '%5.3f\n' $(echo "$VER + 0.001" | bc)`
 else
     NVER=0.01
 fi

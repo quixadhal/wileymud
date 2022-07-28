@@ -37,8 +37,8 @@ $HTML::FromANSI::Options{lf_to_crlf} = 1;
 $HTML::FromANSI::Options{show_cursor} = 0;
 $HTML::FromANSI::Options{style} = "line-height: 1.0; letter-spacing: 0; font-size: 12pt";
 
-my $filename = "/home/wiley/public_html/mudlist.json";
-my $imagedir = "/home/wiley/public_html/gfx/mud";
+my $filename = "/home/www/log/data/mudlist.json";
+my $imagedir = "/home/www/log/gfx/mud";
 my $thread_count = 60;
 my @global_tmp = ();
 my @result_set = ();

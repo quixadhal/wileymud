@@ -24,7 +24,7 @@ use JSON qw(encode_json);
 #use Parallel::ForkManager 0.7.6;
 use Time::HiRes qw(time);
 
-my $LOG_DIR         = '/var/www/html/log/data';
+my $LOG_DIR         = '/home/www/log/data';
 my $PG_DB           = 'i3log';
 
 my $JS_DATE_CACHE       = "$LOG_DIR/log_navigation_dates.js";

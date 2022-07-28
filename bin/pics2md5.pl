@@ -13,11 +13,27 @@ $nomove = 1 if defined $arg and $arg =~ /--(nomove|nodir)/;
 
 opendir DP, '.' or die "Can't opendir '.' $!";
 my @pics = grep { /\.(jpeg|jpg|png|gif|webp)$/i && -f "./$_" } readdir DP;
+rewinddir DP;
+my @avif_pics = grep { /\.avif$/i && -f "./$_" } readdir DP;
 closedir DP;
+
+foreach my $filename (@avif_pics) {
+    next if ! -f $filename;
+    #my $outfile = "$filename.png";
+    my $outfile = "$filename.jpg";
+    next if -f "$outfile";
+    #open(FP, "-|", "/usr/bin/avifdec", "--png-compress", "9", "$filename", "$outfile") or die "Can't open $outfile $!";
+    open(FP, "-|", "/usr/bin/avifdec", "--quality", "90", "$filename", "$outfile") or die "Can't open $outfile $!";
+    my $junk = <FP>;
+    close FP;
+    next if ! -f "$outfile";
+    push @pics, ("$outfile");
+    unlink "$filename";
+}
 
 foreach my $filename (@pics) {
     next if ! -f $filename;
-    open(FP, "-|", "md5sum", "--", $filename) or die "Can't open $filename $!";
+    open(FP, "-|", "/usr/bin/md5sum", "--", $filename) or die "Can't open $filename $!";
     my $md5 = <FP>;
     close FP;
 
