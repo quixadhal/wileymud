@@ -26,6 +26,14 @@ sub import_json {
     return $object;
 }
 
+sub is_wifi {
+    my $ip = shift;
+
+    return 1 if $ip eq '192.168.0.11';
+    return 1 if $ip eq '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d';
+    return undef;
+}
+
 sub check_result_exists {
     my $db = shift;
     my $data = shift;
@@ -76,7 +84,7 @@ sub add_result {
             $data->{server}{host},
             $data->{server}{ip},
             $data->{result}{url},
-            ($data->{interface}{internalIp} eq '192.168.0.11' ? 1 : 0)
+            is_wifi($data->{interface}{internalIp}) ? 1 : 0
         );
         if($rv) {
             printf "Added result from %s at %s\n", $data->{interface}{internalIp}, $data->{timestamp};
@@ -113,14 +121,21 @@ sub dump_average {
         FROM        speedtest
         WHERE       local BETWEEN now() - '1 week'::interval AND now()
         GROUP BY    internal_ip
-        HAVING internal_ip IN ('192.168.0.10', '192.168.0.11')
+        HAVING internal_ip IN (
+            '192.168.0.10',
+            '192.168.0.11',
+            '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d',
+            '2604:4080:1018:8080:79de:a7fe:71ba:38a0'
+            )
         ;!, { Slice => {} } );
     if($result) {
         my $data = {};
         foreach my $row (@$result) {
             $row->{wire} = '???';
             $row->{wire} = 'wired'  if $row->{internal_ip} eq '192.168.0.10';
+            $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:79de:a7fe:71ba:38a0';
             $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '192.168.0.11';
+            $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d';
             $data->{$row->{internal_ip}} = $row;
         }
         my $json_data = encode_json($data);
