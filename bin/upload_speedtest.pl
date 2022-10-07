@@ -7,6 +7,14 @@ use English qw( −no_match_vars );
 use DBI;
 use JSON qw(encode_json decode_json);
 
+my @ipv6_addresses = qw(
+    '2604:4080:1018:8080:4ecc:6aff:fe4d:8803'
+
+    '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d'
+    '2604:4080:1018:8080:79de:a7fe:71ba:38a0'
+    '2604:4080:1018:8080:2814:d4fd:7f02:ee9'
+);
+
 sub open_postgres_db {
     my $DB_NAME = shift;
 
@@ -31,6 +39,10 @@ sub is_wifi {
 
     return 1 if $ip eq '192.168.0.11';
     return 1 if $ip eq '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d';
+    return 1 if $ip eq '2604:4080:1018:8080:2814:d4fd:7f02:ee9';
+
+    # Current at 5:39PM 2022-10-04
+    return 1 if $ip eq '2604:4080:1018:8080:4ecc:6aff:fe4d:8803';
     return undef;
 }
 
@@ -74,7 +86,10 @@ sub add_result {
             $data->{timestamp},
             $data->{ping}{latency},
             sprintf("%.2f", ($data->{download}{bandwidth} * 8.0 / 1000000.0)),
-            sprintf("%.2f", ($data->{upload}{bandwidth} * 8.0 / 1000000.0)),
+            ((defined $data->{upload}{bandwidth}) and ($data->{upload}{bandwidth} > 0.0))
+                ? sprintf("%.2f", ($data->{upload}{bandwidth} * 8.0 / 1000000.0))
+                : undef
+                ,
             $data->{interface}{internalIp},
             $data->{interface}{externalIp},
             $data->{server}{id},
@@ -125,7 +140,9 @@ sub dump_average {
             '192.168.0.10',
             '192.168.0.11',
             '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d',
-            '2604:4080:1018:8080:79de:a7fe:71ba:38a0'
+            '2604:4080:1018:8080:79de:a7fe:71ba:38a0',
+            '2604:4080:1018:8080:2814:d4fd:7f02:ee9',
+            '2604:4080:1018:8080:4ecc:6aff:fe4d:8803'
             )
         ;!, { Slice => {} } );
     if($result) {
@@ -134,6 +151,8 @@ sub dump_average {
             $row->{wire} = '???';
             $row->{wire} = 'wired'  if $row->{internal_ip} eq '192.168.0.10';
             $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:79de:a7fe:71ba:38a0';
+            $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:2814:d4fd:7f02:ee9';
+            $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:4ecc:6aff:fe4d:8803';
             $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '192.168.0.11';
             $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d';
             $data->{$row->{internal_ip}} = $row;
