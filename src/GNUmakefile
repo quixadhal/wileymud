@@ -31,6 +31,7 @@ ID_LIB		= -L$(IDENTDIR) -lident
 PCRE_LIB	= -lpcre
 IMC_INC		= #-DIMC -DIMCWILEY
 I3_INC		= -DI3
+OLD_MD5		= -DOPENSSL_API_COMPAT=10101
 
 HOSTTYPE	= $(shell arch)
 ifeq "$(HOSTTYPE)" "x86_64"
@@ -63,7 +64,7 @@ EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 DYN_FLAG	= -rdynamic
 
-INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC)
+INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC) $(OLD_MD5)
 LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
 EXTRALIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 

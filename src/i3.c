@@ -15513,8 +15513,144 @@ void save_i3_config(void)
     PQclear(res);
 }
 
-void load_i3_config(void)
+void load_i3_config(int mudport)
 {
+    time_t file_timestamp = -1;
+    time_t sql_timestamp = -1;
+
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT extract('epoch' FROM updated) AS updated, "
+                // General config values
+                "    thismud, "
+                "    autoconnect::INTEGER, "
+                "    telnet, "
+                "    web, "
+                "    adminemail, "
+                "    openstatus, "
+                "    mudtype, "
+                "    mudlib, "
+                "    minlevel, "
+                "    immlevel, "
+                "    adminlevel, "
+                "    implevel, "
+                // Services, true means supported
+                "    tell::INTEGER, "
+                "    beep::INTEGER, "
+                "    emoteto::INTEGER, "
+                "    who::INTEGER, "
+                "    finger::INTEGER, "
+                "    locate::INTEGER, "
+                "    channel::INTEGER, "
+                "    news::INTEGER, "
+                "    mail::INTEGER, "
+                "    file::INTEGER, "
+                "    auth::INTEGER, "
+                "    ucache::INTEGER, "
+                // Port numbers, 0 means not supported
+                "    smtp, "
+                "    ftp, "
+                "    nntp, "
+                "    http, "
+                "    pop3, "
+                "    rcp, "
+                "    amrcp "
+                " FROM i3_config ORDER BY updated DESC LIMIT 1;";
+    int rows = 0;
+    int columns = 0;
+
+    const char *sql_time = "SELECT extract('epoch' FROM updated) AS updated "
+        "FROM i3_config "
+        "WHERE updated = ( "
+        "   SELECT MAX(updated) FROM i3_config "
+        ") "
+        "LIMIT 1;";
+    // overkill, we really should never have more than 1 row anyways...
+
+    file_timestamp = file_date(I3_CONFIG_FILE);
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql_time);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_error("i3_config table has no data: %s", PQerrorMessage(db_wileymud.dbc));
+        //PQclear(res);
+        //proper_exit(MUD_HALT);
+    }
+    else
+    {
+        rows = PQntuples(res);
+        columns = PQnfields(res);
+        if (rows > 0 && columns > 0)
+        {
+            sql_timestamp = (time_t)atoi(PQgetvalue(res, 0, 0));
+        }
+    }
+    PQclear(res);
+
+    // At this point, we know the state.  If both are -1, we bail entirely.
+    // If sql is -1, we must insert the file data
+    // If file is -1, we just use the sql
+    // If both are numbers, we only used the file if it's newer, and then
+    // update the sql to match.
+    if (file_timestamp == -1 && sql_timestamp == -1)
+    {
+        log_fatal("No I3 configuraitno data available!");
+        proper_exit(MUD_HALT);
+    }
+
+    if (file_timestamp > sql_timestamp)
+    {
+        // load via the old code
+        I3_read_config(mudport);
+        save_i3_config();
+    }
+    else
+    {
+        log_boot("  Using I3 configuration from SQL database.");
+    }
+
+
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot get i3 settings from i3_config table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+
+    rows = PQntuples(res);
+    columns = PQnfields(res);
+    if (rows > 0 && columns > 31)
+    {
+        log_boot("  Loading i3 configuration data from SQL database.");
+    }
+    else
+    {
+        log_fatal("Invalid result set from i3_config table!");
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
+    if (this_i3mud != NULL)
+        destroy_I3_mud(this_i3mud);
+    this_i3mud = NULL;
+
+    this_i3mud = create_I3_mud();
+    this_i3mud->player_port = mudport; /* Passed in from the mud's startup script */
+    // follow I3_fread_config_file() for structure format
+
+    // After reading the config file, we ALSO read the I3_PASSWORD_FILE
+    // which has 3 integers, this_i3mud->password, mudlist_id, chanlist_id.
+
+    //the_rent.updated = (time_t)atol(PQgetvalue(res, 0, 0));
+    //the_rent.enabled = (int)atoi(PQgetvalue(res, 0, 1));
+    //the_rent.factor = (float)atof(PQgetvalue(res, 0, 2));
+    //strlcpy(the_rent.set_by, PQgetvalue(res, 0, 3), MAX_INPUT_LENGTH);
+
 }
 
 void I3_saveconfig(void)
@@ -21847,11 +21983,12 @@ void i3_daily_summary()
     char *target_channel_list[] = {
         (char *)"intercre",
         (char *)"dchat",
+        (char *)"godwars",
         (char *)"intergossip",
         (char *)"dwchat",
         (char *)"ds"
     };
-    int target_channel_count = 5;
+    int target_channel_count = 6;
     char *target_channel = target_channel_list[0];
 
     const char *sql = "SELECT ( "

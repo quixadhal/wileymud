@@ -400,6 +400,7 @@ void I3_readSpeaker(FILE *fp);
 void I3_loadSpeakers(void);
 char *color_speaker(const char *speaker);
 void I3_saverouters(void);
+bool I3_read_config(int mudport);
 
 #define I3_PINKFISH_NULL 0
 #define I3_PINKFISH_ANSI 1

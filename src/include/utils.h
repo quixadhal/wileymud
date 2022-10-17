@@ -6,6 +6,8 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+//#define OPENSSL_API_COMPAT "10101" // 3.0 and upwards whines about MD5_ stuff now.
+
 #define GUARD_VNUM 3060
 #define GUARD2_VNUM 3069
 

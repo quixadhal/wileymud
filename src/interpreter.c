@@ -1333,6 +1333,16 @@ void nanny(struct descriptor_data *d, char *arg)
 #endif
 
         log_info("Loading user: %s", d->usr_name);
+
+        // To check 2FA and not corrupt OLD binary save files,
+        // we could load in the file to get the password data
+        // and if that works, check for the existence of a .2fa
+        // file that could be kept right alongside the character
+        // file.  If it exists, load that and do the checks, if
+        // not, resume the normal path.
+        // This could also be strictly an SQL thing, as the game
+        // currently requires SQL anyways...
+
         /*  GET_NAME(d->character) = (char *)strdup(d->usr_name); */
         if (fread_char(d->usr_name, &tmp_store, d->character) > -1)
         {
@@ -1401,6 +1411,12 @@ void nanny(struct descriptor_data *d, char *arg)
             log_info("Allowing entry using unencrypted password.");
             strcpy(d->pwd, crypt(d->oldpwd, cryptsalt));
         }
+        // At this point, we could check 2FA if we wanted...
+        // the secret has to already be stored on the character objct and we
+        // have to accept input for the trial password.
+        // So if 2FA exists for this character, emit a prompt and go to the
+        // new state for that.... eventually ending up in the motd state if it
+        // succeeds.
         if (check_reconnect(d))
             return;
         log_auth(d->character, "WELCOME BACK %s (%s@%s/%s)!", GET_NAME(d->character), d->username, host_name, ip_addr);

@@ -285,4 +285,7 @@ void fread_to_eol(FILE *fp);
 int fread_char(char *name, struct char_file_u *char_element, struct char_data *xch);
 char *new_fread_string(FILE *fp);
 
+// maybe return an array of these?  struct obj_data *read_object(int nr, int type);
+void load_objects(void);
+
 #endif

@@ -216,6 +216,18 @@ void load_db(void)
     log_boot("- Loading pose messages");
     boot_pose_messages();
 
+    // Because of 1992, mobiles and objects are not actually
+    // fully read in here, instead, we generate indexes (byte offset)
+    // and whenever a new mob or obj is cloned, we actually read it
+    // in from the file AS we make the new copy...
+    //
+    // So, we will need two parts going forward.
+    //
+    // load_mobiles() and load_objects() will pull the templates
+    // from the database, and read_mobile() and read_object() will
+    // now initialize from those in-memory copies rather than using
+    // the files.
+
     log_boot("- Booting mobiles");
     if (!(mob_f = fopen(MOB_FILE, "r")))
     {
@@ -228,6 +240,22 @@ void load_db(void)
         log_fatal("boot objects");
         proper_exit(MUD_HALT);
     }
+
+
+    // When booting the universe, the zone table is read in first.
+    // This includes the struct zone_data elements in zone_table,
+    // and the struct reset_com elements within each zone entry.
+    //
+    // After loading, rooms are also loaded, THEN we walk the objects
+    // and mobiles to generate indecies, and that's where we'll need
+    // to loop to actually load them all as templates.
+    //
+    // Finally, we renumber things, assign the function pointers,
+    // and do zone resets to prep the world for entry.
+    //
+    // We need to save the file data to SQL after this stuff is done,
+    // but before the zone resets are actually run.
+
     log_boot("- Booting zones");
     boot_zones();
     log_boot("- Booting rooms");
@@ -3230,3 +3258,250 @@ int fread_char(char *name, struct char_file_u *ch, struct char_data *xch)
         }
     }
 }
+
+/*
+ 
+    CREATE TABLE zone_reset_modes (
+        id          INTEGER PRIMARY KEY NOT NULL,
+        name        TEXT NOT NULL
+    );
+    INSERT INTO zone_reset_modes (id, name) VALUES (0, 'None');
+    INSERT INTO zone_reset_modes (id, name) VALUES (1, 'Only if no players are present');
+    INSERT INTO zone_reset_modes (id, name) VALUES (2, 'Always');
+
+    CREATE TABLE zones (
+        created     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+        id          INTEGER PRIMARY KEY NOT NULL,
+        name        TEXT NOT NULL,
+        lifespan    INTEGER,    -- time between resets in minutes
+        age         INTEGER,    -- age of zone in minutes (time since last reset)
+        top         INTEGER,    -- upper limit for room vnums here
+        bottom      INTEGER,    -- lower limit for room vnums (usually previous top + 1)
+        reset_mode  INTEGER REFERENCES zone_reset_modes(id) -- conditions for reset
+    );
+
+    CREATE TABLE zone_resets (
+        created     TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+        id          INTEGER PRIMARY KEY NOT NULL,
+        command     TEXT NOT NULL, -- current command  M/O/L/G/P/G/E/D
+        if_flag     BOOLEAN, -- if true, only run if preceding ran
+        -- These should properly be replaced by discrete values, not
+        -- generic arguments... expand this later
+        arg1        TEXT,
+        arg2        TEXT,
+        arg3        TEXT
+    );
+
+    When loading resets, the game has to keep track of the last successful
+    room/mob/obj loaded so it can remember it for future reset commands that
+    refer back to it.
+
+    For example, the GIVE reset command load an object and then puts it in
+    the inventory of the mob most recently loaded.
+
+    We also use this for the LEAD command, which loads a new mobile but
+    sets it to follow the last one NOT loaded via a LEAD reset command, so
+    LastMob is the new one, but LeaderMob is the last one loaded via
+    the normal MOBILE command.
+
+    In trying to normalize this for SQL, let's try to adopt a few themes.
+
+    SOURCE_MOBILE/ROOM/OBJECT means the thing we're going to load or instance.
+    TARGET_MOB/ROOM/OBJ means the thing they're being loaded into.
+    LED_BY means the leader of the new mob being loaded, NULL if none.
+    EQUIP_POS is the equipment slot to put a newly loaded object into, NULL if goes to inventory.
+    DOOR_STATE is for doors, saying what they should be set to when the reset runs.
+    HATE_TYPE and HATE_VALUE add a particular fear/hate flag to a mobile, making them flee or aggro on other mobs.
+
+    'M' -   if (mob_index[ZCMD.arg1].number < ZCMD.arg2)
+                mob = read_mobile(ZCMD.arg1, REAL);
+                char_to_room(mob, ZCMD.arg3);
+                last_mob_loaded = mob;
+    'L' -   if (mob_index[ZCMD.arg1].number < ZCMD.arg2)
+                mob = read_mobile(ZCMD.arg1, REAL);
+                char_to_room(mob, last_mob_loaded->in_room);
+                add_follower(mob, last_mob_loaded);
+                SET_BIT(mob->specials.affected_by, AFF_CHARM);
+                SET_BIT(mob->specials.act, ACT_SENTINEL);
+    'O'     if (obj_index[ZCMD.arg1].number < ZCMD.arg2)
+                if (ZCMD.arg3 >= 0 && ((rp = real_roomp(ZCMD.arg3)) != NULL))
+                    if (!get_obj_in_list_num(ZCMD.arg1, rp->contents) && (obj = read_object(ZCMD.arg1, REAL)))
+                        obj_to_room(obj, ZCMD.arg3);
+                else if ((obj = read_object(ZCMD.arg1, REAL)))
+                    // error target room doesn't exist
+                    extract_obj(obj);
+    'P'     if (obj_index[ZCMD.arg1].number < ZCMD.arg2)
+                obj = read_object(ZCMD.arg1, REAL);
+                obj_to = get_obj_num(ZCMD.arg3);
+                if (obj_to)
+                    obj_to_obj(obj, obj_to);
+    'G'     if (obj_index[ZCMD.arg1].number < ZCMD.arg2)
+                obj = read_object(ZCMD.arg1, REAL);
+                if(obj)
+                    obj_to_char(obj, mob);
+    'H'     AddHatred(mob, ZCMD.arg1, ZCMD.arg2);
+    'F'     AddFears(mob, ZCMD.arg1, ZCMD.arg2);
+    'E'     if (obj_index[ZCMD.arg1].number < ZCMD.arg2)
+            obj = read_object(ZCMD.arg1, REAL);
+            if (obj)
+                if (ZCMD.arg3 > WIELD_TWOH)
+                    error
+                equip_char(mob, obj, ZCMD.arg3);
+    'D'     rp = real_roomp(ZCMD.arg1);
+            if (rp && rp->dir_option[ZCMD.arg2])
+                switch (ZCMD.arg3)
+                case 0:
+                    REMOVE_BIT(rp->dir_option[ZCMD.arg2]->exit_info, EX_LOCKED);
+                    REMOVE_BIT(rp->dir_option[ZCMD.arg2]->exit_info, EX_CLOSED);
+                case 1:
+                    SET_BIT(rp->dir_option[ZCMD.arg2]->exit_info, EX_CLOSED);
+                    REMOVE_BIT(rp->dir_option[ZCMD.arg2]->exit_info, EX_LOCKED);
+                case 2:
+                    SET_BIT(rp->dir_option[ZCMD.arg2]->exit_info, EX_LOCKED);
+                    SET_BIT(rp->dir_option[ZCMD.arg2]->exit_info, EX_CLOSED);
+ */
+
+// This loads the zone headers themselves, but the resets for each
+// zone are loaded later, after the rest of the game data, so that
+// we can have foreign keys to ensure resets always refer to actual
+// working rooms/objects/mobiles.  See load_zone_resets().
+void load_zones(void)
+{
+    static char tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    time_t file_timestamp = -1;
+    time_t sql_timestamp = -1;
+
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT extract(EPOCH from max(updated)) AS the_time "
+                      "FROM   zones;";
+    //const char *param_val[2];
+    //int param_len[2];
+    //int param_bin[2] = {0, 0};
+    int rows = 0;
+    int columns = 0;
+
+    file_timestamp = file_date(ZONE_FILE);
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_i3log.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_error("Cannot load zones from database: %s", PQerrorMessage(db_wileymud.dbc));
+        // PQclear(res);
+        // proper_exit(MUD_HALT);
+    }
+    else
+    {
+        rows = PQntuples(res);
+        if (rows > 0)
+        {
+            columns = PQnfields(res);
+            if (columns > 0)
+            {
+                // The PQgetvalue() API will return the integer we expect as a
+                // NULL terminated string, so we can convert it with atoi().
+                sql_timestamp = (time_t)atoi(PQgetvalue(res, 0, 0));
+                strlcpy(tmp, PQgetvalue(res, 0, 1), MAX_STRING_LENGTH);
+            }
+        }
+    }
+    PQclear(res);
+
+    // OK, at this point, we have either -1 or a valid timestamp in both
+    // variables.  If the SQL entry didn't exist but the file did, the
+    // file date > -1, so upload the file contents... likewise if the file
+    // is newer than the SQL.
+    //
+    // If the file didn't exist, but the SQL did, that's fine... file <= sql.
+    //
+    // If the file didn't exist AND the SQL also didn't exist, we have a problem.
+    if (file_timestamp == -1 && sql_timestamp == -1)
+    {
+        log_fatal("No zone data available for %s!", ZONE_FILE);
+        proper_exit(MUD_HALT);
+    }
+
+    if (file_timestamp > sql_timestamp)
+    {
+        // OK, the file is actually newer than the SQL (or the SQL didn't exist)
+        // So, we want to upload the newer version.
+        log_boot("  Updating zone data from %s.", ZONE_FILE);
+    }
+    else
+    {
+        log_boot("  Using zone data from SQL database.");
+    }
+}
+
+void load_objects(void)
+{
+    static char tmp[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    time_t file_timestamp = -1;
+    time_t sql_timestamp = -1;
+
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "SELECT extract(EPOCH from max(updated)) AS the_time "
+                      "FROM   object_templates;";
+    //const char *param_val[2];
+    //int param_len[2];
+    //int param_bin[2] = {0, 0};
+    int rows = 0;
+    int columns = 0;
+
+    file_timestamp = file_date(OBJ_FILE);
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_i3log.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_error("Cannot load object_templates from database: %s", PQerrorMessage(db_wileymud.dbc));
+        // PQclear(res);
+        // proper_exit(MUD_HALT);
+    }
+    else
+    {
+        rows = PQntuples(res);
+        if (rows > 0)
+        {
+            columns = PQnfields(res);
+            if (columns > 0)
+            {
+                // The PQgetvalue() API will return the integer we expect as a
+                // NULL terminated string, so we can convert it with atoi().
+                sql_timestamp = (time_t)atoi(PQgetvalue(res, 0, 0));
+                strlcpy(tmp, PQgetvalue(res, 0, 1), MAX_STRING_LENGTH);
+            }
+        }
+    }
+    PQclear(res);
+
+    // OK, at this point, we have either -1 or a valid timestamp in both
+    // variables.  If the SQL entry didn't exist but the file did, the
+    // file date > -1, so upload the file contents... likewise if the file
+    // is newer than the SQL.
+    //
+    // If the file didn't exist, but the SQL did, that's fine... file <= sql.
+    //
+    // If the file didn't exist AND the SQL also didn't exist, we have a problem.
+    if (file_timestamp == -1 && sql_timestamp == -1)
+    {
+        log_fatal("No object data available for %s!", OBJ_FILE);
+        proper_exit(MUD_HALT);
+    }
+
+    if (file_timestamp > sql_timestamp)
+    {
+        // OK, the file is actually newer than the SQL (or the SQL didn't exist)
+        // So, we want to upload the newer version.
+        log_boot("  Updating object_templates from %s.", OBJ_FILE);
+    }
+    else
+    {
+        log_boot("  Using object_templates from SQL database.");
+    }
+}
+
