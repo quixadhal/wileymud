@@ -33,6 +33,8 @@ set softtabstop=4
 au! BufRead,BufNewFile *.pgc set filetype=esqlc
 autocmd BufNewFile,BufRead /home/quixadhal/dw/lib/* set filetype=lpc
 autocmd BufNewFile,BufRead /home/quixadhal/sky/lib/* set filetype=lpc
+autocmd BufNewFile,BufRead /home/wiley/lpc/lima/lib/* set filetype=lpc
+autocmd BufNewFile,BufRead /home/wiley/lpc/oldlima/lib/* set filetype=lpc
 
 "set statusline=%F%m%r%h%w\ [TYPE=%Y\ %{&ff}]\ [%l/%L\ (%p%%)]
 

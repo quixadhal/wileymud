@@ -1331,3 +1331,112 @@ openssh (1:9.0p1-1) unstable; urgency=medium
         Press any key to exit.
 
 
+2022-07-05
+    apt install smartmontools
+
+2022-07-10
+    cpan install Devel::Modlist
+        This can be used like perl -d:Modlist script1 script2...
+        In theory, it will spit out all the modules required.
+
+    cpan install Module::ExtractUse
+        This is another one that does static analysis, rather than
+        catching it on load.
+
+2022-08-26
+    Installed new /etc/adduser.conf file with update and tweaked it to be
+
+        # The USERGROUPS variable can be either "yes" or "no".  If "yes" each
+        # created user will be given their own group to use as a default.  If
+        # "no", each created user get the primary group defined below as
+        # USERS_GROUP or USERS_GID.
+        # Default: USERGROUPS=yes
+        #USERGROUPS=yes
+        USERGROUPS=no
+
+        # Newly created users get this group as primary group if USERGROUPS
+        # "no", and as a supplemental group if USERGROUPS is "yes".
+        # Set one of the variables to reference the group. Don't set both.
+        # Default: USERS_GID=undefined, USERS_GROUP=undefined
+        USERS_GID=100
+        USERS_GROUP=users
+
+2022-10-22
+        policykit-1 (121+compat0.1-2) experimental; urgency=medium
+
+          This version of polkit changes the syntax used for local policy rules:
+          it is now the same JavaScript-based format used by the upstream polkit
+          project and by other Linux distributions.
+
+          System administrators can override the default security policy by
+          installing local policy overrides into /etc/polkit-1/rules.d/*.rules,
+          which can either make the policy more restrictive or more
+          permissive. Some sample policy rules can be found in the
+          /usr/share/doc/polkitd/examples directory. Please see polkit(8) for
+          more details.
+
+          Some Debian packages include security policy overrides, typically to
+          allow members of the sudo group to carry out limited administrative
+          actions without re-authenticating. These packages should install their
+          rules as /usr/share/polkit-1/rules.d/*.rules. Typical examples can be
+          found in packages like flatpak, network-manager and systemd.
+
+          Older Debian releases used the "local authority" rules format from
+          upstream version 0.105 (.pkla files with an .desktop-like syntax,
+          installed into subdirectories of /etc/polkit-1/localauthority
+          or /var/lib/polkit-1/localauthority). The polkitd-pkla package
+          provides compatibility with these files: if it is installed, they
+          will be processed at a higher priority than most .rules files. If the
+          polkitd-pkla package is removed, .pkla files will no longer be used.
+
+         -- Simon McVittie <smcv@debian.org>  Wed, 14 Sep 2022 21:33:22 +0100
+
+        I see a new version of postgresql too, so the upgradecluster dance
+        will have to be invoked again...
+
+        I also see apache2 noted, but I thought I removed all of that.. must
+        have missed one bit.
+
+    ----
+    apt install postgresql-plperl-15
+
+    systemctl stop wileymud
+
+    pg_dumpall --cluster 15/main >new_15.sql
+    pg_dumpall --cluster 14/main >backup_14.sql
+
+    pg_dropcluster --stop 15 main
+    systemctl daemon-reload
+    pg_upgradecluster 14 main
+    systemctl daemon-reload
+
+    systemctl start wileymud
+    xz -9v backup_14.sql
+    ----
+
+    OK, reboot for all the other changes now...
+
+2022-11-01
+    fortune is no longer installed by default, so sad...
+
+    apt install fortune-mod fortunes fortunes-off
+        fortunes-bofh-excuses
+        libfortune-perl cookietool
+
+2022-11-04
+    apt install python3-jsonrpclib-pelix
+
+2022-11-18
+    A quick fix to the new warnings about postgres version mismatches...
+
+        for i in ack forum i3log logfile pi3 ping py3 rule speedtest
+            test wileymud; do
+            echo alter database $i refresh collation version | psql $i; done
+
+    Also do this for postgres and template1 as the postgres user.
+
+2022-12-09
+    apt install rust-all cargo-doc rust-doc rust-src libstd-rust-dev-wasm32
+        libstd-rust-dev-windows gdb-doc lld-14 gcc-10-locales
+        fonts-mathjax-extras fonts-stix libjs-mathjax-doc
+
