@@ -15,8 +15,9 @@ use HTTP::Request::Common qw(POST);
 use HTML::Entities;
 use LWP::UserAgent;
 use URI;
-#use WWW::Shorten::TinyURL qw(makeashorterlink);
-use WWW::Shorten::Bitly;
+use WWW::Shorten::TinyURL qw(makeashorterlink);
+#use WWW::Shorten::Bitly;
+#Bitly has adopted a new API and no longer accepts the one this CPAN module uses
 use DBI;
 use JSON;
 
@@ -723,12 +724,12 @@ sub get_tinyurl {
     eval {
         local $SIG{ALRM} = sub { die "Exceeded Timeout of $timeout for $url\n" };
         alarm $timeout;
-        #$result = makeashorterlink($check);
-        my $token = read_bitly_api();
-        my $bitly = WWW::Shorten::Bitly->new(
-            access_token => $token,
-        );
-        $result = $bitly->shorten(longUrl => $check);
+        $result = makeashorterlink($check);
+        #my $token = read_bitly_api();
+        #my $bitly = WWW::Shorten::Bitly->new(
+        #    access_token => $token,
+        #);
+        #$result = $bitly->shorten(longUrl => $check);
         print STDERR timestamp() . " ShortURL = " . Dumper($result) . "\n" if defined $do_debug;
         $result = $result->{url} if defined $result;
         alarm 0;
