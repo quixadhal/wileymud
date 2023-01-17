@@ -1440,3 +1440,137 @@ openssh (1:9.0p1-1) unstable; urgency=medium
         libstd-rust-dev-windows gdb-doc lld-14 gcc-10-locales
         fonts-mathjax-extras fonts-stix libjs-mathjax-doc
 
+2022-12-29
+    apt install build-essential llvm clang libclang-dev cmake
+        libssl-dev pkg-config python3
+
+2023-01-16
+    anacron (2.3-36) unstable; urgency=medium
+
+          If you run Debian testing/unstable and ever installed anacron 2.3-33 on
+          a systemd based system, then anacron will no longer be enabled and the
+          daily/weekly/monthly cron jobs will not be run until it is.
+
+          Since not all cron jobs have migrated to systemd timers, Debian
+          testing/unstable systems with systemd and anacron may be missing
+          some essential cron jobs, such as making backups of aptitude state.
+
+          To see if a system is affected you can use these commands:
+
+            zgrep -i anacron.*2.3-33 /var/log/apt/history.log*
+            systemctl status anacron.service anacron.timer
+
+          To re-enable anacron you can use these commands:
+
+            sudo systemctl enable anacron.service anacron.timer
+            sudo systemctl start anacron.service anacron.timer
+
+    *sigh*
+
+2023-01-17
+    In my ongoing effort to learn stuff and try to do things "the right way"
+    instead of the simple and easy way that takes 10 seconds and has worked
+    fine for the last 30 years... I delved into the Debian "alternatives" system.
+
+    My goal, make python3 an alternative-aware thing so I can swtich the symlinks
+    that the OS has in /usr/bin back and forth between 3.10 and 3.11 at will.
+
+    After an hour of poking at the internet and finding lots of semi-helpful
+    examples, I finally came up with this:
+
+        #!/bin/bash
+
+        if [ $UID -ne 0 ]; then
+            echo "You must be ROOT to do this!"
+            exit 1
+        fi
+
+        function doit() {
+            cd /usr/bin
+            for file in /usr/bin/python3.*; do
+                if [ -f $file ]; then
+                    if [ ! -L $file ]; then
+                        c_file="$file-config"
+
+                        filename="python3"
+                        c_filename="python3-config"
+                        #filename=`basename $file`
+                        #c_filename="$filename-config"
+                        update-alternatives \
+                            --install /usr/bin/python3 $filename $file 9001 \
+                            --slave /usr/bin/python3-config $c_filename $c_file
+                        update-alternatives --set $filename $file
+                        echo "$filename set to $file"
+                    fi
+                fi
+            done
+        }
+
+        function undo() {
+            cd /usr/bin
+            update-alternatives --remove-all python3
+            update-alternatives --remove-all python3.10
+            ln -sf python3.10 python3
+            ln -sf python3.10-config python3-config
+        }
+
+        if [ -n "$1" -a "$1" == "doit" ]; then
+            doit
+        elif [ -n "$1" -a "$1" == "undo" ]; then 
+            undo
+        else
+            echo "doit or undoit"
+        fi
+
+    Not sure why people can't write clear and simple man pages anymore.  The usage
+    is simple once you understand it...
+
+        update-alternatives --install <link> <name> <path> <priority>
+                            --slave <link> <name> <path>
+
+            <link>      The thing you are going to use as the symlink
+            <name>      The name of the <link>, NOT of the specific option
+            <path>      The TARGET file for that specific option
+            <priority>  Arbitary number used for auto mode
+
+        --slave simply allows you to have multiple symlinks manipulated at once.
+
+    This was confusing because the man pages and half the examples made it seem
+    like <name> was supposed to be the the precise version.  In this case, my
+    system has python 3.10 and 3.11 installed, but if you follow most of the
+    examples, you end up trying to call both of them 3.10 which fails miserably.
+
+    When finally done right, --config python3 results in:
+
+        root@lenin:/home/wiley# update-alternatives --config python3
+        There are 2 choices for the alternative python3 (providing /usr/bin/python3).
+
+          Selection    Path                 Priority   Status
+        ------------------------------------------------------------
+          0            /usr/bin/python3.11   9001      auto mode
+          1            /usr/bin/python3.10   9001      manual mode
+        * 2            /usr/bin/python3.11   9001      manual mode
+
+        Press <enter> to keep the current choice[*], or type selection number:
+
+    and the corresponding symlinks:
+
+        root@lenin:/home/wiley# ls -al /usr/bin/python3*
+              25 Jan 17 02:23 /usr/bin/python3 -> /etc/alternatives/python3
+         5859432 Dec  7 05:47 /usr/bin/python3.10
+              34 Dec  7 05:47 /usr/bin/python3.10-config -> x86_64-linux-gnu-python3.10-config
+         6836184 Dec 31 02:23 /usr/bin/python3.11
+              34 Dec 31 02:23 /usr/bin/python3.11-config -> x86_64-linux-gnu-python3.11-config
+              32 Jan 17 02:23 /usr/bin/python3-config -> /etc/alternatives/python3-config
+    and
+
+        root@lenin:/home/wiley# ls -al /etc/alternatives/python3*
+         19 Jan 17 02:26 /etc/alternatives/python3 -> /usr/bin/python3.11
+         26 Jan 17 02:26 /etc/alternatives/python3-config -> /usr/bin/python3.11-config
+
+    I also discovered that my little toy project, which uses JSON serialization
+    and some black magic to store/retrieve class info... will break when switching
+    from 3.10 to 3.11... the code works fine, but the JSON serialization depends on
+    magic stuff that apparently has changed in 3.11, so you can't use an old JSON save
+    file once you've updated version.
+
