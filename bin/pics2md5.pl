@@ -15,6 +15,29 @@ opendir DP, '.' or die "Can't opendir '.' $!";
 my @pics = grep { /\.(jpeg|jpg|png|gif|webp)$/i && -f "./$_" } readdir DP;
 rewinddir DP;
 my @avif_pics = grep { /\.avif$/i && -f "./$_" } readdir DP;
+rewinddir DP;
+# This is to handle login screen pictures that Microsoft hides in
+# C:\Users\<username>\AppData\Local\Packages\Microsoft.Windows.ContentDeliveryManager_<random>\LocalState\Assets
+# for some reason...
+foreach my $filename (readdir DP) {
+    next if grep { /$filename/ } (@pics);
+    next if grep { /$filename/ } (@avif_pics);
+
+    open(FP, "-|", "/usr/bin/file", "-b", "--mime-type", $filename) or die "Can't open $filename $!";
+    my $mime_type = <FP>;
+    close FP;
+    chomp $mime_type;
+    #printf "MIME $filename is $mime_type\n";
+    if( "$mime_type" eq "image/png" ) {
+        my $new_filename = "$filename.png";
+        rename $filename, $new_filename;
+        push @pics, ($new_filename);
+    } elsif( "$mime_type" eq "image/jpeg" ) {
+        my $new_filename = "$filename.jpg";
+        rename $filename, $new_filename;
+        push @pics, ($new_filename);
+    }
+}
 closedir DP;
 
 foreach my $filename (@avif_pics) {
