@@ -1574,3 +1574,24 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     magic stuff that apparently has changed in 3.11, so you can't use an old JSON save
     file once you've updated version.
 
+2023-01-24
+    NOTICE: Not enabling PHP 8.2 FPM by default.
+    NOTICE: To enable PHP 8.2 FPM in Apache2 do:
+    NOTICE: a2enmod proxy_fcgi setenvif
+    NOTICE: a2enconf php8.2-fpm
+    NOTICE: You are seeing this message because you have apache2 package installed.
+    Processing triggers for libapache2-mod-php8.2 (8.2.1-1) ...
+
+    apt purge apache2* libapache2*
+
+        dpkg: warning: while removing apache2-bin, directory '/var/lib/apache2' not empty so not removed
+        dpkg: warning: while removing apache2, directory '/var/www/html' not empty so not removed
+        dpkg: warning: while removing libapache2-mod-php8.1, directory '/etc/apache2/mods-available' not empty so not removed
+
+    Hopefully that gets rid of the last of the apache cruft.
+
+2023-01-26
+    PHP 8.2 appears to have changed DateTime objects so they default to UTC instead
+    of the system's local timezone... set_default_timezone() used to force it for
+    the log pages, see site_gloal.php.
+
