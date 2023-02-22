@@ -792,4 +792,15 @@ global.h:1144: warning: function declaration isn't a prototype
         killing people.  I fixed that, but then it killed everyone including immortals.
 
         I think it works almost right now, except maybe in peaceful rooms.
+230209  Quixadhal
+  1539  LOL, updating this... hahahaha.
+        I just wanted to drop a URL here as a TODO project
+        https://github.com/cybergarage/mupnp
+
+        It would be nice if the MUD could open it's own port on my router without
+        me having to setup port forwarding by hand, so in theory, UPnP should let
+        it find the router and do that.... if I can navigate the maze of twisty
+        little passages that is the API.
+230222  Quixadhal
+  1501  Added discord support, hard-coded to a channel on my private server for now.
 

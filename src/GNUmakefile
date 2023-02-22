@@ -22,6 +22,8 @@ NEED_MATH	= -lm #math for tracking and such
 NEED_SSL	= -lcrypto #MD5 checksum code
 SQL_INC		= 
 SQL_LIB		= -lpq
+CURL_INC	= 
+CURL_LIB	= -lcurl
 #SQL_LIB		= -lsqlite3
 #SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
 #SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
@@ -64,8 +66,8 @@ EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 DYN_FLAG	= -rdynamic
 
-INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC) $(OLD_MD5)
-LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB)
+INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC) $(OLD_MD5) $(CURL_INC)
+LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB) $(CURL_LIB)
 EXTRALIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(LANGFLAGS) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)
@@ -85,7 +87,7 @@ tOBJ =	mob_actions.o spec_procs.o breath_weapons.o tracking.o act_comm.o \
 	trap.o utils.o weather.o whod.o events.o \
 	ban.o sha256.o imc.o i3.o sql.o \
 	stringmap.o scheduler.o crc32.o reboot.o rent.o \
-	help.o base64.o 2fa.o json.o
+	help.o base64.o 2fa.o json.o discord.o
 OBJ =	$(addprefix obj/, $(tOBJ))
 
 tIDOBJ		= id_close.o id_open.o id_parse.o \
@@ -270,6 +272,8 @@ obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
   include/fight.h include/reception.h include/spell_parser.h \
   include/multiclass.h include/handler.h include/act_info.h \
   include/trap.h
+obj/discord.o: discord.c include/global.h include/bug.h include/utils.h \
+  include/discord.h include/discord_bot.h
 obj/base64.o: base64.c include/base64.h
 obj/multiclass.o: multiclass.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
@@ -450,4 +454,5 @@ obj/modify.o: modify.c include/global.h include/bug.h include/utils.h \
 obj/i3.o: i3.c include/global.h include/mudlimits.h include/sql.h \
   include/bug.h include/utils.h include/db.h include/multiclass.h \
   include/comm.h include/modify.h include/interpreter.h \
-  include/version.h include/stringmap.h include/scheduler.h include/i3.h
+  include/version.h include/stringmap.h include/scheduler.h \
+  include/discord.h include/discord_bot.h include/i3.h
