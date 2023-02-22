@@ -273,7 +273,7 @@ obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
   include/multiclass.h include/handler.h include/act_info.h \
   include/trap.h
 obj/discord.o: discord.c include/global.h include/bug.h include/utils.h \
-  include/discord.h include/discord_bot.h
+  include/i3.h include/discord.h include/discord_bot.h
 obj/base64.o: base64.c include/base64.h
 obj/multiclass.o: multiclass.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \

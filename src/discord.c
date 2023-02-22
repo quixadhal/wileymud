@@ -6,6 +6,7 @@
 #include "global.h"
 #include "bug.h"
 #include "utils.h"
+#include "i3.h"
 #define _DISCORD_C
 #include "discord.h"
 
@@ -74,6 +75,7 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
     escaped = escape_json_string(message);
     if(!escaped || !*escaped) {
         // Either we failed, or it was an empty string.
+        log_error("Could not escape I3 message for JSON");
         return;
     }
     snprintf(payload, MAX_STRING_LENGTH, "{\"content\":\"%s\"}", escaped);
@@ -111,9 +113,11 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
 void allchan_discord(int is_emote, const char *channel, const char *speaker,
         const char *username, const char *mud, const char *message) {
     static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char *stripped = NULL;
 
     scprintf(result, MAX_STRING_LENGTH, "%s `%s@%s%s` %s",
                 channel, speaker, mud, (is_emote? "" : ":"), message);
-    discord_send_message(BOT_TOKEN, CHANNEL_ID, message);
+    stripped = i3_strip_colors(result);
+    discord_send_message(BOT_TOKEN, CHANNEL_ID, stripped);
 }
 
