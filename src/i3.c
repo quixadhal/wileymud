@@ -21823,6 +21823,8 @@ char *pinkfish_to(const char *src, int target)
     {
     default:
     case I3_PINKFISH_NULL:
+        pinkfish_target_db = pinkfish_to_null_db;
+        break;
     case I3_PINKFISH_ANSI:
         pinkfish_target_db = pinkfish_to_ansi_db;
         break;

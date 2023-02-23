@@ -50,6 +50,36 @@ char* escape_json_string(const char* str) {
   return result;
 }
 
+char *escape_discord_markdown(const char *str) {
+  const char* ptr = str;
+  char* result = (char*)malloc(3 * strlen(str) + 1);
+  char* resptr = result;
+
+  while (*ptr) {
+    switch (*ptr) {
+      case '_':
+      case '*':
+      case '~':
+      case '|':
+      case '`':
+        *resptr++ = '\\';
+        *resptr++ = *ptr;
+        break;
+      case '\\':
+        *resptr++ = '\\';
+        *resptr++ = '\\';
+        break;
+      default:
+        *resptr++ = *ptr;
+        break;
+    }
+    ptr++;
+  }
+  *resptr++ = '\0';
+
+  return result;
+}
+
 size_t discord_write_data_callback( void *buffer, size_t size, size_t nmemb, void *userp) {
     // For now, we just ignore any returned data.
     // Ideally, we want to report non-success results via bug logging.
@@ -63,7 +93,7 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
     char endpoint[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char payload[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     char botauth[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
-    char *escaped = NULL;
+    char *json_escaped = NULL;
 
     // Construct the bot auth string
     snprintf(botauth, MAX_INPUT_LENGTH, "Authorization: Bot %s", bot_token);
@@ -72,14 +102,15 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
             "https://discord.com/api/channels/%s/messages", channel_id);
 
     // Cheese the JSON
-    escaped = escape_json_string(message);
-    if(!escaped || !*escaped) {
+    json_escaped = escape_json_string(message);
+    if(!json_escaped || !*json_escaped) {
         // Either we failed, or it was an empty string.
         log_error("Could not escape I3 message for JSON");
         return;
     }
-    snprintf(payload, MAX_STRING_LENGTH, "{\"content\":\"%s\"}", escaped);
-    free(escaped);
+    memset(payload, 0, MAX_STRING_LENGTH);
+    snprintf(payload, MAX_STRING_LENGTH, "{\"content\":\"%s\"}", json_escaped);
+    free(json_escaped);
 
     // Initialize cURL
     curl = curl_easy_init();
@@ -112,12 +143,42 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
 
 void allchan_discord(int is_emote, const char *channel, const char *speaker,
         const char *username, const char *mud, const char *message) {
-    static char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
+    char *markdown_channel = NULL;
+    char *markdown_speaker = NULL;
+    char *markdown_mud = NULL;
+    char *markdown_message = NULL;
     char *stripped = NULL;
 
-    scprintf(result, MAX_STRING_LENGTH, "%s `%s@%s%s` %s",
-                channel, speaker, mud, (is_emote? "" : ":"), message);
+    markdown_channel = escape_discord_markdown(channel);
+    markdown_speaker = escape_discord_markdown(speaker);
+    markdown_mud = escape_discord_markdown(mud);
+    markdown_message = escape_discord_markdown(message);
+
+    if( !markdown_channel || !*markdown_channel ||
+        !markdown_speaker || !*markdown_speaker ||
+        !markdown_mud     || !*markdown_mud ||
+        !markdown_message || !*markdown_message) {
+        // Either we failed, or it was an empty string.
+        log_error("Could not escape I3 message for Markdown");
+        if(markdown_channel) free(markdown_channel);
+        if(markdown_speaker) free(markdown_speaker);
+        if(markdown_mud) free(markdown_mud);
+        if(markdown_message) free(markdown_message);
+        return;
+    }
+
+    memset(result, 0, MAX_STRING_LENGTH);
+    snprintf(result, MAX_STRING_LENGTH, "__**%s**__ `%s@%s%s` %s",
+                markdown_channel, markdown_speaker, markdown_mud,
+                (is_emote? "" : ":"), markdown_message);
+    free(markdown_channel);
+    free(markdown_speaker);
+    free(markdown_mud);
+    free(markdown_message);
     stripped = i3_strip_colors(result);
+
+    log_info("Discord result: %s", stripped);
     discord_send_message(BOT_TOKEN, CHANNEL_ID, stripped);
 }
 
