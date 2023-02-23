@@ -141,6 +141,26 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
     }
 }
 
+const char *discord_find_channel(const char *i3_channel) {
+    // Ugly, but efficient and simple.
+    if(!strcmp(i3_channel, "intergossip"))
+        return "1078154922832441514";
+    else if(!strcmp(i3_channel, "dchat"))
+        return "1078154970026758194";
+    else if(!strcmp(i3_channel, "ds"))
+        return "1078154990276857906";
+    else if(!strcmp(i3_channel, "free_speech"))
+        return "1078155017107820555";
+    else if(!strcmp(i3_channel, "intercre"))
+        return "1078155035755683850";
+    else if(!strcmp(i3_channel, "dwchat"))
+        return "1078155067036815420";
+    else if(!strcmp(i3_channel, "bsg"))
+        return "1078155081687502999";
+    else
+        return NULL;
+}
+
 void allchan_discord(int is_emote, const char *channel, const char *speaker,
         const char *username, const char *mud, const char *message) {
     char result[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
@@ -149,6 +169,7 @@ void allchan_discord(int is_emote, const char *channel, const char *speaker,
     char *markdown_mud = NULL;
     char *markdown_message = NULL;
     char *stripped = NULL;
+    const char *match = NULL;
 
     markdown_channel = escape_discord_markdown(channel);
     markdown_speaker = escape_discord_markdown(speaker);
@@ -169,9 +190,18 @@ void allchan_discord(int is_emote, const char *channel, const char *speaker,
     }
 
     memset(result, 0, MAX_STRING_LENGTH);
-    snprintf(result, MAX_STRING_LENGTH, "__**%s**__ `%s@%s%s` %s",
-                markdown_channel, markdown_speaker, markdown_mud,
-                (is_emote? "" : ":"), markdown_message);
+    match = discord_find_channel(channel);
+    if(!match || !*match) {
+        log_error("Could not find Discord channel to match I3 channel");
+        snprintf(result, MAX_STRING_LENGTH, "__**%s**__ `%s@%s%s` %s",
+                    markdown_channel, markdown_speaker, markdown_mud,
+                    (is_emote? "" : ":"), markdown_message);
+        match = CHANNEL_ID;
+    } else {
+        snprintf(result, MAX_STRING_LENGTH, "`%s@%s%s` %s",
+                    markdown_speaker, markdown_mud,
+                    (is_emote? "" : ":"), markdown_message);
+    }
     free(markdown_channel);
     free(markdown_speaker);
     free(markdown_mud);
@@ -179,6 +209,6 @@ void allchan_discord(int is_emote, const char *channel, const char *speaker,
     stripped = i3_strip_colors(result);
 
     log_info("Discord result: %s", stripped);
-    discord_send_message(BOT_TOKEN, CHANNEL_ID, stripped);
+    discord_send_message(BOT_TOKEN, match, stripped);
 }
 
