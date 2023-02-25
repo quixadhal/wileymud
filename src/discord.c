@@ -141,24 +141,51 @@ void discord_send_message(const char *bot_token, const char *channel_id, const c
     }
 }
 
-const char *discord_find_channel(const char *i3_channel) {
-    // Ugly, but efficient and simple.
+const char *discord_find_my_channel(const char *i3_channel) {
+    // These are channels on my own test server
     if(!strcmp(i3_channel, "intergossip"))
         return "1078154922832441514";
     else if(!strcmp(i3_channel, "dchat"))
-        return "1078154970026758194";
+         return "1078154970026758194";
     else if(!strcmp(i3_channel, "ds"))
-        return "1078154990276857906";
+         return "1078154990276857906";
     else if(!strcmp(i3_channel, "free_speech"))
-        return "1078155017107820555";
+         return "1078155017107820555";
     else if(!strcmp(i3_channel, "intercre"))
-        return "1078155035755683850";
+         return "1078155035755683850";
     else if(!strcmp(i3_channel, "dwchat"))
-        return "1078155067036815420";
+         return "1078155067036815420";
     else if(!strcmp(i3_channel, "bsg"))
-        return "1078155081687502999";
+         return "1078155081687502999";
     else
         return NULL;
+}
+
+const char *discord_find_channel(const char *i3_channel) {
+    // Ugly, but efficient and simple.
+    // These are channels on Sali's live server
+    if(!strcmp(i3_channel, "intergossip"))
+        return "1074652451766026250";
+    else if(!strcmp(i3_channel, "dchat"))
+        return "1079142483969200148";
+    else if(!strcmp(i3_channel, "ds"))
+        return "1079142576831090718";
+    else if(!strcmp(i3_channel, "free_speech"))
+        return "1074652631886217226";
+    else if(!strcmp(i3_channel, "intercre"))
+        return "1079142677737640107";
+    else if(!strcmp(i3_channel, "dwchat"))
+        return "1079142483969200148";
+    else if(!strcmp(i3_channel, "bsg"))
+        return "1074652532586070066";
+    else
+        return NULL;
+}
+
+const char *discord_default_channel(int is_live) {
+    // Returns the default "catch all" channel for
+    // either my server, or Sali's live server
+    return is_live ? "1079164231049556108" : "1078155196355588127";
 }
 
 void allchan_discord(int is_emote, const char *channel, const char *speaker,
@@ -192,14 +219,22 @@ void allchan_discord(int is_emote, const char *channel, const char *speaker,
     memset(result, 0, MAX_STRING_LENGTH);
     match = discord_find_channel(channel);
     if(!match || !*match) {
-        log_error("Could not find Discord channel to match I3 channel");
+        match = discord_default_channel(1); // 1 is Sali, 0 is mine
+        if(!match || !*match) {
+            log_error("Could not find Discord channel to match I3 channel");
+            free(markdown_channel);
+            free(markdown_speaker);
+            free(markdown_mud);
+            free(markdown_message);
+            return;
+        }
         snprintf(result, MAX_STRING_LENGTH, "__**%s**__ `%s@%s%s` %s",
-                    markdown_channel, markdown_speaker, markdown_mud,
+                    channel, speaker, mud,
                     (is_emote? "" : ":"), markdown_message);
-        match = CHANNEL_ID;
+        //match = CHANNEL_ID;
     } else {
         snprintf(result, MAX_STRING_LENGTH, "`%s@%s%s` %s",
-                    markdown_speaker, markdown_mud,
+                    speaker, mud,
                     (is_emote? "" : ":"), markdown_message);
     }
     free(markdown_channel);
