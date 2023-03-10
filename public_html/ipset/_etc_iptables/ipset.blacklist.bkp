@@ -1,9 +1,0 @@
-create blacklist hash:ip family inet hashsize 4096 maxelem 65536
-add blacklist 212.199.29.155
-add blacklist 202.96.155.48
-add blacklist 134.175.157.215
-add blacklist 58.129.0.94
-add blacklist 213.213.223.9
-add blacklist 119.28.13.87
-add blacklist 119.29.177.127
-add blacklist 94.191.98.194
