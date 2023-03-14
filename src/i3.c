@@ -22014,7 +22014,8 @@ void i3_daily_summary()
     ytc = time(0) - 86400;
     ytm_info = localtime(&ytc);
     // Rotate the channel to "spam" every day.
-    target_channel = target_channel_list[ytm_info->tm_mday % target_channel_count];
+    // We'll use the day of the year, so the wraparound is less noticeable.
+    target_channel = target_channel_list[ytm_info->tm_yday % target_channel_count];
 
     snprintf(yesterday, MAX_INPUT_LENGTH, "%-4.4d-%-2.2d-%-2.2d", ytm_info->tm_year + 1900, ytm_info->tm_mon + 1,
              ytm_info->tm_mday);
