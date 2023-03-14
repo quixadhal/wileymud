@@ -20,10 +20,12 @@ NEED_CRYPT	= -lcrypt #Linux needs this
 #NEED_COMPAT	= -lcompat #BSD needs this
 NEED_MATH	= -lm #math for tracking and such
 NEED_SSL	= -lcrypto #MD5 checksum code
-SQL_INC		= 
+SQL_INC		= #
 SQL_LIB		= -lpq
-CURL_INC	= 
+CURL_INC	= #
 CURL_LIB	= -lcurl
+WS_INC		= #
+WS_LIB		= -lwebsockets
 #SQL_LIB		= -lsqlite3
 #SQL_INC		= -DUSE_PGSQL -I/usr/include/postgresql
 #SQL_LIB		= -L/usr/lib/postgresql -lpq -lecpg
@@ -66,8 +68,8 @@ EFENCE		= #-lpthread -lefence
 PROF_FLAG	= #-pg
 DYN_FLAG	= -rdynamic
 
-INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC) $(OLD_MD5) $(CURL_INC)
-LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB) $(CURL_LIB)
+INC		= -Iinclude $(ID_INC) $(IMC_INC) $(I3_INC) $(SQL_INC) $(OLD_MD5) $(CURL_INC) $(WS_INC)
+LIB		= $(ID_LIB) $(NEED_MATH) $(NEED_SSL) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE) $(PCRE_LIB) $(SQL_LIB) $(CURL_LIB) $(WS_LIB)
 EXTRALIB	= $(NEED_MATH) $(NEED_CRYPT) $(NEED_COMPAT) $(EFENCE)
 
 CFLAGS		= $(LANGFLAGS) $(W_FLAGS) $(DEBUG_FLAG) $(OPT_FLAG) $(PROF_FLAG) $(M_ARCH) $(INC)

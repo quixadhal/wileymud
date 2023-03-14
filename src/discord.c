@@ -3,12 +3,33 @@
 #include <string.h>
 #include <stdint.h>
 #include <curl/curl.h>
+#include <libwebsockets.h>
 #include "global.h"
 #include "bug.h"
 #include "utils.h"
 #include "i3.h"
 #define _DISCORD_C
 #include "discord.h"
+
+int discord_on_message(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len);
+
+static struct lws_context* websocket_context;
+static struct lws* wsi;
+
+static struct lws_protocols discord_protocols[] = {
+    {
+        "discord_bot",
+        discord_on_message,
+        0,
+        1024
+    },
+    {
+        NULL,
+        NULL,
+        0,
+        0
+    }
+};
 
 char* escape_json_string(const char* str) {
   const char* ptr = str;
@@ -78,6 +99,62 @@ char *escape_discord_markdown(const char *str) {
   *resptr++ = '\0';
 
   return result;
+}
+
+void discord_startup(void) {
+    struct lws_context_creation_info info = { 0 };
+    struct lws_client_connect_info connect_info = { 0 };
+
+    // Create libwebsockets context
+    info.port = CONTEXT_PORT_NO_LISTEN;
+    info.protocols = discord_protocols;
+    websocket_context = lws_create_context(&info);
+    if (!websocket_context) {
+        log_error("Could not create websocket context!");
+        return;
+    }
+
+    // Create WebSocket client
+    connect_info.context = websocket_context;
+    connect_info.address = GATEWAY_URL;
+    connect_info.port = 443;
+    connect_info.ssl_connection = 1;
+    connect_info.path = "/";
+    connect_info.host = "gateway.discord.gg";
+    wsi = lws_client_connect_via_info(&connect_info);
+    if (!wsi) {
+        log_error("Could not connect to discord!");
+        return;
+    }
+
+    // Authenticate the bot with the server
+    char auth_msg[512];
+    sprintf(auth_msg, "{\"op\": 2,\"d\": {\"token\": \"%s\",\"intents\": 513,\"properties\": {\"$os\": \"linux\",\"$browser\": \"my_library\",\"$device\": \"my_library\"}}}", BOT_TOKEN);
+    lws_write(wsi, (unsigned char *)auth_msg, strlen(auth_msg), LWS_WRITE_TEXT);
+
+    // Listen for incoming messages
+    // This needs to be a polling event, so we can call it every N main loops
+    //while (lws_service(context, 0) >= 0) {}
+
+    // Disconnect from server
+    //lws_context_destroy(context);
+}
+
+void discord_poll(void) {
+    // Listen for incoming messages
+    if(lws_service(websocket_context, 0) >= 0) {
+        // Something happened!
+    }
+}
+
+void discord_shutdown(void) {
+    // Disconnect from server
+    lws_context_destroy(websocket_context);
+}
+
+int discord_on_message(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len) {
+    // Parse incoming message and deal with it.
+    return 0; // OK
 }
 
 size_t discord_write_data_callback( void *buffer, size_t size, size_t nmemb, void *userp) {
