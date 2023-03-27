@@ -3,6 +3,8 @@
 # This is a kludge to make ipset and iptables restore their rulesets
 # at boot time.
 
+# NOTE:  This lives in /etc/network/if-up.d/
+
 # We pin this to loopback, as normally that interface should always
 # come up AND isn't likely to go down, thus it should only happen once
 # per boot cycle.

@@ -42,7 +42,7 @@ Why would it not start immediately, even before X11 was finished setting itself 
 
 https://daniel-lange.com/archives/152-Openssh-taking-minutes-to-become-available,-booting-takes-half-an-hour-...-because-your-server-waits-for-a-few-bytes-of-randomness.html
 
-That's why.  Fucking hell.
+That's why.  Hell.
 
 Well, the "fix" for this is to edit /etc/default/grub
 
@@ -133,7 +133,7 @@ apt remove iptables-persistent
     only run after ALL network interfaces are up, but systemd makes this extremely hard
     to do.
 
-Fucking hippy linux freaks.... a VM has no need to "suspend" or "hibernate"...
+Hippy linux freaks.... a VM has no need to "suspend" or "hibernate"...
     systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
 
 Restore crontab for mudlist generation:
@@ -190,7 +190,7 @@ Made some changes to /etc/samba/smb.conf
         path = /tmp
         guest ok = yes
 
-And even MORE hippy shit....
+And even MORE hippy crap....
     root@wileymud3:/home/wiley# su - Debian-gdm -s /bin/bash
     Debian-gdm@wileymud3:~$ dbus-launch gsettings range org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
     enum
@@ -853,7 +853,7 @@ I did set it to NOT run if we don't think we have a network connection...
     pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
     pip3 install -U python-dotenv discord.py
 
-    A shitton of python 3 errors and warnings... oh well... might have to fix shit
+    A shit-ton of python 3 errors and warnings... oh well... might have to fix stuff
     later...
 
     cpan
@@ -926,7 +926,7 @@ I did set it to NOT run if we don't think we have a network connection...
         user.
 
 2022-01-10
-    Fucking idiots... no idea if this will actually work, but...
+    Idiots... no idea if this will actually work, but...
 
     https://code.luasoftware.com/tutorials/linux/ubuntu-prompt-system-policy-prevents-modification-of-network-settings-for-all-users/
     https://www.freedesktop.org/software/polkit/docs/0.105/pklocalauthority.8.html
@@ -1594,4 +1594,245 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     PHP 8.2 appears to have changed DateTime objects so they default to UTC instead
     of the system's local timezone... set_default_timezone() used to force it for
     the log pages, see site_gloal.php.
+
+2023-02-07
+    *sigh*  Yet more nanny state BS to make life more difficult for people
+    who properly manage their systems.  It's also worth noting that the text
+    shown does NOT tell you about the workaround, which is listed in github.
+
+    https://salsa.debian.org/cpython-team/python3/-/blob/master/debian/README.venv
+
+        This can be overriden by passing the --break-system-packages option to pip.
+        You do this at your own risk: pip may break Python modules that part of
+        your Debian system depends on.
+
+    python-pip (23.0+dfsg-1) unstable; urgency=medium
+
+      This version of pip introduces PEP 668 support. Debian's python3.11
+      interpreter will soon (>= 3.11.1-3) declare the installation to be
+      EXTERNALLY-MANAGED, instructing pip to disallow package installation outside
+      virtualenvs.
+
+      See: https://peps.python.org/pep-0668/
+
+      Practically, this means that you can't use pip to install packages outside a
+      virtualenv, on a Debian system, any more.
+
+      See /usr/share/doc/python3.11/README.venv for more details.
+      If that isn't available yet, check:
+      https://salsa.debian.org/cpython-team/python3/-/blob/master/debian/README.venv
+
+     -- Stefano Rivera <stefanor@debian.org>  Wed, 01 Feb 2023 19:14:08 -0400
+
+2023-02-15
+    nginx-full (1.22.1-6) unstable; urgency=medium
+
+      The packages nginx-core, nginx-full, nginx-light, nginx-extras are deprecated.
+      Packages no longer distribute the nginx binary and are replaced
+      by a metapackage to keep upgrades smooth.
+      Please simply install 'nginx' and 'libnginx-mod-...' modules You need
+      instead of these packages.
+
+     -- Jan Mojžíš <jan.mojzis@gmail.com>  Wed, 11 Jan 2023 20:23:22 +0100
+
+    openssh (1:9.2p1-1) unstable; urgency=medium
+
+      OpenSSH 9.2 includes a number of changes that may affect existing
+      configurations:
+
+       * ssh(1): add a new EnableEscapeCommandline ssh_config(5) option that
+         controls whether the client-side ~C escape sequence that provides a
+         command-line is available. Among other things, the ~C command-line
+         could be used to add additional port-forwards at runtime.
+
+         This option defaults to "no", disabling the ~C command-line that was
+         previously enabled by default. Turning off the command-line allows
+         platforms that support sandboxing of the ssh(1) client (currently only
+         OpenBSD) to use a stricter default sandbox policy.
+
+     -- Colin Watson <cjwatson@debian.org>  Wed, 08 Feb 2023 10:36:06 +0000
+
+    Why???
+
+    Setting up nginx (1.22.1-6) ...
+    Upgrading binary: nginx failed!
+    invoke-rc.d: initscript nginx, action "upgrade" failed.
+    Job for nginx.service failed because the control process exited with error code.
+    See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
+    invoke-rc.d: initscript nginx, action "restart" failed.
+    × nginx.service - A high performance web server and a reverse proxy server
+	 Loaded: loaded (/lib/systemd/system/nginx.service; enabled; preset: enabled)
+	 Active: failed (Result: exit-code) since Wed 2023-02-15 00:04:40 PST; 10ms ago
+       Duration: 2w 6d 4h 50min 29.781s
+	   Docs: man:nginx(8)
+	Process: 1063623 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=1/FAILURE)
+	    CPU: 27ms
+
+    Feb 15 00:04:40 lenin systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
+    Feb 15 00:04:40 lenin nginx[1063623]: 2023/02/15 00:04:40 [emerg] 1063623#1063623: a duplicate default server for 0.0.0.0:80 in /etc/nginx/sites-enabled/wileymud:127
+    Feb 15 00:04:40 lenin nginx[1063623]: nginx: configuration file /etc/nginx/nginx.conf test failed
+    Feb 15 00:04:40 lenin systemd[1]: nginx.service: Control process exited, code=exited, status=1/FAILURE
+    Feb 15 00:04:40 lenin systemd[1]: nginx.service: Failed with result 'exit-code'.
+    Feb 15 00:04:40 lenin systemd[1]: Failed to start nginx.service - A high performance web server and a reverse proxy server.
+    dpkg: error processing package nginx (--configure):
+     installed nginx package post-installation script subprocess returned error exit status 1
+
+    dpkg: dependency problems prevent configuration of nginx-common:
+     nginx-common depends on nginx (<< 1.22.1-6.1~); however:
+      Package nginx is not configured yet.
+     nginx-common depends on nginx (>= 1.22.1-6); however:
+      Package nginx is not configured yet.
+
+    dpkg: error processing package nginx-common (--configure):
+     dependency problems - leaving unconfigured
+
+    dpkg: dependency problems prevent configuration of libnginx-mod-stream-geoip:
+     libnginx-mod-stream-geoip depends on nginx-common (= 1.22.1-6); however:
+      Package nginx-common is not configured yet.
+
+    dpkg: error processing package libnginx-mod-stream-geoip (--configure):
+     dependency problems - leaving unconfigured
+
+    dpkg: dependency problems prevent configuration of nginx-full:
+     nginx-full depends on nginx (>= 1.22.1-6); however:
+      Package nginx is not configured yet.
+     nginx-full depends on nginx (<< 1.22.1-6.1~); however:
+      Package nginx is not configured yet.
+
+    dpkg: error processing package nginx-full (--configure):
+     dependency problems - leaving unconfigured
+
+    dpkg: dependency problems prevent configuration of libnginx-mod-http-xslt-filter:
+     libnginx-mod-http-xslt-filter depends on nginx-common (= 1.22.1-6); however:
+      Package nginx-common is not configured yet.
+
+    dpkg: error processing package libnginx-mod-http-xslt-filter (--configure):
+     dependency problems - leaving unconfigured
+
+    dpkg: dependency problems prevent configuration of libnginx-mod-http-geoip:
+     libnginx-mod-http-geoip depends on nginx-common (= 1.22.1-6); however:
+      Package nginx-common is not configured yet.
+
+    dpkg: error processing package libnginx-mod-http-geoip (--configure):
+     dependency problems - leaving unconfigured
+
+    dpkg: dependency problems prevent configuration of nginx-core:
+     nginx-core depends on libnginx-mod-http-geoip (>= 1.22.1-6); however:
+      Package libnginx-mod-http-geoip is not configured yet.
+     nginx-core depends on libnginx-mod-http-geoip (<< 1.22.1-6.1~); however:
+      Package libnginx-mod-http-geoip is not configured yet.
+     nginx-core depends on libnginx-mod-http-xslt-filter (>= 1.22.1-6); however:
+      Package libnginx-mod-http-xslt-filter is not configured yet.
+     nginx-core depends on libnginx-mod-http-xslt-filter (<< 1.22.1-6.1~); however:
+      Package libnginx-mod-http-xslt-filter is not configured yet.
+     nginx-core depends on libnginx-mod-stream-geoip (>= 1.22.1-6); however:
+      Package libnginx-mod-stream-geoip is not configured yet.
+     nginx-core depends on libnginx-mod-stream-geoip (<< 1.22.1-6.1~); however:
+      Package libnginx-mod-stream-geoip is not configured yet.
+     nginx-core depends on nginx (>= 1.22.1-6); however:
+      Package nginx is not configured yet.
+     nginx-core depends on nginx (<< 1.22.1-6.1~); however:
+      Package nginx is not configured yet.
+
+    dpkg: error processing package nginx-core (--configure):
+     dependency problems - leaving unconfigured
+    dpkg: dependency problems prevent configuration of libnginx-mod-mail:
+     libnginx-mod-mail depends on nginx-common (= 1.22.1-6); however:
+      Package nginx-common is not configured yet.
+
+    dpkg: error processing package libnginx-mod-mail (--configure):
+     dependency problems - leaving unconfigured
+
+    dpkg: dependency problems prevent configuration of libnginx-mod-http-image-filter:
+     libnginx-mod-http-image-filter depends on nginx-common (= 1.22.1-6); however:
+      Package nginx-common is not configured yet.
+
+    dpkg: error processing package libnginx-mod-http-image-filter (--configure):
+     dependency problems - leaving unconfigured
+    dpkg: dependency problems prevent configuration of libnginx-mod-stream:
+     libnginx-mod-stream depends on nginx-common (= 1.22.1-6); however:
+      Package nginx-common is not configured yet.
+
+    dpkg: error processing package libnginx-mod-stream (--configure):
+     dependency problems - leaving unconfigured
+
+    Errors were encountered while processing:
+     nginx
+     nginx-common
+     libnginx-mod-stream-geoip
+     nginx-full
+     libnginx-mod-http-xslt-filter
+     libnginx-mod-http-geoip
+     nginx-core
+     libnginx-mod-mail
+     libnginx-mod-http-image-filter
+     libnginx-mod-stream
+    E: Sub-process /usr/bin/dpkg returned an error code (1)
+
+    Because... the package replacement process ASSUMES you will always want
+    /etc/nginx/sites-enabled/default to exist, and replaces it, even if you
+    deleted it yourself... thus causing a duplicate to exist.
+
+2023-02-22
+    apt install libcurl4-openssl-dev
+
+2023-03-04
+    apt install libwebsockets-dev
+
+2023-03-21
+    N: Repository 'Debian bookworm' changed its 'non-free component' value
+        from 'non-free' to 'non-free non-free-firmware'
+    N: More information about this can be found online in the Release notes
+        at: https://www.debian.org/releases/bookworm/amd64/release-notes/ch-information.html#non-free-split
+
+    Added non-free-firmware to apt.sources
+
+    Also worth noting:
+
+    If you were pointed to this chapter by apt you can prevent it from
+        continuously notifying you about this change by creating an apt.conf(5)
+        file named /etc/apt/apt.conf.d/no-bookworm-firmware.conf with the
+        following content:
+            APT::Get::Update::SourceListWarnings::NonFreeFirmware "false";
+
+2023-03-23
+    /etc/default/grub
+        GRUB_BACKGROUND="/boot/foxgirl.png"
+
+    /etc/gdm3/greeter.dconf-defaults
+
+        [org/gnome/desktop/background]
+        picture-uri='file:///boot/catgirl.png'
+        picture-options='zoom'
+        # This seems to do nothing...
+
+        [org/gnome/login-screen]
+        logo='/usr/share/images/vendor-logos/logo-text-version-64.png'
+        #logo='/boot/catgirl.png'
+        # This puts the image in FRONT of the user list, unuseable...
+
+        [org/gnome/settings-daemon/plugins/power]
+        sleep-inactive-ac-timeout=600
+        sleep-inactive-ac-type='blank'
+        # This correctly puts the monitor to sleep after 10 minutes.
+
+2023-03-24
+    apt install libglib4.0-dev dconf-cli git
+    git clone --depth=1 https://github.com/realmazharhussain/gdm-tools.git gdm-tools
+    cd gdm-tools
+    ./install.sh
+
+    set-gdm-theme backup update
+    set-gdm-theme list
+    set-gdm-theme set -b /boot/catgirl.png
+
+    and.... yet another bit of absurdity...
+
+    It appears that while /etc/gdm3/greeter.dconf-defaults is used
+    by systemctl restart gdm3 initially, once you do a reboot, that file
+    is no longer used as there's ANOTHER copy in /usr/share/gdm/greeter.dconf-defaults
+    and THAT gets compiled into a binary version called greeter-dconf-defaults.
+
+    So, for your changes to stick, you have to edit both of them to make them in
+    sync, and then dpkg-reconfigure gdm3
 

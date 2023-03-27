@@ -61,8 +61,28 @@ sub check_result_exists {
 sub add_result {
     my $db = shift;
     my $data = shift;
+    my $is_wifi = shift or 0;
 
     if( exists $data->{interface} and exists $data->{interface}{internalIp} ) {
+        # "macAddr": "BC:5F:F4:5A:44:57", # here
+        # "macAddr": "4C:CC:6A:4D:88:03", # desktop
+        #
+        # We have to lie here, because of "temporary" IPv6 stuff that gets
+        # changed by SLAAC on the router for "security" reasons...
+
+        if ($data->{interface}{macAddr} eq "BC:5F:F4:5A:44:57") {
+            $data->{interface}{internalIp} =
+                ($data->{interface}{internalIp} =~ /^2604:/) ?
+                "2604:4080:1018:8080:c6f1:d761:acf6:569" :
+                "192.168.0.16";
+        }
+        if ($data->{interface}{macAddr} eq "4C:CC:6A:4D:88:03") {
+            $data->{interface}{internalIp} =
+                ($data->{interface}{internalIp} =~ /^2604:/) ?
+                "2604:4080:1018:8080:4ecc:6aff:fe4d:8803" :
+                "192.168.0.10";
+        }
+
         my $insert_sql = $db->prepare( qq!
             INSERT INTO speedtest (
                 local,
@@ -99,7 +119,8 @@ sub add_result {
             $data->{server}{host},
             $data->{server}{ip},
             $data->{result}{url},
-            is_wifi($data->{interface}{internalIp}) ? 1 : 0
+            $is_wifi,
+            #is_wifi($data->{interface}{internalIp}) ? 1 : 0
         );
         if($rv) {
             printf "Added result from %s at %s\n", $data->{interface}{internalIp}, $data->{timestamp};
@@ -115,11 +136,12 @@ sub add_result {
 sub upload_results {
     my $db = shift;
     my $filename = shift;
+    my $is_wifi = shift or 0;
 
     if( -r $filename ) {
         my $data = import_json($filename);
         if( !check_result_exists($db, $data) ) {
-            add_result($db, $data);
+            add_result($db, $data, $is_wifi);
         }
     }
 }
@@ -129,33 +151,21 @@ sub dump_average {
     my $filename = shift;
 
     my $result = $db->selectall_arrayref(qq!
-        SELECT      internal_ip,
+        SELECT      wifi,
                     AVG(download) AS download,
                     AVG(upload) AS upload,
                     AVG(ping) AS ping
         FROM        speedtest
         WHERE       local BETWEEN now() - '1 week'::interval AND now()
-        GROUP BY    internal_ip
-        HAVING internal_ip IN (
-            '192.168.0.10',
-            '192.168.0.11',
-            '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d',
-            '2604:4080:1018:8080:79de:a7fe:71ba:38a0',
-            '2604:4080:1018:8080:2814:d4fd:7f02:ee9',
-            '2604:4080:1018:8080:4ecc:6aff:fe4d:8803'
-            )
+        GROUP BY    wifi
         ;!, { Slice => {} } );
     if($result) {
         my $data = {};
         foreach my $row (@$result) {
-            $row->{wire} = '???';
-            $row->{wire} = 'wired'  if $row->{internal_ip} eq '192.168.0.10';
-            $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:79de:a7fe:71ba:38a0';
-            $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:2814:d4fd:7f02:ee9';
-            $row->{wire} = 'wired'  if $row->{internal_ip} eq '2604:4080:1018:8080:4ecc:6aff:fe4d:8803';
-            $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '192.168.0.11';
-            $row->{wire} = 'wi-fi'  if $row->{internal_ip} eq '2604:4080:1018:8080:ea8d:a1ce:ceb4:80d';
-            $data->{$row->{internal_ip}} = $row;
+            $row->{wire} = 'wired'; # both wired now
+            $data->{ ($row->{wifi}) ? "lenin" : "angband" } = $row;
+            #$row->{wire} = $row->{wifi} ? 'wi-fi' : 'wired';
+            #$data->{$row->{wire}} = $row;
         }
         my $json_data = encode_json($data);
         die "Invalid JSON data for $filename!" if !defined $json_data;
