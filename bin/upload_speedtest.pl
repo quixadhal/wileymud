@@ -163,7 +163,8 @@ sub dump_average {
         my $data = {};
         foreach my $row (@$result) {
             $row->{wire} = 'wired'; # both wired now
-            $data->{ ($row->{wifi}) ? "lenin" : "angband" } = $row;
+            $data->{"lenin"} = $row;
+            #$data->{ ($row->{wifi}) ? "lenin" : "angband" } = $row;
             #$row->{wire} = $row->{wifi} ? 'wi-fi' : 'wired';
             #$data->{$row->{wire}} = $row;
         }
