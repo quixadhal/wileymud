@@ -21985,14 +21985,15 @@ void i3_daily_summary()
     char yestertouch[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char yesterurl[MAX_INPUT_LENGTH] = "\0\0\0\0\0\0\0";
     char *target_channel_list[] = {
-        (char *)"intercre",
-        (char *)"dchat",
-        (char *)"godwars",
         (char *)"intergossip",
-        (char *)"dwchat",
-        (char *)"ds"
+        (char *)"dchat",
+        (char *)"ds",
+        (char *)"free_speech",
+        (char *)"intercre",
+        (char *)"dgd",
+        (char *)"dwchat"
     };
-    int target_channel_count = 6;
+    int target_channel_count = 7;
     char *target_channel = target_channel_list[0];
 
     const char *sql = "SELECT ( "
