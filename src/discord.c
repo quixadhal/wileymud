@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
+#include <sys/stat.h>
 #include <curl/curl.h>
 #include <libwebsockets.h>
 #include "global.h"
@@ -10,6 +11,117 @@
 #include "i3.h"
 #define _DISCORD_C
 #include "discord.h"
+
+#define DISCORD_USERMAP_FILE I3_DIR "discord.usermap"
+
+char *discord_nameremap(const char *ps)
+{
+    FILE *fp = NULL;
+    struct stat fst;
+    static int map_count = 0;
+    static char **key_list = NULL;
+    static char **value_list = NULL;
+    static int last_changed = 0;
+    int i = 0;
+    char line[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0\0";
+    static char remapped[MAX_STRING_LENGTH];
+    char *s;
+
+    strcpy(remapped, ps);
+
+    if (stat(DISCORD_USERMAP_FILE, &fst) != -1)
+    {
+        if (fst.st_mtime > last_changed)
+        {
+            /* File has been updated, so reload it */
+            last_changed = fst.st_mtime;
+
+            if (key_list)
+            {
+                for (i = 0; i < map_count; i++)
+                {
+                    if (key_list[i])
+                    {
+                        free(key_list[i]);
+                        key_list[i] = NULL;
+                    }
+                }
+                free(key_list);
+                key_list = NULL;
+            }
+            if (value_list)
+            {
+                for (i = 0; i < map_count; i++)
+                {
+                    if (value_list[i])
+                    {
+                        free(value_list[i]);
+                        value_list[i] = NULL;
+                    }
+                }
+                free(value_list);
+                value_list = NULL;
+            }
+            map_count = 0;
+
+            if (!(fp = fopen(DISCORD_USERMAP_FILE, "r")))
+            {
+                log_error("Cannot open DISCORD usermap file: %s!", DISCORD_USERMAP_FILE);
+                return remapped;
+            }
+            else
+            {
+                while (fgets(line, MAX_STRING_LENGTH - 2, fp))
+                {
+                    map_count++;
+                }
+                rewind(fp);
+                key_list = (char **)calloc(map_count, sizeof(char *));
+                value_list = (char **)calloc(map_count, sizeof(char *));
+                for (i = 0; i < map_count; i++)
+                {
+                    s = i3fread_word(fp);
+                    if (s && *s)
+                    {
+                        key_list[i] = strdup(s);
+                        s = i3fread_rest_of_line(fp);
+                        if (s && *s)
+                        {
+                            value_list[i] = strdup(s);
+                        }
+                        else
+                        {
+                            value_list[i] = strdup(key_list[i]);
+                        }
+                    }
+                    else
+                    {
+                        // We have to put something here to avoid NULL pointers.
+                        key_list[i] = strdup("INVALID_NAME");
+                        // If the key wasn't valid, the value probably can't be either.
+                        // I guess just skip to the next and hope.
+                        value_list[i] = strdup("INVALID_NAME");
+                    }
+                }
+                fclose(fp);
+            }
+        }
+    }
+
+    if (map_count > 0)
+    {
+        for (i = 0; i < map_count; i++)
+        {
+            if (strcasecmp(key_list[i], ps) == 0)
+            {
+                strcpy(remapped, value_list[i]);
+                break;
+            }
+        }
+    }
+
+    return remapped;
+}
 
 int discord_on_message(struct lws *wsi, enum lws_callback_reasons reason, void *user, void *in, size_t len);
 

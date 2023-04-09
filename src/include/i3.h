@@ -432,4 +432,8 @@ void setup_i3_config_table(void);
 void save_i3_config(void);
 void load_i3_config(void);
 
+// Now used in discord.c
+char *i3fread_word(FILE *fp);
+char *i3fread_rest_of_line(FILE *fp);
+
 #endif
