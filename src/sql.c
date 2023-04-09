@@ -126,7 +126,7 @@ void sql_startup(void)
     I3_loadPinkfishToXterm256();
     I3_loadPinkfishToGreyscale();
 
-    snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^",
+    snprintf(log_msg, MAX_STRING_LENGTH, "%%^GREEN%%^Starting WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^",
              VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", log_msg);
 
@@ -153,7 +153,7 @@ void sql_shutdown(void)
 {
     char log_msg[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     log_boot("Shutting down SQL database.");
-    snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^",
+    snprintf(log_msg, MAX_STRING_LENGTH, "%%^RED%%^Shutting down WileyMUD Version: %s (%s), PostgreSQL Version %s.%%^RESET%%^",
              VERSION_BUILD, VERSION_DATE, sql_version(&db_i3log));
     allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", log_msg);
     sql_disconnect(&db_i3log);
