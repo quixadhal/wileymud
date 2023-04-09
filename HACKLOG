@@ -1836,3 +1836,16 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     So, for your changes to stick, you have to edit both of them to make them in
     sync, and then dpkg-reconfigure gdm3
 
+2023-04-09
+    Added a redirect to nginx so I can use my hostname to get to my github easily.
+
+        location / {
+            # First attempt to serve request as file, then
+            # as directory, then fall back to displaying a 404.
+            try_files $uri $uri/ =404;
+            #    return 302 https://github.com/quixadhal/wileymud
+            rewrite ^/git(hub)?(.*)$ https://github.com/quixadhal/wileymud$2 last;
+        }
+
+    I should probably put all these config files into github too, so they don't
+    get lost.
