@@ -1,0 +1,17 @@
+#!/bin/bash
+# This needs a crontab entry for ROOT so it can collect data
+# 33 16 * * * /home/wiley/bin/smart >/dev/null 2>&1 &
+
+if [ $UID -ne 0 ]; then
+    echo "Must be ROOT to access disk information."
+    exit 0
+fi
+
+FILE=/home/www/log/data/disk.smart
+
+/usr/sbin/smartctl -iH /dev/sda >$FILE 2>&1
+/usr/sbin/smartctl -iH /dev/sdb >>$FILE 2>&1
+/usr/sbin/smartctl -iH /dev/sdc >>$FILE 2>&1
+/usr/bin/chown wiley:users $FILE
+/usr/bin/chmod 0644 $FILE
+
