@@ -1849,3 +1849,11 @@ openssh (1:9.0p1-1) unstable; urgency=medium
 
     I should probably put all these config files into github too, so they don't
     get lost.
+
+2023-04-11
+    Added a quick thing to clean up Easter for the web pages.  Since Easter
+    roams around the calendar between mid-March and late-April, but I really only
+    want to see Easter images for a week.... I wrote a script to run every March 1st
+    which removes all the old links for last year and builds new ones for this
+    year.
+
