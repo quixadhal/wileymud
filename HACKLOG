@@ -1857,3 +1857,24 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     which removes all the old links for last year and builds new ones for this
     year.
 
+2023-04-18
+    curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+    Suggested packages:
+        aufs-tools cgroupfs-mount | cgroup-lite
+
+    So... after following the directions on docker's site, you will find that
+    the service fails to start.... it does not mention that you apparently need
+    to reboot because of changes to iptables and/or the kernel...
+
+2023-04-28
+    I thought I already did this, but grub reminded me that 
+
+        # This allows grub to generate entries for non-linux boot loaders
+        GRUB_DISABLE_OS_PROBER=false
+
+    I don't have any other OS's on this machine, but I see no valid reason
+    NOT to check for them, in case I add something in the future.  I can't
+    see why anyone would complain about an extra 0.5 seconds at boot time.
+
