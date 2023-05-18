@@ -196,6 +196,7 @@ char *escape_discord_markdown(const char *str) {
                 // We found a match, emit the first one and keep going!
                 *resptr++ = '\\';
                 *resptr++ = pair_key;
+                ptr++;
                 continue;
             } else {
                 // Nope, pair broken, emit the previous and back to normal.
