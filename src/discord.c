@@ -184,33 +184,56 @@ char* escape_json_string(const char* str) {
 }
 
 char *escape_discord_markdown(const char *str) {
-  const char* ptr = str;
-  char* result = (char*)malloc(3 * strlen(str) + 1);
-  char* resptr = result;
+    const char* ptr = str;
+    char* result = (char*)malloc(3 * strlen(str) + 1);
+    char* resptr = result;
+    int is_pair = 0;
+    char pair_key = '\0';
 
-  while (*ptr) {
-    switch (*ptr) {
-      case '_':
-      case '*':
-      case '~':
-      case '|':
-      case '`':
-        *resptr++ = '\\';
-        *resptr++ = *ptr;
-        break;
-      case '\\':
-        *resptr++ = '\\';
-        *resptr++ = '\\';
-        break;
-      default:
-        *resptr++ = *ptr;
-        break;
+    while (*ptr) {
+        if(is_pair) {
+            if(*ptr == pair_key) {
+                // We found a match, emit the first one and keep going!
+                *resptr++ = '\\';
+                *resptr++ = pair_key;
+                continue;
+            } else {
+                // Nope, pair broken, emit the previous and back to normal.
+                *resptr++ = pair_key;
+                is_pair = 0;
+                pair_key = '\0';
+            }
+        }
+        switch (*ptr) {
+            case '_':
+            case '~':
+            case '|':
+                // These all are only special when in pairs, such as ||
+                is_pair = 1;
+                pair_key = *ptr;
+                break;
+            case '*':
+            case '`':
+                *resptr++ = '\\';
+                *resptr++ = *ptr;
+                break;
+          case '\\':
+                *resptr++ = '\\';
+                *resptr++ = '\\';
+                break;
+          default:
+                *resptr++ = *ptr;
+                break;
+        }
+        ptr++;
     }
-    ptr++;
-  }
-  *resptr++ = '\0';
+    if(pair_key != '\0') {
+        // In case we had a leftover as the last character
+        *resptr++ = pair_key;
+    }
+    *resptr++ = '\0';
 
-  return result;
+    return result;
 }
 
 void discord_startup(void) {
