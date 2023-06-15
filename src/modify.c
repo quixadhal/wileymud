@@ -805,7 +805,7 @@ void show_page(struct descriptor_data *d)
     char buffer[MAX_STRING_LENGTH] = "\0\0\0\0\0\0\0";
     struct pager_data *p = NULL;
     int i = 0;
-    int page_size = 23;
+    int page_size = (d->telnet.rows > 2) ? (d->telnet.rows - 1) : 23;
     int use_pager = IS_SET(d->character->specials.new_act, NEW_PLR_PAGER);
 
     if (DEBUG > 2)

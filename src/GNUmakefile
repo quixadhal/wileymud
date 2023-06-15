@@ -277,6 +277,8 @@ obj/trap.o: trap.c include/global.h include/bug.h include/utils.h \
 obj/discord.o: discord.c include/global.h include/bug.h include/utils.h \
   include/i3.h include/discord.h include/discord_bot.h
 obj/base64.o: base64.c include/base64.h
+obj/StandaloneFuzzTargetMain.o: \
+  json/tests/thirdparty/Fuzzer/standalone/StandaloneFuzzTargetMain.c
 obj/multiclass.o: multiclass.c include/global.h include/bug.h include/utils.h \
   include/comm.h include/db.h include/interpreter.h include/handler.h \
   include/spells.h include/mudlimits.h include/opinion.h \

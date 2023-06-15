@@ -1671,8 +1671,19 @@ bool I3_write_packet(char *msg)
             return FALSE;
             break;
         default:
-            log_error("I3_PACKET Socket error: %d (%s)", errno, strerror(errno));
-            I3_connection_close(TRUE);
+            {
+                char timeout_msg[MAX_INPUT_LENGTH];
+
+                log_error("I3_PACKET Socket error: %d (%s)", errno, strerror(errno));
+                *timeout_msg = '\0';
+                if( errno != 0 ) {
+                    snprintf(timeout_msg, MAX_INPUT_LENGTH, "I3_PACKET (%s) Socket error: %d (%s)", I3_ROUTER_NAME, errno, strerror(errno));
+                } else {
+                    snprintf(timeout_msg, MAX_INPUT_LENGTH, "I3_PACKET (%s) Socket error: errno not set, yet %d returned...", I3_ROUTER_NAME, check);
+                }
+                allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)timeout_msg);
+                I3_connection_close(TRUE);
+            }
             return FALSE;
         }
     }
@@ -15361,6 +15372,7 @@ void save_i3_config(void)
 {
     PGresult *res = NULL;
     ExecStatusType st = (ExecStatusType) 0;
+    const char *nuke_sql = "TRUNCATE i3_config;";
     const char *sql = "INSERT INTO i3_config ( "
                 // General config values
                 "    thismud, "
@@ -15504,6 +15516,16 @@ void save_i3_config(void)
     param_val[30] = (this_i3mud->amrcp > 0) ? amrcp: "0";
     param_len[30] = (this_i3mud->amrcp > 0) ? strlen(amrcp) : 1;
 
+    res = PQexec(db_wileymud.dbc, nuke_sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot empty i3 config table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+
     res = PQexecParams(db_wileymud.dbc, sql, 31, NULL, param_val, param_len, param_bin, 0);
     st = PQresultStatus(res);
     if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
@@ -15643,16 +15665,73 @@ void load_i3_config(int mudport)
 
     this_i3mud = create_I3_mud();
     this_i3mud->player_port = mudport; /* Passed in from the mud's startup script */
-    // follow I3_fread_config_file() for structure format
 
-    // After reading the config file, we ALSO read the I3_PASSWORD_FILE
-    // which has 3 integers, this_i3mud->password, mudlist_id, chanlist_id.
+    I3STRFREE(this_i3mud->name);
+    this_i3mud->name = I3STRALLOC(PQgetvalue(res, 0, 1));
+    this_i3mud->autoconnect = (int)atoi(PQgetvalue(res, 0, 2));
+    I3STRFREE(this_i3mud->telnet);
+    this_i3mud->telnet = I3STRALLOC(PQgetvalue(res, 0, 3));
+    I3STRFREE(this_i3mud->web);
+    this_i3mud->web = I3STRALLOC(PQgetvalue(res, 0, 4));
+    I3STRFREE(this_i3mud->admin_email);
+    this_i3mud->admin_email = I3STRALLOC(PQgetvalue(res, 0, 5));
+    I3STRFREE(this_i3mud->open_status);
+    this_i3mud->open_status = I3STRALLOC(PQgetvalue(res, 0, 6));
 
-    //the_rent.updated = (time_t)atol(PQgetvalue(res, 0, 0));
-    //the_rent.enabled = (int)atoi(PQgetvalue(res, 0, 1));
-    //the_rent.factor = (float)atof(PQgetvalue(res, 0, 2));
-    //strlcpy(the_rent.set_by, PQgetvalue(res, 0, 3), MAX_INPUT_LENGTH);
+    {
+        char lib_buf[MAX_STRING_LENGTH];
 
+        //this_i3mud->mud_type = I3STRALLOC(PQgetvalue(res, 0, 7));
+        //this_i3mud->mudlib = I3STRALLOC(PQgetvalue(res, 0, 8));
+
+        //We actually have this hard coded...
+        I3STRFREE(this_i3mud->mud_type);
+        this_i3mud->mud_type = I3STRALLOC(CODETYPE);
+
+        snprintf(lib_buf, MAX_STRING_LENGTH, "%s %s", CODEBASE, CODEVERSION);
+        I3STRFREE(this_i3mud->base_mudlib);
+        this_i3mud->base_mudlib = I3STRALLOC(lib_buf);
+        // In our case, these are always the same
+        I3STRFREE(this_i3mud->mudlib);
+        this_i3mud->mudlib = I3STRALLOC(lib_buf);
+
+        // Also hard coded
+        I3STRFREE(this_i3mud->driver);
+        this_i3mud->driver = I3STRALLOC(I3DRIVER);
+    }
+
+    this_i3mud->minlevel = (int)atoi(PQgetvalue(res, 0, 9));
+    this_i3mud->immlevel = (int)atoi(PQgetvalue(res, 0, 10));
+    this_i3mud->adminlevel = (int)atoi(PQgetvalue(res, 0, 11));
+    this_i3mud->implevel = (int)atoi(PQgetvalue(res, 0, 12));
+
+    this_i3mud->tell = (int)atoi(PQgetvalue(res, 0, 13));
+    this_i3mud->beep = (int)atoi(PQgetvalue(res, 0, 14));
+    this_i3mud->emoteto = (int)atoi(PQgetvalue(res, 0, 15));
+    this_i3mud->who = (int)atoi(PQgetvalue(res, 0, 16));
+    this_i3mud->finger = (int)atoi(PQgetvalue(res, 0, 17));
+    this_i3mud->locate = (int)atoi(PQgetvalue(res, 0, 18));
+    this_i3mud->channel = (int)atoi(PQgetvalue(res, 0, 19));
+    this_i3mud->news = (int)atoi(PQgetvalue(res, 0, 20));
+    this_i3mud->mail = (int)atoi(PQgetvalue(res, 0, 21));
+    this_i3mud->file = (int)atoi(PQgetvalue(res, 0, 22));
+    this_i3mud->auth = (int)atoi(PQgetvalue(res, 0, 23));
+    this_i3mud->ucache = (int)atoi(PQgetvalue(res, 0, 24));
+
+    this_i3mud->smtp = (int)atoi(PQgetvalue(res, 0, 25));
+    this_i3mud->ftp = (int)atoi(PQgetvalue(res, 0, 26));
+    this_i3mud->nntp = (int)atoi(PQgetvalue(res, 0, 27));
+    this_i3mud->http = (int)atoi(PQgetvalue(res, 0, 28));
+    this_i3mud->pop3 = (int)atoi(PQgetvalue(res, 0, 29));
+    this_i3mud->rcp = (int)atoi(PQgetvalue(res, 0, 30));
+    this_i3mud->amrcp = (int)atoi(PQgetvalue(res, 0, 31));
+
+    // In the file version, we save both routers and config
+    if (first_router)
+    {
+        //I3_saverouters();
+        //I3_saveconfig();
+    }
 }
 
 void I3_saveconfig(void)
@@ -16755,7 +16834,7 @@ void I3_connection_close(bool reconnect)
 
     if (!rfound)
     {
-        log_info("%s", "I3_connection_close: Disconnecting from router.");
+        log_info("I3_connection_close: Disconnecting from router (%s).", I3_ROUTER_NAME);
         if (I3_socket > 0)
         {
             close(I3_socket);
@@ -17020,7 +17099,14 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
         return;
     }
     else
+    {
+        char timeout_msg[MAX_INPUT_LENGTH];
+
+        *timeout_msg = '\0';
         log_info("%s", "Intermud-3 network data loaded. Initialiazing network connection...");
+        snprintf(timeout_msg, MAX_INPUT_LENGTH, "Connecting to Intermud-3 router (%s)", I3_ROUTER_NAME);
+        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)timeout_msg);
+    }
 
     I3_loadchannels();
     I3_loadbans();
@@ -17559,9 +17645,13 @@ void i3_loop(void)
 
     if (expecting_timeout && diffTimestamp(timeout_marker, -1) <= 0)
     {
+        char timeout_msg[MAX_INPUT_LENGTH];
+
         expecting_timeout = 0;
-        log_info("I3 Client timeout.");
-        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)"%^RED%^I3 Client timeout.%^RESET%^");
+        *timeout_msg = '\0';
+        log_info("I3 Client timeout (%s).", I3_ROUTER_NAME);
+        snprintf(timeout_msg, MAX_INPUT_LENGTH, "%%^RED%%^I3 Client timeout (%s).%%^RESET%%^", I3_ROUTER_NAME);
+        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)timeout_msg);
         I3_connection_close(TRUE);
         connection_timeouts++;
         return;
@@ -17682,9 +17772,14 @@ void i3_loop(void)
 
     if (FD_ISSET(I3_socket, &exc_set))
     {
+        char timeout_msg[MAX_INPUT_LENGTH];
+
         FD_CLR(I3_socket, &in_set);
         FD_CLR(I3_socket, &out_set);
         log_info("%s", "Exception raised on I3 socket.");
+        *timeout_msg = '\0';
+        snprintf(timeout_msg, MAX_INPUT_LENGTH, "Exception raised on I3 socket to (%s)", I3_ROUTER_NAME);
+        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)timeout_msg);
         I3_connection_close(TRUE);
         return;
     }
@@ -19190,7 +19285,7 @@ I3_CMD(I3_disconnect)
         return;
     }
 
-    i3_printf(ch, "Disconnecting from Intermud-3 router.\r\n");
+    i3_printf(ch, "Disconnecting from Intermud-3 router (%s).\r\n", I3_ROUTER_NAME);
 
     i3_shutdown(0, ch);
 }
@@ -19207,7 +19302,12 @@ I3_CMD(I3_connect)
 
     if (!argument || argument[0] == '\0')
     {
-        i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", I3_ROUTER_NAME);
+        char timeout_msg[MAX_INPUT_LENGTH];
+
+        *timeout_msg = '\0';
+        i3_printf(ch, "Connecting to Intermud-3 router (%s)\r\n", I3_ROUTER_NAME);
+        snprintf(timeout_msg, MAX_INPUT_LENGTH, "Connecting to Intermud-3 router (%s)", I3_ROUTER_NAME);
+        allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)timeout_msg);
         router_connect(NULL, TRUE, this_i3mud->player_port, FALSE);
         return;
     }
@@ -19216,8 +19316,13 @@ I3_CMD(I3_connect)
     {
         if (!strcasecmp(router->name, argument))
         {
+            char timeout_msg[MAX_INPUT_LENGTH];
+
+            *timeout_msg = '\0';
             router->reconattempts = 0;
-            i3_printf(ch, "Connecting to Intermud-3 router %s\r\n", argument);
+            i3_printf(ch, "Connecting to Intermud-3 router (%s)\r\n", argument);
+            snprintf(timeout_msg, MAX_INPUT_LENGTH, "Connecting to Intermud-3 router (%s)", argument);
+            allchan_log(0, (char *)"wiley", (char *)"Cron", (char *)"Cron", (char *)"WileyMUD", (char *)timeout_msg);
             router_connect(argument, TRUE, this_i3mud->player_port, FALSE);
             return;
         }
