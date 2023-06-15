@@ -15747,7 +15747,8 @@ void setup_routers_table(void)
                 "    port INTEGER NOT NULL, "
                 "    password INTEGER NOT NULL DEFAULT 0, "
                 "    mudlist_id INTEGER NOT NULL DEFAULT 0, "
-                "    chanlist_id INTEGER NOT NULL DEFAULT 0 "
+                "    chanlist_id INTEGER NOT NULL DEFAULT 0, "
+                "    selected BOOLEAN NOT NULL DEFAULT false "
                 "); ";
 
     sql_connect(&db_wileymud);
@@ -15773,8 +15774,9 @@ void save_routers(void)
                 "    password, "
                 "    mudlist_id, "
                 "    chanlist_id, "
+                "    selected, "
                 ") VALUES ("
-                "    $1, $2, $3, $4, $5, $6 "
+                "    $1, $2, $3, $4, $5, $6, $7::BOOLEAN "
                 ") "
                 "ON CONFLICT (name) "
                 "DO UPDATE SET "
@@ -15783,11 +15785,12 @@ void save_routers(void)
                 "    password = EXCLUDED.password, "
                 "    mudlist_id = EXCLUDED.mudlist_id, "
                 "    chanlist_id = EXCLUDED.chanlist_id, "
+                "    selected = EXCLUDED.selected, "
                 "    updated = now(); ";
-    const char *param_val[6];
-    int param_len[6];
-    int param_bin[6] = {
-        0, 0, 0, 0, 0, 0
+    const char *param_val[7];
+    int param_len[7];
+    int param_bin[7] = {
+        0, 0, 0, 0, 0, 0, 0
     };
     char port[MAX_INPUT_LENGTH];
     char password[MAX_INPUT_LENGTH];
@@ -15818,8 +15821,10 @@ void save_routers(void)
         snprintf(chanlist_id, MAX_INPUT_LENGTH, "%d", router->chanlist_id);
         param_val[5] = (router->chanlist_id > 0) ? chanlist_id: "0";
         param_len[5] = (router->chanlist_id > 0) ? strlen(chanlist_id) : 1;
+        param_val[6] = (router == first_router) ? "1": "0";
+        param_len[6] = (router == first_router) ? 1 : 1;
 
-        res = PQexecParams(db_wileymud.dbc, sql, 6, NULL, param_val, param_len, param_bin, 0);
+        res = PQexecParams(db_wileymud.dbc, sql, 7, NULL, param_val, param_len, param_bin, 0);
         st = PQresultStatus(res);
         if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
         {
