@@ -15090,6 +15090,7 @@ void I3_saverouters(void)
     }
     fprintf(fp, "%s", "#END\n");
     I3FCLOSE(fp);
+    save_routers();
 }
 
 void I3_readrouter(ROUTER_DATA *router, FILE *fp)
@@ -15312,6 +15313,7 @@ void I3_load_ucache(void)
 void setup_i3_tables(void)
 {
     setup_i3_config_table();
+    setup_routers_table();
 }
 
 void setup_i3_config_table(void)
@@ -15732,6 +15734,105 @@ void load_i3_config(int mudport)
         //I3_saverouters();
         //I3_saveconfig();
     }
+}
+
+void setup_routers_table(void)
+{
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "CREATE TABLE IF NOT EXISTS routers ( "
+                "    updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(), "
+                "    name TEXT PRIMARY KEY NOT NULL, "
+                "    ip TEXT NOT NULL, "
+                "    port INTEGER NOT NULL, "
+                "    password INTEGER NOT NULL DEFAULT 0, "
+                "    mudlist_id INTEGER NOT NULL DEFAULT 0, "
+                "    chanlist_id INTEGER NOT NULL DEFAULT 0 "
+                "); ";
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_fatal("Cannot create routers table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+    PQclear(res);
+}
+
+void save_routers(void)
+{
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+    const char *sql = "INSERT INTO routers ( "
+                "    name, "
+                "    ip, "
+                "    port, "
+                "    password, "
+                "    mudlist_id, "
+                "    chanlist_id, "
+                ") VALUES ("
+                "    $1, $2, $3, $4, $5, $6 "
+                ") "
+                "ON CONFLICT (name) "
+                "DO UPDATE SET "
+                "    ip = EXCLUDED.ip, "
+                "    port = EXCLUDED.port, "
+                "    password = EXCLUDED.password, "
+                "    mudlist_id = EXCLUDED.mudlist_id, "
+                "    chanlist_id = EXCLUDED.chanlist_id, "
+                "    updated = now(); ";
+    const char *param_val[6];
+    int param_len[6];
+    int param_bin[6] = {
+        0, 0, 0, 0, 0, 0
+    };
+    char port[MAX_INPUT_LENGTH];
+    char password[MAX_INPUT_LENGTH];
+    char mudlist_id[MAX_INPUT_LENGTH];
+    char chanlist_id[MAX_INPUT_LENGTH];
+    ROUTER_DATA *router;
+
+    for (router = first_router; router; router = router->next)
+    {
+        *port = '\0';
+        *password = '\0';
+        *mudlist_id = '\0';
+        *chanlist_id = '\0';
+
+        param_val[0] = (router->name[0]) ? router->name : NULL;
+        param_len[0] = (router->name[0]) ? strlen(router->name) : 0;
+        param_val[1] = (router->ip[0]) ? router->ip : NULL;
+        param_len[1] = (router->ip[0]) ? strlen(router->ip) : 0;
+        snprintf(port, MAX_INPUT_LENGTH, "%d", router->port);
+        param_val[2] = (router->port > 0) ? port: "0";
+        param_len[2] = (router->port > 0) ? strlen(port) : 1;
+        snprintf(password, MAX_INPUT_LENGTH, "%d", router->password);
+        param_val[3] = (router->port > 0) ? password: "0";
+        param_len[3] = (router->port > 0) ? strlen(password) : 1;
+        snprintf(mudlist_id, MAX_INPUT_LENGTH, "%d", router->mudlist_id);
+        param_val[4] = (router->mudlist_id > 0) ? mudlist_id: "0";
+        param_len[4] = (router->mudlist_id > 0) ? strlen(mudlist_id) : 1;
+        snprintf(chanlist_id, MAX_INPUT_LENGTH, "%d", router->chanlist_id);
+        param_val[5] = (router->chanlist_id > 0) ? chanlist_id: "0";
+        param_len[5] = (router->chanlist_id > 0) ? strlen(chanlist_id) : 1;
+
+        res = PQexecParams(db_wileymud.dbc, sql, 6, NULL, param_val, param_len, param_bin, 0);
+        st = PQresultStatus(res);
+        if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+        {
+            log_fatal("Cannot update routers table: %s", PQerrorMessage(db_wileymud.dbc));
+            PQclear(res);
+            proper_exit(MUD_HALT);
+        }
+        PQclear(res);
+    }
+}
+
+void load_routers(void)
+{
 }
 
 void I3_saveconfig(void)

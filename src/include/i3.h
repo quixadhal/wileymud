@@ -431,6 +431,9 @@ void setup_i3_tables(void);
 void setup_i3_config_table(void);
 void save_i3_config(void);
 void load_i3_config(void);
+void setup_routers_table(void);
+void save_routers(void);
+void load_routers(void);
 
 // Now used in discord.c
 char *i3fread_word(FILE *fp);
