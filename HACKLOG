@@ -486,7 +486,8 @@ A recent update broke python 2 by removing the soft-link to it, so...
         install File::Random
         install Chart::Pie
 
-2020-12-24 ---- This is the point where the VM HACKLOG cuts off
+2020-12-24
+---- This is the point where the VM HACKLOG cuts off
 
     Oh yeah, systemd...
         systemctl enable wileymud (or the path to the unit file)
@@ -716,8 +717,9 @@ I did set it to NOT run if we don't think we have a network connection...
     any noticeable change in performance, but it's easier to get to and may
     run a little cooler... and no worries about spilling coffee into it now.
 
-2021-09-10  ----    Booting the VM up to update it to to roughy match our
-                    live machine, and thus be a semi-portable backup.
+2021-09-10
+----    Booting the VM up to update it to to roughy match our
+        live machine, and thus be a semi-portable backup.
 
     First step, apt update and apt dist-upgrade, then convert to newer debian version
     like we did for the live version a few weeks ago.
@@ -1869,7 +1871,7 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     to reboot because of changes to iptables and/or the kernel...
 
 2023-04-28
-    I thought I already did this, but grub reminded me that 
+    I thought I already did this, but grub reminded me that
 
         # This allows grub to generate entries for non-linux boot loaders
         GRUB_DISABLE_OS_PROBER=false
@@ -1877,4 +1879,41 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     I don't have any other OS's on this machine, but I see no valid reason
     NOT to check for them, in case I add something in the future.  I can't
     see why anyone would complain about an extra 0.5 seconds at boot time.
+
+2023-05-27
+    apt install uuid uuid-dev
+
+2023-05-29
+    cpan
+        install IO::Socket::Telnet
+
+2023-06-06
+    Have to rebuild X11 nonsense again....
+
+2023-06-21
+    apt install sc
+
+2023-06-22
+    Debian has switched from bookworm to trixie:
+
+        apt-listchanges: News
+        ---------------------
+
+        llvm-toolchain-15 (1:15.0.6-5) unstable; urgency=medium
+
+          * libclang-common-X.Y-dev has been split into libclang-rt-X.Y-dev,
+            libpolly-X.Y-dev, libclang-rt-14-dev-wasm32 and libclang-rt-14-dev-wasm64
+            compiler-rt and polly moved to libclang-rt-X.Y-dev
+            libclang-common-X.Y-dev is now arch:any and contains headers
+            libclang-common-X.Y-dev recommends libclang-rt-X.Y-dev
+          * As a ride along, flang is packaged as part of the llvm-toolchain
+            packages.
+
+         -- Sylvestre Ledru <sylvestre@debian.org>  Sun, 08 Jan 2023 12:32:33 +0100
+
+    Also, for future reference, every time anything related to gnome gets updated
+    it removes our custom login screen... so
+
+    set-gdm-theme set -b /boot/catgirl.png
+
 
