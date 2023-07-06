@@ -4,6 +4,7 @@ use strict;
 use utf8;
 use English qw( −no_match_vars );
 use JSON qw(encode_json decode_json);
+use Encode qw(encode decode);
 use Getopt::Long;
 
 my $mudlist_file = "/home/www/log/data/mudlist.json";
@@ -72,6 +73,13 @@ open FP, "<$mudlist_file" or die "Cannot open mudlist $mudlist_file: $!";
     $mudlist_data = <FP>;
 }
 close FP;
+
+# corrupt UTF-8 data
+#$mudlist_data =~ s/Schism\:\s.*?yron\sUndone/Schism: Elyron Undone/;
+
+$mudlist_data = decode("utf-8", $mudlist_data);
+$mudlist_data =~ s/\x{fffd}/_/g;
+$mudlist_data = encode("utf-8", $mudlist_data);
 
 my $mudlist = decode_json($mudlist_data);
 my $total_count = (scalar @{ $mudlist->{mudlist} });
