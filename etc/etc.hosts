@@ -1,0 +1,11 @@
+127.0.0.1	localhost
+127.0.1.1	lenin.awasteoftime.net	lenin
+192.168.0.12    wileymud3.awasteoftime.net      wileymud3
+45.64.56.66     kelly-old.themud.org    kelly-old
+112.213.38.109  kelly.themud.org    kelly
+97.107.133.86   dalet.themud.org    dalet
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
