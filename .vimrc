@@ -66,3 +66,7 @@ set fileencodings=utf-8
 
 autocmd BufNewFile,BufRead *_css.php set filetype=css
 autocmd BufNewFile,BufRead *_js.php set filetype=javascript
+
+# Praise kami-sama!  This next line removes the often-mistyped :X encryption
+# command and replaces it with the :x save/exit command you meant to type.
+cnoreabbrev <expr> X (getcmdtype() is# ':' && getcmdline() is# 'X') ? 'x' : 'X'
