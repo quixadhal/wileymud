@@ -1916,4 +1916,20 @@ openssh (1:9.0p1-1) unstable; urgency=medium
 
     set-gdm-theme set -b /boot/catgirl.png
 
+2023-06-23
+    apt install python3.12-full python3.12-dev python3-gdbm-dbg
+    apt install python3-sqlalchemy python-sqlalchemy-doc python3-sqlalchemy-ext 
+        python-greenlet-dev python-greenlet-doc python3-asyncpg
+        python3-psycopg2 python-psycopg2-doc python3-greenlet
+    apt install python3-alembic alembic
+    apt install sqlacodegen
+    apt install python3-sqlalchemy-utc
 
+    Maybe consider these for later...
+        python3-sqlalchemy-i18n
+        python3-sqlalchemy-utils python-sqlalchemy-utils-doc
+        python3-celery python-celery-doc celery
+
+2023-07-14
+    apt install python3-dotenv
+    apt install python3-discord python-discord-doc python3-nacl python-nacl-doc
