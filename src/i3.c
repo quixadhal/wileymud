@@ -15539,7 +15539,7 @@ void save_i3_config(void)
     PQclear(res);
 }
 
-void load_i3_config(int mudport)
+int load_i3_config(int mudport)
 {
     time_t file_timestamp = -1;
     time_t sql_timestamp = -1;
@@ -15629,13 +15629,36 @@ void load_i3_config(int mudport)
     if (file_timestamp > sql_timestamp)
     {
         // load via the old code
-        I3_read_config(mudport);
-        save_i3_config();
         log_boot("  Using I3 configuration from file.");
-        return;
+        if (!I3_read_config(mudport))
+        {
+            I3_socket = -1;
+            return 0;
+        }
+        else
+        {
+            save_i3_config();
+        }
+        return 1;
+    }
+    else
+    {
+        log_boot("  Using I3 configuration from SQL database.");
+        log_boot("  Not really, it seems to be broken, FIX ME!");
+        if (!I3_read_config(mudport))
+        {
+            I3_socket = -1;
+            return 0;
+        }
+        else
+        {
+            save_i3_config();
+        }
+        return 1;
     }
 
-    log_boot("  Using I3 configuration from SQL database.");
+
+    // FIXME
 
     res = PQexec(db_wileymud.dbc, sql);
     st = PQresultStatus(res);
@@ -15733,6 +15756,8 @@ void load_i3_config(int mudport)
         //I3_saverouters();
         //I3_saveconfig();
     }
+
+    return 0;
 }
 
 void setup_routers_table(void)
@@ -17249,15 +17274,12 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
         }
     }
 
-    load_i3_config(mudport);
-
-    /*
-    if (!I3_read_config(mudport))
+    //if (!I3_read_config(mudport))
+    if (!load_i3_config(mudport))
     {
         I3_socket = -1;
         return;
     }
-    */
 
     if (first_router == NULL)
     {

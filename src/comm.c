@@ -345,7 +345,20 @@ void emit_prompt(struct descriptor_data *point)
             {
                 point->prompt_mode = 0;
                 bzero(promptbuf, MAX_INPUT_LENGTH);
-                if (point->wait > 0) {
+                if (point->wait > PULSE_VIOLENCE) {
+                    // When starting combat, you get a wait state of 6 to prevent
+                    // spamming extra attacks as an alpha strike.
+                    // Auto-attack doesn't add anything, but other actions do.
+                    //
+                    // I made a few tweaks, so prompts are not auto-emitted at
+                    // every output round while in combat, and that should make
+                    // it possible to see your WAIT state disappear.
+                    //
+                    // I'm choosing to only show it when it has a value > 1 normal
+                    // combat round, since normal actions only set it to
+                    // PULSE_VIOLENCE.  Actions like bash, kick, or spells are
+                    // usually what you want to know about...
+                    //
                     scprintf(promptbuf, MAX_INPUT_LENGTH, "WAIT ");
                 }
                 if (IS_IMMORTAL(point->character) && IS_PC(point->character))
@@ -615,7 +628,15 @@ void game_loop(int s)
             next_point = point->next;
             if (FD_ISSET(point->descriptor, &output_set) && point->output.head)
             {
-                // point->prompt_mode = 1;
+                // If the player has any wait-induced states, show them
+                // a prompt so they can see that?
+                //if(point->wait > 0)
+                //    point->prompt_mode = 1;
+
+                // If the player is fighting something... show prompts
+                // every round?
+                if(point->character && point->character->specials.fighting)
+                    point->prompt_mode = 1;
                 if (process_output(point) < 0)
                     close_socket(point);
             }

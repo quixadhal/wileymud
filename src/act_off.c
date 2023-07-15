@@ -105,7 +105,8 @@ int do_hit(struct char_data *ch, const char *argument, int cmd)
                 (victim != ch->specials.fighting))
             {
                 hit(ch, victim, TYPE_UNDEFINED);
-                WAIT_STATE(ch, PULSE_VIOLENCE + 1);
+                //WAIT_STATE(ch, PULSE_VIOLENCE + 1);
+                WAIT_STATE(ch, PULSE_VIOLENCE);
             }
             else
                 cprintf(ch, "You do the best you can!\r\n");
@@ -1087,7 +1088,7 @@ int do_rescue(struct char_data *ch, const char *argument, int cmd)
             stop_fighting(ch);
         set_fighting(ch, tmp_ch);
         set_fighting(tmp_ch, ch);
-        WAIT_STATE(victim, 2 * PULSE_VIOLENCE);
+        WAIT_STATE(victim, PULSE_VIOLENCE * 2);
         if (ch->skills[SKILL_RESCUE].learned < 50)
             ch->skills[SKILL_RESCUE].learned += 2;
     }
@@ -1141,7 +1142,8 @@ int do_assist(struct char_data *ch, const char *argument, int cmd)
         return TRUE;
     }
     hit(ch, tmp_ch, TYPE_UNDEFINED);
-    WAIT_STATE(victim, PULSE_VIOLENCE + 2); /* same as hit */
+    //WAIT_STATE(victim, PULSE_VIOLENCE + 2); /* same as hit */
+    WAIT_STATE(victim, PULSE_VIOLENCE); /* same as hit */
     return TRUE;
 }
 

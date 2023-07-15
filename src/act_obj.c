@@ -2296,7 +2296,7 @@ int do_bury(struct char_data *ch, const char *argument, int cmd)
         GET_ALIGNMENT(ch) += number(0, 5);
         if (GET_ALIGNMENT(ch) > 999)
             GET_ALIGNMENT(ch) = 1000;
-        WAIT_STATE(ch, 4);
+        WAIT_STATE(ch, PULSE_VIOLENCE);
     }
     return TRUE;
 }
@@ -2348,7 +2348,7 @@ int do_desecrate(struct char_data *ch, const char *argument, int cmd)
         GET_ALIGNMENT(ch) -= number(0, 5);
         if (GET_ALIGNMENT(ch) < -999)
             GET_ALIGNMENT(ch) = -1000;
-        WAIT_STATE(ch, 4);
+        WAIT_STATE(ch, PULSE_VIOLENCE);
     }
     return TRUE;
 }
