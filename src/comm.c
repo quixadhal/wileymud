@@ -350,7 +350,7 @@ void emit_prompt(struct descriptor_data *point)
                     // spamming extra attacks as an alpha strike.
                     // Auto-attack doesn't add anything, but other actions do.
                     //
-                    // I made a few tweaks, so prompts are not auto-emitted at
+                    // I made a few tweaks, so prompts are now auto-emitted at
                     // every output round while in combat, and that should make
                     // it possible to see your WAIT state disappear.
                     //
