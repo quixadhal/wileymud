@@ -15622,7 +15622,7 @@ void load_i3_config(int mudport)
     // update the sql to match.
     if (file_timestamp == -1 && sql_timestamp == -1)
     {
-        log_fatal("No I3 configuraitno data available!");
+        log_fatal("No I3 configuration data available!");
         proper_exit(MUD_HALT);
     }
 
@@ -15631,12 +15631,11 @@ void load_i3_config(int mudport)
         // load via the old code
         I3_read_config(mudport);
         save_i3_config();
-    }
-    else
-    {
-        log_boot("  Using I3 configuration from SQL database.");
+        log_boot("  Using I3 configuration from file.");
+        return;
     }
 
+    log_boot("  Using I3 configuration from SQL database.");
 
     res = PQexec(db_wileymud.dbc, sql);
     st = PQresultStatus(res);
@@ -15774,7 +15773,7 @@ void save_routers(void)
                 "    password, "
                 "    mudlist_id, "
                 "    chanlist_id, "
-                "    selected, "
+                "    selected "
                 ") VALUES ("
                 "    $1, $2, $3, $4, $5, $6, $7::BOOLEAN "
                 ") "
@@ -15836,8 +15835,90 @@ void save_routers(void)
     }
 }
 
-void load_routers(void)
+// NOT FINISHED YET, use I3_load_routers still...
+void load_routers(int mudport)
 {
+    time_t file_timestamp = -1;
+    time_t sql_timestamp = -1;
+
+    PGresult *res = NULL;
+    ExecStatusType st = (ExecStatusType) 0;
+
+    const char *sql = "SELECT extract('epoch' FROM updated) AS updated, "
+                "    name, "
+                "    ip, "
+                "    port, "
+                "    password, "
+                "    mudlist_id, "
+                "    chanlist_id, "
+                "    selected::INTEGER "
+                " FROM routers ORDER BY selected, updated DESC;";
+    int rows = 0;
+    int columns = 0;
+
+    const char *sql_time = "SELECT extract('epoch' FROM updated) AS updated "
+        "FROM routers "
+        "WHERE updated = ( "
+        "   SELECT MAX(updated) FROM routers "
+        ") "
+        "LIMIT 1;";
+
+    file_timestamp = file_date(I3_CONFIG_FILE);
+
+    sql_connect(&db_wileymud);
+    res = PQexec(db_wileymud.dbc, sql_time);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK && st != PGRES_SINGLE_TUPLE)
+    {
+        log_error("router table has no data: %s", PQerrorMessage(db_wileymud.dbc));
+        //PQclear(res);
+        //proper_exit(MUD_HALT);
+    }
+    else
+    {
+        rows = PQntuples(res);
+        columns = PQnfields(res);
+        if (rows > 0 && columns > 0)
+        {
+            sql_timestamp = (time_t)atoi(PQgetvalue(res, 0, 0));
+        }
+    }
+    PQclear(res);
+
+    // At this point, we know the state.  If both are -1, we bail entirely.
+    // If sql is -1, we must insert the file data
+    // If file is -1, we just use the sql
+    // If both are numbers, we only used the file if it's newer, and then
+    // update the sql to match.
+    if (file_timestamp == -1 && sql_timestamp == -1)
+    {
+        log_fatal("No router configuration data available!");
+        proper_exit(MUD_HALT);
+    }
+
+    if (file_timestamp > sql_timestamp)
+    {
+        // load via the old code
+        I3_load_routers();
+        save_routers();
+        log_boot("  Using router configuration from file.");
+        return;
+    }
+
+    log_boot("  Using router configuration from SQL database.");
+
+    res = PQexec(db_wileymud.dbc, sql);
+    st = PQresultStatus(res);
+    if (st != PGRES_COMMAND_OK && st != PGRES_TUPLES_OK)
+    {
+        log_fatal("Cannot get router list from routers table: %s", PQerrorMessage(db_wileymud.dbc));
+        PQclear(res);
+        proper_exit(MUD_HALT);
+    }
+
+    // Now loop through the results and push them into the old data structure
+
+
 }
 
 void I3_saveconfig(void)
@@ -17168,11 +17249,15 @@ void router_connect(const char *router_name, bool forced, int mudport, bool isco
         }
     }
 
+    load_i3_config(mudport);
+
+    /*
     if (!I3_read_config(mudport))
     {
         I3_socket = -1;
         return;
     }
+    */
 
     if (first_router == NULL)
     {

@@ -345,12 +345,15 @@ void emit_prompt(struct descriptor_data *point)
             {
                 point->prompt_mode = 0;
                 bzero(promptbuf, MAX_INPUT_LENGTH);
+                if (point->wait > 0) {
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "WAIT ");
+                }
                 if (IS_IMMORTAL(point->character) && IS_PC(point->character))
                 {
                     if (MOUNTED(point->character))
                     {
                         mount = MOUNTED(point->character);
-                        snprintf(promptbuf, MAX_INPUT_LENGTH, "[%s has %d/%dh %d/%dv]\r\n", GET_SDESC(mount),
+                        scprintf(promptbuf, MAX_INPUT_LENGTH, "[%s has %d/%dh %d/%dv]\r\n", GET_SDESC(mount),
                                  GET_HIT(mount), GET_MAX_HIT(mount), GET_MOVE(mount), GET_MAX_MOVE(mount));
                     }
                     if (IS_SET(point->character->specials.act, PLR_STEALTH))
@@ -369,14 +372,14 @@ void emit_prompt(struct descriptor_data *point)
                 else if (IS_NPC(point->character) && (IS_SET(point->character->specials.act, ACT_POLYSELF) ||
                                                       IS_SET(point->character->specials.act, ACT_POLYOTHER)))
                 {
-                    snprintf(promptbuf, MAX_INPUT_LENGTH, "P %d/%dh %d/%dv > ", GET_HIT(point->character),
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "P %d/%dh %d/%dv > ", GET_HIT(point->character),
                              GET_MAX_HIT(point->character), GET_MOVE(point->character), GET_MAX_MOVE(point->character));
                     scprintf(promptbuf, MAX_INPUT_LENGTH, "%c%c", TELNET_IAC, TELNET_GA);
                     write_to_descriptor(point->descriptor, promptbuf);
                 }
                 else if (IS_NPC(point->character) && IS_SET(point->character->specials.act, ACT_SWITCH))
                 {
-                    snprintf(promptbuf, MAX_INPUT_LENGTH, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
+                    scprintf(promptbuf, MAX_INPUT_LENGTH, "*%s[#%d] in [#%d] %d/%dh %d/%dm %d/%dv > ",
                              NAME(point->character), MobVnum(point->character), point->character->in_room,
                              GET_HIT(point->character), GET_MAX_HIT(point->character), GET_MANA(point->character),
                              GET_MAX_MANA(point->character), GET_MOVE(point->character),
@@ -392,7 +395,7 @@ void emit_prompt(struct descriptor_data *point)
                             IS_AFFECTED(MOUNTED(point->character), AFF_CHARM))
                         {
                             mount = MOUNTED(point->character);
-                            snprintf(promptbuf, MAX_INPUT_LENGTH, "[%s has %d/%dh %d/%dv]\r\n", GET_SDESC(mount),
+                            scprintf(promptbuf, MAX_INPUT_LENGTH, "[%s has %d/%dh %d/%dv]\r\n", GET_SDESC(mount),
                                      GET_HIT(mount), GET_MAX_HIT(mount), GET_MOVE(mount), GET_MAX_MOVE(mount));
                         }
                     }
