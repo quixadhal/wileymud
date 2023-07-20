@@ -388,7 +388,7 @@ const char *discord_find_channel(const char *i3_channel) {
     else if(!strcmp(i3_channel, "intercre"))
         return "1079142677737640107";
     else if(!strcmp(i3_channel, "dwchat"))
-        return "1079142483969200148";
+        return "1079142777968935023";
     else if(!strcmp(i3_channel, "bsg"))
         return "1074652532586070066";
     else
