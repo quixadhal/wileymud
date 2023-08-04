@@ -1950,3 +1950,10 @@ openssh (1:9.0p1-1) unstable; urgency=medium
          this restriction.
 
      -- Colin Watson <cjwatson@debian.org>  Wed, 19 Jul 2023 21:57:53 +0100
+
+    apt remove coinor-libcbc3 coinor-libcoinmp1v5 libreoffice-calc
+    apt install coinor-libcbc3.1
+
+    Broken dependencies here... probably a transitional thing, it's pretty
+    rare of Debian to let stuff out the door with conflicts.  I hate libreoffice
+    anyways, so byebye. :)
