@@ -1293,6 +1293,7 @@ int do_dice(struct char_data *ch, const char *argument, int cmd)
     int y = 0;
     int z = 0;
     int result = 0;
+    int part[20];
 
     if (DEBUG)
         log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
@@ -1322,9 +1323,26 @@ int do_dice(struct char_data *ch, const char *argument, int cmd)
                 y = 1;
             if (*sign == '-')
                 z = -z;
-            result = dice(x, y) + z;
-
-            cprintf(ch, "Rolling %dd%d%s%d: %d\r\n", x, y, sign, (*sign == '-') ? -z : z, result);
+            if (x > 0 && x <= 20 && y < 100)
+            {
+                for (int r = 1; r <= x; r++)
+                {
+                    part[r] = (random() % y) + 1;
+                    result += part[r];
+                }
+                result += z;
+                cprintf(ch, "Rolling %dd%d%s%d: ", x, y, sign, (*sign == '-') ? -z : z);
+                for (int r = 1; r <= x; r++)
+                {
+                    cprintf(ch, "[%2d] ", part[r]);
+                }
+                cprintf(ch, ": %d\r\n", result);
+            }
+            else
+            {
+                result = dice(x, y) + z;
+                cprintf(ch, "Rolling %dd%d%s%d: %d\r\n", x, y, sign, (*sign == '-') ? -z : z, result);
+            }
         }
     }
     else
