@@ -23,7 +23,7 @@
 #define MAX_CMD_LIST 300
 
 /* Here we Go!  The monster command list.... ewwwwwww! */
-/* 292 is the current maximum */
+/* 293 is the current maximum */
 #define CMD_EMOTE 214
 #define CMD_GTELL 177
 #define CMD_INTERNAL 0 /* NOT initiated from the command line */
@@ -79,6 +79,7 @@
 #define CMD_debug 241
 #define CMD_deposit 219
 #define CMD_desecrate 280
+#define CMD_dice 293
 #define CMD_disarm 245
 #define CMD_dismount 270
 #define CMD_doh 226

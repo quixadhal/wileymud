@@ -29,5 +29,6 @@ int do_plr_noshout(struct char_data *ch, const char *argument, int cmd);
 int do_plr_notell(struct char_data *ch, const char *argument, int cmd);
 int do_plr_nosummon(struct char_data *ch, const char *argument, int cmd);
 int do_plr_noteleport(struct char_data *ch, const char *argument, int cmd);
+int do_dice(struct char_data *ch, const char *argument, int cmd);
 
 #endif

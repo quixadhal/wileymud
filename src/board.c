@@ -810,6 +810,7 @@ int board_special(struct char_data *ch, int cmd, const char *arg)
     case CMD_autoexit:
     case CMD_bug:
     case CMD_credits:
+    case CMD_dice:
     case CMD_down:
     case CMD_east:
     case CMD_exits:

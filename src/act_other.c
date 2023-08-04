@@ -1285,3 +1285,53 @@ int do_plr_noteleport(struct char_data *ch, const char *argument, int cmd)
     }
     return TRUE;
 }
+
+int do_dice(struct char_data *ch, const char *argument, int cmd)
+{
+    char sign[2] = "\0";
+    int x = 0;
+    int y = 0;
+    int z = 0;
+    int result = 0;
+
+    if (DEBUG)
+        log_info("called %s with %s, %s, %d", __PRETTY_FUNCTION__, SAFE_NAME(ch), VNULL(argument), cmd);
+
+    if (IS_NPC(ch) || !ch->desc)
+        return TRUE;
+
+    for (; isspace(*argument); argument++)
+        ;
+
+    if (*argument)
+    {
+        if (!strcmp(argument, "help"))
+        {
+            cprintf(ch, "Usage:  dice XdY+Z\r\n");
+            cprintf(ch, "        X is the number of times the die is rolled,\r\n");
+            cprintf(ch, "        Y is the number of faces on the die,\r\n");
+            cprintf(ch, "        a plus or minus sign can precede Z,\r\n");
+            cprintf(ch, "        which is a constant added to the result.\r\n");
+        }
+        else
+        {
+            // Parse the string as a dice roll format.
+            *sign = '+';
+            sscanf(argument, " %d d %d %[+-] %d", &x, &y, sign, &z);
+            if (!y)
+                y = 1;
+            if (*sign == '-')
+                z = -z;
+            result = dice(x, y) + z;
+
+            cprintf(ch, "Rolling %dd%d%s%d: %d\r\n", x, y, sign, (*sign == '-') ? -z : z, result);
+        }
+    }
+    else
+    {
+        // Assume 1d20+0
+        result = dice(1, 20);
+        cprintf(ch, "Rolling %dd%d%s%d: %d\r\n", 1, 20, "+", 0, result);
+    }
+    return TRUE;
+}

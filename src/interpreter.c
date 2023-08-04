@@ -103,7 +103,7 @@ const char *command[] = {
     "scribe",    "apraise",   "ban",        "search",   "skills",   "doorbash", "restoreall", "mount",       "dismount",
     "land",      "nosummon",  "noteleport", "players",  "reset",    "event",    "zpurge",     "ticks",       "bury",
     "desecrate", "setreboot", "home",       "bandage",  "unban",    "immtrack", "ansimap",    "version",     "autoexit",
-    "reboot",    "checkurl",  "hint",       "json",     "\n"};
+    "reboot",    "checkurl",  "hint",       "json",     "dice",     "\n"};
 
 const char *fill[] = {"in", "from", "with", "the", "on", "at", "to", "\n"};
 
@@ -838,6 +838,7 @@ void assign_command_pointers(void)
     COMMANDO(CMD_daydream, POSITION_SLEEPING, do_action, 0);
     COMMANDO(CMD_deposit, POSITION_RESTING, do_not_here, 1);
     COMMANDO(CMD_desecrate, POSITION_STANDING, do_desecrate, 0);
+    COMMANDO(CMD_dice, POSITION_DEAD, do_dice, 0);
     COMMANDO(CMD_disarm, POSITION_FIGHTING, do_disarm, 1);
     COMMANDO(CMD_dismount, POSITION_MOUNTED, do_mount, 1);
     COMMANDO(CMD_doh, POSITION_DEAD, do_action, 0);
