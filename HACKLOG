@@ -1933,3 +1933,20 @@ openssh (1:9.0p1-1) unstable; urgency=medium
 2023-07-14
     apt install python3-dotenv
     apt install python3-discord python-discord-doc python3-nacl python-nacl-doc
+
+2023-08-04
+    openssh (1:9.3p2-1) unstable; urgency=high
+
+      OpenSSH 9.3p2 includes a number of changes that may affect existing
+      configurations:
+
+       * ssh-agent(8): the agent will now refuse requests to load PKCS#11
+         modules issued by remote clients by default. A flag has been added to
+         restore the previous behaviour "-Oallow-remote-pkcs11".
+
+         Note that ssh-agent(8) depends on the SSH client to identify requests
+         that are remote. The OpenSSH >=8.9 ssh(1) client does this, but
+         forwarding access to an agent socket using other tools may circumvent
+         this restriction.
+
+     -- Colin Watson <cjwatson@debian.org>  Wed, 19 Jul 2023 21:57:53 +0100
