@@ -944,7 +944,7 @@ void generate_json_mudlist(const char *filename)
         fprintf(fp, "            \"mudlib\"    : \"%s\", \n", json_escape(mud->mudlib));
         fprintf(fp, "            \"ipaddress\" : \"%s\", \n", json_escape(mud->ipaddress));
         fprintf(fp, "            \"port\"      : %d,\n", mud->player_port);
-        fprintf(fp, "            \"online\"    : %d\n", mud->status == -1 ? 1 : 0);
+        fprintf(fp, "            \"online\"    : %d,\n", mud->status == -1 ? 1 : 0);
         fprintf(fp, "            \"from_mssp\" : %d\n", 0);
         fprintf(fp, "        }");
         if(mud->name && !strcasecmp(mud->name, "WileyMUD")) {
