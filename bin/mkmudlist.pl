@@ -369,6 +369,10 @@ sub do_mssp {
         next if !defined $ipaddress or -z $ipaddress;
         next if !defined $port or -z $port;
 
+        $port = 0 + $port; # Convert to integer
+        $type = "---" if -z $type;
+        $mudlib = "---" if -z $mudlib;
+
         my $data = {
             name        => $name,
             md5         => md5_hex($name),
