@@ -1,0 +1,5 @@
+#!/bin/bash
+
+PGPASSWORD=tardis69 pg_dump --clean --if-exists --no-owner wileymud >/home/wiley/src/sql/wileymud.sql
+PGPASSWORD=tardis69 pg_dump --schema-only --clean --if-exists --no-owner logfile >/home/wiley/src/sql/logfile.sql
+PGPASSWORD=tardis69 pg_dump --exclude-table-data=i3log --exclude-table-data=i3_packets --exclude-table-data=urls --clean --if-exists --no-owner i3log >/home/wiley/src/sql/i3log.sql
