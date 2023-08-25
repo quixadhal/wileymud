@@ -45,3 +45,7 @@ know what becomes of it.
 PS:  If admin's password doesn't work, you may want to either copy the
 spare from src/lib/ply/a/, or use the password gen utility to make a new
 one and copy it into lib/ply/a/admin.chr.
+
+If you were looking for my I3 Log Pages,
+you want [THIS url](https://github.com/quixadhal/I3-Log).
+
