@@ -1,3 +1,0 @@
-[submodule "public_html/log"]
-	path = public_html/log
-	url = git@github.com:quixadhal/I3-Log.git
