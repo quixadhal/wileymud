@@ -1957,3 +1957,68 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     Broken dependencies here... probably a transitional thing, it's pretty
     rare of Debian to let stuff out the door with conflicts.  I hate libreoffice
     anyways, so byebye. :)
+
+2023-08-29
+    Setting up linux-headers-6.4.0-3-amd64 (6.4.11-1) ...
+    /etc/kernel/header_postinst.d/dkms:
+    dkms: running auto installation service for kernel 6.4.0-3-amd64.
+    Sign command: /lib/modules/6.4.0-3-amd64/build/scripts/sign-file
+    Signing key: /var/lib/dkms/mok.key
+    Public certificate (MOK): /var/lib/dkms/mok.pub
+
+    Building module:
+    Cleaning build area...
+    make -j2 KERNELRELEASE=6.4.0-3-amd64 -C /lib/modules/6.4.0-3-amd64/build M=/var/lib/dk
+    ms/r8168/8.051.02/build..........(bad exit status: 2)
+    Error! Bad return status for module build on kernel: 6.4.0-3-amd64 (x86_64)
+    Consult /var/lib/dkms/r8168/8.051.02/build/make.log for more information.
+    dkms autoinstall on 6.4.0-3-amd64/x86_64 succeeded for broadcom-sta
+    dkms autoinstall on 6.4.0-3-amd64/x86_64 failed for r8168(10)
+    Error! One or more modules failed to install during autoinstall.
+    Refer to previous errors for more information.
+    dkms: autoinstall for kernel: 6.4.0-3-amd64 failed!
+    run-parts: /etc/kernel/header_postinst.d/dkms exited with return code 11
+    Failed to process /etc/kernel/header_postinst.d at /var/lib/dpkg/info/linux-headers-6.
+    4.0-3-amd64.postinst line 11.
+    dpkg: error processing package linux-headers-6.4.0-3-amd64 (--configure):
+     installed linux-headers-6.4.0-3-amd64 package post-installation script subprocess ret
+    urned error exit status 1
+    Setting up python3.11-dev (3.11.5-2) ...
+    dpkg: dependency problems prevent configuration of linux-headers-amd64:
+     linux-headers-amd64 depends on linux-headers-6.4.0-3-amd64 (= 6.4.11-1); however:
+      Package linux-headers-6.4.0-3-amd64 is not configured yet.
+
+    dpkg: error processing package linux-headers-amd64 (--configure):
+     dependency problems - leaving unconfigured
+    Setting up libcloudproviders-dev:amd64 (0.3.2-1) ...
+
+    Errors were encountered while processing:
+     linux-image-6.4.0-3-amd64
+     linux-image-amd64
+     linux-headers-6.4.0-3-amd64
+     linux-headers-amd64
+    E: Sub-process /usr/bin/dpkg returned an error code (1)
+
+    ---- FIXED by editing the module source directly....
+
+    Package: r8168-dkms
+    Version: 8.051.02-3
+    Severity: important
+
+    Dear Maintainer,
+
+    I confirm that the bug is present.
+    "PascalHambourg" on our forum found a workaround by directly editing the 
+    file /usr/src/r8168-8.051.02/r8168_n.c
+
+    Replace
+    #if LINUX_VERSION_CODE >= KERNEL_VERSION(6,5,0)
+
+    By
+    #if LINUX_VERSION_CODE >= KERNEL_VERSION(6,4,10)
+
+    And the compilation of the module happens without error.
+
+    Best regards,
+    Lol.
+
