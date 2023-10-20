@@ -1,28 +1,28 @@
 #ROUTER
+Name *Kelly
+IP   112.213.38.109
+Port 8080
+Password 0
+MudlistID 0
+ChanlistID 0
+End
+
+#ROUTER
 Name *dalet
 IP   97.107.133.86
 Port 8787
 Password 647990417
-MudlistID 38008482
-ChanlistID 146
-End
-
-#ROUTER
-Name *Kelly
-IP   112.213.38.109
-Port 8080
-Password 647990417
-MudlistID 36871440
-ChanlistID 146
+MudlistID 22347582
+ChanlistID 101
 End
 
 #ROUTER
 Name *KellyOld
 IP   45.64.56.66
 Port 8080
-Password 647990417
-MudlistID 36871440
-ChanlistID 146
+Password 0
+MudlistID 0
+ChanlistID 0
 End
 
 #ROUTER
@@ -46,15 +46,6 @@ End
 #ROUTER
 Name *gjs
 IP   198.144.203.194
-Port 9000
-Password 0
-MudlistID 0
-ChanlistID 0
-End
-
-#ROUTER
-Name *yatmim
-IP   149.152.218.102
 Port 9000
 Password 0
 MudlistID 0

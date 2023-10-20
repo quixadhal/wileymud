@@ -65,17 +65,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   urlbot
-ChanMud    Bloodlines
-ChanLocal  urlbot
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
-ChanLevel  2
-ChanStatus 2
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   fluffos
 ChanMud    Dead Souls
 ChanLocal  fluffos
@@ -125,28 +114,6 @@ ChanMud    Final Stand
 ChanLocal  troll
 ChanLayM   %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
 ChanLayE   %%^RED%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
-ChanLevel  2
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   pyom
-ChanMud    Bloodlines
-ChanLocal  pyom
-ChanLayM   %^GREEN%^%^BOLD%^[%s]%%^RESET%%^ %s@%s: %^RESET%^%s
-ChanLayE   %^GREEN%^%^BOLD%^[%s]%^RESET%^ %s
-ChanLevel  2
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
-ChanName   url
-ChanMud    Bloodlines
-ChanLocal  url
-ChanLayM   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s@%s: %%^RESET%%^%s
-ChanLayE   %%^WHITE%%^%%^BOLD%%^[%s]%%^RESET%%^ %s
 ChanLevel  2
 ChanStatus 0
 ChanFlags  0
@@ -489,7 +456,7 @@ ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s
 ChanLevel  0
-ChanStatus 2
+ChanStatus 0
 ChanFlags  0
 End
 
@@ -813,17 +780,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   otg
-ChanMud    Bloodlines
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   ADR
 ChanMud    Aadarian_Realms
 ChanLocal  (null)
@@ -837,10 +793,10 @@ End
 #I3CHAN
 ChanName   godwars
 ChanMud    War_of_Legend
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
+ChanLocal  godwars
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
 ChanStatus 0
 ChanFlags  0
 End
@@ -1198,17 +1154,6 @@ ChanFlags  0
 End
 
 #I3CHAN
-ChanName   minecraft
-ChanMud    Bloodlines
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
-ChanStatus 0
-ChanFlags  0
-End
-
-#I3CHAN
 ChanName   vest
 ChanMud    4Liberty
 ChanLocal  (null)
@@ -1388,9 +1333,9 @@ End
 ChanName   firefly
 ChanMud    Firefly Devmud
 ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
 ChanStatus 1
 ChanFlags  0
 End
@@ -1673,6 +1618,160 @@ End
 #I3CHAN
 ChanName   gossip_nopolitcs
 ChanMud    Realm of Shadows
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   url
+ChanMud    WileyMUD
+ChanLocal  url
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   otg
+ChanMud    Bloodlines
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   pyom
+ChanMud    WileyMUD
+ChanLocal  pyom
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   minecraft
+ChanMud    WileyMUD
+ChanLocal  minecraft
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ???
+ChanMud    Wk-CoffeeMud-Dev
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   socks
+ChanMud    TimMUD
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   intermud
+ChanMud    CUMdev
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   eotwtest
+ChanMud    EotW
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   i3_eotwtest
+ChanMud    EotW
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   foofoobarbar
+ChanMud    Ulario
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   fartface
+ChanMud    Ulario
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   fungusface
+ChanMud    Ulario
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   ds_test
+ChanMud    Your Muds Namejava -classpath .:./lib/js.jar:./lib/jzlib.jar -Xmx85m com.planet_ink.coffee_mud.application.MUD Your Muds Name
+ChanLocal  (null)
+ChanLayM   [%s] %s@%s: %%^RESET%%^%s
+ChanLayE   [%s] %%^RESET%%^%s
+ChanLevel  0
+ChanStatus 0
+ChanFlags  0
+End
+
+#I3CHAN
+ChanName   chat
+ChanMud    Unnamed_CoffeeMUD#64870115
 ChanLocal  (null)
 ChanLayM   [%s] %s@%s: %%^RESET%%^%s
 ChanLayE   [%s] %%^RESET%%^%s

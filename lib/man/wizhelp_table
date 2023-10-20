@@ -96,7 +96,7 @@ HIGHFIVE
 #
 HOME
     Takes you to your home room.
-#    
+#
 INVISIBLE
     A wiz invisible command.
 #
@@ -191,7 +191,7 @@ RESTOREALL
                                 Air             8
                                 Underwater      9
 #
-SETREBOOT
+'SET REBOOT' SETREBOOT
     Sets the time of day at which the gamedriver will automatically
     reboot.  You can set two times, or set both to the same time to
     only have one reboot per day.
@@ -284,4 +284,8 @@ WORLD
 ZPURGE
     Same as purge, but to an entire zone.  Handy if you want to
     reset a zone to boot-time state, do this, then do reset.
+#
+REBOOT
+    Like shutdown, this stops the game, but reboot asks the wrapper
+    to ensure it comes back up again.
 #~

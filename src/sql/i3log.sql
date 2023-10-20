@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.4 (Debian 15.4-1)
--- Dumped by pg_dump version 15.4 (Debian 15.4-1)
+-- Dumped from database version 16.0 (Debian 16.0-2)
+-- Dumped by pg_dump version 16.0 (Debian 16.0-2)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -223,14 +223,14 @@ CREATE VIEW public.new_page_view AS
 --
 
 CREATE VIEW public.packet_view AS
- SELECT to_char(max(i3_packets.local), 'FMDY HH24:MI:SS.MS'::text) AS recent,
-    i3_packets.packet_type,
-    count(i3_packets.packet_type) AS count,
-    min(i3_packets.packet_length) AS min,
-    to_char(avg(i3_packets.packet_length), '999999D99'::text) AS avg,
-    max(i3_packets.packet_length) AS max
+ SELECT to_char(max(local), 'FMDY HH24:MI:SS.MS'::text) AS recent,
+    packet_type,
+    count(packet_type) AS count,
+    min(packet_length) AS min,
+    to_char(avg(packet_length), '999999D99'::text) AS avg,
+    max(packet_length) AS max
    FROM public.i3_packets
-  GROUP BY i3_packets.packet_type;
+  GROUP BY packet_type;
 
 
 --
@@ -3871,6 +3871,16 @@ morris the moo	%^RED%^
 morris the moo (mongoose in gv)	%^MAGENTA%^
 moss	%^GREEN%^
 folly	%^ORANGE%^
+p-butter	%^BLUE%^
+p-butter (grapevine in gv)	%^GREEN%^%^BOLD%^
+the butcher	%^YELLOW%^
+eight	%^MAGENTA%^
+eight (apotheosis in gv)	%^BLUE%^%^BOLD%^
+ghosts	%^CYAN%^
+moustafa (grapevine in gv)	%^WHITE%^%^BOLD%^
+jester (grapevine in gv)	%^WHITE%^%^B_RED%^
+perfidious	%^WHITE%^
+perfidious (grapevine in gv)	%^WHITE%^%^B_BLUE%^
 \.
 
 

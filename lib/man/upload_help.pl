@@ -54,9 +54,10 @@ foreach my $filename (qw(help_table wizhelp_table)) {
 
 print "Connecting to SQL...\n";
 my $sql = undef;
+my $sql2 = undef;
 my $rv = undef;
 my $dbc = DBI->connect("dbi:Pg:dbname=wileymud", 'wiley', 'tardis69',
-    { AutoCommit => 0, RaiseError => 1, PrintError => 0, });
+    { AutoCommit => 0, RaiseError => 0, PrintError => 0, });
 
 # First let's make sure the tables are set up...
 $sql = $dbc->prepare( qq!
@@ -91,43 +92,57 @@ if($rv) {
 }
 print "help_keywords setup.\n";
 
-# Now truncate both of them in case they already existed and had stuff in them.
-$sql = $dbc->prepare( qq!
-    TRUNCATE help_keywords, help_messages;
-    !);
-$rv = $sql->execute();
-if($rv) {
-    $dbc->commit;
-} else {
-    print STDERR $DBI::errstr."\n";
-    $dbc->rollback;
-}
-print "tables truncated.\n";
+## Now truncate both of them in case they already existed and had stuff in them.
+#$sql = $dbc->prepare( qq!
+#    TRUNCATE help_keywords, help_messages;
+#    !);
+#$rv = $sql->execute();
+#if($rv) {
+#    $dbc->commit;
+#} else {
+#    print STDERR $DBI::errstr."\n";
+#    $dbc->rollback;
+#}
+#print "tables truncated.\n";
 
 $sql = $dbc->prepare( qq!
     INSERT INTO help_messages (id, message, immortal) VALUES (?,?,?);
     !);
+$sql2 = $dbc->prepare( qq!
+    UPDATE help_messages SET updated = now(), message = ?, immortal = ? WHERE id = ?;
+    !);
 foreach my $k (sort {$a <=> $b} keys %entries) {
-    print "inserting help_message $k.\n";
     $rv = $sql->execute($entries{$k}{id}, $entries{$k}{message}, $entries{$k}{immortal});
     if(!$rv) {
-        print STDERR $DBI::errstr."\n";
         $dbc->rollback;
-        exit 0;
+        $rv = $sql2->execute($entries{$k}{message}, $entries{$k}{immortal}, $entries{$k}{id});
+        if(!$rv) {
+            print STDERR "help_messages UPDATE -- ".$DBI::errstr."\n";
+            $dbc->rollback;
+            exit 0;
+        } else {
+            print "updating help_message $k.\n";
+            $dbc->commit;
+        }
+    } else {
+        print "inserting help_message $k.\n";
+        $dbc->commit;
     }
 }
-$dbc->commit;
+#$dbc->commit;
 
 $sql = $dbc->prepare( qq!
     INSERT INTO help_keywords (id, keyword) VALUES (?,?);
     !);
 foreach my $k (sort {lc $a cmp lc $b} keys %keywords) {
-    print "inserting help_keyword $k.\n";
     $rv = $sql->execute($keywords{$k}{id}, $keywords{$k}{keyword});
     if(!$rv) {
-        print STDERR $DBI::errstr."\n";
+        #print STDERR "help_keywords INSERT -- ".$DBI::errstr."\n";
         $dbc->rollback;
-        exit 0;
+        #exit 0;
+    } else {
+        print "inserting help_keyword $k.\n";
+        $dbc->commit;
     }
 }
 $dbc->commit;

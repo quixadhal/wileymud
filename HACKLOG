@@ -2022,3 +2022,63 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     Best regards,
     Lol.
 
+2023-09-18
+    exim4 (4.97~RC0-2) unstable; urgency=low
+
+      Changed format of the internal ID used for message identification.
+      - Upgrading should work seamlessly.
+      - Downgrading to 4.96 requires stopping the daemon and running
+        exim_id_update -d
+        before running the older daemon.
+
+     -- Andreas Metzler <ametzler@debian.org>  Sun, 10 Sep 2023 14:04:49 +0200
+
+    exim4 (4.96-20) experimental; urgency=low
+
+      Drop support for configuring daemon startup by setting QUEUERUNNER in
+      /etc/default/exim4.
+      Also replace QFLAGS, QUEUEINTERVAL, COMMONOPTIONS, QUEUERUNNEROPTIONS and
+      SMTPLISTENEROPTIONS settings for init script/service file in
+      etc/default/exim4 with a combined EXIMSERVICE (for systemd) or
+      EXIMDAEMONOPTS (init script) directive.
+
+      Most of the previous functionality is available by different
+      means:
+      + Disable running an exim daemon this way ('nodaemon'):
+        -> Use the native functionality of the init system you are using, e.g.
+        for systemd mask the service.
+      + Start two separate daemon processes, one for listening on port 25 and
+        another for queue running ('separate')
+        -> Not supported anymore.
+      + Run a daemon that both listens on port 25 and runs the queue.
+        -> default behavior ('-bdf -q30m' / '-bd -q30m')
+      + Run a daemon that either listens on port 25 and runs the queue.
+        -> set to -bdf/-bd without -q30m or vice versa.
+      + Only run queue when a ppp connection is made ('ppp'):
+        -> Disable queuerunner like noted above and remove the 'exit 0' from
+        the start of /etc/ppp/ip-up.d/exim4
+
+     -- Andreas Metzler <ametzler@debian.org>  Wed, 16 Aug 2023 17:44:59 +0200
+
+2023-09-24
+    PostgreSQL upgrade time...
+
+        systemctl stop wileymud
+
+        sudo apt install postgresql-plperl-15
+        sudo su postgres
+        for i in ack forum i3log logfile pi3 ping py3 rule speedtest test \
+            wileymud wileyp postgres template1; do \
+            echo alter database $i refresh collation version | \
+            psql $i; done
+        pg_dumpall --cluster 16/main >new_16.sql
+        pg_dumpall --cluster 15/main >backup_15.sql
+
+        pg_dropcluster --stop 16 main
+        systemctl daemon-reload
+        pg_upgradecluster 15 main
+        systemctl daemon-reload
+
+        systemctl start wileymud
+        xz -9v backup_15.sql
+

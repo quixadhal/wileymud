@@ -1,42 +1,40 @@
 #PLAYER
-Name               Thrym~
-Passwd             ThFMp0EzOFJGY~
+Name               Namazu~
+Passwd             Nas5suGR2D1Y.~
 Whizz              0
 PreTitle           ~
-Title              the Elven Student/Filcher~
+Title              the Dwarven Believer~
 Description
-Another old blah blah
 ~
-LastSite           adork@localhost~
-LastLogin          1689427145
-Birth              1221467932
-Played             9704
+LastSite           adork@d207-81-19-193.bchsia.telus.net~
+LastLogin          1691528446
+Birth              1691528105
+Played             338
 Sex                1
-Race               2
-Class              9
-Alignment          26
-Exp                5901
-Level              mage 3
-Level              thief 3
-HeightWeight       191 111
-Gold               2 0
-HomeTown           3008
+Race               3
+Class              2
+Alignment          0
+Exp                1
+Level              cleric 1
+HeightWeight       135 157
+Gold               0 0
+HomeTown           3001
 LoadRoom           -1
 PoofIn             ~
 PoofOut            ~
-AbilityScores      14 0 15 11 14 8
+AbilityScores      13 0 12 12 13 15
 AbilityPad         0 0 0 0
-HpManaMove         9 24 98 0 103 0
+HpManaMove         25 20 104 0 85 85
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 21 2 0 0 0
+Conditions         0 20 20 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
 ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
-Pracs              12
+Pracs              3
 SkillsToLearn      0
 NamedSkill         1 0 0 armor~
 NamedSkill         2 0 0 teleport~
@@ -69,7 +67,7 @@ NamedSkill         28 0 0 heal~
 NamedSkill         29 0 0 invisibility~
 NamedSkill         30 0 0 lightning bolt~
 NamedSkill         31 0 0 locate object~
-NamedSkill         32 18 0 magic missile~
+NamedSkill         32 0 0 magic missile~
 NamedSkill         33 0 0 poison~
 NamedSkill         34 0 0 protection from evil~
 NamedSkill         35 0 0 remove curse~
@@ -82,11 +80,11 @@ NamedSkill         41 0 0 ventriloquate~
 NamedSkill         42 0 0 word of recall~
 NamedSkill         43 0 0 remove poison~
 NamedSkill         44 0 0 sense life~
-NamedSkill         45 1 0 sneak~
-NamedSkill         46 13 0 hide~
-NamedSkill         47 7 0 steal~
-NamedSkill         48 1 0 backstab~
-NamedSkill         49 1 0 pick lock~
+NamedSkill         45 0 0 sneak~
+NamedSkill         46 0 0 hide~
+NamedSkill         47 0 0 steal~
+NamedSkill         48 0 0 backstab~
+NamedSkill         49 0 0 pick lock~
 NamedSkill         50 0 0 kick~
 NamedSkill         51 0 0 bash~
 NamedSkill         52 0 0 rescue~
@@ -106,11 +104,11 @@ NamedSkill         65 0 0 remove paralysis~
 NamedSkill         66 0 0 fear~
 NamedSkill         67 0 0 acid blast~
 NamedSkill         68 0 0 water breath~
-NamedSkill         69 16 0 fly~
+NamedSkill         69 0 0 fly~
 NamedSkill         70 0 0 cone of cold~
 NamedSkill         71 0 0 meteor swarm~
 NamedSkill         72 0 0 ice storm~
-NamedSkill         73 17 0 shield~
+NamedSkill         73 0 0 shield~
 NamedSkill         74 0 0 monsum one~
 NamedSkill         75 0 0 monsum two~
 NamedSkill         76 0 0 monsum three~
@@ -122,12 +120,12 @@ NamedSkill         81 0 0 fireshield~
 NamedSkill         82 0 0 charm monster~
 NamedSkill         83 0 0 cure serious~
 NamedSkill         84 0 0 cause serious~
-NamedSkill         85 17 0 refresh~
+NamedSkill         85 0 0 refresh~
 NamedSkill         86 0 0 second wind~
 NamedSkill         87 0 0 turn~
 NamedSkill         88 0 0 succor~
 NamedSkill         89 0 0 create light~
-NamedSkill         90 18 0 continual light~
+NamedSkill         90 0 0 continual light~
 NamedSkill         91 0 0 calm~
 NamedSkill         92 0 0 stoneskin~
 NamedSkill         93 0 0 conjure elemental~
@@ -182,7 +180,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           4 80
+ActFlags           0 80
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -208,7 +206,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       5
-i3flags      768
+i3perm       2
+i3flags      256
 i3listen     wiley
 End
