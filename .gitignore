@@ -24,3 +24,10 @@ _new
 *.bkp*
 *.zip
 *.tar*
+.cache
+.config
+.face
+.fontconfig
+.local
+.sudo_as_admin_successful
+.vboxclient-*
