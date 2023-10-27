@@ -1,0 +1,17 @@
+/loaded wiley/trails
+
+/def trail = /def -i trail_target = %{1-somewhere}%;\
+  /def 2$trail_target$ = say Energize!%%;brief%%;compact%;\
+  /def $trail_target$2 = compact%%;brief%%;grin%;\
+  /def n = //append 2$trail_target$ %%%;n %%;//prepend $trail_target$2 s%%%; %%;n%;\
+  /def s = //append 2$trail_target$ %%%;s %%;//prepend $trail_target$2 n%%%; %%;s%;\
+  /def e = //append 2$trail_target$ %%%;e %%;//prepend $trail_target$2 w%%%; %%;e%;\
+  /def w = //append 2$trail_target$ %%%;w %%;//prepend $trail_target$2 e%%%; %%;w%;\
+  /def u = //append 2$trail_target$ %%%;u %%;//prepend $trail_target$2 d%%%; %%;u%;\
+  /def d = //append 2$trail_target$ %%%;d %%;//prepend $trail_target$2 u%%%; %%;d%;\
+  emote begins dropping breadcrumbs laced with cyanide.
+/def endtrail = /append 2$trail_target$ %%;compact%%;brief%%;grin%;\
+  /prepend $trail_target$2 "say Energize!%%;brief%%;compact%%;"%;\
+  /undef trail_target%;\
+  /undef n%;/undef s%;/undef e%;/undef w%;/undef u%;/undef d%;\
+  emote runs out of his "special" bread.

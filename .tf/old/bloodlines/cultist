@@ -1,0 +1,4 @@
+/loaded wiley/cultist
+/set MYSELF cultist
+/irequire wiley/main
+/alias ready hold ring%;wield two staff%;wear all%;group %MYSELF%;grin

@@ -1,0 +1,871 @@
+<>--3
+Ask your system administrator to run identd. This allows us to nail
+down possible troublemakers, instead of having to close a whole site!
+
+BOONS AND BANES ARE NOW FULLY FUNCTIONAL.  TEST PERIOD IS OVER.
+
+Donations are once again accepted.  Contact Zonni for more information.
+
+NEW TP RATES, DO HELP DONATE!!          //Zonni
+
+Remember read: help multiple characters
+<>--Lad
+Unimplemented version.
+
+Disclaimer: This service is free and without warranty or guarantee of
+             accuracy, reliability or security.
+
+You have new news in groups inform, general, flame, test, race, leader and
+ guilds.
+You may now either enter the game as an visitor or if you feel like
+creating a real character you can create one. You should use a visitor
+character until you know what kind of a character you wish to play.
+The best way to learn about BatMUD is to ask other players. The 'help'
+command is rather useful too, try 'help' and 'help topics'.
+Obvious exits are: church and creation.
+Shrapnel the Visitor
+Twatpants the Visitor
+Aaron the Visitor
+Type: 'church' to enter the city church as a visitor
+Shrapnel leaves creation.
+<>--creation
+In here you can select the kind of background your character has.
+This affects your characters skills and spells in the beginning.
+Later on it affects the ways you can join guilds.  There are four
+backgrounds to choose from, and they are:
+  nomad, magical, religious and civilized
+To get information about a certain background you should type:
+  info <background>
+Once you have decided what you want to be you should type:
+  select <background>
+There are no obvious exits.
+Shrapnel the Visitor
+Aaron arrives.
+Lacramobo shouts: Rent times now user-definable!
+<>--select civilized
+You choose civilized to be your background.  You automatically learn
+some skills and spells.  For more information type 'civilized help'.
+To see what skills and spells you have you should use the 'show'
+command.
+Now you can select a race.  This affects most of your abilities.  You
+should pick your race carefully.  You can change your race during game
+play, but changing the race has its drawbacks.  Only the races suitable
+for your background are listed.  There are also some races that are not
+available to all players.
+  races          - list of available races
+  info <race>    - information about a race
+  select <race>  - to select a race and continue with character creation
+There are no obvious exits.
+<>--races
+Shrapnel arrives.
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Hobbit      | Catfolk     | Cyclops     | Zombie      | Valar       |
+| Satyr       | Cromagnon   | Duck        |             |             |
+| Sprite      | Devil       | Giant       |             |             |
+|             | Draconian   | Gnome       |             |             |
+|             | Dwarf       | Kobold      |             |             |
+|             | Elf         | Merfolk     |             |             |
+|             | Ent         | Minotaur    |             |             |
+|             | Gnoll       | Ogre        |             |             |
+|             | Human       | Thrikhren   |             |             |
+|             | Leech       | Troll       |             |             |
+|             | Orc         |             |             |             |
+|             | Tinmen      |             |             |             |
+|             | Vampire     |             |             |             |
+|             | Wolfman     |             |             |             |
+`---------------------------------------------------------------------'
+<>--info sprite
+The Sprite race
+General description:
+  Sprites are small creatures from the fairy world who have moved to the
+  World of Batmud. There they make their living as scouts, messengers
+  and even spies. Their small size and weak physical appearance hides
+  great talent in magic and ever astonishing dextrous abilities. The
+  flying ability of sprites has been only rumored of and this far the
+  sightings of a flying sprite have been ended with a dispell magic
+  spell. This suggests that the wings of the sprites, and their cousins
+  cokes, aren't meant for flying.
+
+Stats:
+Strength: poor                     Dexterity: superb
+Intelligence: average              Wisdom: average
+Constitution: poor                 Size: small
+
+<>--
+Other features:
+They regenerate magic points very fast. They are superior to humans and
+therefore need more experience points. Arcane powers are easy for them to
+master. They adapt well to the most complicated skills. Even the most
+difficult arcane powers can be mastered by them. They can fly above water.
+They can see in the dark. They are too small to use two handed weapons. They
+can detect magic on things. They can see invisible things. They have a faster
+than normal heart beat. They glow in the dark.
+
+Keller [wanted]: UNDEADS!
+Ditar [wanted]: 2h weapon and armor donations to damo's
+Demo [wanted]: party for middle of reinc healer :)
+Bear shouts 'Menace just made my day!'
+Raunk [wanted]: PROT
+Ditar [wanted]: party for tank
+Raunk [wanted]: anyone protecting armour/
+<>--info hobbit
+The Hobbit race
+General description:
+  Hobbit is a race of small humanoid creatures, quite similar to the
+  human child in appearance. They are quite resistant to poisons, very
+  agile and quite fast. Their nimbleness has given their race a reputation
+  of being a race of thieves. This view is quite widespread despite the
+  fact that most hobbits are honorable peasants and labourers. Hobbits
+  love simple joys and generally shun adventuring and the troubles it
+  causes.  Every now and then one or two of them step down on the road
+  of adventure and prove again their races natural adeptness in the hard
+  life.
+
+Stats:
+Strength: below average            Dexterity: excellent
+Intelligence: above average        Wisdom: average
+Constitution: average              Size: small
+<>--
+
+Other features:
+They regenerate damage fast. They regenerate magic points very fast. They
+adapt well to the most complicated skills. They can see in the dark.
+
+They know the following spell automatically:
+ Create food                    40%
+
+<>--select hobbit
+Setting your race.
+Unimplemented version.
+You are now done with the creation of a new character. Once you
+continue your journey you can't come back to here with this
+character. Once are certain you wish to continue to your guild room
+from here, you should type 'continue'.
+During your first levels you can't train skills or spells, they are
+automatically given to you according to your background.
+If you wish to redo something you should quit now.
+You should probably type 'help survival guide' as soon as possible. It
+is very long, but well worth the trouble reading.
+There are no obvious exits.
+Woman shouts 'Boldor just made my day!'
+<>--score
+Name: Lad the Hobbit.
+Lvl: 1, Exp: 0, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 4    Dex: 9    Con: 5    Int: 6    Wis: 5    Cha: 50   Siz: 6    
+Points: hit 0/63, spell 0/45, endurance 0/162.
+Your ability to avoid hits is very little.
+You feel neutral, hungry, very young and brave.
+Unforgiven leads the hobbit race.
+Ghost of Boldor [ghost]: huh
+Autosaving.................
+Done!
+<>--civilized help
+Commands given by Civilized background:
+ say  - Sends a message to all members of the guild.
+ help - List available commands. Try 'civilized help help'.
+ who  - Shows who in the game is in this guild.
+ info - Shows various information about this guild.
+Use the format 'civilized <command> <arguments>'.
+Xanon [wanted]: party for tank
+Poet [ghost]: accept from poet it's a DONATIONS ONLY service
+<>--race help
+Weaponsmith shouts 'All the wares in my shop are available for only 85% of
+ their real value FOR A LIMITED TIME!'
+Abgal [wanted]: Khopesh of Destruction
+Shrapnel leaves away.
+Quadra places your typo 'Top 400' typos list.
+<>--help prompt
+command: prompt
+variable arguments.
+
+Without any arguments displays the current prompt string. With the
+argument of 'list' it displays all possible <prompt> strings. Any
+other arguments set the prompt. Note that the '_' characer is always
+replacd in the prompt to be a ' '.
+
+Replaces:
+        <hp>            Current Hp.
+        <maxhp>         Maximum Hp.
+        <prophp>        Hps proportional to your max.
+
+        <sp>            Current Sp.
+        <maxsp>         Maximum Sp.
+        <propsp>        Sps proportional to your max.
+Moonlight [bat]: Where can I study quick chant without advancing first 3
+ levels of spellcasted union?
+Shiva [bat]: no where
+Shiva [bat]: or if u find out, let me know
+<>--
+
+        <ep>            Current Ep.
+        <maxep>         Maximum Ep.
+        <propep>        Eps proportional to your max.
+
+        <lf>            Line feed.
+
+        <name>          Your name.
+        <race>          Your race.
+        <level>         Your level. (max 19 for mortals.)
+        <mortlevel>     Your mortal level.
+
+        <str>           Your strength.
+        <dex>           Your dexterity.
+        <con>           Your constitution.
+        <int>           Your intelligence.
+Skogen [bat]: reinc as a monster and get superqc instead
+Asidonhopo shouts 'I just got new delivery!'
+Ghost of Menace [ghost]: Oh shit. Anyone that can reinc me ?
+<>--
+Zombie shouts 'Gee, sorry about that Duckman *snicker*!'
+        <wis>           Your wisdom.
+        <cha>           Your charisma.
+        <siz>           Your size.
+        <tp>            Your task points.
+
+        <exp>           Experience.
+        <freeexp>       Free experience for training.
+
+        <cash>          Cash: gold.mowgles.
+        <bank>          Bank: gold.mowgles.
+        <scash>         Cash: gold.
+        <sbank>         Bank: gold.
+
+        <weight>        Carried weight.
+        <exits>         Rooms exits.
+        <env>           Environment.
+You sizzle with magical energy.
+Irving {sales}: Open for sales!
+Styx shouts 'off.'
+Unluck [wanted]: - FOOOOOOOOD!!!! -
+[ghost]: Greystar can ress you, just ask nicely
+Irving {sales}: finger me for list of available items
+Unluck shouts 'foooooooooD!'
+Irving {sales}: your choice only 10k each
+Moonlight [bat]: What command do I have to type guilds that I can join and
+ where they are?
+<>--
+Trey {bat}: help open guilds
+Josefk leaves away.
+
+        <sec>           Current time options.
+        <min>
+        <hour>
+        <year>
+        <day>
+        <month>
+        <wday>
+
+        <users>         Users in game.
+
+        <rnd>           Random number.
+        <pi>            Approximation of Pi.
+
+Only for wizards.
+        [cwd]           Current working directory.
+Unluck [wanted]: - foood!!!! -
+Skogen [bat]: help open guilds
+Raven Guard shouts 'Teleph, I rather enjoyed killing you!
+Ghost of Menace [ghost]: but I want a reinc. Can someone reinc me -please- ?
+ :)
+Keller [wanted]: UNLUCKY: where are you?
+<>--
+        [ed]            Editor.
+
+Some examples:
+prompt Hp:<hp>/<maxhp> Sp:<sp>/<maxsp> >
+prompt >>> Hp <hp> === Sp <sp> === Ep <ep> >>> <lf>
+prompt <name> <hour>:<min>:<sec> (<exits>) :)
+prompt BatMUD >_
+
+See also 'score' and 'sc'.
+
+[ghost]: Greystar can ress you, just ask nicely
+Unluck [wanted]: - church -
+Kraut [sales]: anybody wana purchas a maul of titans +20 str -10 dex AC40 250k
+ minimu best weapon in game
+Greyhame {sales}: best weap?
+Shiva [sales]: skysplitter is the ebst
+Ditar [bat]: this is the no save week, right????
+Berk [sales]: 80k
+Greyhame {sales}: hmmm
+Siege [bat]: not yet, is it?
+Berk [sales]: 80k for maul
+Kitiara [sales]: weapons have wc not ac
+Berk [sales]: :)
+Ardion [bat]: nope next one is I think
+Bazra [sales]: what are the stats of SkySpiltter?
+Poet [bat]: no
+Muks [wanted]: belt of blue star..  now..
+Caladar [sales]: does vorpal still give str/dex?
+Greyhame {sales}: vorpal still gives str
+Jebac [wanted]: mage to 15 min party
+Wane [sales]: sell me some good fighter equip: belt, legs, shield, neck,
+ head...
+<>--prompt <name>(<users>):<tp>:<freeexp>:<prohp>_<prosp>_<prosp>>_
+Your current prompt is '<name>(<users>):<tp>:<freeexp>:<prohp> <prosp> <prosp>> '
+Weaponsmith shouts 'The sale is over for now.'
+Muks [wanted]: my belt back..
+<>--prompt list
+Possible options for prompt are: <hp>, <maxhp>, <sp>, <maxsp>, <cash>, <bank>,
+ <scash>, <sbank>, <exp>, <name>, <race>, <str>, <dex>, <int>, <wis>, <con>,
+ <siz>, <cha>, <level>, <weight>, <tp>, <users>, <exits>, <sec>, <min>,
+ <hour>, <year>, <day>, <month>, <wday>, <env>, [cwd], [ed], <ep>, <maxep>,
+ <lf>, <rnd>, <pi>, <freeexp>, <mortlevel>, <prophp>, <propsp>, <propep> and
+ <EXP>.
+Options between [] work for wizards only.
+Greyhame {bat}: fuck that ball
+Kraut [sales]: well i nobody want`s it now, i`ll sell it l8er.. best weapon
+ gotta be worth 250k...
+<>--prompt <name>(<users>):<tp>:<freeexp>:<prophp>_<propsp>_<propsp>>_
+Irving {sales}: Many fine items now available, only 10k each
+Your current prompt is '<name>(<users>):<tp>:<freeexp>:<prophp> <propsp> <propsp>> '
+Abgal [wanted]: Khopesh of Destruction
+You feel fully healed.
+Shiva [sales]: its not the best weapon, stop saying that
+Shiva [sales]: its a very good 2h bludgeon though
+Skogen [sales]: U bought it about 2 hours ago for 200k
+Kewmaan [wanted]: heal..
+Twatpants leaves away.
+Greyhame {sales}: 175k for the maul
+<>--prompt <name>(<users>):<tp>:<freeexp>:$<cash>:<prophp>_<propsp>_<propsp>>_
+% macro not defined: <cash>:<prophp>_<propsp>_<propsp>>_
+Your current prompt is '<name>(<users>):<tp>:<freeexp>:'
+Wane [sales]: someone sell me stuff worth 50K at least...fighter stuff
+Kraut [sales]: ok what is the best weapond then? wich wapon 2h has the highest
+ weapond damage?
+<>--prompt <name>(<users>):<tp>:<freeexp>:$$<cash>:<prophp>_<propsp>_<propsp>>_
+Unluck [wanted]: - I donT NEED MORE FOOD! THANKS FOR EVERYBODY! -
+Your current prompt is '<name>(<users>):<tp>:<freeexp>:$<cash>:<prophp> <propsp> <propsp>> '
+Bazra [sales]: Giant Kilt 20 prot,-l
+Shiva [sales]: skysplitter from narcuul
+Greyhame {sales}: ahh its not the damage, its the damage TYPE
+Berk [sales]: What's your price?
+Bazra [sales]: oops
+Muks [sales]: someone sell me belt of blue star..limit just stole my belt..
+<>--prompt <name>(<users>):<tp>tp:<freeexp>xp:$$<cash>:<prophp>_<propsp>_<propsp>>_
+Your current prompt is '<name>(<users>):<tp>tp:<freeexp>xp:$<cash>:<prophp> <propsp> <propsp>> '
+Berk [sales]: Skysplitter?
+Irving {chat}: i'm trying to quit smoking, so my girfreind gave me a package
+ of breadsticks..
+Yanafal [sales]: HUHH.....
+Berk [sales]: Price?
+Bazra [sales]: 20k min
+Greystar [sales]: black shiny breastplate for sale min bid 8k
+Kraut [sales]: good to know.. i never seen it sold though...
+Irving {chat}: but the wont stay lit damnit
+Skogen [sales]: what type is skysplitter
+Shiva [sales]: heh i wish i had a skysplitter
+Yanafal [sales]: And i sold it to Muks double price :)
+Wane [sales]: 20 for kilt
+Idles [wanted]: party?
+Wane [sales]: 20K
+Berk [sales]: :(
+Caladar [sales]: holy defender is the best weapon if you ask me ;)
+Shiva [sales]: 2h axe, I think 45WC, +massive dmg, 50% magical dmg, +str, not
+ sure what else
+Bazra [sales]: 20k for giant kilt
+Gonar [sales]: is it a sword?? :)
+Bazra [sales]: 1st time
+Tribal left the game.
+Sheddra [wanted]: PARTY for a mage!
+Wane [sales]: 15 str...dunno about wc - I got 42-51 on id
+Bazra [sales]: it's BEST legs prot in game
+Artisan shouts 'Carver dies from a single blow, well almost at least!'
+Ghost of Rumpf [ghost]: ress
+Bazra [sales]: 2nd
+Ghost of Carver [ghost]: ress
+Ghost of Carver [ghost]: ress
+Stern [sales]: 22k for kilt
+Bazra [sales]: 3rd
+Greyhame {sales}: it must be fun to be so wrong
+<>--prompt <name>(<users>):<tp>.<freeexp>xp:$$<cash>:<prophp>_<propsp>_<propsp>>_
+Wane [sales]: 25K
+Your current prompt is '<name>(<users>):<tp>.<freeexp>xp:$<cash>:<prophp> <propsp> <propsp>> '
+Ghost of Rumpf [ghost]: ress
+Bazra [sales]: 25k 1st
+Caladar [sales]: who was the guy who got id'd mundwine wc68? ;)
+Wane [sales]: not me
+Shiva [sales]: whoa :)
+Kraut [sales]: well best 2h buldgeon wapon then *)
+Greyhame {sales}: I got one and I didn't hear any of that, magic damage?
+Stern [sales]: This is the old 'giant kilt', right?  Not 'a giant's kilt'?
+<>--score
+Bazra [sales]: 2nd
+Name: Lad the Hobbit.
+Lvl: 1, Exp: 0, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 4    Dex: 9    Con: 5    Int: 6    Wis: 5    Cha: 50   Siz: 6    
+Points: hit 63/63, spell 45/45, endurance 162/162.
+Your ability to avoid hits is very little.
+You feel neutral, hungry, very young and brave.
+Unforgiven leads the hobbit race.
+Hansu leaves away.
+Bazra [sales]: a giant kilt
+<>--continue
+You are given a HUGE meal. You start consuming it.
+You are satiated.
+You can't possibly eat more. You discard rest of the food.
+You are given a newbie pack (a weapon and some armour).
+This is the main hall of the church of all Gods. Ghosts get revived
+here when they 'pray'. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, w and s.
+A holy altar emitting peace around it
+Hansu the Ent
+<>--wear all
+You start using a pair of leather shorts and a leather vest.
+ 
+<>--i
+Wane [sales]: whats the difference?
+You are carrying 15.6 kg of equipment:
+You are carrying no coins.
+A used cutlass (1h)
+Bazra [sales]: it's -
+<>--wield cutlass
+Alulismus arrives.
+You wield cutlass.
+Alulismus leaves east.
+Bazra [sales]: dunno
+<>--l
+This is the main hall of the church of all Gods. Ghosts get revived
+here when they 'pray'. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, w and s.
+A holy altar emitting peace around it
+Hansu the Ent
+Moomoo [sales]: yogi bears knob!  +15 CHA
+<>--n
+Escher the queuer [chat]: Hi, shub
+You have arrived to a beautifully decorated wedding chapel.
+The whole chapel is lighted brightly, and the altar has been made
+made of pure gold with silvery carvings in it. There is a picture of
+the gods of this mud on the northern wall, and a small archway leads
+south, out of the chapel. The atmosphere is very quiet and calm.
+Obvious exit is: south.
+Ring restore and change automat
+Bazra [sales]: 3rd
+Damogran shouts 'Ceridwen donated A mithril armour worth 11000 gold coins to warehouse. That's generous indeed!! Better come quick to ask for it.'
+Trick [wanted]: ring of infravis...
+Fumble the queuer [chat]: hiya!
+Fumble the queuer [chat]: Ellor U in game???
+<>--score
+Bazra [sales]: and SOOOLLLD
+Name: Lad the Hobbit.
+Lvl: 1, Exp: 2, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 4    Dex: 9    Con: 5    Int: 6    Wis: 5    Cha: 50   Siz: 6    
+Points: hit 63/63, spell 45/45, endurance 162/162.
+Your ability to avoid hits is very little.
+You feel neutral, satiated, very young and brave.
+Unforgiven leads the hobbit race.
+Fumble the queuer [chat]: cuz now I could party...
+Caladar [sales]: maul isn't the best 2h bludgeon either btw.
+Myriel arrives from south.
+Autopsy the queuer [chat]: heya queuers
+<>--s
+This is the main hall of the church of all Gods. Ghosts get revived
+here when they 'pray'. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, w and s.
+A holy altar emitting peace around it
+Madmac the Dwarf
+Hansu the Ent
+<>--w
+Swift [sales]: what is best ?
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+Guest-35 the Player
+Fumble the queuer [chat]: Hmm what is 2th best???
+Guest-35 leaves west.
+Shiva [sales]: oops greyhame corrects me in that skysplitter is not magic dmg
+Escher the queuer [chat]: I'm no queu!
+<>--w
+Kraut [sales]: ok.. so i am teribly wrong hehe
+A small gray altar is positioned in the middle of the room, its nondescript
+smoothness radiating a thoughtful, calm and pale light around the room
+focusing the essence of Heraena and her calm, contemplative influence to her
+devoted aesthetic, philosophical followers. Serving as the borderline between
+its good and evil counterparts, the quiet air of the chamber seems to
+influence a studious atmosphere.
+Available commands: info, join, advance, train and study.
+Obvious exit is: east.
+Guest-35 the Player
+Escher [chat]: chat off
+<>--e
+Guest-35 leaves east.
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+Guest-35 the Player
+<>--n
+Guest-35 leaves south.
+A gleaming ivory altar dominates the center of this hall. Behind the altar
+stands an imposing, yet kindly looking 7 foot statue of Hael-Cholaer made of
+gold and ivory, seemingly radiating his divine light and warmth to his humble
+mortal followers. Silver embroidery along the edges of the altar proclaim in
+shining letters, universal peace and harmony.
+ Available commands: info, join, advance, train and study.
+Obvious exit is: south.
+The Book of Popes of Kaldraen
+Trey Voyager the Zombie High Priestess
+Fumble the queuer [chat]: Queue rules!!
+<>--s
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+<>--s
+Escher [ghost]: Anybody wanna reinc?
+There is a pitch-black onyx altar dominating the center of this most unholy of
+all places. Fresh blood seems to ooze down small rivulets cut into this
+perversion of nature, dark lightning crackles over its smooth surface, making
+eerie black light dance accross the chamber. The essence of evil, embodied in
+the demonic God, Draen-Dalar pervades the room, forcing his slavelike
+followers to worship him with unspeakable rites.
+Available commands: info, join, advance, train and study.
+Obvious exit is: north.
+Guest-35 the Player
+A Black Slaad cleric is meditating here (undead)
+Wane [sales]: axe IS magical damage - dont have <humming> on it though
+<>--n
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+Hansu the Ent
+Guest-35 arrives from south.
+Hansu leaves east.
+Ako [chat]: anyone got any cheap weapons for sale?
+Unluck [wanted]: - PARTY -
+<>--score
+Escher [bat]: HOw long til no save mode?  Anybody wanna reinc?
+Name: Lad the Hobbit.
+Lvl: 1, Exp: 11, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 4    Dex: 9    Con: 5    Int: 6    Wis: 5    Cha: 50   Siz: 6    
+Points: hit 63/63, spell 45/45, endurance 162/162.
+Your ability to avoid hits is very little.
+You feel neutral, satiated, very young and brave.
+Unforgiven leads the hobbit race.
+Wane [sales]: ie dont do a LOT of magaical damage
+Fumble the queuer [chat]: Ellor not in game :(
+Wane [sales]: prob 20-40%
+Greyhame {sales}: I don't think the best 2h bludgeon is stilli in the game is
+ it
+Fumble the queuer [chat]: Someone leave now!!!
+Apocalypse [bat]: Hold my hand!
+Apocalypse [bat]: walk beside me!
+<>--prompt <name>(<users>):<tp>.<exp>xp:$$<cash>:<prophp>_<propsp>_<propsp>>_
+Demo arrives from east.
+Your current prompt is '<name>(<users>):<tp>.<exp>xp:$<cash>:<prophp> <propsp> <propsp>> '
+Demo leaves north.
+Swift [sales]: which one you talkin about ?
+<>--l
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+Guest-35 the Player
+<>--e
+This is the main hall of the church of all Gods. Ghosts get revived
+here when they 'pray'. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, w and s.
+A holy altar emitting peace around it
+Hansu the Ent
+Tomba the Ent
+<>--s
+Fritz [sales]: skysplitter is humming ...ya just cant see the <humming>
+ without see magical
+Fumble the queuer [chat]: Im first so someone!!
+Apocalypse [bat]: I just neeeeheeeeddd to saaaaaaahhaaaaaaaaaaaaaaaaaaaaay
+This is the entrance to the church tower.  Huge double doors
+stand opened to the south.  The tower is dark and gloomy.  What
+appears to be blood stains cover the ground near the front
+doors.  You make out a small scream coming from inside the church.
+Some gray moss is growing on the ground here. Above you is a warm, slowly
+moving, cloudy night sky. A light wind stirs the air. The moon is not visible.
+Obvious exits are: s and n.
+<>--w
+You can't go that way!
+<>--s
+You are standing in the foyer of the church tower.  This room is
+huge.  The ceiling must be at least 100 feet tall.  The ceiling is
+covered with elaborate paintings and ornamental decorations.  A
+large archway leads south.  There are confessional booths on the
+east and west walls.
+Obvious exits are: n, s, e and w.
+<>--w
+Beav the queuer [chat]: QUEUES SUCK
+This small booth can be no bigger than five feet by 5 feet.
+You have to cramp yourself in to fit.  On the wall in front
+of you is a small slit where the priests talk to you as you
+confess.  There are claw marks on the walls of this booth and
+blood stains on the floor.
+Obvious exit is: east.
+<>--e
+You are standing in the foyer of the church tower.  This room is
+huge.  The ceiling must be at least 100 feet tall.  The ceiling is
+covered with elaborate paintings and ornamental decorations.  A
+large archway leads south.  There are confessional booths on the
+east and west walls.
+Obvious exits are: n, s, e and w.
+<>--e
+This small booth can be no bigger than five feet by 5 feet.
+You have to cramp yourself in to fit.  On the wall in front
+of you is a small slit where the priests talk to you as you
+confess.  There are claw marks on the walls of this booth and
+blood stains on the floor.
+Obvious exit is: west.
+Fumble the queuer [chat]: I feel stupid and conatgious
+Trick [wanted]: bag of holding... are there any? :)
+Wane [sales]: weapon with a bit of non phys damage dont have <(something)> on
+ them
+<>--w
+Silvery the queuer [chat]: well.. and here again.. 
+You are standing in the foyer of the church tower.  This room is
+huge.  The ceiling must be at least 100 feet tall.  The ceiling is
+covered with elaborate paintings and ornamental decorations.  A
+large archway leads south.  There are confessional booths on the
+east and west walls.
+Obvious exits are: n, s, e and w.
+Fumble the queuer [chat]: Here we are now entertain us!
+<>--s
+You are in a 15 foot wide hallway which continues south.  From
+the west you can smell the heavenly aroma of freshly baked bread.
+Along the walls of this hallway are ancient weapons from the early
+crusades.  The weapons are old and used; some still have blood stains
+and pieces of human, and inhuman, flesh stuck to them.
+Obvious exits are: n, s, e and w.
+Greyhame {sales}: I have see magic, it doesn't show that, myabe a different
+ version?
+Fumble the queuer [chat]: A mulato
+<>--e
+Big pressing machines along the north wall are used to dry the
+washed clothes.  Large baskets of clothes marked clean and baskets
+of clothes marked dirty are pushed up against the south wall.  This
+room has a rather stake odor to it.
+Obvious exits are: w, e and s.
+Laku the queuer [chat]: queuing suxx!!!!
+Fumble the queuer [chat]: An albino
+<>--e
+Alandra [bat]: How can one talk to monsters
+This small room has a cozy atmosphere to it.  A fireplace on the
+east wall fills the room with a warm glow and general feeling of
+peace.  There are a few chairs in here and a table along the north
+wall.
+Obvious exit is: west.
+A drunken monk is stumbling here
+Radagast [wanted]: yea
+Wane [sales]: if DOES have <> then does a lot in that damage type
+Fumble the queuer [chat]: A mosquito
+Radagast [wanted]: in the thief guild :) Jim's... cant be used by players
+<>--save
+Greyhame {sales}: id didn't say magical damage
+Fumble the queuer [chat]: my libido
+Radagast [wanted]: works as a shop
+Ardion [bat]: no way
+SAVED.
+Monk says: A lemme telly uort somrthing kiddos.. I bult this church!
+Fumble the queuer [chat]: yeah!
+<>--w
+Silvery the queuer [chat]: zak zak..
+Big pressing machines along the north wall are used to dry the
+washed clothes.  Large baskets of clothes marked clean and baskets
+of clothes marked dirty are pushed up against the south wall.  This
+room has a rather stake odor to it.
+Obvious exits are: w, e and s.
+<>--s
+Fritz [sales]: strange
+Large tubs of boiling water are lined along the south wall and
+are used to wash clothes.  The stench of boiling filth permeates
+the room and makes you sick.
+Obvious exit is: north.
+<>--n
+Silvery the queuer [chat]: im tired..
+Big pressing machines along the north wall are used to dry the
+washed clothes.  Large baskets of clothes marked clean and baskets
+of clothes marked dirty are pushed up against the south wall.  This
+room has a rather stake odor to it.
+Obvious exits are: w, e and s.
+<>--w
+Beav the queuer [chat]: I hate this
+You are in a 15 foot wide hallway which continues south.  From
+the west you can smell the heavenly aroma of freshly baked bread.
+Along the walls of this hallway are ancient weapons from the early
+crusades.  The weapons are old and used; some still have blood stains
+and pieces of human, and inhuman, flesh stuck to them.
+Obvious exits are: n, s, e and w.
+<>--w
+Fumble [chat]: yess
+Silvery the queuer [chat]: very tired..
+A huge round table is the center of this room.  Made of solid oak
+and finished to a glossy shine, this table is a true work of fine
+craftsmanship.  Many chairs are placed around the table.  A big
+crystal chandelier hangs just above the table, casting a warm glow
+across the room.  The smells of freshly baked bread linger from the
+south exit.
+Obvious exits are: s, w and e.
+Demo Blackmage the Thrikhren Want Reinc exp back
+<>--w
+Demo claps his hands and whispers 'judicandus olofzh'
+Demo casts a healing spell on Demo.
+This small room makes your skin tingle.  A cold draft fills the
+room and comes from the staircase on the far side of the room.
+There is a small table here with a few pieces of paper scattered
+about it.
+Obvious exits are: e and d.
+Wane [sales]: id SOMETIMES gives non phys damage - ie for axe got 'it humms
+ quietly' or something like that
+Gonar [chat]: SiLvERy
+Swift [wanted]: what is that about jims ?
+Alulismus [chat]: lakuuu rah rah ...........
+Caladar [sales]: well if it has <> it's at least 50% or so
+Demo arrives from east.
+<>--d
+Demo leaves down.
+Kraut [wanted]: i was wondering dracuul the tougest monsiy in the game, how
+ much exp is it actually worth?
+The basement of the church is cold and damp.  The walls are
+cold and slick.  The basement is more of a system of tunnels
+under the church.  Where it leads, you don't know.  The
+section of tunnel you are in turns off to the west and south.
+Obvious exits are: u, w and s.
+Demo Blackmage the Thrikhren Want Reinc exp back
+Demo leaves west.
+Caladar [sales]: it humms quietly is elec dam
+<>--s
+Berk [wanted]: to know, who owns Skysplitter
+Along the walls of this tunnel are written ancient runes.
+They are written in a form of hierogylphics and you cannot
+decipher them.  The tunnel runs north and south and branches
+to the west.
+Obvious exits are: w, s and n.
+Spectre arrives from west.
+<>--s
+Stuck in the floor of this cave is what appears to be a
+dead dwarf.  The body is half stuck into the hard clay
+floor and is badly decomposed.  The tunnel here runs north
+and south, and branches off to the west.
+Obvious exits are: w, n and s.
+Laku the queuer [chat]: Etsi Alulismus!!!
+<>--s
+The tunnel here is a dead end.  The only way back is
+to go north, back into the perils of this dungeon maze.
+Obvious exit is: north.
+<>--n
+Stuck in the floor of this cave is what appears to be a
+dead dwarf.  The body is half stuck into the hard clay
+floor and is badly decomposed.  The tunnel here runs north
+and south, and branches off to the west.
+Obvious exits are: w, n and s.
+<>--w
+The section of tunnel here is a long, narrow east/west
+passage.  The wind is strong here and you feel the chills
+from the wind in your bones.  You have trouble maintaining
+your balance in the wind.
+Obvious exits are: w and e.
+<>--w
+Xanon [wanted]: anybody doing free scar remove??
+The tunnels end here into this ten foot by ten foot room.
+In the center of the room is a hole with a ladder going
+down into the darkness.  The tunnel picks up again along the
+north and east walls.
+Obvious exits are: n, d and e.
+Demo Blackmage the Thrikhren Want Reinc exp back
+A monk of the third order
+Monk says:  REPENT!!  REPENT!!  The day of the lord cometh!!
+Demo booms in sinister voice 'gtzt zur fehh'
+Demo mumbles something inconcievable.
+Demo starts concentrating on a new offensive spell.
+Swift [wanted]: to know if the petshop was ever /will ever open ?
+<>--n
+Monk is in vigorous combat with Demo.
+Demo is in vigorous combat with Monk.
+This section of the tunnel is dug out much much wider
+than the rest of the tunnel.  The tunnels widens to at
+least 30 feet and is dug close to 20 feet tall.  At either
+ends of this huge room, the tunnel curves off to the west
+and to the south.
+Obvious exits are: w and s.
+Escher [wanted]: Sure, i will.
+Silvery [chat]: best way to spend your time.. stand in queue..
+<>--w
+To the east and to the north this tunnel branches off.
+You can't help but feel there is something very evil at
+the center of this massive labyrinth.
+Obvious exits are: e and n.
+<>--n
+The tunnel here curves and heads both east and south.  The
+architechts who designed this tunnel must have been super
+geniuses, not to mention the actual workers who dug these
+tunnels out.
+Obvious exits are: s and e.
+Escher [wanted]: do free scar removal, that is... where ya wana meet?
+<>--e
+Silvery [chat]: oho.. not any more..
+The walls here slope upwards, making it somewhat difficult to
+walk, but you manage to maintain your balance.  This east and
+west passage is long and narrow, and you feel as if the cold
+walls begin to close in on you.
+Obvious exits are: w and e.
+<>--e
+You are deep within the tunnel system below the church.  The
+cold walls radiate evil.  The tunnel runs east and west and
+also branches off to the south.
+Obvious exits are: w, s and e.
+Wane [sales]: crackling is electrical...humming is magical
+<>--e
+The basement of the church is cold and damp.  The walls are
+cold and slick.  The basement is more of a system of tunnels
+under the church.  Where it leads, you don't know.  The
+section of tunnel you are in turns off to the west and south.
+Obvious exits are: u, w and s.
+<>--w
+<>--s
+You are deep within the tunnel system below the church.  The
+cold walls radiate evil.  The tunnel runs east and west and
+also branches off to the south.
+Obvious exits are: w, s and e.
+Idles [wanted]: P A R T Y !
+This small section of tunnel turns and goes leads to the
+north and to the east.  Small furry creatures scurry
+beneath your feet.
+Obvious exits are: e and n.
+A monk of the third order
+<>--e
+Along the walls of this tunnel are written ancient runes.
+They are written in a form of hierogylphics and you cannot
+decipher them.  The tunnel runs north and south and branches
+to the west.
+Obvious exits are: w, s and n.
+Wandering spectre of Monk (undead)
+<>--n
+The basement of the church is cold and damp.  The walls are
+cold and slick.  The basement is more of a system of tunnels
+under the church.  Where it leads, you don't know.  The
+section of tunnel you are in turns off to the west and south.
+Obvious exits are: u, w and s.
+<>--password
+<>--tardis
+<>--tardis
+Password changed.
+<>--suicide tardis
+Silvery [wanted]: party for a mage..
+You commit suicide!
+You remove a pair of leather shorts.
+You remove a leather vest.
+You drop your wielded weapon.
+% Connection to bat closed by foreign host.
+---- No world ----
+<>--/quit

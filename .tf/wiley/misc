@@ -1,0 +1,49 @@
+/loaded ~/.tf/wiley/misc
+
+/bind qui = /input q
+/def reedit = /edit %1 = %-1
+/def append = /edit %1 = $%1$%2
+/def prepend = /edit %1 = %2$%1
+/def gods = /quote shout !"gods"
+/def grin = emote beams a wickedly evil grin at %{1-everyone}.
+/def box = emote stuffs %{1-someone} into a tiny box and sets it aflame.
+
+/bind .ggc = get all.gold corpse
+/bind .gg2 = get all.gold 2.corpse
+/bind .gg3 = get all.gold 3.corpse
+/bind .gg4 = get all.gold 4.corpse
+/bind .gg5 = get all.gold 5.corpse
+/bind .gg6 = get all.gold 6.corpse
+/bind .gg7 = get all.gold 7.corpse
+/bind .gg8 = get all.gold 8.corpse
+/bind .gg9 = get all.gold 9.corpse
+/bind .gac = get all corpse
+/bind .ga2 = get all 2.corpse
+/bind .ga3 = get all 3.corpse
+/bind .ga4 = get all 4.corpse
+/bind .ga5 = get all 5.corpse
+/bind .ga6 = get all 6.corpse
+/bind .ga7 = get all 7.corpse
+/bind .ga8 = get all 8.corpse
+/bind .ga9 = get all 9.corpse
+
+/bind .sv = save%;score
+/bind .wk = wake%;stand
+/bind .dwf = drink water fountain
+/bind .egc = get meat corpe%;eat meat
+
+/def kz = cast 'anim' corpse%;order zombie sleep%;kill zombie
+/def k = kil %*
+/bind .ka = kil acolyte
+/bind .kd = kil doppleganger
+/bind .kf = kil female
+/bind .kg = kil goblin
+/bind .kk = kil kobold
+/bind .km = kil male
+/bind .ko = kil orc
+/bind .kp = kil priestess
+/bind .ks = kil skeleton
+/bind .of = /input order followers
+/bind .ok = /input order followers kil
+/bind .ow = order followers wake%;order followers stand
+/bind .os = order followers sleep

@@ -1,0 +1,128 @@
+/loaded wiley/spells
+
+;
+; This file contains all spell messages and aliai that I know of.
+;
+
+; Bad things
+
+/def -i -aCblue -t"^You get a shock as .* gets too close to you$"
+/def -i -aCblue -t"^You stagger as a magic missile from .* hits you$"
+
+; Good things
+
+; Translations
+
+;/def -i -ag -t"* 'ZZZZzzzzzzTTTT'*" /echo -aCwhite %1 "Shocking Grasp"%2
+;/def -i -ag -t"* 'bang! bang! pow!'*" /echo -aCwhite %1 "Magic Missile"%2
+
+; Spell aliai
+
+/alias acid	cast 'acid blast' %*
+/alias aid	cast 'aid' %{*-%MYSELF}
+/alias align	cast 'know alignment' %*
+/alias anim	cast 'animate dead' %{1-1}.corpse
+/alias arm	cast 'armour' %{*-%MYSELF}
+/alias astral	cast 'astral walk' %*
+/alias bless	cast 'bless' %{*-%MYSELF}
+/alias blind	cast 'blind' %*
+/alias breathe	cast 'water breath' %{*-%MYSELF}
+/alias burn	cast 'burning' %*
+/alias call	cast 'call lightning' %*
+/alias calm	cast 'calm' %*
+/alias cauc	cast 'cause critic' %*
+/alias caul	cast 'cause light' %*
+/alias caus	cast 'cause serious' %*
+/alias charm	cast 'charm monster' %*
+/alias charmp	cast 'charm person' %*
+/alias chi	cast 'chill touch' %*
+/alias clone	cast 'clone' %*
+/alias col	cast 'colour spray' %*
+/alias cone	cast 'cone of cold' %*
+/alias control	cast 'control weather' %{1-worse}
+/alias curbli	cast 'cure blind' %{*-%MYSELF}
+/alias curc	cast 'cure critic' %{*-%MYSELF}
+/alias curl	cast 'cure light' %{*-%MYSELF}
+/alias curs	cast 'cure serious' %{*-%MYSELF}
+/alias curse	cast 'curse' %*
+/alias demon	cast 'cacaodemon' %*
+/alias dete	cast 'detect evil' %{*-%MYSELF}
+/alias deti	cast 'detect invis' %{*-%MYSELF}
+/alias detm	cast 'detect magic' %{*-%MYSELF}
+/alias detp	cast 'detect poison' %{*-%MYSELF}
+/alias dis	cast 'distintegrate' %*
+/alias dispe	cast 'dispel evil' %*
+/alias dispg	cast 'dispel good' %*
+/alias dispm	cast 'dispel magic' %{*-%MYSELF}
+/alias drain	cast 'energy drain' %*
+/alias earth	cast 'earthquake' %*
+/alias element	cast 'conjure elemental' %{1-fire}
+/alias enchant	cast 'enchant weapon' %*
+/alias farlock	cast 'farlock' %*
+/alias fear	cast 'fear' %*
+/alias feast	cast 'heroes feast' %*
+/alias ff	cast 'faerie fire' %*
+/alias fire	cast 'fireball' %*
+/alias flame	cast 'flamestrike' %*
+/alias fly	cast 'fly' %{*-%MYSELF}
+/alias fog	cast 'faerie fog' %*
+/alias fshi	cast 'fireshield' %{*-%MYSELF}
+/alias full	cast 'full heal' %*
+/alias gfly	cast 'group fly' %*
+/alias gheal	cast 'heal spray' %*
+/alias harm	cast 'harm' %*
+/alias heal	cast 'heal' %{*-%MYSELF}
+/alias ice	cast 'ice storm' %*
+/alias infra	cast 'infravision' %{*-%MYSELF}
+/alias invis	cast 'invis' %{*-%MYSELF}
+/alias knock	cast 'knock' %*
+/alias leech	cast 'life leech' %*
+/alias lig	cast 'lightning' %*
+/alias light	cast 'continual light' %*
+/alias locate	cast 'locate object' %*
+/alias make	cast 'minor creation' %*
+/alias mkfood	cast 'create food' %;get mushroom%;eat mushroom
+/alias mkgolem	cast 'create golem' %*
+/alias mkident	cast 'well of knowledge' %*
+/alias mkrecall	cast 'succor' %*
+/alias mkwater	cast 'minor creation' barrel%;drink water barrel%;drink water barrel
+/alias mm	cast 'magic miss' %*
+/alias mon1	cast 'monsum one' %*
+/alias mon2	cast 'monsum two' %*
+/alias mon3	cast 'monsum three' %*
+/alias mon4	cast 'monsum four' %*
+/alias mon5	cast 'monsum five' %*
+/alias mon6	cast 'monsum six' %*
+/alias mon7	cast 'monsum seven' %*
+/alias para	cast 'paralyze' %*
+/alias poison	cast 'poison' %*
+/alias poly	cast 'polymorph' %*
+/alias portal	cast 'portal' %*
+/alias prote	cast 'protection from evil' %*
+/alias protg	cast 'protection from good' %*
+/alias ref	cast 'refresh' %{*-%MYSELF}
+/alias ress	cast 'resurrection' %*
+/alias rmcurs	cast 'remove curse' %{*-%MYSELF}
+/alias rmpara	cast 'remove paralysis' %{*-%MYSELF}
+/alias rmpois	cast 'remove poison' %{*-%MYSELF}
+/alias sanc	cast 'sanctuary' %{*-%MYSELF}
+/alias sense	cast 'sense life' %{*-%MYSELF}
+/alias shi	cast 'shield' %{*-%MYSELF}
+/alias sho	cast 'shock' %*
+/alias sight	cast 'true sight' %{*-%MYSELF}
+/alias silence	cast 'silence' %*
+/alias sle	cast 'sleep' %*
+/alias stone	cast 'stone skin' %*
+/alias str	cast 'strength' %{*-%MYSELF}
+/alias summon	cast 'summon' %*
+/alias swarm	cast 'meteor swarm' %*
+/alias syn	cast 'synostodweomer' %*
+/alias tel	cast 'teleport' %{*-%MYSELF}
+/alias turn	cast 'turn' %*
+/alias undead	cast 'control undead' %*
+/alias vamp	cast 'vampiric touch' %*
+/alias vent	cast 'ventriloquate' %*
+/alias weak	cast 'weakness' %*
+/alias web	cast 'web' %*
+/alias wind	cast 'second wind' %{*-%MYSELF}
+/alias word	cast 'word of recall' %*

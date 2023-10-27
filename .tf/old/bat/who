@@ -1,0 +1,13 @@
+/set redef=1
+/set matching=2
+/set catch_ctrls=2
+/set oldslash=0
+/set wrap=off
+/set quitdone=1
+
+/def -i -ag -t"^Press enter to continue:" bletch = /send ""
+/def -i -ag -t"\[qpbns\?\]" gargh = /send ""
+/def -i -ag -t"h - help about BatMUD" ack = /repeat -01 1 /send w%;/repeat -03 10 /send ""%;/undef ack%;/def -i -ag -t"h - help about BatMUD" ack = /send q
+
+/addlpp batwho 130.233.40.180 23
+/world batwho

@@ -1,0 +1,14 @@
+nethack on
+defscrollback 10000
+vbell off
+#setenv TERM xterm-256color
+#terminfo xterm Co=256
+#termcap  xterm Co=256
+#termcap  xterm AF=\E[38;5;%dm
+#terminfo xterm AF=\E[38;5;%p1%dm
+#termcap  xterm AB=\E[48;5;%dm
+#terminfo xterm AB=\E[48;5;%p1%dm
+#screen 0
+#screen -t bloodlines -ln 1 ssh localhost -l bloodlines
+#screen -t wileymud -ln 2 ssh localhost -l wiley
+#select 0

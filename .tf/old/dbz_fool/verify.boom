@@ -1,0 +1,212 @@
+[?1h=
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[?1h=[52;1H[KTinyFugue version 5.0 beta 8
+[KCopyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2002, 2003, 2004, 2005, 2006-2007 Ken Keys (kenkeys@users.sourceforge.
+    net)
+[KType `/help copyright' for more information.
+[KUsing PCRE version 6.7.7.4 2008-07-04
+[KType `/help', `/help topics', or `/help intro' for help.
+[KType `/quit' to quit tf.
+[K
+[K% LC_CTYPE category set to "C" locale.
+[K% LC_TIME category set to "C" locale.
+[K% Loading commands from /home/quixadhal/share/tf-lib/stdlib.tf.
+[K% Loading commands from ./bug.copy.
+[1;1H[J[52;1HTinyFugue version 5.0 beta 8
+Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2002, 2003, 2004, 2005, 2006-2007 Ken Keys (kenkeys@users.sourceforge.
+net)
+Type `/help copyright' for more information.
+Using PCRE version 6.7.7.4 2008-07-04
+Type `/help', `/help topics', or `/help intro' for help.
+Type `/quit' to quit tf.
+
+% LC_CTYPE category set to "C" locale.
+% LC_TIME category set to "C" locale.
+% Loading commands from /home/quixadhal/share/tf-lib/stdlib.tf.
+% Loading commands from ./bug.copy.
+[1;1H[J[52;1H[K% Trying to connect to bugger: 98.203.186.127 4002.
+[K% Connected to bugger.
+[K% You have mail in /var/mail/quixadhal
+[K[K
+[K________________________________________________________________________________
+[K     ______                                       ____ 
+[K    ,   __ \                                     / __ \          _  _
+[K    |  |  \ \   ___                             | |__//         | || |
+[K    |  |  | |  ,   \  ___     ___   ___  __   _ |  _  \   ___   | || |
+[K    |  |  | |  | |-' / _ \   / _ \ / _ \|  \ | || |  \ \ / _ \  | || |
+[K    }  |_/  |/\| |   ||_| \  ||_|| ||_||| |\\| || |__/ / ||_| \ | || |
+[K    |______/ []`-'   \__/\_\ \__ | \___/|_| \__/ \____/  \__/\_\|_||_|
+[K             []                 ||                   
+[K             []              _ //    _________                        
+[K            _[]_             \-'    /  _   _  \  Owners: Flarenial, Dyril, Kirk
+[K         O=|____|=O                 \_| | | |_/                               
+[K            ||||                        | |  ___  _   _   _____   _   _      
+[K            ||||                        | | ,   \| | | | |_   _| | |_| |     
+[K            |||| R E S U R R E C T I O N| | | |-'| | | |   | |   |  _  |     
+[K            ||||                        | | | |  | |_| |   | |   | | | |    
+[K            ||||        O F             |_| |_|   \___/    |_|   |_| |_|   
+[K            ||||
+[K            ||||       (Based off of)DBX Beta v0.01
+[K            ||||   CircleMUD was created by: Jeremy Elson
+[K            ||||               (See credits)
+[K            ||||       A Derivative of DikuMUD(GAMMA 0.0)
+[K            ||||                 Created by
+[K            \\// Hans Henrik Staerfeldt, Katja Nyboe,  Tom Madsen     
+[K             \/      Michael Seifert, and Sebastian Hammer.
+[K                             Thanks to Kastion    
+[K________________________________________________________________________________
+[K[KWhat name would you like to appear on your tomb stone? [K[KDid I get that right, Drawl (Y/N)? [K[KNew character.
+[K[KGive me a password for Drawl: [K[KPlease retype Drawl's password: [K[K
+[KWhat is your sex ([1m[34mM[m[39;49;0m/[1m[35mF[m[39;49;0m/[1m[30mN[m[39;49;0m)?
+[K[K
+[KSaiyans and Majins are restricted, read help request to find how to request one.
+[K
+[KType the race name to get info on that race. Type list to see this menu again.
+[K[1m[37mo[m[39;49;0m[1m[34m-----------------------------------------------------[m[39;49;0m[1m[37mo[m[39;49;0m
+[K[1m[34m|  ([m[39;49;0m[32m1[39;49;0m[1m[34m)[m[39;49;0m Human       [1m[34m([m[39;49;0m[32m6[39;49;0m[1m[34m)[m[39;49;0m Android       [1m[34m([m[39;49;0m[32mA[39;49;0m[1m[34m)[m[39;49;0m Mutant        
+[K[1m[34m|  ([m[39;49;0m[32m2[39;49;0m[1m[34m)[m[39;49;0m Namek       [1m[34m([m[39;49;0m[32m7[39;49;0m[1m[34m)[m[39;49;0m Kai           [1m[34m([m[39;49;0m[32mB[39;49;0m[1m[34m)[m[39;49;0m Demon         
+[K[1m[34m|  ([m[39;49;0m[32m*[39;49;0m[1m[34m)[m[39;49;0m Saiyan      [1m[34m([m[39;49;0m[32m8[39;49;0m[1m[34m)[m[39;49;0m Half-Breed    [1m[34m([m[39;49;0m[32mC[39;49;0m[1m[34m)[m[39;49;0m Kanassan             
+[K[1m[34m|  ([m[39;49;0m[32m4[39;49;0m[1m[34m)[m[39;49;0m Icer        [1m[34m([m[39;49;0m[32m9[39;49;0m[1m[34m)[m[39;49;0m Bio-Android   [1m[34m([m[39;49;0m[32mE[39;49;0m[1m[34m)[m[39;49;0m Truffle           
+[K[1m[34m|  ([m[39;49;0m[32m*[39;49;0m[1m[34m)[m[39;49;0m Majin       [1m[34m([m[39;49;0m[32m0[39;49;0m[1m[34m)[m[39;49;0m Konatsu       [1m[34m([m[39;49;0m[32mD[39;49;0m[1m[34m)[m[39;49;0m Angel
+[K [1m[37mo[m[39;49;0m[1m[34m-----------------------------------------------------[m[39;49;0m[1m[37mo[m[39;49;0m
+[K
+[K[KPick a Race: [K[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K       [1m[37mWhat color eyes do you have?[m[39;49;0m
+[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K[1m[34m([m[39;49;0m[32m1[39;49;0m[1m[34m)[m[39;49;0m I have [1m[30mblack[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m2[39;49;0m[1m[34m)[m[39;49;0m I have [1m[37mwhite[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m3[39;49;0m[1m[34m)[m[39;49;0m I have [1m[34mblue[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m4[39;49;0m[1m[34m)[m[39;49;0m I have [1m[32mgreen[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m5[39;49;0m[1m[34m)[m[39;49;0m I have [33mbrown[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m6[39;49;0m[1m[34m)[m[39;49;0m I have [1m[35mpurple[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m7[39;49;0m[1m[34m)[m[39;49;0m I have [1m[31mred[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m8[39;49;0m[1m[34m)[m[39;49;0m I have [1m[33myellow[m[39;49;0m eyes.
+[K[1m[34m([m[39;49;0m[32m9[39;49;0m[1m[34m)[m[39;49;0m I have [1m[36micy blue[m[39;49;0m eyes.
+[K[36mEye Color[39;49;0m:
+[K[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K       [1m[37mWhat is your hair length?[m[39;49;0m
+[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K[1m[34m([m[39;49;0m[32m1[39;49;0m[1m[34m)[m[39;49;0m I have very short hair.
+[K[1m[34m([m[39;49;0m[32m2[39;49;0m[1m[34m)[m[39;49;0m I have short hair.     
+[K[1m[34m([m[39;49;0m[32m3[39;49;0m[1m[34m)[m[39;49;0m I have medium length hair. 
+[K[1m[34m([m[39;49;0m[32m4[39;49;0m[1m[34m)[m[39;49;0m I have long hair.      
+[K[1m[34m([m[39;49;0m[32m5[39;49;0m[1m[34m)[m[39;49;0m I have very long hair. 
+[K[1m[34m([m[39;49;0m[32m6[39;49;0m[1m[34m)[m[39;49;0m I have no hair. 
+[K[1m[34m([m[39;49;0m[32m7[39;49;0m[1m[34m)[m[39;49;0m I have short spikey hair. 
+[K[1m[34m([m[39;49;0m[32m8[39;49;0m[1m[34m)[m[39;49;0m I have medium spikey hair. 
+[K[1m[34m([m[39;49;0m[32m9[39;49;0m[1m[34m)[m[39;49;0m I have long spikey hair. 
+[K[36mHair Length[39;49;0m:
+[K[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K       [1m[37mWhat is your skin color?[m[39;49;0m
+[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K[1m[34m([m[39;49;0m[32m1[39;49;0m[1m[34m)[m[39;49;0m I have [1m[30mblack[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m2[39;49;0m[1m[34m)[m[39;49;0m I have [1m[37mwhite[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m3[39;49;0m[1m[34m)[m[39;49;0m I have [1m[34mblue[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m4[39;49;0m[1m[34m)[m[39;49;0m I have [1m[32mgreen[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m5[39;49;0m[1m[34m)[m[39;49;0m I have [1m[35mpink[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m6[39;49;0m[1m[34m)[m[39;49;0m I have [1m[31mred[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m7[39;49;0m[1m[34m)[m[39;49;0m I have [1m[33mtan[m[39;49;0m skin
+[K[1m[34m([m[39;49;0m[32m8[39;49;0m[1m[34m)[m[39;49;0m I have [1m[35mpurple[m[39;49;0m skin
+[K[36mSkin Color[39;49;0m:
+[K[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K       [1m[37mNo REMAKING at all.[m[39;49;0m
+[K[1m[34m<>[m[39;49;0m[37m=======================================[39;49;0m[1m[34m<>[m[39;49;0m
+[K[1m[34m([m[39;49;0m[32m1[39;49;0m[1m[34m)[m[39;49;0m I understand, no remaking.
+[K[36mOk?[39;49;0m:
+[K[K-----------------------------------------------------------
+[KDragonball Resurrection of Truth   
+[K-----------------------------------------------------------
+[K|  Welcome players to Dragon Ball - Resurrection of Truth |
+[K| We hope you have fun, make sure to read help help       |
+[K| and it's corresponding help files, such as help new-    |
+[K| bie. Edgur, Dyril, and Phaze.                           |
+[K-----------------------------------------------------------
+[K
+[K
+[KPlease Enjoy your stay on Drag(*)nBall Resurrection of Truth! 
+[K
+[K[K*** PRESS RETURN: [K[K
+[K   [0] Exit Drag(*)nball - Resurrection of Truth! 
+[K   [1] Enter Drag(*)nball - Resurrection of Truth! 
+[K   [2] Enter description 
+[K   [3] Read background story 
+[K   [4] Delete this character 
+[K   Pick one: 
+[K[K
+[K[1m[37mWelcome to [m[39;49;0m[1m[33mDrag[m[39;49;0m[1m[34m([m[39;49;0m[1m[31m*[m[39;49;0m[1m[34m)[m[39;49;0m[1m[33mnball [m[39;49;0m[1m[37m- [m[39;49;0m[1m[31mR[m[39;49;0m[31me[39;49;0m[1m[30ms[m[39;49;0m[1m[37mu[m[39;49;0m[1m[31mr[m[39;49;0m[31mr[39;49;0m[1m[30me[m[39;49;0m[1m[37mc[m[39;49;0m[1m[31mt[m[39;49;0m[31mi[39;49;0m[1m[30mo[m[39;49;0m[1m[37mn [m[39;49;0m[1m[30mof [m[39;49;0m[1m[34mT[m[39;49;0m[37mr[39;49;0m[36mu[39;49;0m[37mt[39;49;0m[1m[34mh[m[39;49;0m[1m[32m![m[39;49;0m
+[K
+[K[1m[30m[[m[39;49;0m[1m[32mGAIN[m[39;49;0m[1m[30m] [m[39;49;0m[1m[31mPL[m[39;49;0m[1m[33m: [m[39;49;0m[1m[37m110 [m[39;49;0m[1m[36mKi[m[39;49;0m[1m[33m: [m[39;49;0m[1m[37m55 [m[39;49;0m[1m[34mLP[m[39;49;0m[1m[33m: [m[39;49;0m[1m[37m2[m[39;49;0m
+[K[37mW[39;49;0m[1m[36me[m[39;49;0m[36ml[39;49;0m[1m[30mc[m[39;49;0m[36mo[39;49;0m[1m[36mm[m[39;49;0m[37me[39;49;0m[1m[37m. This is your new [m[39;49;0m[1m[33mDrag[m[39;49;0m[1m[34m([m[39;49;0m[1m[31m*[m[39;49;0m[1m[34m)[m[39;49;0m[1m[33mnball [m[39;49;0m[1m[37m- [m[39;49;0m[1m[31mR[m[39;49;0m[31me[39;49;0m[1m[30ms[m[39;49;0m[1m[37mu[m[39;49;0m[1m[31mr[m[39;49;0m[31mr[39;49;0m[1m[30me[m[39;49;0m[1m[37mc[m[39;49;0m[1m[31mt[m[39;49;0m[31mi[39;49;0m[1m[30mo[m[39;49;0m[1m[37mn [m[39;49;0m[1m[30mof [m[39;49;0m[1m[34mT[m[39;49;0m[37mr[39;49;0m[36mu[39;49;0m[37mt[39;49;0m[1m[34mh[m[39;49;0m[1m[37m character!  You can now earn gold, gain experience, find weapon[m[39;49;0m
+[1m[37ms and equipment, and much  more -- while meeting people from around the world! Don't forget to check out help newbie, help hel[m[39;49;0m
+[1m[37mp, and help mudrules![m[39;49;0m
+[K[31mI[39;49;0m[1m[30mn[m[39;49;0m[1m[31mf[m[39;49;0m[31mer[39;49;0m[1m[30mn[m[39;49;0m[1m[31mo [m[39;49;0m[1m[37mC[m[39;49;0m[1m[30mi[m[39;49;0m[37mt[39;49;0m[1m[37my[m[39;49;0m[1m[30m: [m[39;49;0m[1m[37mVisitors Station[m[39;49;0m
+[K[1m[34mGravity:[m[39;49;0m[1m[30m Normal.[m[39;49;0m
+[K[1m[32mRegen [m[39;49;0m[1m[34mRoom[m[39;49;0m
+[K   [1m[37mThis small hut is climate controlled, and has several couches for[m[39;49;0m
+[K[1m[37mvisitors to the city to relax on.  A large ice water fountain is built into the[m[39;49;0m
+[K[1m[37mcenter of the room, and is often the first place visitors go when they get[m[39;49;0m
+[K[1m[37minside.  Occasional spouts of steam can be seen rising from the fountain when a[m[39;49;0m
+[K[1m[37mperson jumps into it.  [m[39;49;0m
+[K[1m[36mObvious exits[m[39;49;0m[1m[37m:[m[39;49;0m
+[K[1m[37mNorth[m[39;49;0m [1m[31m-[m[39;49;0m[1m[37m [m[39;49;0m[31mI[39;49;0m[1m[30mn[m[39;49;0m[1m[31mf[m[39;49;0m[31mer[39;49;0m[1m[30mn[m[39;49;0m[1m[31mo [m[39;49;0m[1m[37mC[m[39;49;0m[1m[30mi[m[39;49;0m[37mt[39;49;0m[1m[37my[m[39;49;0m[1m[30m: [m[39;49;0m[1m[37mAsh Avenue[m[39;49;0m
+[K[1m[37mThe [m[39;49;0m[1m[31mB[m[39;49;0m[31mlood[39;49;0m[1m[31my [m[39;49;0m[37mW[39;49;0m[1m[36ma[m[39;49;0m[36mt[39;49;0m[1m[36me[m[39;49;0m[37mr [39;49;0m[36mF[39;49;0m[1m[36mo[m[39;49;0m[1m[34mu[m[39;49;0m[34mnt[39;49;0m[1m[34ma[m[39;49;0m[1m[36mi[m[39;49;0m[36mn [39;49;0m[1m[37mis built into the center of this room.[m[39;49;0m
+[K[1m[37mA [m[39;49;0m[1m[32mMessage [m[39;49;0m[36mBoard[39;49;0m[1m[37m floats here, waiting to be written on.[m[39;49;0m
+[K[1m[37mThe P[m[39;49;0m[1m[30mo[m[39;49;0m[1m[37ms[m[39;49;0m[37mt[39;49;0m[1m[34mm[m[39;49;0m[34maste[39;49;0m[1m[34mr [m[39;49;0m[1m[37mis standing here.[m[39;49;0m
+[K[1m[30m[[m[39;49;0m[1m[31mPlayer Login[m[39;49;0m[1m[30m] [m[39;49;0m[1m[37mDrawl has joined [m[39;49;0m[1m[33mDrag[m[39;49;0m[1m[34m([m[39;49;0m[1m[31m*[m[39;49;0m[1m[34m)[m[39;49;0m[1m[33mn Ball - [m[39;49;0m[1m[30mResurrection of [m[39;49;0m[1m[34mT[m[39;49;0m[37mr[39;49;0m[36mu[39;49;0m[37mt[39;49;0m[1m[34mh[m[39;49;0m[1m[32m![m[39;49;0m
+[K
+[K[1m[30m[[m[39;49;0m[1m[31mPL[m[39;49;0m[1m[33m: [m[39;49;0m[1m[37m310[m[39;49;0m[1m[33m/[m[39;49;0m[1m[34m310[m[39;49;0m[1m[30m][[m[39;49;0m[1m[36mKi[m[39;49;0m[1m[33m: [m[39;49;0m[1m[37m105[m[39;49;0m[1m[33m/[m[39;49;0m[1m[34m105[m[39;49;0m[1m[30m][[m[39;49;0m[1m[32mLp[m[39;49;0m[1m[33m: [m[39;49;0m[1m[37m2[m[39;49;0m[1m[30m][m[39;49;0m
+[K[K% Connection to bugger closed by foreign host.
+[K
+TinyFugue version 5.0 beta 8
+Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998, 1999, 2002, 2003, 2004, 2005, 2006-2007 Ken Keys (kenkeys@users.sourceforge.net)
+[?1l>[K

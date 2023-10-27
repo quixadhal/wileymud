@@ -1,0 +1,44 @@
+/loaded ~/.tf/wiley/combat
+
+;
+; This file has triggers for combat messages.  If you see a new one, let me
+; know so I can add it to the distribution!
+;
+
+; Bad things that happen to you...
+
+/def -i -aCred -t"hits you"
+/def -i -aCred -t"slashes you"
+/def -i -aCred -t"pounds you"
+/def -i -aCred -t"claws you"
+/def -i -aCred -t"stings you"
+/def -i -aCred -t"bites you"
+/def -i -aCred -t"rears back and inhales"
+/def -i -aCred -t"poisons you"
+
+/def -i -aCred -t"^You flee in terror!$"
+/def -i -aCred -t"^You are about to die!$"
+/def -i -aCred -t"^That really did HURT!$"
+
+; Good things that happen to you...
+
+/def -i -aCgreen -t"You ANNIHILATE .* with your"
+/def -i -aCgreen -t"You massacre .* with your"
+
+/def -i -aCgreen -t"is dead! R\.I\.P\."
+/def -i -aCwhite -t"^Your blood freezes as you hear .* death cry\.$"
+/def -i -aCgreen -t"is mortally wounded, and will die soon, if not aided\.$"
+/def -i -aCgreen -t"is stunned, but will probably regain consciousness again\.$"
+/def -i -aCgreen -t"is incapacitated and will slowly die, if not aided\.$"
+/def -i -aCgreen -t"^Your boots need polishing again - blood all over"
+/def -i -aCgreen -t"^Your kick hits .* in the solar plexus"
+/def -i -aCgreen -t"^Your kick at .* kidneys made it die\.$"
+/def -i -aCgreen -t"^Your kick at .* face splits * head open - yummy"
+/def -i -aCwhite -t"panics, and attempts to flee\.$"
+/def -i -aCgreen -t"^You grab .* by the collar and stop them from fleeing!$"
+
+; Things of interest
+
+/def -i -aCwhite -t"is lying here, stunned\.$"
+
+/alias ready wear robe%;wear beads%;wear boots

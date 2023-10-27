@@ -1,0 +1,85 @@
+;
+; This is the base-level macro file for BatMUD.  It sets up a few essentials
+; and some aliai.  It also invokes the other more specific bat.* files.  If
+; you don't want one or more of them, copy this to your own area and comment
+; out the ones you don't like (or copy THEM too and modify them).
+;
+
+/~loaded bat/main
+
+/alias ggc get gold from corpse %{-1-1}
+/alias gac get all from corpse %{-1-1}
+/alias gc  get %{2-all} from corpse %{-2-1}
+/alias gaa /for i 1 %{-1-1} get all from corpse %%i
+/alias gga /for i 1 %{-1-1} get gold from corpse %%i
+/alias ec get corpse%;eat corpse
+
+/alias x exits
+/alias go /dopath %{-1}
+
+/alias wk wake%;stand
+/alias dw drink water
+/alias eb eat bread
+
+/alias k kill %{-1}
+/alias die feign death
+/alias of order followers %{-1}
+/alias ok order followers kill %{-1}
+/alias owk order followers wake%;order followers stand
+/alias osl order followers sleep
+
+; la  -> look at
+; lac -> look at corpse
+; lab -> look at bag
+; gac -> get all from corpse
+; gab -> get all from bag
+; gb  -> get <parameters> from bag ('gb torch 3' -> get torch 3 from bag)
+; pb  -> put <parameters> in bag (same as gb)
+; ga  -> get all
+; wa  -> wear all
+; ext -> extinguish
+; pj  -> party join
+; ps  -> party status
+; pf  -> party follow
+; p'  -> party say        // I use psay instead.. more intuitive to me.
+; r   -> report
+;
+; I use the BatMUD alias command to shorten my name.  In BatMUD, alias causes
+; a substitution to occur within any command.  Thus:
+;
+; alias me quixadhal
+;
+; would make the command la me expand into look at quixadhal.
+;
+; I have also defined the following additonal commands in BatMUD for my
+; character.  I find them useful.
+;
+; :   -> emote
+; b:  -> bat emote
+; p:  -> party emote
+; kil -> kill                ;; I got used to WileyMUD's shortened version :)
+;
+
+; if you type /setup <name>, this macro gives you a reasonable environment.
+/def -i setup = set inactive off%;set builtin on%;wimpy very low%;command kil kill \$%;command : emote \$%;command b: bat emote \$%;command p: party emote \$%;battle%;prompt <name>(<users>)_<tp>:<exp>:<hp>/<maxhp>,<ep>/<maxep>,<sp>/<maxsp>>_%;alias me %{1-me}
+
+; This is a nice who list that usually fits on one screen :)
+/alias wh who short name
+
+; Some party commands to make life easier
+/alias lead party leader %{-1-me};pf
+/alias psay party say %{-1-uhhh}
+/alias psnoop party snoop %{-1-me}
+
+; A very useful command to check the phase of the moon.
+; The summon spell normally costs 100sp, in a perfect full moon it should
+; cost 75, in the horrible new moon it should cost 125sp.
+/alias moon help spell summon
+
+/irequire bat/combat
+/irequire bat/inform
+/irequire bat/spells
+/irequire bat/emote
+/irequire bat/paths
+;/irequire bat/stats
+;/irequire bat/trig

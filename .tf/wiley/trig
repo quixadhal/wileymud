@@ -1,0 +1,17 @@
+/alias trigon /load ~/.tiny/wiley/trig
+/alias trigoff /load ~/.tiny/wiley/untrig
+/def -p2 -F -t"*You recieve your share*" auto__save = save
+;/def -p2 -F -t"*flies from your hands*" auto__rewield = get bastard%;wield bastard
+/def -p2 -F -t"*smashes into you*" auto__stand = stand
+/def -p2 -F -t"*R.I.P.*" auto__grab = get all.gold corpse
+/def -p2 -F -t"*One miserable gold coin.*" auto__coin = get all.gold
+/def -p2 -F -t"*pile of gold*" auto__gold = get all.gold
+/def bug = /def bugtarget = %{1-Zar}%;\
+/def -p1 -t"*$bugtarget the*" bug1 = poke $bugtarget%;\
+/def -p1 -t"*$bugtarget shouts*" bug2 = tell $bugtarget Shut the Hell Up!%;\
+/def -p1 -t"*$bugtarget tells you*" bug3 = tell $bugtarget You can tell me all day, but will I listen?%;\
+/def -p1 -t"*$bugtarget says*" bug4 = emote quickly straps duct-tape onto $bugtarget's mouth.%;\
+/def -p1 -t"*$bugtarget utters*" bug5 = slap $bugtarget%;\
+/def -p1 -t"*$bugtarget slaps*" bug6 = glare $bugtarget%;\
+/undef bugtarget
+/def unbug = /undef bug1%;/undef bug2%;/undef bug3%;/undef bug4%;/undef bug5%;/undef bug6

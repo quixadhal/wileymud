@@ -1,0 +1,47 @@
+/alias trigon /load ~/.tiny/sneezy/trig
+/alias trigoff /load ~/.tiny/sneezy/untrig
+/def -p2 -F -t"*You recieve your share*" auto__save = save
+;/def -p2 -F -t"*flies from your hands*" auto__rewield = get bastard%;wield bastard
+/def -p2 -F -t"*smashes into you*" auto__stand = stand
+/def -p2 -F -t"*R.I.P.*" auto__grab = get all.gold corpse%;get all.potion corpse
+/def -p2 -F -t"*One miserable gold coin.*" auto__coin = get all.gold
+/def -p2 -F -t"*pile of gold*" auto__gold = get all.gold
+
+;/def -p2 -F -t"You feel like * healed you a bit." auto__thank1 = bat Thanks %1!
+;/def -p2 -F -t"* heals * of your wounds." auto__thanks2 = tell %1 Thanks!
+
+
+/def -i -aCred -t"You feel something probing your mind and material existence."
+/def -i -aCred -t"You shiver violently as part of your life's essense is drained from your mortal body."
+
+/def -i -ag " You have a premonition, that even at this moment, a Negative Energy Elemental"
+/def -i -ag "is traveling toward the world of Batmud, and will be here within the NEAR"
+/def -i -ag "future." /echo -aCred >>> Negative Energy Elemental approaching! <<<
+/def -i -ag  "-----------------------------------------------------------------------------"
+/def -i -ag "The sky darkens, and the world of Batmud shudders as a dark, vaguely manshaped"
+/def -i -ag "*form descends from the sky.  A shiver of apprehension runs down your*"
+/def -i -ag "spine as you realise that a Negative Energy Elemental has come at last"
+/def -i -ag "to drain the life essense of this world, and you..." /echo -aCred >>> Negative Energy Elemental has arrived! <<<
+/def -i -ag "The world itself gives a large sigh of relief, as the negative energy"
+/def -i -ag "elemental is destroyed." /echo -aCgreen >>> Negative Energy Elemental is gone! <<<
+
+/def -i -ag "The earth shakes violently as the long forgotten pedestal of"
+/def -i -ag "the statue of the all mighty Zonni arises from the center of"
+/def -i -ag "the old city."
+/def -i -ag "A weary voice speaks in your head:"
+/def -i -ag "'Make me whole again, and I will reward you.'"
+/def -i -ag "You realise what you must do. You must gather all of the pieces"
+/def -i -ag "of the great statue and make it whole once again!" /echo -aCmagenta >>> Zonni's Statue event begins! <<<
+
+/def -i -ag "High Keep mage shouts: Orc legions of Mordor have been spotted"
+/def -i -ag "sailing towards the fort of High Keep, we need soldiers and"
+/def -i -ag "magicians to help protect the fort.  Come to the adventurer's"
+/def -i -ag "guild and we will discuss payment and transportation to the fort." /echo -aCmagenta >>> Fort event in progress <<<
+
+/def -i -ag "The sky of Batmud flairs with streaks of red flame."
+/def -i -ag "You hear a loud cackle from above." /echo -aCred >>> Dardechion approaches! <<<
+/def -i -ag "////////////////////////////////////////////////////////"
+/def -i -ag "Dardechion the evil mage has entered the realm of Batmud." /echo -aCred >>> Dardechion arrives! <<<
+
+/def -i -ag "You hear low rumble from sewers"
+/def -i -ag "Then it is silent again." /echo -aCwhite >>> Sewer thing <<<

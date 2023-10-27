@@ -1,0 +1,8 @@
+;
+; This is the master load file for BatMUD.  There are now so many
+; files that we needed to split them up into subdirectories!
+;
+
+/~loaded bat/init
+/redef on
+/irequire bat/main

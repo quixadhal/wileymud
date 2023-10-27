@@ -1,0 +1,24 @@
+/set redef=1
+/set matching=2
+/set catch_ctrls=2
+/set oldslash=0
+/set wrap=off
+/set quitdone=1
+
+/adddiku bugger 98.203.186.127 4002
+/world bugger
+/repeat -03 1 /send drawl
+/repeat -04 1 /send y
+/repeat -05 1 /send loser
+/repeat -06 1 /send loser
+/repeat -07 1 /send n
+/repeat -08 1 /send b
+/repeat -09 1 /send 1
+/repeat -10 1 /send 6
+/repeat -11 1 /send 5
+/repeat -12 1 /send 1
+/repeat -13 1 /send ""
+/repeat -14 1 /send 1
+/repeat -15 1 /send calc divide 1 0
+/repeat -16 1 /quit
+

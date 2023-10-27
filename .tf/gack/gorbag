@@ -1,0 +1,4 @@
+/loaded wiley/gorbag
+/set MYSELF gorbag
+/irequire wiley/main
+/alias ready put all.bread pouch%;put all.bottle pouch%;hold ring%;hold branch%;wield shortsword%;wear all%;group %MYSELF%;grin

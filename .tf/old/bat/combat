@@ -1,0 +1,73 @@
+;
+; This file has triggers for combat messages.  If you see a new one, let me
+; know so I can add it to the distribution!
+;
+
+/~loaded bat/combat
+
+; Bad things that happen to you...
+
+/red "^You PANIC!!!$"
+/red "^Thinking of Zonni, you are too terrified to act\.$"
+/red " accidentally stumbles on you and jabs your feet\.$"
+/red "^You (.*) flee "
+/red " tamely steps around you and bumps your chest(.*)\.$"
+/red " competently (.*) you with (.*)\.$"
+/red " connects with your back, causing nasty sounds\.$"
+/red " cruelly rends you with (.*)\.$"
+/red "^You feel surprised how much the smooth (.*) hurts\.$"
+/red "^You wail in pain as (.*) you with (.*)\.$"
+/red "^You stagger under the cruel (.*) of (.*)\.$"
+/red "^The spider sinks its poisonous mandibles into you\.$"
+/red "^A magic missile HITS you\.$"
+/red "^You are STUNNED from the force of the attack\.$"
+/red "^You pitifully try to finish (.*) but miss clearly\.$"
+/red " nimbly dodges your kick, totally avoiding contact\.$"
+/red "^AARGH! You miss the target and hit your own leg instead!$"
+
+/red " bash sends you sprawling\.$"
+/red "^Your (.*) suffers (.*) damage\.$"
+/red " pushes you\.$"
+/red "^You are about to die!$"
+/red "^Whoops, "
+/red "^You accidentally hit "
+/red "^You flee in terror!$"
+
+; Lame level-0 combat messages...
+/red " \[HITS\]$"
+/green "^\[HIT\]$"
+
+; Good things that happen to you...
+
+/green "^You slightly caress (.*) chest with "
+/green "^Your savage (.*) at (.*) makes blood splatter\.$"
+/green " is unconcious, and bleeding from awfully big wounds\.$"
+/green " is mortally wounded, and will probably die soon\.$"
+/green " shudders as its (.*) hits itself\.$"
+/green "^NOTE: Your armour sucks up (.*) of the damage$"
+/green " howls in pain as you "
+/green "^You competently (.*) with your "
+/green "^Your (.*) connects with (.*) back causing nasty sounds\.$"
+/green "^You swiftly aim at (.*) throat opening it instantly\.$"
+/green "^Your flying kick hits right on the target! Hiya!! You hear a crack\.$"
+/green "^Carefully sliding yourself to (.*) side, you deliver your blow!$"
+/green "^Concentrating hard, you smash your knuckles to (.*) nostrils\.$"
+/green "^You deliver your Miyara Masu to (.*) head\.$"
+/green "^Your sweep at (.*) succeeds! BASH!$"
+/green "^Your kick hits (.*) where it hurts the most\.$"
+
+/green " is DEAD, R\.I\.P\.$"
+/green "^You score a CRITICAL hit!\.$"
+/green "^You PUSH "
+/green "^You grin wickedly, as your "
+/green " staggers from your "
+/green "^You hit (.*) in (.*) face with your acidic winds.$"
+/green " eyes gleam with terror, as you barbarically rend its throat with"
+
+; Things of interest
+
+/white " is lying here, stunned\.$"
+/white "^You feel uncertain\.$"
+/white "^You are now hunting (.*)$"
+/white " panics, and attempts to flee\.$"
+

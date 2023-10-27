@@ -1,0 +1,4 @@
+/loaded wiley/emote
+
+/alias egrin emote beams a wickedly evil grin at %{-1-everyone}.
+/alias box emote stuffs %{-1-someone} into a tiny box and sets it aflame.

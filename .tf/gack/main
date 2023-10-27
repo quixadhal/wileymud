@@ -1,0 +1,15 @@
+/loaded wiley/main
+
+; 00:45 <intergossip> Kalinash@Fire and Ice: http://www.youtube.com/watch?v=IleiqUDYpFQ
+
+;/def -mregexp -p2 -t"http://www.youtube.com/watch?v=[a-zA-Z0-9\+\/]+" check_youtube = /quote -0 say !~/bin/untiny.pl '%{P1}'
+;/def -mregexp -p2 -t"(http://tinyurl.com/[^&\?\.]+)" check_tiny = /quote -0 say !~/bin/untiny.pl '%P1'
+;/def -mregexp -F -p2 -t"(http://www.youtube.com/watch\?v=[^&\?\.]+)" check_youtube = /quote -0 say !~/bin/untiny.pl '%P1'
+
+
+
+;/def -mregexp -p2 -t"<(\w+)>.*(http://tinyurl.com/[^&\?\.]+)" check_tiny_chan = /quote -0 %P1 !~/bin/untiny.pl '%P2'
+;/def -mregexp -p2 -t"<(\w+)>.*(http://bit.ly/[^&\?\.]+)" check_bitly_chan = /quote -0 %P1 !~/bin/untiny.pl '%P2'
+;/def -mregexp -p2 -t"<(\w+)>.*(http://goo.gl/[^&\?\.]+)" check_googl_chan = /quote -0 %P1 !~/bin/untiny.pl '%P2'
+;/def -mregexp -p2 -t"<(\w+)>.*(http://www.youtube.com/watch\?v=[^&\?\.]+)" check_youtube_chan = /if (%P1 !~ "ichat") /quote -0 %P1 !~/bin/untiny.pl '%P2'%; /endif
+

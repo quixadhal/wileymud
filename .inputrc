@@ -1,0 +1,5 @@
+set bell-style none
+"\e[D":backward-char
+"\e[C":forward-char
+"\e[A":previous-history
+"\e[B":next-history

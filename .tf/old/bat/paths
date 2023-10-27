@@ -1,0 +1,15 @@
+/~loaded bat/paths
+
+/def -i church2clock = /dopath 2 e 4 n 2 e
+/def -i ocp2sewers = /dopath s w sw sw d
+/def -i ocp2tower = /dopath 5 w 3 s 3 e s e
+/def -i church2gate = /dopath 2 e s 2 e s
+/def -i ocp2hugo = /dopath 3 e n nw
+/def -i gate2stair = /dopath 2 s e 3 s e 2 s u s 2 d
+/def -i stair2ocp = /dopath 7 s 3 w
+/def -i stair2digga = /dopath s 5 w 4 n ne 2 nw ne n
+/def -i church2flies = /dopath 2 e 5 n 2 e 9 n d 2 n
+/def -i gate2forest = /dopath 2 s e 3 s 8 e
+/def -i digga2hugo = /dopath s sw 2 se sw 4 s 5 e 5 s nw
+
+/def -i church2store = /dopath 2 e n 4 w 6 n 2 e n e

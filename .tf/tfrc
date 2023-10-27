@@ -1,0 +1,192 @@
+;;; System things we use
+/require complete.tf
+/require quoter.tf
+/require tintin.tf
+
+;;; Turn on windowing mode.
+/visual on
+
+; /def -p2 -h"LOGIN *" = %2%;%3
+
+;;; TAB completion in history
+;/def -ib'^I'   = /DOKEY SEARCHB
+/def -ib'^I'	= /complete
+
+;;; Arrow keys
+/def -ib'^[OA' = /DOKEY RECALLB
+/def -ib'^[OB' = /DOKEY RECALLF
+
+;/def -msimple -1 -t"By what name do you wish to be known?" auto_charname = quixadhal
+;/def -msimple -1 -t"WHAT is your Password?" auto_pass = tardis
+;/def -msimple -1 -t"*** Press Return:" auto_ret = /send
+;/def -msimple -1 -t"Choose carefully [0123456]:" auto_choose = 1
+;/def -msimple -1 -t"#10 - Shylar [#3008]>" auto_goto = goto 1008
+
+;/addlp quix wileymud.themud.org 3000
+/addlp quix localhost 3000
+/addlp tmi localhost 5000
+/addlp thrym localhost 3000 ~/.tf/wiley/thrym
+/addlp wotf wotf.org 4000
+/addlp dsd 97.107.133.86 8000
+/adddiku ian godwars.net 2250
+
+/def foo = /quote -0.2 %{1} '/tmp/foo
+
+/addlp lima localhost 3434
+/addlp lima2 localhost 3443
+
+
+
+;/adddiku w5 localhost 5000
+;/addlp bloodlines localhost 5000
+/addlp dw localhost 4400
+/addlp dw2 localhost 6001
+
+;/addlp dw localhost 4223
+/addlp sky localhost 7000
+/adddiku fuss localhost 7000
+/addlp lil localhost 9900
+/adddiku python belegost 1337
+
+/adddiku test localhost 12345
+
+/addlp cratmud 97.107.133.86 8000
+
+;/addlp blarghy brezhnev 5000
+/addlp gurba brezhnev 4000
+/addlp f2 brezhnev 7200
+/addlp fr brezhnev 7100
+;/addlp lima brezhnev 7400
+/addlp lpuni brezhnev 7500
+/addlp mer brezhnev 7600
+/addlp nm3 brezhnev 7700
+
+/addlp bat batmud.bat.org 23
+/adddiku wolf aardmud.org 4000
+/adddiku rod realmsofdespair.com 4000
+/addlp epitaph drakkos.co.uk 6789
+
+;; This macro depends on the way ed works in the MUD...
+;; However it _DOES_ work for very long files like /secure/master.c
+;; w/o reason 1,$p aborts on empty files - making this alias useless :(
+/def -i vi = \
+/if (!getopts("r", 0)) /break%;/endif%;\
+/let file %HOME/tmp_$[getpid()]_${world_name}.tf%;\
+ed %1%;set nonumber%;\
+/def -i -F -n1 -ag -t"::" gagcolon = /echo %%PR%;\
+/if (opt_r) \
+; Read only
+/def -i -F -n1 -t"ed version" endget = \
+/log off%%;/sh %{2-%{VISUAL-vim}} %file%%;Q%%;\
+/sys rm %file%;\
+/else \
+; Modify file
+/def -i -F -n1 -t"ed version" endget = \
+/log off%%;/sh %{2-%{VISUAL-vim}} %file%%;1,$$$d%%;i%%;\
+/quote -S '%file%%;.%%;x%%;/sys rm %file%;\
+/endif%;\
+/sys rm %file 2> /dev/null%;\
+/log %file%;\
+1,$$p%;set
+
+;; For people who don't use a decent editor
+/def -i joe = /vi %* %{EDITOR-joe}
+/def -i jed = /vi %* jed
+/def -i emacs = /vi %* emacs
+
+;; /get and /put are based on the /vi macro
+;; /get <mudfile> [<localfile>]
+/def -i get = \
+ed %1%;set nonumber%;\
+/def -i -F -n1 -ag -t"::" gagcolon = /echo %%PR%;\
+/def -i -F -n1 -t"ed version" endget = \
+/log off%%;Q%;\
+/sys rm %{2-%1} 2> /dev/null%;\
+/log %{2-%1}%;\
+1,$$p%;set
+
+;; /put <localfile> [<mudfile>]
+/def -i put = ed %{2-%1}%;1,$$d%;i%;/quote -S '%1%;.%;x
+
+;; ncftp -h<host> -p<port> -a -P -r<remdir> -l<locdir> <files>
+;; Requires ncftp version 2.3.0 or compatible
+/def -i ncftp = \
+/if ({#} == 0) /quote -S -decho !ncftp -H --version%;/break%;/endif%;\
+/let opt_h=${world_host}%;\
+/let opt_p=ftp%;\
+/let opt_a=%;\
+/let opt_P=%;\
+/let opt_r=\/%;\
+/let opt_l=~%;\
+/if (!getopts("h:p:aPr:l:")) /break%;/endif%;\
+/let ftpcmd=$[opt_P ? "put" : "get -CfR"]%;\
+/sys mv ~/.ncftp/macros ~/.ncftp/tmp_$[getpid()]_macros%;\
+/log -l ~/.ncftp/macros%;\
+/echo -ag macro .open.any%;\
+/echo -ag cd %opt_r%;\
+/echo -ag lcd %opt_l%;\
+/while ({#}) /echo -ag %ftpcmd %1%;/shift%;/done%;\
+/echo -ag bye%;\
+/echo -ag end%;\
+/log off%;\
+/sh ncftp -$[opt_a?"a":"u"] %{opt_h-localhost} %opt_p%;\
+/sys mv ~/.ncftp/tmp_$[getpid()]_macros ~/.ncftp/macros
+
+
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://www.youtube.com/watch\?.*?v=[^&\?\.\s]+)" check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://tinyurl.com/[^&\?\.\s]+)" check_tiny_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://bit.ly/[^&\?\.\s]+)" check_bitly_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://goo.gl/[^&\?\.\s]+)" check_googl_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://mcaf.ee/[^&\?\.\s]+)" check_mcafee_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://migre.me/[^&\?\.\s]+)" check_migreme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://durl.me/[^&\?\.\s]+)" check_durlme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://is.gd/[^&\?\.\s]+)" check_isgd_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://dailym.ai/[^&\?\.\s]+)" check_daily_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://ebay.to/[^&\?\.\s]+)" check_ebay_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://youtu.be/[^&\?\.\s]+)" check_yout_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://onforb.es/[^&\?\.\s]+)" check_forbs_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://imgur.com/[^&\>\.\s]+)" check_imgur_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://amzn.to/[^&\?\.\s]+)" check_amzon_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://on.fb.me/[^&\?\.\ ]+)" check_fbme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"<([\w-]+)>.*(https?://qr.ae/[^&\?\.\ ]+)" check_qrae_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+
+;; http://www.awasteoftime.net/~bloodlines/i3log.php
+;; Cratylus@Dead Souls Dev: wat i miss
+;;/def -mregexp -p2 -t"<([\w-]+)>.*Cratylus@Dead\sSouls\sDev.*wh?a[dt]\s+i\s+m[ei]ss?" cratlink = /send %P1 http://www.awasteoftime.net/~bloodlines/i3log.php
+;;/def -mregexp -p2 -t"<([\w-]+)>.*Salius@Dead\sSouls\sDev.*wh?a[t]\s+is\s+([^\?]+)\?" salilink = /send %P1 http://letmebingthatforyou.com/?q='%P2'
+
+/wrap off
+
+/alias ig intergossip %*
+/alias qig intergossip 「%*」
+/alias zig intergossip Zaphod's an asshole, and also %*
+
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://www.youtube.com/watch\?.*?v=[^&\?\.\s]+)" check_youtube_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://tinyurl.com/[^&\?\.\s]+)" check_tiny_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://bit.ly/[^&\?\.\s]+)" check_bitly_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://goo.gl/[^&\?\.\s]+)" check_googl_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://mcaf.ee/[^&\?\.\s]+)" check_mcafee_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://migre.me/[^&\?\.\s]+)" check_migreme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://durl.me/[^&\?\.\s]+)" check_durlme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://is.gd/[^&\?\.\s]+)" check_isgd_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://dailym.ai/[^&\?\.\s]+)" check_daily_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://ebay.to/[^&\?\.\s]+)" check_ebay_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://youtu.be/[^&\?\.\s]+)" check_yout_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://onforb.es/[^&\?\.\s]+)" check_forbs_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://imgur.com/[^&\>\.\s]+)" check_imgur_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://amzn.to/[^&\?\.\s]+)" check_amzon_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://on.fb.me/[^&\?\.\ ]+)" check_fbme_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://qr.ae/[^&\?\.\ ]+)" check_qrae_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://imdb.to/[^&\?\.\s]+)" check_imdb_chan = /quote -0 url !~/bin/untiny.pl '%P2' '%P1'
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://.*?imdb.com/title/[^&\?\.\s]+)" check_imdbfull_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+;;/def -mregexp -p2 -t"\[([\w-]+)\].*(https?://store.steampowered.com/app/[^&\?\.\s]+)" check_steamfull_chan = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+
+;; $message = preg_replace('/((?:http|https|ftp)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)/', '<a href="$1" target="I3-link">$1</a>', $message);
+;;/def -mregexp -p2 -t"\[([\w-]+)\].* (https?\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(?::[a-zA-Z0-9]*)?\/?(?:[a-zA-Z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~])*)" check_generic_url = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+
+
+
+;;/def -mregexp -p2 -t"\[([\w-]+)\].* (https?\:\/\/[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+)" check_generic_url = /if (%P1 !~ "url") /quote -0 url !~/bin/untiny.pl '%P2' '%P1'%; /endif
+
+/set warn_5keys=off
+

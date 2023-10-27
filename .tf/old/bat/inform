@@ -1,0 +1,78 @@
+;
+; This file has triggers for message reception and other informational things.
+;
+
+/~loaded bat/inform
+
+;/alias noshouts /def -ag " shouts "
+;/alias noshout /def -ag "^(.*) shouts "
+;/alias yesshout /undef 
+;/alias shouts %c {trigger "(.*) shouts (.*)" %c%p hiyellow %1 shouts %2}
+;/alias notells %c {trigger "(.*) tells you (.*)" %p}
+;/alias tells %c {trigger "(.*) tells you (.*)" %c%p hiyellow %1 tells you %2}
+
+/yellow " shouts "
+/yellow " tells you "
+
+/yellow "\[alert\]"
+/yellow "\{alert\}"
+/yellow "<alert>"
+/yellow "\[party\]"
+/yellow "\{party\}"
+/yellow "<party>"
+/yellow "\[sales\]"
+/yellow "\{sales\}"
+/yellow "<sales>"
+/yellow "\[chat\]"
+/yellow "\{chat\}"
+/yellow "<chat>"
+
+;/yellow "\[bat\]"
+;/yellow "\{bat\}"
+;/yellow "<bat>"
+
+/yellow "\[monk\]"
+/yellow "\{monk\}"
+/yellow "<monk>"
+/yellow "\[healer\]"
+/yellow "\{healer\}"
+/yellow "<healer>"
+
+/white "^Obvious exit"
+/white " enters "
+/white " leaves "
+/white " has arrived from "
+/white " arrives "
+/white " left the game\.$"
+/white " commits suicide!$"
+/white " turns into a"
+/white "^You start chanting\.$"
+/white "^You start concentrating on the skill\.$"
+
+/magenta "^You are done with the chant\.$"
+/magenta "^You are prepared to do the skill\.$"
+
+/red "^You are HUNGRY\.$"
+/red "^You are FAMISHED\.$"
+/red "^You are thirsty\.$"
+/red "^You feel very sick\.$"
+/red "^You lose some weight. Maybe you should eat something\?$"
+/red "^There are no obvious exits\.$"
+
+/green "^You feel fully healed\.$"
+/green "^You feel fully recovered\.$"
+/green "^You learn from your mistake!$"
+/green "^You grow a little\.$"
+/green "^You feel fully healed\.$"
+/green "^You sizzle with magical energy\.$"
+/green "^You feel like you just got slightly better in (.*)\.$"
+/green "^You feel like you just saved some spell points!$"
+/green "^You feel more experienced\.$"
+/green "^You now have (.*) at (.*)\.$"
+/green "^Luckily newbies don't need to spend money here\.$"
+
+;trigger "(.*) ((.*))." %c%p echo %x27[37m%1%x27[0m (%x27[36m%2%x27[0m).
+
+/white "^(.*) \((.*)\)\.$"
+
+;/def -i -t"^Password:" pwdnoecho = /kecho = off

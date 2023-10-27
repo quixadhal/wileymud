@@ -1,0 +1,108 @@
+;
+; This file contains all spell messages and aliai that I know of.
+; Also skills
+;
+
+/~loaded bat/spells
+
+; Bad things
+
+/red "^You stutter the magic words and fail the spell\.$"
+/red "^Your mind plays a trick with you and you fail in your spell\.$"
+/red "^You fail miserably in your spell\.$"
+/red "^Something touches you and spoils your concentration ruining the spell\.$"
+/red "^Your concentration fails and so does your spell\.$"
+/red "^You poke yourself in the eye and your spell misfires\.$"
+/red "^Your spell just sputters\.$"
+/red "^You are disturbed by something, your spell misfires\.$"
+/red "^You falter and fumble the spell\. Amazingly it fires upon (.*)$"
+/red "^You fail to reach (.*)\.$"
+/red "^You fail to get anything useful done\.$"
+
+; Good things
+
+;/green "^You feel like (.*) healed you a bit\.$" -F autothankheal = /repeat -06 1 /send bat Thanks %{P1}!
+;/green " heals (.*) of your wounds\.$" -F autothankhealme = /repeat -10 1 /send tell %{P1} Thanks for healing me %{P2} of the way!
+/green "^You feel like (.*) healed you a bit\.$"
+/green " heals (.*) of your wounds\.$"
+/green "^You heal (.*) of your wounds\.$"
+/green "^You harm (.*)\.$"
+/green "^You finish meditating and get to your feet, feeling more chaotic\.$"
+/green "^Your Infernal Sword materializes in your hands\.$"
+/green "^Your Infernal Sword begins to shed a harsh black aura\.$"
+/green "^You watch with selfpride as your (.*) hits"
+
+; Translations
+
+/def -ag -t"^(.*)Majnusi CAA toos(.*)$" = /echo -aCwhite %{P1}"Disruption"%{P2}
+/gag "^(.*) 'mosaiella paieg'(.*)$" = /echo -aCwhite %1 "Magic Missile"%2
+/gag "^(.*) 'likz az zurgeeon'(.*)$" = /echo -aCwhite %1 "Sex Change"%2
+/gag "^(.*) 'ylufgzh olofzh'(.*)$" = /echo -aCwhite %1 "Cause Light Wounds"%2
+/gag "^(.*) 'judicandus olofzh'(.*)$" = /echo -aCwhite %1 "Cure Light Wounds"%2
+/gag "^(.*) 'peilikuvia ja lasinsirpaleita'(.*)$" = /echo -aCwhite %1 "Mirror Image"%2
+/gag "^(.*) 'juustoa ja pullaa, sita mun maha halajaa'(.*)$" = /echo -aCwhite %1 "Create Food"%2
+/gag "^(.*) 'raza bragh'(.*)$" = /echo -aCwhite %1 "Psi-bolt"%2
+/gag "^(.*) 'nilaehz temnahecne'(.*)$" = /echo -aCwhite %1 "Regeneration"%2
+/gag "^(.*) 'degnar judicandus olofzh'(.*)$" = /echo -aCwhite %1 "Minor Distant Heal"%2
+/gag "^(.*) 'judicandus frrqzz'(.*)$" = /echo -aCwhite %1 "Cure Serious Wounds"%2
+/gag "^(.*) 'annihilar hzzz golum'(.*)$" = /echo -aCwhite %1 "Detect Alignment"%2
+/gag "^(.*) 'mal crul niluz'(.*)$" = /echo -aCwhite %1 "Call Infernal Sword"%2
+/gag "^(.*) 'zckch zzumm'(.*)$" = /echo -aCwhite %1 "Lightning Bolt"%2
+/gag "^(.*)gobbledegook(.*)$" = /echo -aCwhite %1"call wolf"%2
+
+; Spell aliai
+
+/alias bright cast bright light at %{-1}
+/alias callsword cast call for sword
+/alias caul cast cause light wounds at %{-1}
+/alias caus cast cause serious wounds at %{-1-me}
+/alias conf cast confusion at %{-1}
+/alias curl cast cure light wounds at %{-1-me}
+/alias curs cast cure serious wounds at %{-1-me}
+/alias dark cast darkness
+/alias deta cast detect alignment at %{-1-me}
+/alias deti cast see invisible at %{-1-me}
+/alias dis cast disruption at %{-1}
+/alias distl cast minor distant heal at %{-1}
+/alias food cast create food
+/alias idark cast infernal darkness
+/alias ilight cast infernal light
+/alias lb cast lightning bolt at %{-1}
+/alias light cast light
+/alias mirror cast mirror image at %{-1-me}
+/alias mm cast magic missile at %{-1}
+/alias money cast create money
+/alias regen cast regeneration at %{-1}
+/alias scar cast make scar at %{-1}
+/alias sex cast sex change at %{-1-me}
+/alias tranl cast minor transfer at %{-1}
+/alias unscar cast remove scar at %{-1-me}
+
+; Skills
+
+/alias aid use first aid at %{-1-me}
+/alias align mcheck
+/alias appr use appraise at %{-1-me}
+/alias bc bury corpse
+/alias cmp use compare at %{1} and %{2}
+/alias cons use consider at %{-1-me}
+/alias fin use finish at %{-1}
+/alias ki use kick at %{-1}
+/alias lis use hear noises at %{-1-me}
+/alias med meditate
+/alias pants use fresh pants at corpse %{-1-1}
+/alias sacrif put %{-1} in pentagram;sacrifice %{-1}
+/alias sip msip
+/alias suck insert infernal sword into corpse %{-1-1}
+/alias push use push at %{-1}
+/alias frenzy use frenzy
+/alias grave dig grave
+
+; other commands
+
+/alias msay monk say %{-1-Muahahaha!!}
+/alias hsay healer say %{-1-Muahahaha!!}
+/alias mwho monkwho %{-1}
+/alias isay infernal-say %{-1-Muahahaha!!}
+/alias iwho infernal-who
+

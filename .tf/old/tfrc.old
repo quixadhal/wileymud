@@ -1,0 +1,80 @@
+;;; System things we use
+/require complete.tf
+/require quoter.tf
+/require tintin.tf
+
+;;; A private version of /require to make my files look cleaner.
+/def -i irequire = \
+  /if /test _loaded_libs !/ "*{%{1}}*"%; /then \
+    /load ~/.tf/%{1}%;\
+  /endif
+
+;;; I like to use colour highlighting quite often, so here are some
+;;; shortcuts that look nicer than the /def -aCblah types...
+
+/def -i black = /def -i -aCblack -t%*
+/def -i white = /def -i -aCwhite -t%*
+/def -i red = /def -i -aCred -t%*
+/def -i green = /def -i -aCgreen -t%*
+/def -i blue = /def -i -aCblue -t%*
+/def -i cyan = /def -i -aCcyan -t%*
+/def -i yellow = /def -i -aCyellow -t%*
+/def -i magenta = /def -i -aCmagenta -t%*
+
+;;; Allow redefinition of macros, don't whine!
+/set redef=1
+
+;;; Use the new regular expression pattern matching for triggers et. al.!
+/set matching=2
+
+;;; Catch control characters on input (from the mud) and filter them.
+;;; This allows for much safer and simpler triggers
+;;; We use option 2 as per the man page
+/set catch_ctrls=2
+
+;;; Disable old-style slash interpretation
+;;; I recommend this unless you have old macros containing multiple slashes.
+/set oldslash=0
+
+;;; Make sure we don't get too much shit from background worlds
+/set background=on
+/set bg_output=off
+/set sub=2
+
+;;; Echo keyboard input so it gets inserted into the logs...
+;/set kecho=1
+;/set mecho=1
+/set kprefix=<>--
+/set mprefix=**--
+
+;;; Set word wrap
+/set wrap=on
+/set wrapsize=80
+/set wrapspace=4
+
+;;; Set time format to HH:MM:SS
+/set time_format=%X
+
+;;; Exit tf on exit from the mud...
+/set quitdone=1
+
+;;; The new clock command is screwy... until I fix it (or he does)...
+/set clock 12-hour
+
+;;; My terminal is strange.... the colours are mapped thus:
+;;; black -> black, red -> cyan, green -> green, yellow -> magenta
+;;; blue -> red, magenta -> yellow, cyan -> blue, white -> white
+;/set start_color_cyan		\033[31m
+;/set start_color_magenta	\033[33m
+;/set start_color_red		\033[34m
+;/set start_color_yellow		\033[35m
+;/set start_color_blue		\033[36m
+
+;;; Load my world file and get ready!
+/irequire worldlist
+
+;;; Turn on windowing mode.
+/visual off
+
+; /def -p2 -h"LOGIN *" = %2%;%3
+

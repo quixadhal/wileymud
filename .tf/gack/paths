@@ -1,0 +1,27 @@
+/loaded wiley/paths
+
+/irequire wiley/trails
+
+/def 2mansion = say Energize!%;brief%;compact%;n%;n%;w%;w%;w%;w%;n%;n%;n%;compact%;brief%;grin
+/def mansion2 = say Energize!%;brief%;compact%;s%;s%;s%;e%;e%;e%;e%;s%;s%;compact%;brief%;grin
+/def 2farm = say Energize!%;brief%;compact%;n%;e%;e%;e%;e%;compact%;brief%;grin
+/def farm2 = say Energize!%;brief%;compact%;w%;w%;w%;w%;s%;compact%;brief%;grin
+/def 2faerie = say Energize!%;brief%;compact%;n%;n%;w%;w%;w%;w%;w%;s%;s%;compact%;brief%;grin
+/def faerie2= say Energize!%;brief%;compact%;n%;e%;n%;w%;w%;s%;s%;w%;s%;e%;s%;w%;compact%;brief%;grin
+/def 2graveyard = say Energize!%;brief%;compact%;s%;s%;s%;w%;w%;w%;n%;compact%;brief%;grin
+/def graveyard2 = say Energize!%;brief%;compact%;s%;e%;e%;e%;n%;n%;n%;compact%;brief%;grin
+/def 2necro = say Energize!%;brief%;compact%;n%;n%;w%;n%;n%;n%;n%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;n%;compact%;brief%;grin
+/def necro2 = say Energize!%;brief%;compact%;s%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;s%;s%;s%;s%;e%;s%;s%;compact%;brief%;grin
+/def 2birds = say Energize!%;brief%;compact%;n%;n%;w%;w%;w%;w%;w%;n%;w%;w%;w%;w%;w%;s%;s%;w%;s%;s%;compact%;brief%;grin
+/def birds2 = say Energize!%;brief%;compact%;n%;n%;e%;n%;n%;e%;e%;e%;e%;e%;s%;e%;e%;e%;e%;e%;s%;s%;compact%;brief%;grin
+/def 2highstaff = say Energize!%;brief%;compact%;s%;s%;e%;e%;e%;e%;e%;e%;s%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;s%;s%;w%;s%;s%;s%;s%;s%;w%;s%;w%;s%;w%;w%;s%;s%;s%;s%;w%;w%;n%;n%;n%;w%;w%;n%;w%;w%;n%;w%;w%;n%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;s%;s%;s%;w%;open gate%;n%;compact%;brief%;grin
+/def highstaff2 = say Energize!%;brief%;compact%;open gate%;s%;e%;n%;n%;n%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;s%;e%;e%;s%;e%;e%;s%;e%;e%;s%;s%;s%;e%;e%;n%;n%;n%;n%;e%;e%;n%;e%;n%;e%;e%;n%;n%;n%;n%;n%;e%;n%;n%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;n%;w%;w%;w%;w%;w%;w%;n%;n%;compact%;brief%;grin
+/def 2arena = say Energize!%;brief%;compact%;w%;n%;n%;n%;n%;n%;n%;n%;n%;n%;n%;w%;w%;w%;w%;w%;w%;w%;s%;s%;e%;compact%;brief%;grin
+/def arena2 = say Energize!%;brief%;compact%;w%;n%;n%;e%;e%;e%;e%;e%;e%;e%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;e%;compact%;brief%;grin
+/def 2ants = say Energize!%;brief%;compact%;n%;n%;w%;w%;w%;w%;n%;n%;w%;n%;n%;w%;w%;w%;w%;w%;w%;compact%;brief%;grin
+/def ants2 = say Energize!%;brief%;compact%;e%;e%;e%;e%;e%;e%;s%;s%;e%;s%;s%;e%;e%;e%;e%;s%;s%;compact%;brief%;grin
+/def 2priestess = say Energize!%;brief%;compact%;n%;n%;w%;n%;n%;n%;n%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;open doors%;n%;n%;n%;n%;compact%;brief%;grin
+/def priestess2 = say Energize!%;brief%;compact%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;w%;s%;s%;s%;s%;e%;s%;s%;compact%;brief%;grin
+/def 2kobold = say Energize!%;brief%;compact%;s%;s%;s%;s%;s%;s%;s%;s%;s%;w%;w%;s%;s%;s%;compact%;brief%;grin
+/def kobold2 = say Energize!%;brief%;compact%;n%;n%;n%;e%;e%;n%;n%;n%;n%;n%;n%;n%;n%;n%;compact%;brief%;grin
+/def 2gredth = say Energize!%;brief%;compact%;s%;s%;e%;e%;e%;e%;e%;e%;s%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;e%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;s%;w%;w%;w%;w%;n%;w%;w%;w%;w%;w%;w%;w%;s%;s%;w%;w%;w%;w%;n%;n%;compact%;brief%;grin

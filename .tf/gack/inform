@@ -1,0 +1,26 @@
+;
+; This file has triggers for message reception and other informational things.
+;
+
+/loaded wiley/inform
+
+;/alias noshouts /def -ag "* shouts *"
+;/alias noshout /def -ag "%1 shouts *"
+;/alias yesshout /undef 
+;/alias shouts %c {trigger "* shouts *" %c%p hiyellow %1 shouts %2}
+;/alias notells %c {trigger "* tells you *" %p}
+;/alias tells %c {trigger "* tells you *" %c%p hiyellow %1 tells you %2}
+
+/def -i -aCyellow -t" shouts "
+/def -i -aCyellow -t" tells you "
+
+/def -i -aCwhite -t"^Obvious exit"
+/def -i -aCwhite -t" enters "
+/def -i -aCwhite -t" leaves "
+/def -i -aCwhite -t" has arrived from "
+/def -i -aCwhite -t" left the game\.$"
+/def -i -aCblue -t"^You are HUNGRY\.$" hunger = eat bread
+/def -i -aCblue -t"^You are thirsty\.$" thirst = drink water
+/def -i -aCblue -t"^You feel very sick\.$"
+/def -i -aCgreen -t"^You feel fully healed\.$"
+/def -i -aCgreen -t"^You learn from your mistake!$"

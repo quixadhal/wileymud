@@ -1,0 +1,12 @@
+#!/bin/sh
+cp $HOME/.tf/mudlist/worldlist.head $HOME/.tf/mudlist/worldlist.$$
+tf -n -f$HOME/.tf/mudlist/mudlist.tf 2>&1 \
+  | sed -f $HOME/.tf/mudlist/mudlist.sed \
+  | awk -f $HOME/.tf/mudlist/mudlist.awk \
+  | sort +1 | uniq -f 1 \
+  | awk -f $HOME/.tf/mudlist/mudlist2.awk \
+  >> $HOME/.tf/mudlist/worldlist.$$
+sed "s/_XXX_YYY_ZZZ_/`date "+%l:%M%p %A, %B %d, %Y"`/" \
+  < $HOME/.tf/mudlist/worldlist.$$ \
+  > $HOME/.tf/worldlist
+rm -f $HOME/.tf/mudlist/worldlist.$$

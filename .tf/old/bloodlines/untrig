@@ -1,0 +1,7 @@
+/alias trigon /load ~/.tf/wiley/trig
+/alias trigoff /load ~/.tf/wiley/untrig
+/undef auto__rewield
+/undef auto__stand
+/undef auto__grab
+/undef auto__coin
+/undef auto__gold

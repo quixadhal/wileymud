@@ -1,0 +1,7 @@
+#!/bin/sh
+touch verifyit3
+while [ -r verifyit3 ]; do
+  echo Ping
+  sed "s/NAME/`randline $HOME/.tf/cool/words`/" <$HOME/.tf/cool/bug.master >$HOME/.tf/cool/bug.it3 2>/dev/null
+  tf -n -f$HOME/.tf/cool/bug.it3 >>verifyit3 2>&1
+done

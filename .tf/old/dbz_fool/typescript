@@ -1,0 +1,219 @@
+Script started on Mon Dec 14 11:53:12 2009
+quixadhal@andropov:~/.tf/dbz_fool$ telnet moemuds.webhop.net 4002
+Trying 98.203.186.127...
+Connected to moemuds.webhop.net.
+Escape character is '^]'.
+
+________________________________________________________________________________
+     ______                                       ____ 
+    ,   __ \                                     / __ \          _  _
+    |  |  \ \   ___                             | |__//         | || |
+    |  |  | |  ,   \  ___     ___   ___  __   _ |  _  \   ___   | || |
+    |  |  | |  | |-' / _ \   / _ \ / _ \|  \ | || |  \ \ / _ \  | || |
+    }  |_/  |/\| |   ||_| \  ||_|| ||_||| |\\| || |__/ / ||_| \ | || |
+    |______/ []`-'   \__/\_\ \__ | \___/|_| \__/ \____/  \__/\_\|_||_|
+             []                 ||                   
+             []              _ //    _________                        
+            _[]_             \-'    /  _   _  \  Owners: Flarenial, Dyril, Kirk
+         O=|____|=O                 \_| | | |_/                               
+            ||||                        | |  ___  _   _   _____   _   _      
+            ||||                        | | ,   \| | | | |_   _| | |_| |     
+            |||| R E S U R R E C T I O N| | | |-'| | | |   | |   |  _  |     
+            ||||                        | | | |  | |_| |   | |   | | | |    
+            ||||        O F             |_| |_|   \___/    |_|   |_| |_|   
+            ||||
+            ||||       (Based off of)DBX Beta v0.01
+            ||||   CircleMUD was created by: Jeremy Elson
+            ||||               (See credits)
+            ||||       A Derivative of DikuMUD(GAMMA 0.0)
+            ||||                 Created by
+            \\// Hans Henrik Staerfeldt, Katja Nyboe,  Tom Madsen     
+             \/      Michael Seifert, and Sebastian Hammer.
+                             Thanks to Kastion    
+________________________________________________________________________________
+What name would you like to appear on your tomb stone? Feltosh
+Did I get that right, Feltosh (Y/N)? y
+New character.
+Give me a password for Feltosh: Please retype Feltosh's password: 
+What is your sex ([1;34mM[0;0m/[1;35mF[0;0m/[1;30mN[0;0m)?
+m n
+
+Saiyans and Majins are restricted, read help request to find how to request one.
+
+Type the race name to get info on that race. Type list to see this menu again.
+[1;37mo[1;34m-----------------------------------------------------[1;37mo[0;0m
+[1;34m|  [1;34m([0;32m1[1;34m)[0;0m Human       [1;34m([0;32m6[1;34m)[0;0m Android       [1;34m([0;32mA[1;34m)[0;0m Mutant        [1;31m
+[1;34m|  [1;34m([0;32m2[1;34m)[0;0m Namek       [1;34m([0;32m7[1;34m)[0;0m Kai           [1;34m([0;32mB[1;34m)[0;0m Demon         [1;31m
+[1;34m|  [1;34m([0;32m*[1;34m)[0;0m Saiyan      [1;34m([0;32m8[1;34m)[0;0m Half-Breed    [1;34m([0;32mC[1;34m)[0;0m Kanassan             [1;31m
+[1;34m|  [1;34m([0;32m4[1;34m)[0;0m Icer        [1;34m([0;32m9[1;34m)[0;0m Bio-Android   [1;34m([0;32mE[1;34m)[0;0m Truffle           [1;31m
+[1;34m|  [1;34m([0;32m*[1;34m)[0;0m Majin       [1;34m([0;32m0[1;34m)[0;0m Konatsu       [1;34m([0;32mD[1;34m)[0;0m Angel
+ [1;37mo[1;34m-----------------------------------------------------[1;37mo[0;0m
+
+Pick a Race: b
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+       [1;37mWhat color eyes do you have?[0;0m
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+[1;34m([0;32m1[1;34m)[0;0m I have [1;30mblack[0;0m eyes.
+[1;34m([0;32m2[1;34m)[0;0m I have [1;37mwhite[0;0m eyes.
+[1;34m([0;32m3[1;34m)[0;0m I have [1;34mblue[0;0m eyes.
+[1;34m([0;32m4[1;34m)[0;0m I have [1;32mgreen[0;0m eyes.
+[1;34m([0;32m5[1;34m)[0;0m I have [33mbrown[0;0m eyes.
+[1;34m([0;32m6[1;34m)[0;0m I have [1;35mpurple[0;0m eyes.
+[1;34m([0;32m7[1;34m)[0;0m I have [1;31mred[0;0m eyes.
+[1;34m([0;32m8[1;34m)[0;0m I have [1;33myellow[0;0m eyes.
+[1;34m([0;32m9[1;34m)[0;0m I have [1;36micy blue[0;0m eyes.
+[36mEye Color[0;0m:
+1
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+       [1;37mWhat is your hair length?[0;0m
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+[1;34m([0;32m1[1;34m)[0;0m I have very short hair.
+[1;34m([0;32m2[1;34m)[0;0m I have short hair.     
+[1;34m([0;32m3[1;34m)[0;0m I have medium length hair. 
+[1;34m([0;32m4[1;34m)[0;0m I have long hair.      
+[1;34m([0;32m5[1;34m)[0;0m I have very long hair. 
+[1;34m([0;32m6[1;34m)[0;0m I have no hair. 
+[1;34m([0;32m7[1;34m)[0;0m I have short spikey hair. 
+[1;34m([0;32m8[1;34m)[0;0m I have medium spikey hair. 
+[1;34m([0;32m9[1;34m)[0;0m I have long spikey hair. 
+[36mHair Length[0;0m:
+6
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+       [1;37mWhat is your skin color?[0;0m
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+[1;34m([0;32m1[1;34m)[0;0m I have [1;30mblack[0;0m skin
+[1;34m([0;32m2[1;34m)[0;0m I have [1;37mwhite[0;0m skin
+[1;34m([0;32m3[1;34m)[0;0m I have [1;34mblue[0;0m skin
+[1;34m([0;32m4[1;34m)[0;0m I have [1;32mgreen[0;0m skin
+[1;34m([0;32m5[1;34m)[0;0m I have [1;35mpink[0;0m skin
+[1;34m([0;32m6[1;34m)[0;0m I have [1;31mred[0;0m skin
+[1;34m([0;32m7[1;34m)[0;0m I have [1;33mtan[0;0m skin
+[1;34m([0;32m8[1;34m)[0;0m I have [1;35mpurple[0;0m skin
+[36mSkin Color[0;0m:
+5
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+       [1;37mNo REMAKING at all.[0;0m
+[1;34m<>[0;37m=======================================[1;34m<>[0;0m
+[1;34m([0;32m1[1;34m)[0;0m I understand, no remaking.
+[36mOk?[0;0m:
+1
+-----------------------------------------------------------
+Dragonball Resurrection of Truth   
+-----------------------------------------------------------
+|  Welcome players to Dragon Ball - Resurrection of Truth |
+| We hope you have fun, make sure to read help help       |
+| and it's corresponding help files, such as help new-    |
+| bie. Edgur, Dyril, and Phaze.                           |
+-----------------------------------------------------------
+
+
+Please Enjoy your stay on Drag(*)nBall Resurrection of Truth! 
+
+*** PRESS RETURN: 
+
+   [0] Exit Drag(*)nball - Resurrection of Truth! 
+   [1] Enter Drag(*)nball - Resurrection of Truth! 
+   [2] Enter description 
+   [3] Read background story 
+   [4] Delete this character 
+   Pick one: 
+1
+
+[1;37mWelcome to [1;33mDrag[1;34m([1;31m*[1;34m)[1;33mnball [1;37m- [1;31mR[0;0m[31me[1;30ms[1;37mu[1;31mr[0;0m[31mr[1;30me[1;37mc[1;31mt[0;0m[31mi[1;30mo[1;37mn [1;30mof [1;34mT[0;0m[37mr[0;0m[36mu[0;0m[37mt[1;34mh[1;32m![0;0m
+
+[1;30m[[1;32mGAIN[1;30m] [1;31mPL[1;33m: [1;37m55 [1;36mKi[1;33m: [1;37m80 [1;34mLP[1;33m: [1;37m2
+[0;0m[37mW[1;36me[0;0m[36ml[1;30mc[0;0m[36mo[1;36mm[0;0m[37me[1;37m. This is your new [1;33mDrag[1;34m([1;31m*[1;34m)[1;33mnball [1;37m- [1;31mR[0;0m[31me[1;30ms[1;37mu[1;31mr[0;0m[31mr[1;30me[1;37mc[1;31mt[0;0m[31mi[1;30mo[1;37mn [1;30mof [1;34mT[0;0m[37mr[0;0m[36mu[0;0m[37mt[1;34mh[1;37m character!  You can now earn gold, gain experience, find weapons and equipment, and much  more -- while meeting people from around the world! Don't forget to check out help newbie, help help, and help mudrules![0;0m
+[36m[0;0m[31mI[1;30mn[1;31mf[0;0m[31mer[1;30mn[1;31mo [1;37mC[1;30mi[0;0m[37mt[1;37my[1;30m: [1;37mVisitors Station[0;0m[0m
+[1;34mGravity:[1;30m Normal.[0;0m
+[1;32mRegen [1;34mRoom[0;0m
+   [1;37mThis small hut is climate controlled, and has several couches for
+visitors to the city to relax on.  A large ice water fountain is built into the
+center of the room, and is often the first place visitors go when they get
+inside.  Occasional spouts of steam can be seen rising from the fountain when a
+person jumps into it.  [0;0m
+[1;36mObvious exits[1;37m:
+[1;37mNorth[0;0m [1;31m-[1;37m [0;0m[31mI[1;30mn[1;31mf[0;0m[31mer[1;30mn[1;31mo [1;37mC[1;30mi[0;0m[37mt[1;37my[1;30m: [1;37mAsh Avenue[0;0m[0;0m[37m
+[32m[1;37mThe [1;31mB[0;0m[31mlood[1;31my [0;0m[37mW[1;36ma[0;0m[36mt[1;36me[0;0m[37mr [0;0m[36mF[1;36mo[1;34mu[0;0m[34mnt[1;34ma[1;36mi[0;0m[36mn [1;37mis built into the center of this room.[0;0m
+[1;37mA [1;32mMessage [0;0m[36mBoard[1;37m floats here, waiting to be written on.[0;0m
+[33m[1;37mThe [1;37mP[1;30mo[1;37ms[0;0m[37mt[1;34mm[0;0m[34maste[1;34mr [1;37mis standing here.[0;0m
+[0m[1;30m[[1;31mPlayer Login[1;30m] [1;37mFeltosh has joined [1;33mDrag[1;34m([1;31m*[1;34m)[1;33mn Ball - [1;30mResurrection of [1;34mT[0;0m[37mr[0;0m[36mu[0;0m[37mt[1;34mh[1;32m![0;0m
+
+[1;30m[[1;31mPL[1;33m: [1;37m255[1;33m/[1;34m255[1;30m][1;30m[[1;36mKi[1;33m: [1;37m130[1;33m/[1;34m130[1;30m][1;30m[[1;32mLp[1;33m: [1;37m2[1;30m][0;0m
+calc 1        
+The [1;30mnight[0;0m has begun.
+
+[1;30m[[1;31mPL[1;33m: [1;37m255[1;33m/[1;34m255[1;30m][1;30m[[1;36mKi[1;33m: [1;37m130[1;33m/[1;34m130[1;30m][1;30m[[1;32mLp[1;33m: [1;37m2[1;30m][0;0m
+help
+[0;0m[34mO[0;0m[36m===================================================[0;0m[34mO[0;0m
+
+[1;31mRaces       Basic Commands        Help files    
+[1;33m----------------------------------------------------[0;0m
+Human          look              help help
+Namek          say (speech)      help newbie
+Saiyan         ooc (speech)      help commands
+Icer           score             help indexrp
+Majin          who               help mudrules
+Android        whois (name)      help inventory
+Kai            status            help pkzones
+Halfbreed      help (topic)      help bonusrace
+Bio-Android    holler (speech)   help quest
+Konatsu        rp                help stats
+Kanassan       roleplay (speech) help money
+Mutant         qsay (speech)     help downtime
+Demon          learn             help race
+Truffle        learn (skill)     help training
+               learned           help spar
+               pushup            help auction
+               situp             help shop
+               jog        
+               spar
+               auction
+[0;0m[34mO[0;0m[36m===================================================[0;0m[34mO[0;0m
+
+[1;30m[[1;31mPL[1;33m: [1;37m255[1;33m/[1;34m255[1;30m][1;30m[[1;36mKi[1;33m: [1;37m130[1;33m/[1;34m130[1;30m][1;30m[[1;32mLp[1;33m: [1;37m2[1;30m][0;0m
+help commands
+commands
+[1;33m---------------------------------- 
+[1;37mHelp Commands
+[1;33m---------------------------------- 
+
+[1;37mThis is a list of commands for new players to keep in mind, these
+commands make playing easier and fun.
+
+[1;33mget all all[1;30m: [1;37mThis will clean out any containers in a room you 
+have access to, including corpses, and is great for quickly getting the
+loot from said corpses.
+[1;33mget all.(topic)[1;30m: [1;37mThis will get all of a certain object from 
+available containers. Such as if you want to get all of your senzus from
+a bag, you would type get all.senzu bag.
+[1;33mwimpy[1;30m: [1;37mThis is a command you can use to make your character flee
+from a fight whenever they drop below a certain amount of pl. Example:
+wimpy 5000, this will make your character flee when they drop below 5000 
+pl.
+[1;33malias[1;30m: [1;37mThis command allows you to make In Mud Aliases([0;0m[37mtm[1;37m)
+these can be used for doing a set amount of commands VIA alias stack, 
+Example: alias y kishot; kishot; kishot;  this alias here will make you
+fire 3 kishots after pressing and entering y. An even more advanced version
+of this would be, Example: alias boom kishot $*; kishot; kishot;  this right
+here would fire the first kishot at the accompaning target, if you had typed
+boom Fighter, your first kishot would have hit any fighter present, and the
+rest would follow hitting who you are fighting(the fighter now). $* in the
+In Mud Aliases is meant as a substitute, whatever you type after the alias
+on the command line will be put in place of the $*. Now this makes 
+constructing OOC aliases fun, as you can have what you say sandwiched between
+an alias.[0;0m
+[1;33mstat[1;30m: [1;37mthis command allows you to see what stats an equipment will
+give you. Read help stat2[0;0m
+
+See also - help newbie.
+
+
+[1;30m[[1;31mPL[1;33m: [1;37m255[1;33m/[1;34m255[1;30m][1;30m[[1;36mKi[1;33m: [1;37m130[1;33m/[1;34m130[1;30m][1;30m[[1;32mLp[1;33m: [1;37m2[1;30m][0;0m
+help calc         calc
+[1;37mYou can subtract, add, multiply, or divide any whole number with this mud calculator. You can also figure up how much is charged in a certain number of posts by exchanging the add/subtract/multiply/divide with the size of the skill such as small/medium/large/massive. Then after that would go your maxki at the time of charging, and then the number of posts charged. You will get the answer.[0;0m
+
+[1;30m[[1;31mPL[1;33m: [1;37m255[1;33m/[1;34m255[1;30m][1;30m[[1;36mKi[1;33m: [1;37m130[1;33m/[1;34m130[1;30m][1;30m[[1;32mLp[1;33m: [1;37m2[1;30m][0;0m
+calc divide 1 0
+Connection closed by foreign host.
+quixadhal@andropov:~/.tf/dbz_fool$ 
+Script done on Mon Dec 14 11:56:42 2009

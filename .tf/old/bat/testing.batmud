@@ -1,0 +1,3269 @@
+Arska shouts: Help me master Fizu! I am being attacked by Pentti lindegren.
+Pentti lindegren shouts: Help me master Loudness! I am being attacked by
+ Arska.
+Masa shouts: Help me master Loudness! I am being attacked by Arska.
+Katri heluna shouts: Help me master Loudness! I am being attacked by Arska.
+<>--continue
+You are given a HUGE meal. You start consuming it.
+You are satiated.
+You can't possibly eat more. You discard rest of the food.
+You are so full of water you feel like you might burst.
+You are given a newbie pack (a weapon and some armour).
+This is the main hall of the church of all Gods. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, s and w.
+A holy altar emitting peace around it
+Kypoo the Minotaur
+Darcein arrives from north.
+Darcein leaves east.
+Ber arrives from east.
+Tarkall arrives from east.
+Ber leaves west.
+<>--channels
+,--------------------------------------------------------------------------.
+| Channel          State | Channel          State | Channel          State |
+|========================|========================|========================|
+| alert              off | bat                off | chat               off |
+| ghost              off | party               on | religious          off |
+| sales              off | wanted             off |                        |
+`--------------------------------------------------------------------------'
+Tarkall leaves west.
+Tarkall arrives from west.
+Tarkall leaves south.
+<>--scan
+You are not in combat right now.
+<>--score
+Name: Balgnar the Ent.
+Lvl: 1, Exp: 1, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 6    Dex: 1    Con: 5    Int: 24   Wis: 50   Cha: 50   Siz: 18   
+Points: hit 191/191, spell 600/600, endurance 152/152.
+Your ability to avoid hits is none.
+You feel neutral, refreshed, satiated, very young and brave.
+Waldon leads the ent race.
+Febb arrives from north.
+Febb leaves east.
+<>--l
+This is the main hall of the church of all Gods. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, s and w.
+A holy altar emitting peace around it
+Kypoo the Minotaur
+Kypoo leaves east.
+Oksana arrives from west.
+Giant guard shouts: Help me master Genin! I am being attacked by Tampio.
+<>--n
+You have arrived to a beautifully decorated wedding chapel.
+The whole chapel is lighted brightly, and the altar has been made
+made of pure gold with silvery carvings in it. There is a picture of
+the gods of this mud on the northern wall, and a small archway leads
+south, out of the chapel. The atmosphere is very quiet and calm.
+Obvious exit is: south.
+Ring restore and change automat
+<>--l ring
+You probably mean: look AT something, or what?
+<>--l at ring
+You see nothing special.
+<>--l at restore
+You see nothing special.
+<>--l at change
+You see nothing special.
+<>--grin
+You grin evilly.
+<>--s
+This is the main hall of the church of all Gods. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, s and w.
+A holy altar emitting peace around it
+Falowein the Duck
+Koopee the Elf
+Hash WeeD the Cromagnon is grinning WIDELY
+Oksana the pink Devil
+<>--w
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+<>--n
+A gleaming ivory altar dominates the center of this hall. Behind the altar
+stands an imposing, yet kindly looking 7 foot statue of Hael-Cholaer made of
+gold and ivory, seemingly radiating his divine light and warmth to his humble
+mortal followers. Silver embroidery along the edges of the altar proclaim in
+shining letters, universal peace and harmony.
+ Available commands: info, join, advance, train and study.
+Obvious exit is: south.
+Banzol the mysterious Drow
+For a moment you see a mystic glow as Banzol advances a level.
+<>--info
+Some heavenly presence gives you the information you seek:
+Name: Devout Worshippers of Hael-Cholaer
+Command: goodbase
+Creators: Zonni and Anipa
+Maximum level: 5
+
+Description:
+To Worship any Good Gods, you must complete Devout Worshippers of Hael-Cholaer.
+
+Joining requirements:
+ Alignment must be good (passed)
+ Background must be religious or nomad (wrong or incomplete)
+Abilities gained when joining:
+ May study spell Cure light wounds to 40%
+ May study spell Detect alignment to 50%
+ May train skill Bless to 40%
+
+Banzol addresses the invisible entity and asks for information about this
+guild.
+<>--
+Abilities and requirements at each level:
+ Level 2:
+  Requirements:
+   Must pass 1 out of the following:
+    Trained skill Bless to at least 32% (at 0%)
+    Studied spell Cure light wounds to at least 32% (at 0%)
+    Natural stat Wis is 40 (passed)
+    (passed)
+  Abilities:
+   May study spell Awareness to 10%
+   May study spell Cure serious wounds to 20%
+   May train skill Turn undeads to 20%
+   May train skill Bless to 60%
+   May study spell Detect alignment to racial maximum
+ Level 3:
+  Requirements:
+<>--
+   Must pass 2 out of the following:
+    Studied spell Cure serious wounds to at least 16% (at 0%)
+    Trained skill Bless to at least 40% (at 0%)
+    Trained skill Turn undeads to at least 16% (at 0%)
+    (passed 0 out of required 2)
+  Abilities:
+   May study spell Cure light wounds to 50%
+   May train skill Turn undeads to 40%
+   May study spell Remove scar to 30%
+   May study spell Sex change to 30%
+   May study spell Restore to 10%
+ Level 4:
+  Requirements:
+   Must pass 2 out of the following:
+    Studied spell Remove scar to at least 24% (at 0%)
+    Trained skill Turn undeads to at least 32% (at 0%)
+<>--
+    Studied spell Restore to at least 8% (at 0%)
+    Studied spell Sex change to at least 24% (at 0%)
+    (passed 0 out of required 2)
+  Abilities:
+   May study spell Cure serious wounds to 25%
+   May study spell Sex change to 40%
+   May study spell Restore to 30%
+ Level 5:
+  Requirements:
+   Must pass 1 out of the following:
+    Natural stat Wis is 65 (at 50)
+    Studied spell Sex change to at least 32% (at 0%)
+    Studied spell Restore to at least 24% (at 0%)
+    (passed 0 out of required 1)
+  Abilities:
+   May train skill Bless to racial maximum
+<>--
+   May study spell Restore to 40%
+   May study spell Cure critical wounds to 5%
+   May train skill Turn undeads to racial maximum
+
+Allows joining to the following guilds:
+ Holy Defenders of Faerwon, special requirements:
+  Maximum level in Devout Worshippers of Hael-Cholaer (not a member)
+ The Solemn Brothers of Kofgaad, special requirements:
+  Maximum level in Devout Worshippers of Hael-Cholaer (not a member)
+ Worshippers of Tarmalen, special requirements:
+  Maximum level in Devout Worshippers of Hael-Cholaer (not a member)
+ Magical Miscellany 101, special requirements:
+  Maximum level in Devout Worshippers of Hael-Cholaer (not a member)
+ Devout Worshippers of Hael-Cholaer
+
+Disallows joining to the following guilds:
+Koopee arrives from south.
+<>--
+ The Crimson Light Infantry
+ The School of Evocation
+ Dark Followers of Draen-Dalar
+
+
+<>--s
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+<>--w
+A small gray altar is positioned in the middle of the room, its nondescript
+smoothness radiating a thoughtful, calm and pale light around the room
+focusing the essence of Heraena and her calm, contemplative influence to her
+devoted aesthetic, philosophical followers. Serving as the borderline between
+its good and evil counterparts, the quiet air of the chamber seems to
+influence a studious atmosphere.
+Available commands: info, join, advance, train and study.
+Obvious exit is: east.
+<>--info
+Some invisible presence gives you the information you seek:
+Name: Lay Devotees of Heraena
+Command: neutralbase
+Creators: Zonni and Anipa
+Maximum level: 5
+
+Description:
+To Worship any Neutral Gods, you must complete Lay Devotees of Heraena.
+
+Joining requirements:
+ Alignment must be neutral (passed)
+ Background must be religious or nomad (wrong or incomplete)
+Abilities gained when joining:
+ May study spell Cure light wounds to 40%
+ May study spell Cause light wounds to 40%
+
+Abilities and requirements at each level:
+<>--
+Nyharlhathothebp shouts 'The sale is over for now.'
+ Level 2:
+  Requirements:
+   Must pass 2 out of the following:
+    Studied spell Cure light wounds to at least 32% (at 0%)
+    Studied spell Cause light wounds to at least 32% (at 0%)
+    Natural stat Wis is 40 (passed)
+    (passed 1 out of required 2)
+  Abilities:
+   May study spell Awareness to 10%
+   May study spell Artificial intelligence to 5%
+   May study spell Airsteel to 10%
+ Level 3:
+  Requirements:
+   Must pass 1 out of the following:
+    Studied spell Airsteel to at least 8% (at 0%)
+    Studied spell Artificial intelligence to at least 4% (at 0%)
+<>--
+    (passed 0 out of required 1)
+  Abilities:
+   May train skill Cast protection to 20%
+   May train skill Cast control to 20%
+ Level 4:
+  Requirements:
+   Must pass 1 out of the following:
+    Trained skill Cast control to at least 16% (at 0%)
+    Trained skill Cast protection to at least 16% (at 0%)
+    (passed 0 out of required 1)
+  Abilities:
+   May study spell Airsteel to 20%
+   May study spell Aura of power to 10%
+   May study spell Giant strength to 10%
+   May train skill Cast protection to 50%
+ Level 5:
+<>--
+  Requirements:
+   Trained skill Cast protection to at least 32% (at 0%)
+  Abilities:
+   May study spell Airsteel to 50%
+   May study spell Barkskin to 20%
+   May study spell Restore to 10%
+
+Allows joining to the following guilds:
+ Worshippers of Tarmalen, special requirements:
+  Maximum level in Lay Devotees of Heraena (not a member)
+ Magical Miscellany 101, special requirements:
+  Maximum level in Lay Devotees of Heraena (not a member)
+ Lay Devotees of Heraena
+
+Disallows joining to the following guilds:
+ The Crimson Light Infantry
+<>--
+ The School of Evocation
+
+
+<>--e
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+<>--s
+There is a pitch-black onyx altar dominating the center of this most unholy of
+all places. Fresh blood seems to ooze down small rivulets cut into this
+perversion of nature, dark lightning crackles over its smooth surface, making
+eerie black light dance accross the chamber. The essence of evil, embodied in
+the demonic God, Draen-Dalar pervades the room, forcing his slavelike
+followers to worship him with unspeakable rites.
+Available commands: info, join, advance, train and study.
+Obvious exit is: north.
+A Black Slaad cleric is meditating here (undead)
+<>--info
+Some demonic presence gives you the information you seek:
+Name: Dark Followers of Draen-Dalar
+Command: evilbase
+Creators: Zonni and Anipa
+Maximum level: 5
+
+Description:
+To Worship any Evil Gods, you must complete Dark Followers of Draen-Dalar.
+
+Joining requirements:
+ Alignment must be evil (passed)
+ Background must be religious or nomad (wrong or incomplete)
+Abilities gained when joining:
+ May study spell Chill touch to 10%
+ May study spell Mana drain to 20%
+ May study spell Detect alignment to 50%
+ May study spell Cause light wounds to 40%
+<>--
+
+Abilities and requirements at each level:
+ Level 2:
+  Requirements:
+   Must pass 2 out of the following:
+    Studied spell Chill touch to at least 8% (at 0%)
+    Studied spell Mana drain to at least 16% (at 0%)
+    Studied spell Cause light wounds to at least 24% (at 0%)
+    (passed 0 out of required 2)
+  Abilities:
+   May study spell Disease to 10%
+   May study spell Wither to 10%
+   May study spell Detect alignment to racial maximum
+   May train skill Attack to 20%
+   May train skill Bludgeons to 20%
+ Level 3:
+<>--
+  Requirements:
+   Must pass 2 out of the following:
+    Studied spell Disease to at least 8% (at 0%)
+    Trained skill Attack to at least 16% (at 0%)
+    Trained skill Bludgeons to at least 16% (at 0%)
+    (passed 0 out of required 2)
+  Abilities:
+   May study spell Chill touch to 30%
+   May study spell Life leech to 20%
+   May study spell Make scar to 50%
+   May train skill Cast harm to 30%
+ Level 4:
+  Requirements:
+   Trained skill Cast harm to at least 24% (at 0%)
+  Abilities:
+   May train skill Bless to 50%
+<>--
+   May study spell Cause serious wounds to 20%
+   May train skill Bludgeons to 35%
+ Level 5:
+  Requirements:
+   Must pass 2 out of the following:
+    Trained skill Bless to at least 40% (at 0%)
+    Trained skill Bludgeons to at least 28% (at 0%)
+    Studied spell Cause serious wounds to at least 16% (at 0%)
+    (passed 0 out of required 2)
+  Abilities:
+   May study spell Cause critical wounds to 5%
+   May train skill Attack to 40%
+   May study spell Life leech to 40%
+   May study spell Make scar to racial maximum
+   May train skill Cast generic to racial maximum
+
+<>--
+Allows joining to the following guilds:
+ Followers of Burglefloogah, special requirements:
+  Maximum level in Dark Followers of Draen-Dalar (not a member)
+ Magical Miscellany 101, special requirements:
+  Maximum level in Dark Followers of Draen-Dalar (not a member)
+ Dark Followers of Draen-Dalar
+
+Disallows joining to the following guilds:
+ The Crimson Light Infantry
+ The School of Evocation
+ Devout Worshippers of Hael-Cholaer
+
+
+<>--n
+This corridor leads the religious brethren of the orders to their most holy
+altars. The path is traveled by acolytes and highpriests alike, as they strive
+to get nearer their gods
+Obvious exits are: e, w, s and n.
+<>--e
+This is the main hall of the church of all Gods. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, s and w.
+A holy altar emitting peace around it
+Mcewans Export the Dwarf
+Ber leaves west.
+<>--s
+This is the entrance to the church tower.  Huge double doors
+stand opened to the south.  The tower is dark and gloomy.  What
+appears to be blood stains cover the ground near the front
+doors.  You make out a small scream coming from inside the church.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: s and n.
+Kreldor arrives from south.
+Kreldor leaves north.
+<>--n
+This is the main hall of the church of all Gods. A clock on the wall shows the uptime of the
+mud. A poster explaining the upcoming events is posted on the wall
+and a golden plaque with names on it hanging beside it.
+Several doorways leave out from here.
+Obvious exits are: e, n, s and w.
+A holy altar emitting peace around it
+Mcewans Export the Dwarf
+<>--e
+This is the tall entrance hall to the church of all Gods. The walls
+are made of white marble. The roof is covered by a huge painting.
+East is a doorway that leads out to the city streets. The entrance
+hall opens west to the main hall of the temple. A small gateway
+leads north.
+Obvious exits are: e, w, n and s.
+A guzzling fountain
+A statue of a tour guide
+Kreldor the Draconian
+Hash WeeD the Cromagnon is grinning WIDELY
+Oksana the pink Devil
+Kreldor leaves east.
+Oksana leaves east.
+Mcewans arrives from west.
+Mcewans leaves east.
+Alicia arrives from north.
+Mcewans arrives from east.
+<>--n
+Alicia takes a drink from A guzzling fountain
+The church yard is a peacefull place. The grass is green and the girls
+are pretty. It makes you think of paradise. The yard continues west to
+the church cemetary.
+There is an old and famous Newbie Help Warehouse to the north.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: s, w and n.
+There is a shimmering door here
+Mcewans arrives from south.
+Mcewans leaves north.
+<>--n
+The three blondes form a pyramid.
+You are in the famous Newbie Help Warehouse.
+There are a lot of people looking for good weapons and armours
+from the warehouse. Usually the shelves are almost full of more
+or less used battle equipment. If you are lucky enough you might
+get something too. Remember to behave like a human being would.
+There is a poster on the wall.
+Type: 'nhelp' to see what you can do here.
+Obvious exit is: south.
+A trashcan
+A magical floating food basket (empty)
+Mcewans Export the Dwarf
+Saint Damogran who is responsible for this warehouse (lawful)
+Damogran bows gracefully to you
+Damogran bows gracefully to Koopee
+Koopee arrives from south.
+Mcewans leaves south.
+<>--nhelp
+Players level 29 and below may be contributed. Players of level 30 or higher
+may donate stuff for newbies. There will be awards for donaters.
+If you are asking for contribution better behave correctly and appreciatively.
+How to behave here:
+- To donate item(s)    : 'donate item_name/all/eq/noeq'
+- Normal inventory     : 'i'
+- Shop style inventory : 'inv'
+- To ask for item      : 'ask item' (ex. ask sword, ask 5)
+- To see donations     : 'list [pattern]' (ex. list, list sword, list 2h)
+- To see donaters      : 'donaters'
+- To see last awards   : 'awards'
+- To see documents     : 'ndocs'
+- To get a poster      : 'poster'
+Red ranger shouts: Help me master Hair! I am being attacked by Tampio.
+Koopee tries to rip the poster off the wall.
+<>--inv
+Damogran evaluates your items for you:
+Value   Item.
+ --     A granite collar
+ --     A pair of leather sleeves
+ --     A bone main gauche
+Damogran says 'We might just have got few more donations through charity boxes. Check list again.'
+<>--l
+You are in the famous Newbie Help Warehouse.
+There are a lot of people looking for good weapons and armours
+from the warehouse. Usually the shelves are almost full of more
+or less used battle equipment. If you are lucky enough you might
+get something too. Remember to behave like a human being would.
+There is a poster on the wall.
+Type: 'nhelp' to see what you can do here.
+Obvious exit is: south.
+A trashcan
+A magical floating food basket (empty)
+Koopee the Elf
+Saint Damogran who is responsible for this warehouse (lawful)
+<>--l at poster
+This is a dimly glowing poster with picture of a charity box.
+Guard shouts: Help me master Demigoddess! I am being attacked by Tampio.
+<>--i
+You are carrying 3.7 kg of equipment:
+You are carrying no coins.
+A granite collar
+A pair of leather sleeves
+A bone main gauche
+Koopee leaves south.
+Damogran says 'If you don't need equipment that I gave you can give them back to me.'
+<>--read poster
+Winners don't do typos.
+<>--l shelves
+You probably mean: look AT something, or what?
+Damogran bows gracefully to Cappio
+Cappio arrives from south.
+Cappio leaves south.
+<>--l at shelves
+You see nothing special.
+<>--s
+The church yard is a peacefull place. The grass is green and the girls
+are pretty. It makes you think of paradise. The yard continues west to
+the church cemetary.
+There is an old and famous Newbie Help Warehouse to the north.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: s, w and n.
+Koopee arrives from west.
+<>--s
+This is the tall entrance hall to the church of all Gods. The walls
+are made of white marble. The roof is covered by a huge painting.
+East is a doorway that leads out to the city streets. The entrance
+hall opens west to the main hall of the temple. A small gateway
+leads north.
+Obvious exits are: e, w, n and s.
+A guzzling fountain
+A statue of a tour guide
+Ber arrives from west.
+Koopee arrives from north.
+Ber leaves east.
+Koopee leaves south.
+<>--drink fountain
+You take a cool refreshing drink of water from the A guzzling fountain
+You are so full of water you feel like you might burst.
+Koopee arrives from south.
+Koopee leaves east.
+<>--s
+You have entered a rather large black room with gray runes written on
+the walls.  This is in a total contrast with the otherwise white
+church.  In the center of the room is a large lens, which seems to
+have some moving images on it
+Obvious exit is: north.
+<>--l lens
+You probably mean: look AT something, or what?
+<>--l at lens
+As you view through the lens you see a very large underground cavern.  You see
+neat piles of corpses all around the room.  The corpses in the piles are
+Banzol, 2 Bers, Blazorg, Crebbs, Croak, Dethwishh, Dols, Fezzi, Frith, Kypoo,
+Milquitoast, 2 Pattis, Poje, Timmorn, 2 Trans and Uuuurk.
+Armourer shouts 'The sale is over for now.'
+<>--n
+This is the tall entrance hall to the church of all Gods. The walls
+are made of white marble. The roof is covered by a huge painting.
+East is a doorway that leads out to the city streets. The entrance
+hall opens west to the main hall of the temple. A small gateway
+leads north.
+Obvious exits are: e, w, n and s.
+A guzzling fountain
+A statue of a tour guide
+Banzol the mysterious Drow
+Cilwand the dark Elf
+<>--e
+Cilwand eats Some deer meat.
+On Pine street between Onyx and Jade avenues.
+The church of all Gods is located west from here.
+An open doorway to the east leads to the adventurers guild.
+Some yellow needle like stuff is growing on the ground here. Above you is a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s, w and e.
+Yogi the Bear's bearskin
+Leather jacket
+A HUGE newbie sign <*glowing*>
+A green gas street lamp
+Zeeber the Thrikhren
+Koopee the Elf
+Cappio the Giant ugh
+Ber Serk the Ent is reincing
+Tallo the Thrikhren Healing Bug
+Kazzu Campbell the Ent knows how to remove poison explo
+Kraak Healing the Ent is grinning WIDELY
+Febb the Ent
+Blazorg the mysterious Drow
+Zeeber starts concentrating on a new spell.
+Cilwand arrives from west.
+Strahd shouts: Help me master Strahd! I am being attacked by Tampio.
+Strahd shouts: Help me master Strahd! I am being attacked by Tampio.
+Strahd shouts: Help me master Strahd! I am being attacked by Tampio.
+Banzol arrives from west.
+Cilwand leaves east.
+Febb leaves north.
+Koopee leaves south.
+<>--map
+   A              |       AA                     Welcome TO BatCITY
++-----+-----+-----=-----+--+--bazalt+           +------------------+
+|B C D|E F G|H    |     |BB   |     |  Advent Gu.8   Internet..6   Sewers....0
+|  I  |  J  |     |     | CC  |     |  Alchem Gu.2   Library  .LI  Sewing Sh.S
++-----+-----+--+  |  +--+-----granite  Alchemy...Y   Lottery...T   Shops.....R
+|  K L|M N O|P    |     |     |     |  Archers...U   Lux Armor.I   Souvenirs.DD
+|  Q  |  R  |  S  |     |  DD |     |  Arena.....GG  Lux Weapo.K   Swim Pool.OO
++-----+-----+--+  |  +--0-----marble+  Armour Sh.N   Magic Sho.G   Tinker Sh.W
+|  T U|  V W|X Y  |     |   EE|FF   |  Armor Rep.A   Mayors....II  Tobacco...X
+|                 |                 |  Art Galle.KK  Mages Gui.NN  TP Exchge.D
+=-----+-----+-----+-----+-----+stone=  Bakery....CC  Magic Rm..9   Vax Museu.LL
+| GG  |    1|2 3  |                    Bank......Q   Messengrs.1   Voting....MM
+m     |     |     |  NN |    m|     |  Candy.....B   News Hall.5   Wand Shop.J
+a-----+-----+-----+  +--+----a+ruby-+  Chin Armr.H   Office....QQ  Weapon Sh.O
+pHH   o KK 4|5 6  |     |    h|     |  Church....7   Police....JJ  Whorehous.BB
+l II  a LL  |  9  |     |    o|     b  Club......AA  Post Offi.4    .-------.
+e--+--k-----p-----w  +--+----g+onyx-i  Fireworks.F   Presents..V    |_|/|___|
+  JJ    MM 7i8    o  OO e    a|     r  Gambling..PP  Rat Colle.FF   |///////|
+            n     o  PP l    n|QQ LIc  Gem Shop..P   Reavers...3    `\|/|  /'
+            e-----d-----m----y+jade-h  Gen Shop..M   Rent Hall.E      `---'
+                  |                    Gridwars..HH  Restauran.C    -- JAckAL/
+                                       Hospital..EE  Ring Shop.L      Xyloid
+Crebbs arrives from west.
+Zeeber claps her hands and whispers 'judicandus qhqfcfhuzar'
+Zeeber casts a healing spell on Cappio.
+Tallo starts concentrating on a new spell.
+Zeeber starts concentrating on a new spell.
+Kraak looks at shovel.
+Crebbs leaves east.
+Cilwand arrives from east.
+Zeeber claps her hands and whispers 'judicandus qhqfcfhuzar'
+Zeeber casts a healing spell on Cappio.
+Zeeber starts concentrating on a new spell.
+Cappio cheers.
+Tallo waves his index finger while uttering 'siwwis mof'
+Zeeber claps her hands and whispers 'judicandus qhqfcfhuzar'
+Zeeber fails miserably in her spell.
+*Cappio chants GOGOGOGOGOGOGO
+<>--x
+Obvious exits are:
+  north : Pine and Onyx
+  south : Pine and Jade
+  west : Entrance hall of the church of all Gods
+  east : Adventurers' guild
+Zeeber starts concentrating on a new spell.
+Ber starts concentrating on a new spell.
+Darmanian arrives from north.
+<>--e
+This is the adventurers' guild. Adventurers come here to tell stories
+about their quests and to listen to stories from other adventurers.
+Through the doorway leading south you can see all sorts of training
+East is a doorway to a rather empty room.
+Obvious exits are: w, n, s, e and d.
+A torch
+A BATmud political pamphlet dispenser
+The last mystical Navigator stands here
+Febb arrives from west.
+Febb leaves south.
+<>--x
+Obvious exits are:
+  west : Pine between Onyx and Jade
+  north : Secret Society creation room
+  south : Level training
+  east : Data room
+  down : Task room
+<>--n
+In here you can create secret societies.  If you don't know what they are
+type 'help secret societies'.  You can use the following commands here:
+ create <command>  - to create a society.  The name is the command that
+                     is used to control the society.
+ join <society>    - join a society.  A person with enough power in a
+                     society must invite you first in this room
+ advance <society> - advance in a society.  A person with enough power
+                     in a society must be training you in this room.
+ rejoin <society>  - rejoin a society that you are a creator of.  You
+                     can use this if you have lost a society after a
+                     reincarnation.
+Obvious exit is: south.
+<>--help secret societies
+                        Secret Societies
+
+Secret societies are guilds that players can establish.  To establish
+a secret society you should go to the secret society creation office
+near the adventurers guild.
+
+Secret societies can give players spell, skill and stat bonuses.  They
+can consist of as many levels the creator wants them to have.  The
+creator can give other players the rights to invite and advance other
+players in the society.  The creator can also leave the society, sort
+of giving it away to the other players he has given rights to control
+the society.
+
+Once you create a society you will be told how to configure and
+control the society.
+
+<>--
+                                                        ++Anipa
+
+<>--s
+This is the adventurers' guild. Adventurers come here to tell stories
+about their quests and to listen to stories from other adventurers.
+Through the doorway leading south you can see all sorts of training
+East is a doorway to a rather empty room.
+Obvious exits are: w, n, s, e and d.
+A torch
+A BATmud political pamphlet dispenser
+The last mystical Navigator stands here
+Febb arrives from south.
+Febb leaves west.
+<>--x
+Obvious exits are:
+  west : Pine between Onyx and Jade
+  north : Secret Society creation room
+  south : Level training
+  east : Data room
+  down : Task room
+<>--e
+This room is for various information systems. You notice a mudlist on the
+wall.
+Obvious exits are: w and e.
+Voting box
+User graph hanging on the wall
+<>--l mudlist
+You probably mean: look AT something, or what?
+<>--l at mudlist
+Compiled by Scott Goehring (scott@glia.biostr.washington.edu)
+Copyright (C) 1993 by Scott Goehring.  All rights reserved.
+To use the mudlist you should type: info <word_to_search_for>
+You can also 'look at long list' to see all of the mudlist.
+<>--score
+Name: Balgnar the Ent.
+Lvl: 1, Exp: 50, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 6    Dex: 1    Con: 5    Int: 24   Wis: 50   Cha: 50   Siz: 18   
+Points: hit 191/191, spell 600/600, endurance 152/152.
+Your ability to avoid hits is none.
+You feel neutral, refreshed, satiated, very young and brave.
+Waldon leads the ent race.
+<>--/setup balgnar
+Inactive is off.
+Builtin is on.
+Wimpy is very low.
+'kil' is a command-alias to 'kill $ '.
+':' is a command-alias to 'emote $ '.
+'b:' is a command-alias to 'bat emote $ '.
+'p:' is a command-alias to 'party emote $ '.
+Usage: battle <listen/rounds/clear/show> <who/all> <level>.
+Your current prompt is '<name>(<users>) <tp>:<exp>:<hp>/<maxhp>,<ep>/<maxep>,<sp>/<maxsp>> '
+'me' is now aliased to 'balgnar'.
+<>--help battle
+command: battle <listen/clear/show> <who/all> <level>
+
+Usage:
+Commands:
+        Default: Listen everybody who is not defined at verbosity level 3
+        Clear: clears the list without argument, or clears person.
+        Rounds: Listen to round flags in addition to chosen level
+        Listen: Listen <who/all> at verbosity <level>
+        Show: Show who you are listening, and at what level 
+Arguments:
+        who: name of person you want to listen/clear
+        all: listen EVERYBODY at <verbosity level>
+        level: level of verbosity used.
+
+        examples:
+        battle listen all 0 : Ignore all messages.
+Deer shouts 'Dols barely scratched me before dying!'
+<>--
+        battle listen all 1 : Brief messages.
+        battle listen all 2 : Short messages.
+        battle listen all 3 : Verbose messages.
+        battle listen zonni 3
+        battle listen anipa 1
+        battle clear well
+        battle rounds
+
+
+<>--battle listen all 3
+Weaponsmith shouts 'All the wares in my shop are available for only 85% of
+ their real value FOR A LIMITED TIME!'
+Listening to: all At Level: 3.
+Magic keyword all preceeds all others.
+<>--l
+This room is for various information systems. You notice a mudlist on the
+wall.
+Obvious exits are: w and e.
+Voting box
+User graph hanging on the wall
+<>--l graph
+You probably mean: look AT something, or what?
+<>--help alias
+command: alias
+argument: [word [aliased to]]
+
+Alias without any arguments displays all aliases you have defined.
+Alias with 1 argument displays what the alias is aliased to.
+Multiple arguments set the alias for the alias. For example:
+
+alias A anipa
+alias food create food
+
+After these (with set echo on):
+>smile A
+smile anipa
+...
+>cast food
+cast create food
+<>--q
+Quitting more.
+Albert shouts: New alchemist potion shop open (w,4n,e of adv-guild)!
+<>--l
+This room is for various information systems. You notice a mudlist on the
+wall.
+Obvious exits are: w and e.
+Voting box
+User graph hanging on the wall
+Banzol arrives from west.
+Banzol leaves west.
+<>--la graph
+Values from last seven days. Local time: Sat Apr 22 11:27:57 1995.
+W = average of wizards, m = average of mortals, . = max players.
+Single 'W', 'm' or '.' means 4 players.
+        4826.4826.4826.4826.4826:4826.4826.4826.4826.4826:4826.  W   M Tot max
+------------------------------------------------------------------------------
+24:  WWWWmmmmmmmmmmmmmmmmmmmmmmmmm............               13 100 113 162
+02:  WWWmmmmmmmmmmmmmmmmmmmmmmmmmmmmm.......                 12 113 125 156
+04:  WWWmmmmmmmmmmmmmmmmmmmmmmmmmm.........                  11 102 113 150
+06:  WWWmmmmmmmmmmmmmmmmmmmmmmmmm....                        10 102 112 127
+08:  WWmmmmmmmmmmmmmmmmmmmmmmmmm..........                    8  98 106 148
+10:  WWWmmmmmmmmmmmmmmmmmmmmmmmm..........                    9  99 108 148
+12:  WWmmmmmmmmmmmmmmmmmmmmmm............                     8  87  95 141
+14:  WWWmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm..........             11 121 132 172
+16:  WWWWmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm.........          14 132 146 183
+18:  WWWWmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm.......          16 140 156 182
+20:  WWWWWmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm..........         17 131 148 188
+22:  WWWWWmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm..........          18 126 144 182
+------------------------------------------------------------------------------
+ Made by Val v1.1. 'look at week list' for separate days.
+<>--grin
+You grin evilly.
+<>--e
+A strong force stops you from going east.
+<>--x
+Obvious exits are:
+  west : Adventurers' guild
+  east : Wizard guild
+<>--w
+This is the adventurers' guild. Adventurers come here to tell stories
+about their quests and to listen to stories from other adventurers.
+Through the doorway leading south you can see all sorts of training
+East is a doorway to a rather empty room.
+Obvious exits are: w, n, s, e and d.
+There is a shimmering door here
+A torch
+A BATmud political pamphlet dispenser
+Blazorg the mysterious Drow
+The last mystical Navigator stands here
+<>--s
+In here you can advance levels. Most of your stats will rise with your level.
+The levels you advance here will allow you to advance levels in your guilds.
+The following commands can be used here:
+   advance <stat> : to advance a level and concentrate bonuses on a <stat>
+   cost           : tells you how much exp. is needed for next level
+   list           : to list levels and experience costs
+Obvious exits are: n, s, e, u and d.
+<>--list
+Lvl     Exp     Lvl      Exp    Lvl    Exp      Lvl     Exp     Lvl     Exp
+  1   2208       21   120571     41  4902k       61  14046k      81  40246k
+  2   2697       22   147266     42  5167k       62  14805k      82  42421k
+  3   3294       23   179871     43  5446k       63  15605k      83  44713k
+  4   4023       24   219695     44  5741k       64  16449k      84  47130k
+  5   4914       25   268337     45  6051k       65  17338k      85  49677k
+  6   6002       26   327747     46  6378k       66  18275k      86  52361k
+  7   7331       27   400312     47  6723k       67  19262k      87  55191k
+  8   8955       28   488942     48  7086k       68  20303k      88  58173k
+  9  10938       29   597195     49  7469k       69  21400k      89  61317k
+ 10  13359       30   729416     50  7872k       70  22557k      90  64631k
+ 11  16317       31   890911     51  8298k       71  23776k      91  68124k
+ 12  19930       32  1088161     52  8746k       72  25061k      92  71805k
+ 13  24343       33  1329083     53  9219k       73  26415k      93  75686k
+ 14  29732       34  1623345     54  9717k       74  27843k      94  79776k
+ 15  36315       35  1982759     55 10243k       75  29348k      95  84087k
+ 16  44355       36  2421747     56 10796k       76  30934k      96  88631k
+ 17  54176       37  2957929     57 11380k       77  32605k      97  93421k
+ 18  66171       38  3612822     58 11994k       78  34367k      98  98470k
+ 19  80821       39  4412711     59 12643k       79  36225k      99 103791k
+ 20  98715       40  4651180     60 13326k       80  38182k     100 109400k
+<>--
+<>--cost
+Level 2 requires 2697 experience points.
+You have 56 experience points.
+You still need 2641 experience points.
+Cilwand arrives from north.
+<>--x
+Obvious exits are:
+  north : Adventurers' guild
+  south : Levelquest information
+  east : Stat training
+  up : Hall of fame
+  down : Boon and bane selection
+Cilwand leaves north.
+<>--s
+You can find information about levelquests in this room.
+Completing levelquests allows you to get levels cheaper.
+Type 'help lq' for more information. The following commands
+work here:
+       list         : List all levels with levelquests
+       list <level> : List the levelquests on <level>
+       info <level> <quest name> : get information about a certain quest
+Obvious exit is: north.
+You complete the level 2 levelquest.
+<>--list
+ 2: 1     4: 1     5: 1     7: 1     8: 1     9: 1    10: 2    13: 1    
+14: 1    15: 1    16: 1    18: 2    19: 2    20: 2    22: 1    25: 1    
+30: 2    31: 1    32: 1    34: 1    35: 1    36: 1    38: 1    39: 1    
+44: 1    50: 2    55: 1    56: 1    58: 1    60: 2    70: 1    
+Total of 38 levelquests.
+<>--list 2
+Levelquest on level 2: invent.
+<>--list 4
+Levelquest on level 4: city tour.
+<>--list 5
+Levelquest on level 5: tour.
+<>--info 2 invent
+Information about 'invent' levelquest for level 2:
+Indicate that you know about level quests by entering the levelquest
+room in the adventurers guild.
+<>--n
+In here you can advance levels. Most of your stats will rise with your level.
+The levels you advance here will allow you to advance levels in your guilds.
+The following commands can be used here:
+   advance <stat> : to advance a level and concentrate bonuses on a <stat>
+   cost           : tells you how much exp. is needed for next level
+   list           : to list levels and experience costs
+Obvious exits are: n, s, e, u and d.
+Blazorg arrives from north.
+<>--x
+Obvious exits are:
+  north : Adventurers' guild
+  south : Levelquest information
+  east : Stat training
+  up : Hall of fame
+  down : Boon and bane selection
+<>--e
+In here you can advance stats. Your stats will raise with your level, but
+usually you are not satisfied with those and want more. Stats affect
+your overall performance and durability, commands to raise stats are:
+       raise <stat> : to raise a stat
+       list         : to see if you can raise your stats
+Each additional stat-point costs you 3 task points.
+Obvious exit is: west.
+<>--list
+Your stats:
+Str: 6          Can be advanced
+Dex: 1          At max
+Con: 5          Can be advanced
+Int: 24         Can be advanced
+Wis: 50         Can be advanced
+Cha: 50         Can be advanced
+<>--w
+In here you can advance levels. Most of your stats will rise with your level.
+The levels you advance here will allow you to advance levels in your guilds.
+The following commands can be used here:
+   advance <stat> : to advance a level and concentrate bonuses on a <stat>
+   cost           : tells you how much exp. is needed for next level
+   list           : to list levels and experience costs
+Obvious exits are: n, s, e, u and d.
+<>--x
+Obvious exits are:
+  north : Adventurers' guild
+  south : Levelquest information
+  east : Stat training
+  up : Hall of fame
+  down : Boon and bane selection
+<>--u
+This is the BatMUD hall of fame. The room is otherwise empty except
+for the marble pillar in the center of the room. There seems to be
+a some sort of a bronze plaque on top of the pillar with some engraving
+on it. You also notice a small small poster on the wall explaining
+things.
+Obvious exit is: down.
+<>--l plaque
+You probably mean: look AT something, or what?
+<>--la plaque
+Top players on BatMUD.
+ No  Name            Lvl            Exp Time from last update
+  1: Kharon           92    1667 488794  1 day 13 hours 
+  2: Greyhame         86    1342 503879  1 day 23 hours 
+  3: Unforgiven       85    1251 497685 18 hours 
+  4: Ceridwen         78    1226 786525 
+  5: Drak             83    1226 227647  1 day 11 hours 
+  6: Osir             85    1117 218039 
+  7: Anaconda         84    1050 729939 
+  8: Shadowjack       81     978 811366  1 hour 
+  9: Axl              81     958 418075 
+ 10: Rayzam           73     913 996629  2 days  7 hours 
+You are not on the top 400 players.
+Alvin arrives from down.
+Alvin looks at plaque.
+<>--d
+In here you can advance levels. Most of your stats will rise with your level.
+The levels you advance here will allow you to advance levels in your guilds.
+The following commands can be used here:
+   advance <stat> : to advance a level and concentrate bonuses on a <stat>
+   cost           : tells you how much exp. is needed for next level
+   list           : to list levels and experience costs
+Obvious exits are: n, s, e, u and d.
+<>--d
+This is the room where you can buy boons to improve your character.
+Type 'help boons and banes' for more information.
+Available commands:
+ list boons/banes           - shows which boons and banes are available
+ info boon/bane <name>      - get info about a certain boon/bane
+ pray <boon> [with <bane>]  - pray for a boon [with TP saving bane]
+ improve <boon> with <bane> - improve a boon (by +10%) with a bane
+ clear                      - have all your boons converted back to tp's
+                              You can only do this if one of your boons
+                              or banes has changed sice you got them.
+You must be above level 15 to take boons or banes.
+Obvious exit is: up.
+<>--list boons
+I'm sorry, but I don't understand you.
+<>--list
+Argon says 'Goodbye!'
+<>--list
+No shit?
+<>--list bane
+Vesa laukkanen eduskuntaan.
+<>--list banes
+I can't really comment on that one.
+<>--sigh
+You sigh.
+<>--u
+In here you can advance levels. Most of your stats will rise with your level.
+The levels you advance here will allow you to advance levels in your guilds.
+The following commands can be used here:
+   advance <stat> : to advance a level and concentrate bonuses on a <stat>
+   cost           : tells you how much exp. is needed for next level
+   list           : to list levels and experience costs
+Obvious exits are: n, s, e, u and d.
+Vincentvega the Cyclops
+Crebbs the honorable Drow
+Ider the Minotaur
+<>--x
+Ider leaves north.
+Obvious exits are:
+  north : Adventurers' guild
+  south : Levelquest information
+  east : Stat training
+  up : Hall of fame
+  down : Boon and bane selection
+Crebbs is now level 7
+<>--n
+This is the adventurers' guild. Adventurers come here to tell stories
+about their quests and to listen to stories from other adventurers.
+Through the doorway leading south you can see all sorts of training
+East is a doorway to a rather empty room.
+Obvious exits are: w, n, s, e and d.
+A BATmud political pamphlet dispenser
+The last mystical Navigator stands here
+The Navigator checks the wind direction.
+Cilwand arrives from west.
+Cilwand leaves south.
+<>--x
+Obvious exits are:
+  west : Pine between Onyx and Jade
+  north : Secret Society creation room
+  south : Level training
+  east : Data room
+  down : Task room
+<>--d
+A strong force stops you from going down.
+Interfector arrives from west.
+<>--w
+On Pine street between Onyx and Jade avenues.
+The church of all Gods is located west from here.
+An open doorway to the east leads to the adventurers guild.
+Some yellow needle like stuff is growing on the ground here. Above you is a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s, w and e.
+A HUGE newbie sign <*glowing*>
+A green gas street lamp
+Tarmak AppleTree the Ent can remove scars!
+Janzo the member of Merfolk like to heal
+Gipe the Thrikhren heals.....
+Tallo the Thrikhren Healing Bug
+Banzol the mysterious Drow
+Garal the Thrikhren
+Febb the Ent
+Zeeber the Thrikhren
+Kraak Healing the Ent is grinning WIDELY
+<>--map
+   A              |       AA                     Welcome TO BatCITY
++-----+-----+-----=-----+--+--bazalt+           +------------------+
+|B C D|E F G|H    |     |BB   |     |  Advent Gu.8   Internet..6   Sewers....0
+|  I  |  J  |     |     | CC  |     |  Alchem Gu.2   Library  .LI  Sewing Sh.S
++-----+-----+--+  |  +--+-----granite  Alchemy...Y   Lottery...T   Shops.....R
+|  K L|M N O|P    |     |     |     |  Archers...U   Lux Armor.I   Souvenirs.DD
+|  Q  |  R  |  S  |     |  DD |     |  Arena.....GG  Lux Weapo.K   Swim Pool.OO
++-----+-----+--+  |  +--0-----marble+  Armour Sh.N   Magic Sho.G   Tinker Sh.W
+|  T U|  V W|X Y  |     |   EE|FF   |  Armor Rep.A   Mayors....II  Tobacco...X
+|                 |                 |  Art Galle.KK  Mages Gui.NN  TP Exchge.D
+=-----+-----+-----+-----+-----+stone=  Bakery....CC  Magic Rm..9   Vax Museu.LL
+| GG  |    1|2 3  |                    Bank......Q   Messengrs.1   Voting....MM
+m     |     |     |  NN |    m|     |  Candy.....B   News Hall.5   Wand Shop.J
+a-----+-----+-----+  +--+----a+ruby-+  Chin Armr.H   Office....QQ  Weapon Sh.O
+pHH   o KK 4|5 6  |     |    h|     |  Church....7   Police....JJ  Whorehous.BB
+l II  a LL  |  9  |     |    o|     b  Club......AA  Post Offi.4    .-------.
+e--+--k-----p-----w  +--+----g+onyx-i  Fireworks.F   Presents..V    |_|/|___|
+  JJ    MM 7i8    o  OO e    a|     r  Gambling..PP  Rat Colle.FF   |///////|
+            n     o  PP l    n|QQ LIc  Gem Shop..P   Reavers...3    `\|/|  /'
+            e-----d-----m----y+jade-h  Gen Shop..M   Rent Hall.E      `---'
+                  |                    Gridwars..HH  Restauran.C    -- JAckAL/
+                                       Hospital..EE  Ring Shop.L      Xyloid
+Scatman arrives from west.
+Ber arrives from west.
+Scatman leaves east.
+Ber leaves east.
+Dove arrives from west.
+Scatman arrives from east.
+Ber arrives from east.
+Dove leaves north.
+Garal wears Leather jacket.
+<>--n
+Scatman leaves north.
+Ber leaves north.
+At the crossing of Pine street and Onyx avenue.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+Ber Serk the Ent
+Scatman the Cyclops
+Dove the mysterious Drow
+Scatman leaves north.
+Ber leaves north.
+Mcewans arrives from north.
+Dove leaves west.
+Mcewans leaves south.
+<>--x
+Obvious exits are:
+  west : Onyx between Oak and Pine
+  east : Onyx between Pine and Wood
+  north : Pine between Ruby and Onyx
+  south : Pine between Onyx and Jade
+<>--w
+Weaponsmith shouts 'The sale is over for now.'
+On Onyx avenue between Oak and Pine streets.
+You spot a sign saying 'Vax Museum' above the doorway leading north.
+To the south is the voting office.
+Some yellow needle like stuff is growing on the ground here. Above you is a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Oak and Onyx
+  east : Pine and Onyx
+  north : Vax museum
+  south : The Batmud voting room
+<>--s
+You can vote on elections in this room as well register
+yourself as a candidate for an election.  Type 'vote help'
+for a list of commands.  There is also a plaque
+on the wall with a list of current position holders.
+Obvious exit is: north.
+<>--l plaque
+You probably mean: look AT something, or what?
+<>--la plaque
+Position of mayor held by:
+  Xianator until Thu May  4
+<>--list
+Usage: list positions or list candidates for <position>
+<>--list positions
+Positions: mayor and sheriff
+<>--list candidates
+Usage: list positions or list candidates for <position>
+<>--list candidates for mayor
+White guard shouts 'Alicia just made my day!'
+No current candidates for position of mayor
+<>--list candidates for sheriff
+No current candidates for position of sheriff
+<>--n
+On Onyx avenue between Oak and Pine streets.
+You spot a sign saying 'Vax Museum' above the doorway leading north.
+To the south is the voting office.
+Some yellow needle like stuff is growing on the ground here. Above you is a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--n
+Nyharlhathothebp shouts 'Come to check my wares, I am selling them for 85% of
+ their full value. BE QUICK!'
+This is a Vax-museum. You can view all player races and their special
+abilities here.
+  races          - list of available races
+  info <race>    - information about a race
+Obvious exit is: south.
+Dove the mysterious Drow
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Barsoomian  | Valar       |
+| Ent         | Drow        | Draconian   | Cromagnon   |             |
+| Thrikhren   | Elf         | Dwarf       | Cyclops     |             |
+|             | Gnome       | Gnoll       | Giant       |             |
+|             | Human       | Hobbit      | Troll       |             |
+|             | Leech       | Kobold      |             |             |
+|             | Merfolk     | Minotaur    |             |             |
+|             | Satyr       | Ogre        |             |             |
+|             | Sprite      | Orc         |             |             |
+|             | Vampire     | Tinmen      |             |             |
+|             | Zombie      | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+<>--info ent
+The Ent race
+General description:
+  Ents are also known as the treemen. No one is sure if they are
+  ancestors of the trees or if they have evolved from the trees or if
+  they are totally separate. The saying 'slow as an ent' has only
+  little basis in the nature. The basis that exists is more on the
+  thinking process of the ents. They consider everything at least a few
+  times but when aroused an ent can act fast enough to destroy whole
+  castles in less than one night. The life of an adventuring ent is full
+  of odd and unique dangers. It haven't been few times when the
+  strongest ent of the party has died at a young and almost
+  nondangerous little firelizard because the ent was set afire. Ents
+  tend to be mages or more often druids or priests but their slow
+  thinking process makes them more scholars than dangerous wielders of
+  arcane powers.
+
+<>--
+Stats:
+Strength: above average            Dexterity: extremely poor
+Intelligence: below average        Wisdom: superb
+Constitution: average              Size: large
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate magic
+points very fast. They are superior to humans and therefore need more
+experience points. Arcane powers are easy for them to master. They adapt well
+to the most complicated skills. Even the most difficult arcane powers can be
+mastered by them. They heal faster when in water. They regenerate only in lit
+places. They can suck nutrition out of the ground. They can use two handed
+weapons with one hand.
+
+They know the following spell automatically:
+ Light                          30%
+<>--l
+
+<>--l
+This is a Vax-museum. You can view all player races and their special
+abilities here.
+  races          - list of available races
+  info <race>    - information about a race
+Obvious exit is: south.
+Dove the mysterious Drow
+<>--s
+On Onyx avenue between Oak and Pine streets.
+You spot a sign saying 'Vax Museum' above the doorway leading north.
+To the south is the voting office.
+Some yellow needle like stuff is growing on the ground here. Above you is a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+Timmorn arrives from east.
+Timmorn leaves west.
+<>--w
+At the crossing of Oak street and Onyx avenue.
+Your way south is blocked by one of the city's inner walls.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Onyx between Maple and Oak
+  east : Onyx between Oak and Pine
+  north : Oak between Ruby and Onyx
+<>--w
+On Onyx avenue between Maple and Oak streets.
+To the south is a police station.
+To the north is the mayor's office.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Maple and Onyx
+  east : Oak and Onyx
+  south : Loby of the police station
+  north : The mayors reception room
+Armourer shouts 'All the wares in my shop are available for only 85% of their
+ real value FOR A LIMITED TIME!'
+<>--s
+This is the lobby of the BatMud police station, or office.
+There is the stagnant smell of doughnuts in the air.  To
+the south is the sheriff's office.
+To the west is the entrance to the execution room.
+If you need to pay a fine off, this is the place to do it.
+There is a poster on the wall showing all the fines, and
+instructions on how to pay them.  There is also a plaque on
+the wall that lists all the laws.
+Obvious exits are: s, w and n.
+<>--l plaque
+You probably mean: look AT something, or what?
+<>--la plaque
+To see a list of the laws type 'show laws'
+To see specific info on a law type 'info <law>'
+<>--show laws
+Laws: silent death,law i
+<>--info silent death
+Players wishing to force reinc by getting killed repeatedly by a monster which shouts to the MUD are forbidden to do so.
+
+This includes the Black Slaad in the church area.
+
+Punishments:  The player will be left uncon in a healing room for an indefinite period of time.  
+
+Solutions:  Find a quiet way to die.  Drown, or somthing.
+<>--l
+This is the lobby of the BatMud police station, or office.
+There is the stagnant smell of doughnuts in the air.  To
+the south is the sheriff's office.
+To the west is the entrance to the execution room.
+If you need to pay a fine off, this is the place to do it.
+There is a poster on the wall showing all the fines, and
+instructions on how to pay them.  There is also a plaque on
+the wall that lists all the laws.
+Obvious exits are: s, w and n.
+<>--s
+Only sheriffs may go in the office.
+<>--w
+This is a fairly large room with rows of seats, in front
+of a large pan of glass.  On the other side of the glass
+is a morbid looking room in with criminals are executed.
+You can watch the execution from this room.
+Obvious exit is: east.
+<>--snicker
+You snicker.
+<>--e
+This is the lobby of the BatMud police station, or office.
+There is the stagnant smell of doughnuts in the air.  To
+the south is the sheriff's office.
+To the west is the entrance to the execution room.
+If you need to pay a fine off, this is the place to do it.
+There is a poster on the wall showing all the fines, and
+instructions on how to pay them.  There is also a plaque on
+the wall that lists all the laws.
+Obvious exits are: s, w and n.
+<>--help prompt
+command: prompt
+variable arguments.
+
+Without any arguments displays the current prompt string. With the
+argument of 'list' it displays all possible <prompt> strings. Any
+other arguments set the prompt. Note that the '_' characer is always
+replacd in the prompt to be a ' '.
+
+Replaces:
+        <hp>            Current Hp.
+        <maxhp>         Maximum Hp.
+        <prophp>        Hps proportional to your max.
+
+        <sp>            Current Sp.
+        <maxsp>         Maximum Sp.
+        <propsp>        Sps proportional to your max.
+<>--
+
+        <ep>            Current Ep.
+        <maxep>         Maximum Ep.
+        <propep>        Eps proportional to your max.
+
+        <lf>            Line feed.
+
+        <name>          Your name.
+        <race>          Your race.
+        <level>         Your level. (max 19 for mortals.)
+        <mortlevel>     Your mortal level.
+
+        <str>           Your strength.
+        <dex>           Your dexterity.
+        <con>           Your constitution.
+        <int>           Your intelligence.
+<>--
+        <wis>           Your wisdom.
+        <cha>           Your charisma.
+        <siz>           Your size.
+        <tp>            Your task points.
+
+        <exp>           Experience.
+        <freeexp>       Free experience for training.
+
+        <cash>          Cash: gold.mowgles.
+        <bank>          Bank: gold.mowgles.
+        <scash>         Cash: gold.
+        <sbank>         Bank: gold.
+
+        <weight>        Carried weight.
+        <exits>         Rooms exits.
+        <env>           Environment.
+<>--
+
+        <sec>           Current time options.
+        <min>
+        <hour>
+        <year>
+        <day>
+        <month>
+        <wday>
+
+        <users>         Users in game.
+
+        <rnd>           Random number.
+        <pi>            Approximation of Pi.
+
+Only for wizards.
+        [cwd]           Current working directory.
+<>--
+        [ed]            Editor.
+
+Some examples:
+prompt Hp:<hp>/<maxhp> Sp:<sp>/<maxsp> >
+prompt >>> Hp <hp> === Sp <sp> === Ep <ep> >>> <lf>
+prompt <name> <hour>:<min>:<sec> (<exits>) :)
+prompt BatMUD >_
+
+See also 'score' and 'sc'.
+
+You grow a little.
+You feel fully healed.
+<>--prompt <name>(<users>) <tp>:<freeexp>:<prophp>,<propsp>,<propep>>_
+Your current prompt is '<name>(<users>) <tp>:<freeexp>:<prophp>,<propsp>,<propep>> '
+<>--prompt <name>(<user>) <tp>:<freeexp>:<prophp>hp,<propsp>mp,<propep>ep>_
+Your current prompt is '<name>(<user>) <tp>:<freeexp>:<prophp>hp,<propsp>mp,<propep>ep> '
+<>--prompt <name>(<users>) <tp>:<freeexp>:<prophp>hp,<propsp>mp,<propep>ep>_
+Your current prompt is '<name>(<users>) <tp>:<freeexp>:<prophp>hp,<propsp>mp,<propep>ep> '
+<>--prompt <users>_
+Your current prompt is '<users> '
+<>--help prompt
+command: prompt
+variable arguments.
+
+Without any arguments displays the current prompt string. With the
+argument of 'list' it displays all possible <prompt> strings. Any
+other arguments set the prompt. Note that the '_' characer is always
+replacd in the prompt to be a ' '.
+
+Replaces:
+        <hp>            Current Hp.
+        <maxhp>         Maximum Hp.
+        <prophp>        Hps proportional to your max.
+
+        <sp>            Current Sp.
+        <maxsp>         Maximum Sp.
+        <propsp>        Sps proportional to your max.
+<>--
+
+        <ep>            Current Ep.
+        <maxep>         Maximum Ep.
+        <propep>        Eps proportional to your max.
+
+        <lf>            Line feed.
+
+        <name>          Your name.
+        <race>          Your race.
+        <level>         Your level. (max 19 for mortals.)
+        <mortlevel>     Your mortal level.
+
+        <str>           Your strength.
+        <dex>           Your dexterity.
+        <con>           Your constitution.
+        <int>           Your intelligence.
+<>--
+        <wis>           Your wisdom.
+        <cha>           Your charisma.
+        <siz>           Your size.
+        <tp>            Your task points.
+
+        <exp>           Experience.
+        <freeexp>       Free experience for training.
+
+        <cash>          Cash: gold.mowgles.
+        <bank>          Bank: gold.mowgles.
+        <scash>         Cash: gold.
+        <sbank>         Bank: gold.
+
+        <weight>        Carried weight.
+        <exits>         Rooms exits.
+        <env>           Environment.
+<>--
+
+        <sec>           Current time options.
+        <min>
+        <hour>
+        <year>
+        <day>
+        <month>
+        <wday>
+
+        <users>         Users in game.
+
+        <rnd>           Random number.
+        <pi>            Approximation of Pi.
+
+Only for wizards.
+        [cwd]           Current working directory.
+<>--
+        [ed]            Editor.
+
+Some examples:
+prompt Hp:<hp>/<maxhp> Sp:<sp>/<maxsp> >
+prompt >>> Hp <hp> === Sp <sp> === Ep <ep> >>> <lf>
+prompt <name> <hour>:<min>:<sec> (<exits>) :)
+prompt BatMUD >_
+
+See also 'score' and 'sc'.
+
+<>--prompt
+Your current prompt is '<users> '
+<>--prompt --help
+Your current prompt is '--help'
+<>--prompt <name>(<level>) <tp>:<freeexp>:<prophp>hp,<propsp>mp,<propep>ep>_
+Your current prompt is '<name>(<level>) <tp>:<freeexp>:<prophp>hp,<propsp>mp,<propep>ep> '
+<>--prompt <name>(<level>) <tp>:<freeexp>:<prophp>,<propsp>,<propep>>_
+Your current prompt is '<name>(<level>) <tp>:<freeexp>:<prophp>,<propsp>,<propep>> '
+<>--l
+This is the lobby of the BatMud police station, or office.
+There is the stagnant smell of doughnuts in the air.  To
+the south is the sheriff's office.
+To the west is the entrance to the execution room.
+If you need to pay a fine off, this is the place to do it.
+There is a poster on the wall showing all the fines, and
+instructions on how to pay them.  There is also a plaque on
+the wall that lists all the laws.
+Obvious exits are: s, w and n.
+<>--n
+On Onyx avenue between Maple and Oak streets.
+To the south is a police station.
+To the north is the mayor's office.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+A shopkeeper walks here, returning from break
+<>--n
+This is the reception room to the mayors office.  There
+are some paintings on the east wall.  There is a desk
+here, and a young secretary is sitting at the desk.
+Obvious exits are: n and s.
+<>--n
+Zorba shouts: Help me master Juggernaught! I am being attacked by Panner.
+<>--l
+This is the reception room to the mayors office.  There
+are some paintings on the east wall.  There is a desk
+here, and a young secretary is sitting at the desk.
+Obvious exits are: n and s.
+<>--n
+<>--x
+Obvious exit is:
+  south : Onyx between Maple and Oak
+<>--s
+On Onyx avenue between Maple and Oak streets.
+To the south is a police station.
+To the north is the mayor's office.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+A shopkeeper walks here, returning from break
+Shopkeeper leaves south.
+<>--w
+At the crossing of Maple street and Onyx avenue.
+The city walls rise to the west from here.
+Your way south is blocked by one of the city's inner walls.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Onyx between Maple and Oak
+  north : Maple between Ruby and Onyx
+<>--w
+You can't go that way!
+<>--n
+On Maple street between Ruby and Onyx avenues.
+The city walls rise to the west from here.
+To east is the GridWars arena.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Maple and Ruby
+  south : Maple and Onyx
+  east : Entrance to GridWars
+<>--e
+You are at the entrance to the *NEW* gridwars.
+But unfortunately the game is not running. Come back later.
+There is a BIG SIGN here.
+Obvious exits are: w and enter.
+<>--l sign
+You probably mean: look AT something, or what?
+<>--la sign
+                                GRIDWARS
+
+  The objective of gridwars is to kill as many as possible opposite coloured
+bugs by spitting at them. Players start with 100hp and 100acid. From one
+kill you gain 10hp and 1 point, from dying you lose 1 point, from quitting
+you lose 1 point. Your points will remain until the game ends. If you kill
+same coloured bug you gain no points.
+
+  The area is square, x*y which can be defined by a wizard. Between the rooms
+there are walls which can be destroyed by spitting at them. Some new walls
+may appear every now and then during the game. 
+
+  During the game you can see other bugs' coordinates. Every color has its
+own pile of shit, which regenerates your acid when you stand next to it. 
+While in the game, typing score shows the coordinates of your pile. If the
+pile gets hit by a spit, it is teleported into a random location in the grid.
+
+  The command to spit is spit. Usage of it is 'spit <power> <direction>',
+where power ranges from 1 to 100 (limited by your amount of acid), and 
+direction is e,n,w or s. The range of one spit is 10. The more power you 
+use in a spit, the more damage it causes if it hits a bug. If it hits a wall,
+it is destroyed. 
+        For every action there is an equal and opposite government
+Program.
+<>--w
+On Maple street between Ruby and Onyx avenues.
+The city walls rise to the west from here.
+To east is the GridWars arena.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s and e.
+A green gas street lamp
+<>--n
+At the crossing of Maple street and Ruby avenue.
+The city walls rise to the west from here.
+The walls of a huge arena can be seen rising to the northeast.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Ruby between Maple and Oak
+  north : Maple between Stone and Ruby
+  south : Maple between Ruby and Onyx
+<>--n
+On Maple street between Stone and Ruby avenues.
+The city walls rise to the west from here.
+The walls of a huge arena can be seen rising to the east.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Maple and Stone
+  south : Maple and Ruby
+<>--n
+At the crossing of Maple street and Stone avenue.
+The city walls rise to the west from here.
+The walls of a huge arena can be seen rising to the southeast.
+A high gatehouse towers above the walls to the west.
+There is an arched tunnel going under the wall to west,
+through it you can see the wilderness waiting for an another
+adventurer to engulf.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: e, n, s and w.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Stone between Maple and Oak
+  north : Maple between Marble and Stone
+  south : Maple between Stone and Ruby
+  west : Under the western gatehouse
+Fimbrethil shouts: Help me master Finker! I am being attacked by Tampio.
+<>--n
+On Maple street between Marble and Stone avenues.
+The city walls rise to the west from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Maple and Marble
+  south : Maple and Stone
+<>--n
+At the crossing of Maple street and Marble avenue.
+The city walls rise to the west from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Marble between Maple and Oak
+  north : Maple between Granite and Marble
+  south : Maple between Marble and Stone
+<>--n
+On Maple street between Granite and Marble avenues.
+The city walls rise to the west from here.
+The recently redecorated petshop is in the east (CLOSED).
+Some gray moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Maple and Granite
+  south : Maple and Marble
+<>--n
+At the crossing of Maple street and Granite avenue.
+The city walls rise to the west from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Granite between Maple and Oak
+  north : Maple between Bazalt and Granite
+  south : Maple between Granite and Marble
+<>--n
+On Maple street between Bazalt and Granite avenues.
+The city walls rise to the west from here.
+A red and white striped doorway leads to the building east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Maple and Bazalt
+  south : Maple and Granite
+  east : The Royal Danish Candystore
+<>--e
+You're in the Royal Danish Candystore.
+You can see a glass-counter filled with delicous dainty candy.
+Behind the counter you see a young slender girl.
+The appetizing fragrance in the air tickles your stomach.
+Obvious exit is: west.
+
+<>--list
+Your typing SUCKS!!!
+<>--l girl
+You probably mean: look AT something, or what?
+<>--la girl
+She looks very beautiful with her long blond hair and
+well curved body.
+She is in good shape.
+The girl winks at you.
+<>--kiss girl
+You kiss Girl.
+<>--w
+On Maple street between Bazalt and Granite avenues.
+The city walls rise to the west from here.
+A red and white striped doorway leads to the building east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s and e.
+A green gas street lamp
+<>--n
+At the crossing of Maple street and Bazalt avenue.
+The city walls rise to the north and west from here.
+A tall sturdy tower can be seen on top of the wall.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e and s.
+There is no longer a shimmering door here
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Bazalt between Maple and Oak
+  south : Maple between Bazalt and Granite
+<>--e
+On Bazalt avenue between Maple and Oak streets.
+The city walls rise to the north from here.
+The smell of good food comes from the doorway to the south.
+You hear some sounds of repairing from north.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Maple and Bazalt
+  east : Oak and Bazalt
+  south : Ugly Joe's restaurant
+  north : Durin's Battle Equipment Repair Shop
+<>--s
+'Welcome to Ugly Joe's restaurant' says the sign when entering the
+restaurant. Inside the restaurant you see some tables and behind one
+stands Joe, who smiles at you when you notice him. On the table before
+him is a list of all kind of delicious meals he sells for hungry
+adventurers.  Behind Joe is a door to the kitchen, from where you can
+smell many kinds of delicious and different meals.
+Off to the west is the smell off meat being prepared.
+Obvious exits are: n and w.
+A food-recipe bulletin board
+<>--la board
+use the following commands:
+  read <note number>    - read an individual note
+  list                  - list all notes
+No      Title
+ 0      Mordac 'This board' (Mon Jan 23, 1995)
+ 1      Rapscallion 'Chocolate Chambord Demi-Glace' (Tue Jan 24, 1995)
+ 2      Rollo 'spaghetti with beef' (Wed Jan 25, 1995)
+ 3      Jurpo 'Roasted Aardvark with salmon mousse' (Mon Jan 30, 1995)
+ 4      Zamphyr 'Pizza' (Tue Jan 31, 1995)
+ 5      Greystar 'club sandwich' (Sat Feb 11, 1995)
+ 6      Oderules 'Oderules was here!' (Thu Feb 16, 1995)
+ 7      Jobs 'ode is a jerk...:)' (Fri Feb 17, 1995)
+ 8      Ratus 'RATUS WAS HERE!' (Fri Mar  3, 1995)
+ 9      Ratus 'JOKINEN RULES' (Fri Mar  3, 1995)
+10      Jobs 'ratus SUckS!' (Fri Mar 10, 1995)
+11      Khuldar 'i need food bad' (Wed Mar 15, 1995)
+12      Agonar 'FOOOD!!!' (Wed Mar 15, 1995)
+13      Ratus 'ratus waas here' (Sat Mar 18, 1995)
+14      Lammikko 'lammikko prefers wet haggis' (Mon Mar 20, 1995)
+15      Woyz 'Ilidor is cool' (Mon Mar 20, 1995)
+16      Ilidor 'Woyz is the cool one .. not me =)' (Thu Mar 23, 1995)
+17      Xanon 'ich sprech deutch nicht' (Fri Mar 24, 1995)
+18      Ratus 'WE ALL SUCK!!!!!!' (Fri Mar 31, 1995)
+19      Ratus 'AND WE ALL ARE GONNA BE DEAD!!!!!' (Fri Mar 31, 1995)
+20      Woyz 'I'm here just to heal you all!' (Sun Apr  9, 1995)
+21      Jobs 'jops was here!-95-' (Mon Apr 17, 1995)
+<>--
+<>--l
+'Welcome to Ugly Joe's restaurant' says the sign when entering the
+restaurant. Inside the restaurant you see some tables and behind one
+stands Joe, who smiles at you when you notice him. On the table before
+him is a list of all kind of delicious meals he sells for hungry
+adventurers.  Behind Joe is a door to the kitchen, from where you can
+smell many kinds of delicious and different meals.
+Off to the west is the smell off meat being prepared.
+Obvious exits are: n and w.
+A food-recipe bulletin board
+<>--la list
+
+Today's special menu: 
+
+          |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+          | Hard piece of bread  :  80gp |
+          | Fried Rat            : 160gp |
+          | Hot chicken soup     : 240gp |
+          | Canarian bird        : 320gp |
+          | Haggis               : 400gp |
+          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<>--n
+On Bazalt avenue between Maple and Oak streets.
+The city walls rise to the north from here.
+The smell of good food comes from the doorway to the south.
+You hear some sounds of repairing from north.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+<>--n
+Welcome to Durins Battle Equipment Repair shop.
+Here you can repair damaged armours and weapons for a fee.
+There is a sign hanging in the wall.
+Obvious exit is: south.
+<>--la sign
+Ask Durin 'estimate <item>' to see the cost of different repairs.
+          'repair <item>' to do a full repair on equipment.
+          'fix <item>' to do a fast job on equipment (less cost/less repair).
+We ALSO fix weapons already in Incredible condition but it is more expensive.
+<>--s
+On Bazalt avenue between Maple and Oak streets.
+The city walls rise to the north from here.
+The smell of good food comes from the doorway to the south.
+You hear some sounds of repairing from north.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+<>--e
+At the crossing of Oak street and Bazalt avenue.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and s.
+A green gas street lamp
+Tito arrives from west.
+Tito leaves east.
+<>--x
+Obvious exits are:
+  west : Bazalt between Maple and Oak
+  east : Bazalt between Oak and Pine
+  south : Oak between Bazalt and Granite
+<>--e
+On Bazalt avenue between Oak and Pine streets.
+The city walls rise to the north from here.
+To the south you see a Fireworks Shop.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Oak and Bazalt
+  east : Pine and Bazalt
+  south : The Fireworks Shop
+<>--s
+You gaze happily at all of the wonderful toys.  Rockets and bombs and fire crackers all about.  You oooh and ahhh as you envision all of your pyromaniac dreams coming true.  Your only problem is deciding what to buy first.
+Usage: 'buy <item>', 'list'
+Obvious exit is: north.
+A trashcan
+Butthead the stupid human (MONSTER).
+Beavis the stupid human (MONSTER).
+Beavis and Butthead chant: Dun dun dun,dun da dun dun, dun dun, da dun dun dun.
+<>--list
+Beavis shows you its wares;
+  1  14000 A 20-Pack of Thunderbomb(tm)  2  14000 A 20-Pack of Thunderbomb(tm)
+  3   1600 Rocket                        4   1600 Rocket                      
+  5   1600 Rocket                        6   1600 Rocket                      
+  7   1600 Rocket                        8    200 A small smoke bomb          
+  9    200 A small smoke bomb           10    200 A small smoke bomb          
+ 11    200 A small smoke bomb           12    100 An expensive cigar          
+ 13    100 An expensive cigar           14    100 An expensive cigar          
+ 15   1000 Earmuffs                     16   1000 Earmuffs                    
+Butthead says: We're pretty cool.
+Beavis says: Heheheh.. Yeah. Heheheh.
+Beavis says: Hey Butthead, where's seattle?
+Butthead says: Shutup.. Go away.. We're like closed or something
+Beavis and Butthead chant: Dun dun dun,dun da dun dun, dun dun, da dun dun dun.
+Butthead says: Shutup asswipe!
+Beavis and Butthead chant: Dun dun dun,dun da dun dun, dun dun, da dun dun dun.
+Butthead says: Shutup dumbass!
+Beavis and Butthead shout: FROG BASEBALL!
+Butthead says: Shutup asswipe!
+Beavis says: Butthead, change it! This sucks! C'mon Butthead, 
+change it, QUICK!
+Butthead says: Huhuhuh. No way dude, suffer. Huhuhhmuhuh
+A Faith No More video comes on TV.
+Butthead says: Yes! These guys kick ass!
+<>--grin
+You grin evilly.
+<>--l
+You gaze happily at all of the wonderful toys.  Rockets and bombs and fire crackers all about.  You oooh and ahhh as you envision all of your pyromaniac dreams coming true.  Your only problem is deciding what to buy first.
+Usage: 'buy <item>', 'list'
+Obvious exit is: north.
+A trashcan
+Butthead the stupid human (MONSTER).
+Beavis the stupid human (MONSTER).
+<>--l butthead
+You probably mean: look AT something, or what?
+Jux arrives from north.
+Butthead says: Huhuhmuhuhuhm. This guy has i'm a wuss tattoo'ed on his butt!
+Baron shouts: Help me master Ratspit! I am being attacked by Tampio.
+A Faith No More video comes on TV.
+Butthead says: Yes! These guys kick ass!
+Beavis says: Hehehehemheheehm
+A Faith No More video comes on TV.
+Butthead says: Yes! These guys kick ass!
+Jux buys A small smoke bomb.
+Beavis says: Ya know what'd be cool?
+Jux leaves north.
+<>--la butthead
+It's Butthead, from the popular MTV show Beavis & Butthead
+He looks stupid, and mindless. You stare in his eyes and
+see nothing! A complete and totally utter void.
+It is in good shape.
+Butthead says: That was cool!
+Beavis says: Ya know what'd be cool?
+<>--la beavis
+Beavis trys to light a cigeratte.
+It's Beavis, from the popular MTV show Beavis & Butthead
+He looks stupid, and mindless. You stare in his eyes and
+see nothing! A complete and totally utter void.
+It is slightly hurt.
+<>--n
+On Bazalt avenue between Oak and Pine streets.
+The city walls rise to the north from here.
+To the south you see a Fireworks Shop.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and s.
+A green gas street lamp
+<>--e
+At the crossing of Pine street and Bazalt avenue.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Bazalt between Oak and Pine
+  east : Bazalt between Pine and Wood
+  south : Pine between Bazalt and Granite
+<>--e
+On Bazalt avenue between Pine and Wood streets.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+Jux the Cyclops
+<>--x
+Obvious exits are:
+  west : Pine and Bazalt
+  east : Wood and Bazalt
+<>--e
+At the crossing of Wood street and Bazalt avenue.
+The city walls rise to the north from here.
+A high gatehouse towers above the walls to the north.
+There is an arched tunnel going under the wall to north,
+through it blows a fresh wind from the plains.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Bazalt between Pine and Wood
+  east : Bazalt between Wood and Elm
+  south : Wood between Bazalt and Granite
+  north : Under the northern gatehouse
+Jux arrives from west.
+<>--e
+On Bazalt avenue between Wood and Elm streets.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+<>--x
+Obvious exits are:
+  west : Wood and Bazalt
+  east : Elm and Bazalt
+<>--e
+At the crossing of Elm street and Bazalt avenue.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and s.
+<>--x
+Obvious exits are:
+  west : Bazalt between Wood and Elm
+  east : Bazalt between Elm and Mahogany
+  south : Elm between Bazalt and Granite
+<>--e
+On Bazalt avenue between Elm and Mahogany streets.
+The city walls rise to the north from here.
+To the north you see a dark, shadowy alley. 
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and n.
+<>--x
+Obvious exits are:
+  west : Elm and Bazalt
+  east : Mahogany and Bazalt
+  north : It's too dark to see.
+<>--n
+It's too dark to see.
+<>--help cast
+Usage: help <keyword>
+       help <skill/spell> <skillname/spellname>
+       help <event/events> or help event <name>
+       help topics (for a list of all available topics)
+<>--help spell light
+Help available on topic:
+No saving throw.
+Casting time: 1 round.
+Type of spell: neutral spell.
+Cast type: control.
+It uses 4 SPs.
+This spell creates a magic ball of light that follows
+the caster around.
+It's duration is dependent on the level of the caster.
+
+
+<>--cast light
+You start chanting.
+You are done with the chant.
+You utter the magic words 'ful'
+Your mind plays a trick with you and you fail in your spell.
+<>--cast light
+You start chanting.
+You are done with the chant.
+You utter the magic words 'ful'
+You stutter the magic words and fail the spell.
+<>--cast light
+You start chanting.
+You are done with the chant.
+You utter the magic words 'ful'
+The surroundings burst into a sea of light.
+A small ball of light starts following you.
+<>--l
+This shadowy alley has maybe never seen full daylight. 
+It looks like a safe hidingplace, though. 
+Mahogany door (closed) leads north.
+Obvious exit is: south.
+An usher, guarding the mahogany door
+You sizzle with magical energy.
+<>--l usher
+You probably mean: look AT something, or what?
+<>--la usher
+This man is a mean looking fellow, maybe a sailor because he has 
+many scars and tattoos in his arms. You see that he isn't on legal
+business. 
+It is in good shape.
+<>--open door
+You open the mahogany door.
+<>--n
+The usher says: Go home kid and come back after a few years!
+The usher says: Go home kid and come back after a few years!
+You can't go that way!
+<>--cackle
+You cackle gleefully.
+<>--poke usher
+You poke Usher in the ribs.
+The usher says 'Pray for your life that you don't work for cops.'
+<>--s
+On Bazalt avenue between Elm and Mahogany streets.
+The city walls rise to the north from here.
+To the north you see a dark, shadowy alley. 
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and n.
+<>--e
+At the crossing of Mahogany street and Bazalt avenue.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and s.
+<>--x
+Obvious exits are:
+  west : Bazalt between Elm and Mahogany
+  east : Bazalt between Mahogany and Birch
+  south : Mahogany between Bazalt and Granite
+<>--e
+On Bazalt avenue between Mahogany and Birch streets.
+The city walls rise to the north from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+<>--x
+Obvious exits are:
+  west : Mahogany and Bazalt
+  east : Birch and Bazalt
+<>--e
+At the crossing of Birch street and Bazalt avenue.
+The city walls rise to the north and east from here.
+A tall sturdy tower can be seen on top of the wall.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and s.
+<>--x
+Obvious exits are:
+  west : Bazalt between Mahogany and Birch
+  south : Birch between Bazalt and Granite
+<>--s
+On Birch street between Bazalt and Granite avenues.
+The city walls rise to the east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+<>--x
+Obvious exits are:
+  north : Birch and Bazalt
+  south : Birch and Granite
+<>--s
+At the crossing of Birch street and Granite avenue.
+The city walls rise to the east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, n and s.
+A gong is standing here
+<>--x
+Obvious exits are:
+  west : Granite between Mahogany and Birch
+  north : Birch between Bazalt and Granite
+  south : Birch between Granite and Marble
+<>--l gong
+You probably mean: look AT something, or what?
+<>--la gong
+It is a huge bronze gong. It is held upright by a rather large wooden
+frame. There is a mallet hanging from a rope tied to the frame. You
+could probably make a loud noise by striking the gong with the mallet
+In the center of the gong you see the following symbol:
+
+                              ^o^
+
+It probably is the ancient symbol of speed and deception.
+<>--smirk
+You smirk.
+<>--s
+On Birch street between Granite and Marble avenues.
+The city walls rise to the east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+<>--x
+Obvious exits are:
+  north : Birch and Granite
+  south : Birch and Marble
+<>--s
+At the crossing of Birch street and Marble avenue.
+The city walls rise to the east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, n and s.
+<>--x
+Obvious exits are:
+  west : Marble between Mahogany and Birch
+  north : Birch between Granite and Marble
+  south : Birch between Marble and Stone
+<>--s
+On Birch street between Marble and Stone avenues.
+The city walls rise to the east from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+<>--x
+Obvious exits are:
+  north : Birch and Marble
+  south : Birch and Stone
+<>--s
+At the crossing of Birch street and Stone avenue.
+The city walls rise to the east from here.
+Your way south is blocked by one of the city's inner walls.
+A high gatehouse towers above the walls to the east.
+There is an arched tunnel going under the wall to east,
+through it you can see beauty of the farmlands.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, n and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Stone between Mahogany and Birch
+  north : Birch between Marble and Stone
+  east : Under the eastern gatehouse
+<>--s
+You can't go that way!
+<>--w
+On Stone avenue between Mahogany and Birch streets.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Mahogany and Stone
+  east : Birch and Stone
+<>--w
+At the crossing of Mahogany street and Stone avenue.
+Your way north and south is blocked by the city's inner walls.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Stone between Elm and Mahogany
+  east : Stone between Mahogany and Birch
+<>--w
+On Stone avenue between Elm and Mahogany streets.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Elm and Stone
+  east : Mahogany and Stone
+<>--w
+At the crossing of Elm street and Stone avenue.
+Your way north and south is blocked by the city's inner walls.
+Some green needle like stuff is growing on the ground here. Above you is a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Stone between Wood and Elm
+  east : Stone between Elm and Mahogany
+<>--w
+On Stone avenue between Wood and Elm streets.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Central Square
+  east : Elm and Stone
+<>--w
+Central Square at the crossing of Wood street and Stone avenue.
+The bustling environment of the city has changed here to a prevailing
+state of peace. The square is carefully made of grey cobblestones, put
+nicely side by side to create a sea of uncomfortable stones to walk on.
+At the centre of the square stands the imposing statue of the mythical
+Lars the Implementor ruining the harmonic rows of cobblestones.
+Some gray moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, e, s and w.
+A HUGE weapon converter
+A magical charity box
+A guzzling fountain
+A green gas street lamp
+A big round clock on a tall slender pedestal
+The ghost of Igor Twinbeard, the dwarven master of anvil and hammer
+<>--x
+Cleric shouts 'Thanks Dethwishh, I still need 5k for next level!'
+Obvious exits are:
+  north : Wood between Marble and Stone
+  east : Stone between Wood and Elm
+  south : Wood between Stone and Ruby
+  west : Stone between Pine and Wood
+<>--s
+On Wood street between Stone and Ruby avenues.
+A few inches wide, deep crack on the street.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Central Square
+  south : Wood and Ruby
+<>--s
+At the crossing of Wood street and Ruby avenue.
+Your way east is blocked by one of the city's inner walls.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Ruby between Pine and Wood
+  north : Wood between Stone and Ruby
+  south : Wood between Ruby and Onyx
+<>--x
+Obvious exits are:
+  west : Ruby between Pine and Wood
+  north : Wood between Stone and Ruby
+  south : Wood between Ruby and Onyx
+<>--s
+On Wood street between Ruby and Onyx avenues.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--s
+At the crossing of Wood street and Onyx avenue.
+Your way east is blocked by one of the city's inner walls.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Onyx between Pine and Wood
+  north : Wood between Ruby and Onyx
+  south : Wood between Onyx and Jade
+<>--s
+On Wood street between Onyx and Jade avenues.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--s
+At the crossing of Wood street and Jade avenue.
+The city walls rise to the south from here.
+A high gatehouse towers above the walls to the south.
+There is an arched tunnel going under the wall to south,
+going towards unknown adventure, unknown fate.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Jade between Pine and Wood
+  east : Jade between Wood and Elm
+  north : Wood between Onyx and Jade
+  south : Under the southern gatehouse
+<>--e
+On Jade avenue between Wood and Elm streets.
+The city walls rise to the south from here.
+The official batmud arcade called 'T{yspotti' lies north.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Wood and Jade
+  east : Elm and Jade
+  north : The gambling hall
+Cleric shouts 'Fezzi was too easy! I want a tougher challenge!'
+<>--e
+At the crossing of Elm street and Jade avenue.
+The city walls rise to the south from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and n.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Jade between Wood and Elm
+  east : Jade between Elm and Mahogany
+  north : Elm between Onyx and Jade
+<>--n
+On Elm street between Onyx and Jade avenues.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  north : Elm and Onyx
+  south : Elm and Jade
+<>--n
+At the crossing of Elm street and Onyx avenue.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  west : Onyx between Wood and Elm
+  east : Onyx between Elm and Mahogany
+  north : Elm between Ruby and Onyx
+  south : Elm between Onyx and Jade
+It looks like rain is on the way.
+<>--w
+On Onyx avenue between Wood and Elm streets.
+Your way west is blocked by one of the city's inner walls.
+A sign on the southern wall above a door displays a person that is under
+water from waist up. The city swimming hall is presumably south from here.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e and s.
+A green gas street lamp
+<>--x
+Obvious exits are:
+  east : Elm and Onyx
+  south : Entry to swimming hall
+<>--w
+You can't go that way!
+<>--e
+At the crossing of Elm street and Onyx avenue.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--n
+On Elm street between Ruby and Onyx avenues.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+At the crossing of Elm street and Ruby avenue.
+Above you is a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+A duellist enjoying his latest kill's goods
+<>--w
+On Ruby avenue between Wood and Elm streets.
+Your way west is blocked by one of the city's inner walls.
+The College of Magical Artes lies to the north. 
+Some gray moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: e and n.
+A green gas street lamp
+Nocturne arrives from north.
+<>--x
+Nocturne starts concentrating on a new spell.
+Obvious exits are:
+  east : Elm and Ruby
+  north : Registration Hall
+<>--n
+You have entered the student union for the College of Magic.  It is 
+here that you must register if you are to become a full blooded magic
+user of any type.
+
+A large sign reads: 
+Public classes are currently being offered in the campus POWER
+facility on the northern campus.  Have a nice day.
+
+Available Commands: info and join.
+Obvious exits are: s, ne and nw.
+<>--info
+The orb imparts the information you seek:
+Name: Enrollment in the Magical College
+Command: enroll
+Creator: Jobber
+Maximum level: 1
+
+Description:
+You are enrolling in the College of Magic.  Taking this step will allow you
+to study the ways of the schools of Alteration, Evocation, Abjuration
+and the forthcoming schools of Illusion, Conjuration, Necromancy, and
+the School of advanced magical theory.
+
+Joining requirements:
+ Background must be civilized or magical (wrong or incomplete)
+Allows joining to the following guilds:
+ The School of Abjuration
+ The School of Evocation
+Interfector arrives from south.
+<>--
+ Magical Miscellany 101
+ Enrollment in the Magical College
+ The School of Alteration
+
+Disallows joining to the following guilds:
+ The Guild of Thieves
+ The Crimson Light Infantry
+ The Crimson Recruit
+ Devout Worshippers of Hael-Cholaer
+ Lay Devotees of Heraena
+ Dark Followers of Draen-Dalar
+ Enrollment in the Magical College, special requirements:
+  Must pass 1 out of the following:
+   Member in The Guild of Thieves (not a member)
+   Member in The Crimson Light Infantry (not a member)
+   Member in The Crimson Recruit (not a member)
+Interfector leaves northwest.
+<>--
+   Member in Devout Worshippers of Hael-Cholaer (not a member)
+   Member in Dark Followers of Draen-Dalar (not a member)
+   Member in Lay Devotees of Heraena (not a member)
+   (passed 0 out of required 1)
+
+
+<>--s
+On Ruby avenue between Wood and Elm streets.
+Your way west is blocked by one of the city's inner walls.
+The College of Magical Artes lies to the north. 
+Some gray moss is growing on the ground here. It is lightly spitting from a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: e and n.
+A green gas street lamp
+<>--e
+At the crossing of Elm street and Ruby avenue.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+A duellist enjoying his latest kill's goods
+........Autosave!!!
+<>--x
+Obvious exits are:
+  west : Ruby between Wood and Elm
+  east : Ruby between Elm and Mahogany
+  north : Elm between Stone and Ruby
+  south : Elm between Ruby and Onyx
+<>--n
+On Elm street between Stone and Ruby avenues.
+Your way north is blocked by one of the city's inner walls.
+Some green moss is growing on the ground here. It is lightly spitting from a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exit is: south.
+A green gas street lamp
+<>--s
+At the crossing of Elm street and Ruby avenue.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+A duellist enjoying his latest kill's goods
+<>--e
+On Ruby avenue between Elm and Mahogany streets.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--e
+At the crossing of Mahogany street and Ruby avenue.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--n
+On Mahogany street between Stone and Ruby avenues.
+Your way north is blocked by one of the city's inner walls.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exit is: south.
+A green gas street lamp
+<>--s
+At the crossing of Mahogany street and Ruby avenue.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+<>--e
+On Ruby avenue between Mahogany and Birch streets.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--e
+At the crossing of Birch street and Ruby avenue.
+The city walls rise to the east from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--n
+On Birch street between Stone and Ruby avenues.
+The city walls rise to the east from here.
+Your way north is blocked by one of the city's inner walls.
+Some green moss is growing on the ground here. It is lightly spitting from a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exit is: south.
+A green gas street lamp
+<>--s
+At the crossing of Birch street and Ruby avenue.
+The city walls rise to the east from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--e
+You can't go that way!
+<>--s
+On Birch street between Ruby and Onyx avenues.
+The city walls rise to the east from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--s
+At the crossing of Birch street and Onyx avenue.
+The city walls rise to the east from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--s
+On Birch street between Onyx and Jade avenues.
+The city walls rise to the east from here.
+Batmud Public Library is west from here.
+Some green needle like stuff is growing on the ground here. It is lightly
+spitting from a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s and w.
+A green gas street lamp
+<>--w
+You are in a huge oak panelled library. All around you are wooden shelves
+full of books. There are chairs and tables scatteded around this room. On the
+tables are new, empty books, quills and ink-wells all ready for you to write
+with. There is a large sign on the wall. For a list of commands available
+here, type 'info'.
+Obvious exits are: w, n, s and e.
+A Magicopier for copying books
+<>--x
+Obvious exits are:
+  west : Batmud public library
+  north : Batmud public library
+  south : Batmud public library
+  east : Birch between Onyx and Jade
+<>--info
+You can use the following commands here:
+'enter booth' to enter a private booth.
+'edit' will list the books you can edit.
+'edit new book' will allow you to edit a new book.
+'edit <book name>' will allow you to edit <book name>.
+'delete' will list the books you can delete.
+'delete <book name>' will delete <book name>.
+'browse' will list all the books and who they are written by.
+'search <keyword>' will list all books which have <keyword> in them.
+'read' will list all the books you can read.
+'read <book name>' will read <book name>.
+'rename <book name>' will prompt you for a new title and then change <book
+                     name> to it.
+'editor continue' will return you to the editor if you've been linkdead or have
+                  exited the editor with '~!'.
+'book <book number>' or even just '<book number>' can be used instead
+<>--
+of <book name>.
+
+<>--la sign
+This sign reads:
+Batmud City Library
+STRICTLY QUIET
+The librarians here are:
+Kyra
+Pity
+Opola
+Anaconda
+<>--browse
+There are the following books here:
+1) 'All you ever wanted to know about wands' by Anaconda
+2) 'Petition 1' by Anouncement
+3) 'Petition 2' by Anouncement
+4) 'Natural Born Telnetters' by Arduin
+5) 'chessopenings' by Azone
+6) 'Chaos as liberation' by Beck
+7) 'Tank- The party configuration' by Chra
+8) '                        The Evolution of the axe.' by Chra
+9) 'ALL YOU NEED TO KNOW ABOUT ALCHEMIST POTIONS' by Enkil
+10) 'Interview With a Actual Draconian!' by Entropy
+11) 'Spell Incantation Index' by Fixed
+12) 'Grifter's Tanking Guide' by Grifter
+13) 'Jane's suicide note' by Jane
+14) 'Sociomurphology' by Jhyftgvbun
+15) 'Hurkki's Book of Infinite Wisdom' by Jurpo
+<>--
+16) 'Hurkki tries to Wiz.' by Jurpo
+17) 'Interview with a Hurkki' by Jurpo
+18) 'Partisanship and the Failure of American Government' by Kalay
+19) 'NEWBIE BIBLE' by Kos
+20) 'Art Book' by Kyra
+21) 'Bedroom Golf' by Kyra
+22) 'Beers' by Kyra
+23) 'Everything you've wanted to know about cucumbers but were afraid to ask.'
+     by Kyra
+24) 'How to write Books' by Kyra
+25) 'Medical Dictionary' by Kyra
+26) 'Religion' by Kyra
+27) 'Why not to have sex' by Kyra
+28) 'The canadian seasons - Texas will never understand' by Martin
+29) 'God on dah net (humour:)' by Neurotico
+30) 'Rules for the Library' by Pity
+<>--
+31) 'Agrippa' by Poet
+32) 'Bards' Academy' by Ryla
+33) 'Mirror, Mirror' by Ryla
+34) 'Anaconda's Survival Guide' by Shadowjack
+35) 'Autobiography I' by Shadowjack
+36) 'Doran's Mudlist' by Shadowjack
+37) 'Shadowjack's Guide to Events' by Shadowjack
+38) 'Tales of Adventure II - Sadisto' by Shadowjack
+39) 'Tales of Adventure I - Tulkas' by Shadowjack
+40) 'A Freaky Note' by Smoking
+41) 'Bloopers from the Net' by Snowwind
+42) 'Vampire Winter' by Snowwind
+43) 'Newbie FAQ' by Tlob
+44) 'Being such lifeform as leech.' by Wuz
+45) 'A Slice of Bat History' by Yari
+46) 'Guardians and AntiGuardians, a history of Player Unions at Batmud.' by
+You grow a little.
+You feel fully healed.
+<>--
+       Yari
+47) 'How to get around the bug that wont allow you to read books by number.'
+       by Yari
+48) 'Navigating the Outworld, an Easy Guide to the Batmap.gif' by Yari
+49) 'The Beginner's Guide to the BatMUD News System' by Yari
+50) 'The Crimson Brigade Handbook' by Yari
+51) 'The Tale of the Unfortunate Newbie' by Yari
+52) 'Trees and the Nature of Forgiveness' by Yari
+53) 'The History of The Gersidi Family' by Zamphyr
+54) 'The Unauthorized Biography of Dr. Kilrathi' by Zamphyr
+55) 'Interview with a Dragon' by Zia
+56) 'BatMud Calendar' by Zoob
+57) 'Marcu' by Zoob
+58) 'Sculpture Skill' by Zoob
+<>--
+<>--e
+On Birch street between Onyx and Jade avenues.
+The city walls rise to the east from here.
+Batmud Public Library is west from here.
+Some green needle like stuff is growing on the ground here. It is lightly
+spitting from a hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, s and w.
+A green gas street lamp
+A wealthy woman is here looking for a new place to live
+A messenger delivering a message to a noble
+Messenger leaves south.
+<>--s
+At the crossing of Birch street and Jade avenue.
+The city walls rise to the south and east from here.
+A tall sturdy tower can be seen on top of the wall.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w and n.
+A green gas street lamp
+A messenger delivering a message to a noble
+<>--w
+On Jade avenue between Mahogany and Birch streets.
+The city walls rise to the south from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--w
+At the crossing of Mahogany street and Jade avenue.
+The city walls rise to the south from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e and n.
+A green gas street lamp
+A squire, polishing some armour
+<>--x
+Blazorg arrives from north.
+Obvious exits are:
+  west : Jade between Elm and Mahogany
+  east : Jade between Mahogany and Birch
+  north : Mahogany between Onyx and Jade
+Squire leaves east.
+<>--w
+On Jade avenue between Elm and Mahogany streets.
+The city walls rise to the south from here.
+Some green moss is growing on the ground here. It is lightly spitting from a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w and e.
+A green gas street lamp
+<>--w
+At the crossing of Elm street and Jade avenue.
+The city walls rise to the south from here.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e and n.
+A green gas street lamp
+A coachman guarding valuable cargo to be transported
+A coachman guarding valuable cargo to be transported
+Coachman leaves north.
+<>--w
+On Jade avenue between Wood and Elm streets.
+The city walls rise to the south from here.
+The official batmud arcade called 'T{yspotti' lies north.
+Some green moss is growing on the ground here. It is lightly spitting from a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e and n.
+A green gas street lamp
+Eldarac arrives from west.
+Eldarac leaves east.
+<>--w
+At the crossing of Wood street and Jade avenue.
+The city walls rise to the south from here.
+A high gatehouse towers above the walls to the south.
+There is an arched tunnel going under the wall to south,
+going towards unknown adventure, unknown fate.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e, n and s.
+A green gas street lamp
+Blazorg arrives from east.
+<>--n
+On Wood street between Onyx and Jade avenues.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+At the crossing of Wood street and Onyx avenue.
+Your way east is blocked by one of the city's inner walls.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--n
+On Wood street between Ruby and Onyx avenues.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+At the crossing of Wood street and Ruby avenue.
+Your way east is blocked by one of the city's inner walls.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, n and s.
+A green gas street lamp
+<>--n
+On Wood street between Stone and Ruby avenues.
+A few inches wide, deep crack on the street.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+Central Square at the crossing of Wood street and Stone avenue.
+The bustling environment of the city has changed here to a prevailing
+state of peace. The square is carefully made of grey cobblestones, put
+nicely side by side to create a sea of uncomfortable stones to walk on.
+At the centre of the square stands the imposing statue of the mythical
+Lars the Implementor ruining the harmonic rows of cobblestones.
+Some gray moss is growing on the ground here. It is lightly spitting from a
+hot, moving, lightly clouded sky. There is a brisk wind.
+Obvious exits are: n, e, s and w.
+A HUGE weapon converter
+A magical charity box
+A guzzling fountain
+A green gas street lamp
+A big round clock on a tall slender pedestal
+Domini Plunderer the Satyr
+Hacked SlushofAnipa the Giant
+The ghost of Igor Twinbeard, the dwarven master of anvil and hammer
+<>--n
+On Wood street between Marble and Stone avenues.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+At the crossing of Wood street and Marble avenue.
+Your way west and east is blocked by the city's inner walls.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+On Wood street between Granite and Marble avenues.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+At the crossing of Wood street and Granite avenue.
+Your way west and east is blocked by the city's inner walls.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+On Wood street between Bazalt and Granite avenues.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: n and s.
+A green gas street lamp
+<>--n
+At the crossing of Wood street and Bazalt avenue.
+The city walls rise to the north from here.
+A high gatehouse towers above the walls to the north.
+There is an arched tunnel going under the wall to north,
+through it blows a fresh wind from the plains.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+Obvious exits are: w, e, s and n.
+A green gas street lamp
+<>--n
+You are in an arched tunnel under the City's northern wall.
+The gatehouse you saw from outside is directly above you.
+To the north begins the wilderness and to south is the warmth
+and safety of the City.
+It is lightly spitting from a hot, moving, lightly clouded sky. There is a
+brisk wind.
+City gate (open) leads north.
+Wooden door (closed) leads west.
+Obvious exits are: s and n.
+A green gas street lamp
+A irritated gateguard is here watching you
+A stubby gateguard is here bragging
+A stubby gateguard is here watching you
+A sleepy gateguard is here watching you
+<>--n
+y+--+pppp  The road to the city goes over a bridge to the city. The city gates
+yypp|pppp  raise to the south from here. The road looks like it is being used a
+yRRR*RRRf  lot. It is lightly spitting from a hot, moving, lightly clouded sky.
+yRcccccRf  There is a brisk wind.
+yRcccccRf  City gate (open) leads south.
+           Obvious exits are: nw, n, ne, w, e and s.
+A green gas street lamp
+<>--map
+yy^|^p|pppppp
+yyy+--+pppppp
+yyyypp|pppppp
+yyyRRR*RRRfff
+yyyRcccccRfFf
+yyyRcccccRf?f
+---=ccccc=---
+             
+Your place is shown as '*'.  Type 'describe map' to see what the symbols mean.
+<>--describe map
+The map defines following characters.
+code    terrain type     color code     code    terrain type     color code
+   p           plain    light green        #           ruins    light black
+   /        swneroad    light black        h           hills        magenta
+   ~             sea           blue        s           swamp      light red
+   d          desert         yellow        l            lake           blue
+   +        crossing    light black        \        nwseroad    light black
+   ^        mountain  light magenta        y           field         yellow
+   z           shore   light yellow        j          jungle          green
+   v          valley    light green        w       waterfall     light cyan
+   x        badlands      light red        |  northsouthroad    light black
+   -    eastwestroad    light black        ?  sceniclocation    light white
+   !            peak          white        r           river           blue
+   S         shallow           cyan        c            city    light black
+   R       deepriver           blue        f          forest    light green
+   b           beach         yellow        i       highlands        magenta
+   V         volcano            red        =          bridge    light black
+   F      deepforest          green
+<>--l
+y+--+pppp  The road to the city goes over a bridge to the city. The city gates
+yypp|pppp  raise to the south from here. The road looks like it is being used a
+yRRR*RRRf  lot. It is lightly spitting from a hot, moving, lightly clouded sky.
+yRcccccRf  There is a brisk wind.
+yRcccccRf  City gate (open) leads south.
+           Obvious exits are: nw, n, ne, w, e and s.
+A green gas street lamp
+Jux arrives from south.
+Jux leaves north.
+<>--n
+^|^p|pppp  You are walking on a road going north and south. The road is made of
+y+--+pppp  stones. There are trees near the road. The road looks like it is
+yypp*pppp  being used a lot. It is lightly spitting from a hot, moving, lightly
+yRRR=RRRf  clouded sky. There is a brisk wind.
+yRcccccRf  Obvious exits are: nw, n, ne, w, e, sw, s and se.
+         
+A green gas street lamp
+<>--n
+Hash arrives from south.
+^v^p+pppp  You are on a crossing of two roads. There is cross on the middle of
+^|^p|pppp  crossing. There are trees nearby. The road looks like it is being
+y+--*pppp  used a lot. A freshly painted sign points south. It is lightly
+yypp|pppp  spitting from a hot, moving, lightly clouded sky. There is a brisk
+yRRR=RRRf  wind.
+           Obvious exits are: nw, n, ne, w, e, sw, s and se.
+A green gas street lamp
+A huge tree, raising high up to the skies
+Andlach the Minotaur hackers
+Weikatth the human bard of StRaNGe notes (songmaster)
+Hash arrives from south.
+Hash leaves west.
+Domini arrives from south.
+Andlach leaves north.
+Haulk arrives from east.
+Ravinor arrives from east.
+<>--la cross
+Cloud giant shouts 'Hanzki should learn to use consider!'
+The cross is made of stones.
+Ravinor looks at tree.
+<>--n
+^^^rrrrrr  You are walking on a road going north and south. The road is made of
+^v^p+pppp  stones. There are trees near the road. It is lightly spitting from a
+^|^p*pppp  hot, moving, lightly clouded sky. There is a brisk wind.
+y+--+pppp  Obvious exits are: nw, n, ne, w, e, sw, s and se.
+yypp|pppp
+         
+Andlach the Minotaur hackers
+<>--n
+rrrrRRRRR  You are on a crossing of two roads.  There are trees nearby.
+^^^rrrrrr  The door to a small wooden structucture is north of here.  A
+^v^p*pppp  small sign hangs on the front of the structure.  Also, a wooden
+^|^p|pppp  arrow that has been nailed to a post in the ground points south.
+y+--+pppp   It is lightly spitting from a hot, moving, lightly clouded sky.
+           There is a brisk wind.
+An old wooden door (closed) leads north.
+Obvious exits are: nw, ne, w, e, sw, s and se.
+The rain seems to be getting lighter.
+<>--la sign
+The sign reads, BatCity Ferry House
+<>--open door
+You open the An old wooden door.
+<>--n
+This old wooden structure has seen better days.  The floor is made from
+narrow wooden planks, the walls from wood and brick.  This house is not
+large at all.  The west wall is lined with a long bench, a place for those
+who wait for the ferry to sit.  There is a door in the south wall that
+leads to the road back to BatCity. The door in the north wall leads to
+the dock where the ferry docks.  On the east wall is a large printed
+schedule.  The room is lit with kerosine lanterns that hang from the
+ceiling.
+An old wooden door (open) leads north.
+An old wooden door (open) leads south.
+Obvious exits are: n and s.
+<>--la schedule
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+BatCity ferry house
+
+Ferry is currently en route to BatCity.
+Ferry will arrive in 0 seconds.
+
+Your cost to board the ferry will be 101 gold.
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+<>--boggle
+What?
+The noise above your head stops.
+<>--: boggles in confusion at the changes.
+Ok.
+<>--l
+This old wooden structure has seen better days.  The floor is made from
+narrow wooden planks, the walls from wood and brick.  This house is not
+large at all.  The west wall is lined with a long bench, a place for those
+who wait for the ferry to sit.  There is a door in the south wall that
+leads to the road back to BatCity. The door in the north wall leads to
+the dock where the ferry docks.  On the east wall is a large printed
+schedule.  The room is lit with kerosine lanterns that hang from the
+ceiling.
+An old wooden door (open) leads north.
+An old wooden door (open) leads south.
+Obvious exits are: n and s.
+<>--s
+rrrrRRRRR  You are on a crossing of two roads.  There are trees nearby.
+^^^rrrrrr  The door to a small wooden structucture is north of here.  A
+^v^p*pppp  small sign hangs on the front of the structure.  Also, a wooden
+^|^p|pppp  arrow that has been nailed to a post in the ground points south.
+y+--+pppp   Above you is a hot, moving, lightly clouded sky. There is a brisk
+           wind.
+An old wooden door (open) leads north.
+Obvious exits are: nw, ne, w, e, sw, s, se and n.
+<>--close door
+You close the An old wooden door.
+<>--s
+^^^rrrrrr  You are walking on a road going north and south. The road is made of
+^v^p+pppp  stones. There are trees near the road. Above you is a hot, moving,
+^|^p*pppp  lightly clouded sky. There is a brisk wind.
+y+--+pppp  Obvious exits are: nw, n, ne, w, e, sw, s and se.
+yypp|pppp
+         
+Andlach the Minotaur hackers
+<>--l andlach
+You probably mean: look AT something, or what?
+<>--la andlach
+Andlach the Minotaur hackers.
+It is in good shape.
+<>--s
+^v^p+pppp  You are on a crossing of two roads. There is cross on the middle of
+^|^p|pppp  crossing. There are trees nearby. The road looks like it is being
+y+--*pppp  used a lot. A freshly painted sign points south. Above you is a hot,
+yypp|pppp  moving, lightly clouded sky. There is a brisk wind.
+yRRR=RRRf  Obvious exits are: nw, n, ne, w, e, sw, s and se.
+         
+A green gas street lamp
+A huge tree, raising high up to the skies
+Ravinor the Ent <
+Haulk the Minotaur -Apology accepted Captain Needa- <
+Weikatth the human bard of StRaNGe notes (songmaster)
+<>--w
+y^v^p+ppp  You are walking on a road going east and west. The road is made of
+y^|^p|ppp  stones. There are trees near the road. The road looks like it is
+yy+-*+ppp  being used a lot. Above you is a hot, moving, lightly clouded sky.
+yyypp|ppp  There is a brisk wind.
+yyRRR=RRR  Obvious exits are: n, ne, w, e, sw, s and se.
+         
+A green gas street lamp
+<>--w
+yy^v^p+pp  You are walking on a road going east and west. The road is made of
+yy^|^p|pp  stones. There are trees near the road. The road looks like it is
+yyy+*-+pp  being used a lot. Above you is a hot, moving, lightly clouded sky.
+yyyypp|pp  There is a brisk wind.
+yyyRRR=RR  Obvious exits are: nw, ne, w, e, sw, s and se.
+         
+A green gas street lamp
+<>--w
+ryy^v^p+p  You are on a crossing of two roads. There is cross on the middle of
+yyy^|^p|p  crossing. There are trees nearby. The road looks like it is being
+yyyy*--+p  used a lot. A freshly painted sign points east. Above you is a hot,
+yyyyypp|p  moving, lightly clouded sky. There is a brisk wind.
+yyyyRRR=R  Obvious exits are: n, w, e, sw, s and se.
+         
+A green gas street lamp
+A huge tree, raising high up to the skies
+Belmondo the Zombie
+<>--la tree
+You see a massive gray tree. It raises high up to the skies, spreading its
+magical branches all over the realm. You sense the very presence of ancient
+magics when viewing it. It is probably as old as the realm itself. Before the
+tree a group of little fireflies form a burning table. It looks like the
+following; 
+
+    ,-----------+----------------------------.
+    | Command   | Description                |
+    +-----------+----------------------------+
+    | list      | list destinations          |
+    | info      | see information for a node |
+    | transport | transport to a node        |
+    `----------------------------------------'
+<>--list
+,-------------------+------------------------+--------------.
+| Destination       | Description            | Cost         |
++-------------------+------------------------+--------------|
+| cloak             | Rainbow Cloak          | 2000 gp      |
+| fighter           | NEW: Fighter's castle  | 1250 gp      |
+| horndurath        | Tower of Horn-Durath   | 1000 gp      |
+| scarlets          | Chessboard             | 1000 gp      |
+| ninjas            | Hell's Dojo            | 1000 gp      |
+| raven             | The city of Raven      | 600 gp       |
++-------------------+------------------------+--------------'
+| Prices subject to change without notice!   |
+`--------------------------------------------'
+
+Haulk arrives from east.
+Ravinor arrives from east.
+Belmondo leaves north.
+Kaaja arrives from east.
+Kaaja leaves north.
+<>--info cloak
+,---------+------------------------+--------------.
+| Name    | Description            | Owner        |
++---------+------------------------+--------------+
+| cloak   | Rainbow Cloak          | stern        |
++---------+------------------------+--------------+
+| Destinations: wcross.                           |
+`-------------------------------------------------'
+Haulk leaves north.
+Ravinor leaves north.
+<>--info raven
+,---------+------------------------+--------------.
+| Name    | Description            | Owner        |
++---------+------------------------+--------------+
+| raven   | The city of Raven      | bastil       |
++---------+------------------------+--------------+
+| Destinations: valley.                           |
+`-------------------------------------------------'
+<>--l
+ryy^v^p+p  You are on a crossing of two roads. There is cross on the middle of
+yyy^|^p|p  crossing. There are trees nearby. The road looks like it is being
+yyyy*--+p  used a lot. A freshly painted sign points east. Above you is a hot,
+yyyyypp|p  moving, lightly clouded sky. There is a brisk wind.
+yyyyRRR=R  Obvious exits are: n, w, e, sw, s and se.
+         
+A green gas street lamp
+A huge tree, raising high up to the skies
+<>--n
+rrr^^^rrr  You are walking on a road going north and south. The road is made of
+ryy^v^p+p  stones. There are trees near the road. To the north lies a huge
+yyy^*^p|p  valley containing hundreds of buildings. The road looks like it is
+yyyy+--+p  being used a lot. Above you is a hot, moving, lightly clouded sky.
+yyyyypp|p  There is a brisk wind.
+           Obvious exits are: sw, s, se and n.
+A green gas street lamp
+<>--n
+You are in a deep canyon between the city-valley and another valley. The
+other valley seems to be a construction site of some sorts. It seems like
+an ideal place for building castles. A hole has been dug east from here
+to a shop of some sorts. A poster has been glued on the western wall.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Wooden door (open) leads east.
+Obvious exits are: s, n, d and e.
+A green gas street lamp
+Ravinor the Ent <
+Haulk the Minotaur -Apology accepted Captain Needa- <
+Armourer shouts 'Come to check my wares, I am selling them for 76% of their
+ full value. BE QUICK!'
+Haulk leaves east.
+Ravinor leaves east.
+Weaponsmith shouts 'I am now selling my wares at only 90% of their normal
+ price! This offer is available for a limited time, be quick!'
+<>--la poster
+The northern areas from here are areas that have been built my mortals.
+No matter what the descriptions say the obvious exits always work
+correctly.
+Layla arrives from south.
+Layla leaves north.
+Interfector arrives from south.
+Interfector leaves north.
+<>--l
+You are in a deep canyon between the city-valley and another valley. The
+other valley seems to be a construction site of some sorts. It seems like
+an ideal place for building castles. A hole has been dug east from here
+to a shop of some sorts. A poster has been glued on the western wall.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Wooden door (open) leads east.
+Obvious exits are: s, n, d and e.
+A green gas street lamp
+<>--n
+This is the southwestern corner of the valley of mortals. You
+see very high and steep mountains to the south and east from
+here. An almost endless plain stretches to north and west.
+There is a sign here floating in the air. It seems very official.
+Some gray moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: s, e, n and enter.
+A warp gate leading into anywhere is here
+<>--la sign
+The sign says that this lot is located at north 0 and east 0.
+It is owned by Anipa.
+<>--warp 20 20
+You are warped.
+You are in a seemingly endless open plain. The plain seems to be
+surrounded by unclimbable mountains. In the southwestern corner
+you spot a deep ravine leading out of the valley.
+There is a sign here floating in the air. It seems very official.
+Some green moss is growing on the ground here. Above you is a hot, moving,
+lightly clouded sky. There is a brisk wind.
+Obvious exits are: w, e, s and n.
+A warp gate leading into anywhere is here
+<>--la sign
+The sign says that this lot is located at north 20 and east 20.
+It is owned by Quixadhal.
+<>--smile
+You smile happily.
+<>--who short
+[ 35] Adelia       [ 20] Alderan      [ 10] Alicia       [ 32] Amij         
+{ 84} Anaconda     [ 29] Andhri       [ 5 ] Andlach      <God> Anipa        
+[ 36] Arachon      { 34} Aramosii     < 25> Argon        [ 27] Avalon       
+[ 23] Avocado      < 21> Badger       [ 1 ] Balgnar      [ 23] Banzol       
+[ 24] Belmondo     [ 20] Ber          [ 10] Binky        [ 1 ] Blazorg      
+[ 36] Bohemian     [ 19] Bulgar       [ 29] Button       < 23> Caladar      
+[ 26] Cappio       [ 43] Carados      [ 8 ] Cilwand      [ 13] Crebbs       
+[ 43] Dethwishh    [ 25] Domini       [ 1 ] Dumm         <200> Durand       
+[ 27] Dynagroove   [ 20] Eldarac      [ 68] Entropy      [ 21] Febb         
+[ 31] Fezzi        [ 39] Frith        < 21> Gameman      [ - ] Guest-6      
+[ 13] Hacked       [ 18] Hanzki       [ 17] Hash         [ 78] Haulk        
+[ 28] Heksos       [ 29] Hellborne    [ 34] Hurkki       [ 5 ] Ider         
+[ 24] Interfector  [ 34] Janzo        [ 35] Jeffry       [ 23] Jux          
+[ 17] Kaaja        [ 24] Kailess      [ 23] Kalay        [ 28] Kenn         
+[ 33] Kiba         [ 24] Klerris      [ 22] Kreldor      { 71} Layla        
+[ 25] Lekka        [ 17] Mahler       [ 39] Maia         [ 23] Mcewans      
+<>--
+[ 21] Miger        [ 30] Morgen       [ 4 ] Murrogh      [ 12] Nelkon       
+[ 21] Nocturne     [ 23] Oneq         [ 42] Panner       [ 32] Phantros     
+[ 1 ] Pomi         [ 40] Pouffy       [ 1 ] Ravinor      [ 30] Redd         
+{ 55} Rolack       [ 24] Scatman      [ 1 ] Seitan       [ 36] Shamur       
+[ 35] Sherry       [ 28] Sloshenger   [ 31] Svate        [ 23] Tallo        
+[ 51] Tampio       [ 36] Th           [ 31] Tito         [ 20] Trance       
+[ 2 ] Vincentvega  [ 23] Voronjari    [ 22] Walger       [ 24] Wannabee     
+< 35> Whizz        [ 21] Wu           [ 25] Xwcbhuya     [ 73] Yari         
+[ 24] Zeeber       { 45} Zia          <666> Zonni        
+99 players shown. (<>=wizard, {}=leader, []=mortal)
+<>--help experience
+Usage: help <keyword>
+       help <skill/spell> <skillname/spellname>
+       help <event/events> or help event <name>
+       help topics (for a list of all available topics)
+<>--quit
+Session summary:
+Time: 52 minutes 20 seconds
+Experience gained: 758
+Gold difference: 0
+Saving Balgnar.
+% Connection to bat closed by foreign host.
+---- No world ----
+<>--/log off

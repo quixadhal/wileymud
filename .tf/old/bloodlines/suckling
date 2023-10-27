@@ -1,0 +1,4 @@
+/loaded wiley/suckling
+/set MYSELF suckling
+/irequire wiley/main
+/alias ready put all.bread pouch%;put all.bottle pouch%;hold ring%;hold branch%;wield shortsword%;wear all%;group %MYSELF%;grin

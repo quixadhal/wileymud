@@ -1,0 +1,669 @@
+; Tinyfugue adaptation by Quixadhal@HauntedMUD.
+
+/~loaded worldlist
+/addtiny mudlist toybox.infomagic.com 4801
+/addtelnet mwho 129.132.57.66        6889
+/adddiku test 141.218.40.78 2345
+/adddiku test2 141.218.40.78 2345
+/adddiku jay pm041-17.dialip.mich.net 2345
+/adddiku todd localhost 1234
+/adddiku jeff Dc.iglou.com 4000
+
+/addlp mea 141.218.40.77 13579
+
+/adddiku carrion 198.6.9.2 9999
+/adddiku realms realms.dorsai.org 1501
+/adddiku roi jitter.rahul.net 4000
+
+/adddiku vil 128.162.84.19 7900 ~/.tf/vilkoron.init
+/adddiku sdofan dofan tardis 128.162.84.19 7900 ~/.tf/sneezy.init
+/adddiku wiley 138.67.1.3 5666 ~/.tf/sneezy.init
+;
+; highlands II = jedi.cis.temple.edu 9001
+;
+; traceroute to jedi.cis.temple.edu (129.32.32.70), 30 hops max, 38 byte packets
+;  1  grog2.lab.cc.wmich.edu (141.218.38.1)  376 ms  6 ms  4 ms
+;  2  cisco.wmich.edu (141.218.1.2)  6 ms  6 ms  6 ms
+;  3  141.218.253.2 (141.218.253.2)  6 ms  6 ms  6 ms
+;  4  ser3.michnet1.mich.net (35.127.48.1)  20 ms  19 ms  28 ms
+;  5  fd-0.enss131.t3.ans.net (192.203.195.1)  19 ms  19 ms  26 ms
+;  6  t3-1.cnss40.Cleveland.t3.ans.net (140.222.40.2)  20 ms  19 ms  22 ms
+;  7  t3-1.cnss48.Hartford.t3.ans.net (140.222.48.2)  35 ms  35 ms  34 ms
+;  8  t3-2.cnss32.New-York.t3.ans.net (140.222.32.3)  40 ms  38 ms  39 ms
+;  9  cnss38.New-York.t3.ans.net (140.222.32.198)  44 ms  41 ms  43 ms
+; 10  cnss1000.Philadelphia.t3.ans.net (199.222.50.98)  70 ms  50 ms  49 ms
+; 11  129.250.201.213 (129.250.201.213)  45 ms  52 ms  47 ms
+; 12  jedi.cis.temple.edu (129.32.32.70)  66 ms  58 ms  52 ms
+;
+/adddiku high 129.32.32.70 9001 ~/.tf/highlands/init
+;
+; sanctuary = pauli.sos.clarkson.edu 9000
+; traceroute to pauli.sos.clarkson.edu (128.153.32.10), 30 hops max, 38 byte packs
+;  1  grog2.lab.cc.wmich.edu (141.218.38.1)  7 ms  3 ms  4 ms
+;  2  cisco.wmich.edu (141.218.1.2)  6 ms  6 ms  6 ms
+;  3  141.218.253.2 (141.218.253.2)  7 ms  5 ms  10 ms
+;  4  ser3.michnet1.mich.net (35.127.48.1)  21 ms  19 ms  16 ms
+;  5  fd-0.enss131.t3.ans.net (192.203.195.1)  28 ms  15 ms  14 ms
+;  6  t3-1.cnss40.Cleveland.t3.ans.net (140.222.40.2)  19 ms  23 ms  25 ms
+;  7  t3-1.cnss48.Hartford.t3.ans.net (140.222.48.2)  34 ms  33 ms  36 ms
+;  8  t3-2.cnss32.New-York.t3.ans.net (140.222.32.3)  37 ms  53 ms  37 ms
+;  9  t3-1.cnss56.Washington-DC.t3.ans.net (140.222.56.2)  43 ms  45 ms  60 ms
+; 10  mf-0.cnss58.Washington-DC.t3.ans.net (140.222.56.194)  45 ms  52 ms  53 ms
+; 11  t3-0.enss136.t3.ans.net (140.222.136.1)  60 ms  50 ms  45 ms
+; 12  psi-nsf.psi.net (192.41.177.246)  72 ms  96 ms *
+; 13  core.net211.psi.net (38.1.2.1)  142 ms  216 ms *
+; 14  pauli.sos.clarkson.edu (128.153.32.10)  125 ms  189 ms  148 ms
+;
+/adddiku sanctuary 128.153.32.10 9000 ~/.tf/highlands/init
+/adddiku sanc2 128.153.32.10 9000
+
+/adddiku thrym 141.218.40.41 3000 ~/.tf/macros/thrym
+/adddiku lad lad tardis 141.218.40.41 3000 ~/.tf/macros/lad
+/addlpp bat 130.233.40.180 23 ~/.tf/bat/init
+/addlp bat2 130.233.40.180 23
+/addlp march 132.239.68.9 3000
+;
+; batmud = bat.cs.hut.fi 23
+;
+; traceroute to bat.cs.hut.fi (130.233.40.180), 30 hops max, 38 byte packets
+;  1  grog2.lab.cc.wmich.edu (141.218.38.1)  82 ms  4 ms  5 ms
+;  2  cisco.wmich.edu (141.218.1.2)  7 ms  6 ms  7 ms
+;  3  141.218.253.2 (141.218.253.2)  6 ms  6 ms  6 ms
+;  4  ser3.michnet1.mich.net (35.127.48.1)  101 ms  77 ms  37 ms
+;  5  fd-0.enss131.t3.ans.net (192.203.195.1)  25 ms  27 ms  17 ms
+;  6  t3-1.cnss40.Cleveland.t3.ans.net (140.222.40.2)  20 ms  19 ms  19 ms
+;  7  t3-1.cnss48.Hartford.t3.ans.net (140.222.48.2)  35 ms  37 ms  34 ms
+;  8  t3-2.cnss32.New-York.t3.ans.net (140.222.32.3)  37 ms  42 ms  41 ms
+;  9  t3-1.cnss56.Washington-DC.t3.ans.net (140.222.56.2)  42 ms  44 ms  42 ms
+; 10  t3-0.enss145.t3.ans.net (140.222.145.1)  44 ms  52 ms  45 ms
+; 11  icm-fix-e-F0.icp.net (192.203.229.245)  70 ms  47 ms  46 ms
+; 12  icm-dc-1-H1/0-T3.icp.net (192.157.65.121)  90 ms  77 ms  46 ms
+; 13  icm-kista2-1-s0-2048k.icp.net (192.157.65.242)  186 ms  162 ms  194 ms
+; 14  nord-gw.nordu.net (193.10.80.40)  197 ms  186 ms  236 ms
+; 15  192.36.148.98 (192.36.148.98)  239 ms  215 ms  200 ms
+; 16  lime-gw.funet.fi (128.214.1.4)  244 ms  240 ms  256 ms
+; 17  hutnet-gw.csc.fi (128.214.248.65)  235 ms  249 ms  206 ms
+; 18  hutnet-gw-2.hut.fi (192.26.107.2)  215 ms  190 ms  199 ms
+; 19  bat.cs.hut.fi (130.233.40.180)  211 ms  194 ms  215 ms
+;
+
+/adddiku highland 129.31.31.70 9001
+/adddiku highland2 129.32.32.70 9001
+/adddiku sneezy 128.162.84.19 7900
+;/addlp carrion 130.69.177.48 9999
+
+/adddiku sne ptereyon tardis 128.162.84.19 7900 ~/.tf/sneezy/init
+/addlp dnd 158.36.33.5 2001
+
+;--------- Date: Tue Mar  8 08:02:35 1994 --- Total muds: 453 ---------
+;
+;
+;
+;--------- TYPE unknown (3) ---------
+;
+;/addtelnet Seas_of_Blood 0.0.0.0 6666 ;pauli.sos.clarkson.edu
+/addtelnet Unearthed_Arkana 130.184.71.149 4000 ;CSCI3.UARK.EDU
+/addtelnet YakMUD 192.234.5.49 4242 ;eclair.roanoke.edu
+;
+;
+;--------- TYPE ColdMUD (1) ---------
+;
+/addtelnet The_Cold_Dark 129.123.1.36 6666 ;recumbent.declab.usu.edu
+;
+;
+;--------- TYPE NA (2) ---------
+;
+/addtelnet ChatMud 198.187.46.5 7000 ;access.netaxs.com
+/addtelnet City_of_OceanCrest 198.188.100.10 4040 ;tesla.tech.cerritos.edu
+;
+;
+;--------- TYPE aber (17) ---------
+;
+/addtelnet Askerbulkum 130.238.9.30 6715 ;minsk.docs.uu.se
+/addtelnet DIRT 129.240.21.60 6715 ;alkymene.uio.no
+;/addtelnet DragonMud 137.226.224.20 6715 ;fermina.informatik.rwth-aachen.de
+/addtelnet Eclipse_MUD 128.135.90.202 6715 ;uhs-2.bsd.uchicago.edu
+/addtelnet Infinity 129.138.13.11 6715 ;anubis.nmt.edu
+/addtelnet Kove 192.147.113.94 6715 ;harvey.esu.edu
+/addtelnet Longhorn 128.83.143.16 6715 ;jaguar.cs.utexas.edu
+/addtelnet Mirage 129.138.19.196 6715 ;agean.nmt.edu
+/addtelnet Mustang 143.166.224.42 9173 ;mustang.us.dell.com
+;/addtelnet Nameless 0.0.0.0 6715 ;csa.bu.edu
+/addtelnet Northern_Lights 130.240.16.29 6715 ;harlie.ludd.luth.se
+/addtelnet SilverMUD 198.85.1.2 6715 ;silver.exide.com
+/addtelnet Sleepless_Nights 161.73.1.2 6789 ;cs3.brookes.ac.uk
+/addtelnet Tempest 128.173.18.201 5000 ;asylum.async.vt.edu
+/addtelnet Terradome 161.73.101.20 8888 ;cmssrv-gw.brookes.ac.uk
+/addtelnet Tyrann_II 137.45.33.100 6715 ;muselab-gw.runet.edu
+/addtelnet Whirlwind 139.78.201.76 6715 ;bubba.ucc.okstate.edu
+;
+;
+;--------- TYPE bsx (1) ---------
+;
+/addtelnet Regenesis 130.236.254.159 7475 ;birka.lysator.liu.se
+;
+;
+;--------- TYPE cool (2) ---------
+;
+/addtelnet CoolMud_Groan 128.32.123.20 8888 ;groan.berkeley.edu
+/addtelnet Weird_Science 132.241.1.43 4201 ;amber.ecst.csuchico.edu
+;
+;
+;--------- TYPE dgd (3) ---------
+;
+/addlp Albion_Mud 193.4.230.1 4000 ;mud.veda.is
+/addlp PaderMUD 131.234.2.42 3000 ;mud.uni-paderborn.de
+/addlp Pattern,_The 129.16.50.30 6047 ;epsilon.me.chalmers.se
+;
+;
+;--------- TYPE diku (105) ---------
+;
+/adddiku ACME_mud 137.238.1.14 9000 ;mud.cc.geneseo.edu
+/adddiku AbsolutMUD 129.22.248.252 4000 ;b63740.cwru.edu
+/adddiku Abyss_II 141.106.64.52 8888 ;helpmac.its.mcw.edu
+/adddiku Aldara 128.255.152.34 4000 ;thrash.isca.uiowa.edu
+/adddiku AlexMUD 130.237.234.17 4000 ;marcel.stacken.kth.se
+/adddiku Alternative_Realities 128.174.30.195 4000 ;isr0186.urh.uiuc.edu
+/adddiku AnotherMUD 134.53.14.112 4000 ;next2.cas.muohio.edu
+/adddiku Apocalypse_IV 128.91.3.204 4000 ;peabrain.humgen.upenn.edu
+/adddiku Arctic 192.147.171.2 2700 ;hobbes.linfield.edu
+/adddiku Armageddon 134.48.17.10 4444 ;studsys.mscs.mu.edu
+/adddiku AugieMUD 143.226.129.5 6969 ;helios.augustana.edu
+/adddiku AustinMud 129.142.28.2 4000 ;aufs.imv.aau.dk
+/adddiku BurningDIKU 134.53.14.115 4000 ;next5.cas.muohio.edu
+;/adddiku Chaos 198.3.118.12 4000 ;chaos.bga.com
+/adddiku Copper_Diku 132.194.10.1 4000 ;copper.denver.colorado.edu
+/adddiku Crimson 128.174.4.40 4000 ;gpx.lis.uiuc.edu
+/adddiku Crystal_Shard 152.65.167.12 9000 ;eichstatt.cs.csbsju.edu
+/adddiku CthulhuMUD 164.11.2.18 4000 ;zen.btc.uwe.ac.uk
+;/adddiku Dark_Castle 128.175.47.19 6666 ;dcastle.syph.udel.edu
+/adddiku Dark_Knight's_Realm 132.170.223.1 4000 ;sun1.cstore.ucf.edu
+/adddiku Dark_Shadow's_DikuMUD 162.148.251.252 6666 ;jericho.connected.com
+/adddiku Death's_Domain 192.88.124.22 9000 ;wizard.ece.miami.edu
+/adddiku Devilmud 198.145.8.11 6669 ;cyberspace.com
+/adddiku DikuMud_II 130.237.234.17 4242 ;marcel.stacken.kth.se
+/adddiku Dragon_Mud 192.80.61.5 5000 ;eve.assumption.edu
+/adddiku Dutch_Mountains 129.125.134.4 9000 ;jurix.rechten.rug.nl
+/adddiku Edge_of_Darkness 128.138.142.55 2001 ;rmchep.colorado.edu
+/adddiku Empire 129.25.1.120 4000 ;einstein.physics.drexel.edu
+/adddiku Ensem_Mud 192.44.74.7 4000 ;relax.ensem.u-nancy.fr
+/adddiku Epic 128.52.46.11 9000 ;hal.gnu.ai.mit.edu
+/adddiku Eternal_Empire 166.93.11.2 6969 ;dormrat.sosi.com
+;/adddiku Farside 198.138.35.199 3000 ;farside.atinc.com
+/adddiku FieryMud 163.246.5.109 4000 ;fiery.eushc.org
+/adddiku Forbidden_Lands 129.25.7.100 4000 ;queen.mcs.drexel.edu
+/adddiku Formosa 140.115.17.111 4000 ;sparc10.ncu.edu.tw
+/adddiku FredMUD 139.102.12.14 2150 ;fred.indstate.edu
+/adddiku FuskerMud 192.153.215.103 4000 ;wombat.nexagen.com
+/adddiku Generic_MUD 18.80.1.97 4000 ;matrix.mit.edu
+/adddiku Ghostwheel 198.145.8.11 4000 ;cyberspace.com
+/adddiku Gods_of_War 192.41.245.143 8000 ;shadow.acc.iit.edu
+/adddiku Gothic_Dikumud 140.160.240.12 6969 ;henson.cc.wwu.edu
+/adddiku GrimneMUD 129.241.36.229 4000 ;gytje.pvv.unit.no
+/adddiku HEFTmud 128.83.138.120 2150 ;needmore.cs.utexas.edu
+/adddiku Harz-Site-Diku 139.174.2.24 4000 ;majestix.rz.tu-clausthal.de
+/adddiku Hercules_MUD 163.246.32.110 3000 ;sunshine.eushc.org
+/adddiku Hidden_Worlds 192.156.196.1 4000 ;cns.cscns.com
+/adddiku HighlandsDiku 155.247.16.177 9001 ;yoda.yoda.temple.edu
+/adddiku HypeNet 140.192.1.7 4000 ;falcon.depaul.edu
+/adddiku Imperial 128.100.13.111 4000 ;ugsparc31.eecg.toronto.edu
+;/adddiku Imperial 130.233.40.52 6970 ;supergirl.cs.hut.fi
+/adddiku JediMUD 128.197.10.75 4000 ;marble.bu.edu
+;/adddiku JediMUD 128.220.27.102 4000 ;stimpy.psy.jhu.edu
+/adddiku KAOS_HQ 129.32.66.7 4000 ;sg25.aud.temple.edu
+/adddiku KIT-Mud 137.68.17.5 4000 ;jinsil.kaist.ac.kr
+/adddiku KallistiMud 128.193.40.23 4000 ;jadzia.csos.orst.edu
+/adddiku Land,_The 128.39.140.150 4000 ;nora.gih.no
+/adddiku Last_Outpost 129.2.8.61 4000 ;terrapin.umd.edu
+/adddiku Legend 192.146.226.4 4000 ;stimpy.washcoll.edu
+/adddiku Legend_of_the_Winds 140.113.17.168 4040 ;ccsun44.csie.nctu.edu.tw
+/adddiku Lost_Realms 131.144.194.20 4000 ;hornet.mercer.peachnet.edu
+/adddiku MUME 128.178.77.5 4000 ;lbdsun4.epfl.ch
+/adddiku Mayhem 128.255.152.34 1234 ;thrash.isca.uiowa.edu
+/adddiku Meat_MUD 128.83.135.8 2800 ;sneezy.cc.utexas.edu
+/adddiku Medievia_Cyberspace 129.32.32.98 4000 ;bigboy.cis.temple.edu
+/adddiku MissionMUD 164.11.2.18 3142 ;zen.btc.uwe.ac.uk
+/adddiku MooseHead_Mud 162.148.13.44 4000 ;eskinews.eskimo.com
+/adddiku Mortal_Realms 128.193.42.20 4321 ;pfr.che.orst.edu
+/adddiku Mud_Dry 152.65.167.12 4000 ;eichstatt.cs.csbsju.edu
+/adddiku Mud_Lite 128.32.191.137 4000 ;next2.Haas.Berkeley.EDU
+/adddiku Mud_With_No_Name 129.7.2.127 5000 ;ronin.bchs.uh.edu
+/adddiku Mudde_Pathetique 128.32.128.36 2999 ;flysex.berkeley.edu
+/adddiku NA-VIE 128.82.6.33 4003 ;sandstorm.cs.odu.edu
+/adddiku NOTS 128.138.239.10 4000 ;nots.colorado.edu
+/adddiku NaVie 128.82.6.26 4000 ;mud.cs.odu.edu
+/adddiku Nameless_Mud 192.68.174.240 2000 ;dorothy.ibmpcug.co.uk
+;/adddiku Nemesis 150.108.64.2 4000 ;dsm.fordham.edu
+/adddiku NexusMUD 128.178.79.108 4000 ;disun35.epfl.ch
+/adddiku Northern_Crossroads 128.100.13.63 9000 ;ugsparc13.eecg.toronto.edu
+/adddiku OpalMUD 128.143.8.97 4000 ;opal.cs.virginia.edu
+/adddiku Perilous_Realms 155.229.1.4 23 ;PR.mese.com
+/adddiku PfftMUD 128.113.85.99 3000 ;acceptance.stu.rpi.edu
+/adddiku PosMud 141.223.90.96 4000 ;turtle.postech.ac.kr
+/adddiku Realms_of_Wind_II 140.113.17.168 1234 ;ccsun44.csie.nctu.edu.tw
+/adddiku Renegade_Outpost 128.83.135.15 9999 ;daisy.cc.utexas.edu
+/adddiku Rivers_of_Mud 128.223.36.161 9000 ;cie-2.uoregon.edu
+/adddiku RockyMud 162.54.125.146 4000 ;hermes.dna.mci.com
+/adddiku Sandman 147.126.1.9 5000 ;orion.it.luc.edu
+/adddiku Sea_of_Blood 128.153.32.10 6666 ;pauli.sos.clarkson.edu
+/adddiku Shadowdale 129.120.107.70 7777 ;dale.hst.unt.edu
+/adddiku Silicon_Realms 163.118.30.9 4000 ;sampan.ee.fit.edu
+/adddiku Sloth_MUD 128.83.135.8 2113 ;sneezy.cc.utexas.edu
+/adddiku Snebo-land 128.255.152.35 2477 ;torment.isca.uiowa.edu
+/adddiku SneezyMUD 128.162.84.19 7900 ;sprinkle.cray.com
+/adddiku StackMUD 130.237.234.17 8000 ;marcel.stacken.kth.se
+/adddiku The_Other_Side 129.32.32.98 1234 ;bigboy.cis.temple.edu
+/adddiku ThunderDome 198.145.8.11 4445 ;cyberspace.com
+/adddiku URTH 140.142.63.1 4001 ;goren.u.washington.edu
+/adddiku Vego 149.84.33.3 9000 ;screech.alfred.edu
+/adddiku VenturaMud 147.226.57.196 6001 ;NA
+/adddiku WISNEY_WORLD 132.235.1.100 5000 ;levant.cs.ohiou.edu
+/adddiku WizzyMud 138.40.41.1 1992 ;euston.city.ac.uk
+/adddiku Worm_MUD 137.238.1.14 4000 ;mud.cc.geneseo.edu
+/adddiku pHANTAZM 198.242.217.1 4000 ;dopey.fpa.com
+;
+;
+;--------- TYPE diku/merc (1) ---------
+;
+/adddiku ROMII 128.153.32.5 9000 ;bohr.sos.clarkson.edu
+;
+;
+;--------- TYPE dum (4) ---------
+;
+/addtelnet CanDUM 128.100.3.100 2001 ;itrchq.itrc.on.ca
+/addtelnet CanDUM_II 129.97.180.1 2001 ;cheetah.vlsi.uwaterloo.ca
+/addtelnet DUM_II 130.239.24.66 2001 ;elektra.ling.umu.se
+/addtelnet FranDUM_II 137.194.160.48 2001 ;mousson.enst.fr
+;
+;
+;--------- TYPE haven (2) ---------
+;
+/addtelnet Hotel_California 129.82.102.98 2626 ;sachs.cs.colostate.edu
+/addtelnet Tenelia's_Sanctuary 138.67.1.3 3333 ;slate.mines.colorado.edu
+;
+;
+;--------- TYPE lp (202) ---------
+;
+/addlp 3-Kingdoms 128.197.10.75 5000 ;marble.bu.edu
+/addlp 5th_Dimension 130.236.50.9 3000 ;gauss.ifm.liu.se
+/addlp AH's_Bad_Find_Me_Phaedrus 146.186.78.131 2000 ;wbrt.wb.psu.edu
+/addlp Abnermud 129.186.3.19 6000 ;snowhite.cs.iastate.edu
+/addlp Actuator 128.83.194.11 4000 ;actlab.rtf.utexas.edu
+/addlp Adept 130.253.192.89 6666 ;nyx10.cs.du.edu
+/addlp Adeptizer 36.73.0.68 6666 ;summit-rs6000.stanford.edu
+/addlp Ads 129.15.22.33 3000 ;vinson.ecn.uoknor.edu
+;/addlp Ads 129.15.20.12 3000 ;lincoln.ecn.uoknor.edu
+/addlp Alpha 128.174.127.51 4444 ;gal4.ge.uiuc.edu
+/addlp Ancient_Anguish 129.132.57.66 2222 ;dancer.ethz.ch
+/addlp Angalon 131.204.110.10 3000 ;wilbur.eng.auburn.edu
+/addlp Atlantis_School_Project 192.67.238.48 1993 ;atlantis.edu
+/addlp Aurora 156.35.41.20 3000 ;aurora.etsiig.uniovi.es
+/addlp BatMUD 130.233.40.180 23 ;bat.cs.hut.fi
+/addlp Body_Double 129.10.114.86 4333 ;goose.cs.brandeis.edu
+/addlp Callandor 130.161.147.41 5555 ;warns.et.tudelft.nl
+/addlp Chaos 192.135.84.5 6969 ;pulsar.hsc.edu
+/addlp Charlotte 198.180.33.8 4444 ;rtp.vnet.net
+/addlp Chatter 140.142.58.99 6000 ;hawking.u.washington.edu
+/addlp Chrome_Shadows 141.212.128.40 4004 ;oxygen.engin.umich.edu
+/addlp Chronicle 129.127.40.25 5555 ;smug.student.adelaide.edu.au
+/addlp Clootie 158.152.6.194 4444 ;clootie.demon.co.uk
+/addlp Cosmos 130.111.113.2 3000 ;robots.eece.maine.edu
+/addlp Crazy_World 140.113.20.81 6406 ;epsun1.ep.nctu.edu.tw
+/addlp Crossed_Swords 128.214.44.251 3000 ;shsibm.shh.fi
+/addlp Crystal_Towers 144.92.30.207 3754 ;marvin.macc.wisc.edu
+;/addlp Crystal_Towers 130.18.80.102 3754 ;port46.ts1.msstate.edu
+/addlp Cthulhu_Mud 128.178.152.15 3000 ;leaoibm2.epfl.ch
+/addlp Cwlib 198.67.3.2 3131 ;mindvox.phantom.com
+;/addlp Cwlib 198.67.3.4 3131 ;dockmaster.phantom.com
+/addlp Dark_Castle 128.235.36.1 2000 ;newark.njit.edu
+/addlp Dark_Saga 138.129.1.32 5555 ;cobber.cord.edu
+/addlp Darker_Realms 128.194.116.25 2000 ;worf.tamu.edu
+/addlp Dartmud 129.170.28.31 2525 ;fermat.dartmouth.edu
+/addlp Deeper_Trouble 130.225.48.46 4242 ;alk.iesd.auc.dk
+/addlp Dimensional_Rifts 152.1.43.9 6000 ;hobbes.catt.ncsu.edu
+/addlp Dirtymud 147.226.112.102 5555 ;bsu-cs.bsu.edu
+/addlp Discworld 193.112.185.3 4242 ;mud.compulink.co.uk
+/addlp Doom_of_Lost_Kingdoms 140.113.23.32 4000 ;cissun12.cis.nctu.edu.tw
+/addlp Dragon's_Den 129.25.7.111 2222 ;oyster01.mcs.drexel.edu
+/addlp DreamShadow 162.148.251.252 3333 ;jericho.connected.com
+/addlp Dud 128.101.236.6 7680 ;sunrayce.solar.umn.edu
+/addlp Dune 130.79.7.60 8888 ;des1.u-strasbg.fr
+/addlp EXODUS 129.210.192.3 2000 ;carmel.scu.edu
+/addlp Earthmud 131.174.224.74 2222 ;noir.sci.kun.nl
+/addlp Eastern_Stories 140.113.23.32 8000 ;cissun12.cis.nctu.edu.tw
+/addlp Elements_of_Paradox 192.41.245.90 6996 ;elof.acc.iit.edu
+/addlp Elephant_Mud 155.198.132.10 4444 ;chips.ee.ic.ac.uk
+/addlp Enertron 130.70.41.27 1234 ;srl03.cacs.usl.edu
+/addlp Enigma 202.14.102.1 6000 ;NA
+/addlp Etheria 129.11.144.190 7777 ;csgi60.leeds.ac.uk
+/addlp Evolution 150.131.200.1 4445 ;popgen.biology.umt.edu
+/addlp Expir-2 140.198.65.132 6002 ;mistake.mc.maricopa.edu
+/addlp Exposure 146.64.10.153 2010 ;crux.csir.co.za
+/addlp Eyeofthestorm 130.253.192.68 7800 ;nyx.cs.du.edu
+/addlp Farside 192.138.137.39 2500 ;quark.gmi.edu
+/addlp Fifth_Moon 131.174.224.32 5014 ;rood.sci.kun.nl
+/addlp Final_Realms 129.177.230.3 2001 ;hp825.bih.no
+/addlp Forbidden 130.241.246.10 7000 ;chemblue.uwyo.edu
+/addlp Galactic 129.238.20.32 2029 ;ug1.plk.af.mil
+/addlp GateWay 149.84.4.1 6969 ;idiot.alfred.edu
+/addlp Genesis 129.16.79.12 2000 ;milou.cd.chalmers.se
+/addlp Genocide 192.92.115.10 2222 ;pip.shsu.edu
+/addlp Gilgamesh 131.95.110.4 3742 ;shiner.st.usm.edu
+/addlp Godshome 130.239.216.6 3000 ;krynn.solace.mh.se
+/addlp Gondormud 131.220.221.56 4747 ;opalr1.physik.uni-bonn.de
+/addlp Gothic 162.148.251.252 5000 ;jericho.connected.com
+/addlp Hall_of_Fame 130.235.88.94 2000 ;marvin.df.lth.se
+/addlp Haven 129.132.76.8 1999 ;idrz07.ethz.ch
+/addlp Highlands 132.241.4.202 2000 ;sauron.ecst.csuchico.edu
+/addlp Hole 198.64.6.1 4444 ;sugar.neosoft.com
+/addlp Holy_Mission 140.78.3.1 4242 ;alijku05.edvz.uni-linz.ac.at
+/addlp Iccs-ii 128.103.28.15 4000 ;coolidge.harvard.edu
+/addlp Igor 129.16.60.9 1701 ;ny.mtek.chalmers.se
+/addlp InSaNiTy 132.64.96.2 1234 ;batata.fh.huji.ac.il
+/addlp Ivory_Tower 144.92.30.207 2000 ;marvin.macc.wisc.edu
+/addlp Kains_Estate 131.246.8.96 2000 ;cognac.informatik.uni-kl.de
+/addlp Kerovnia 149.84.33.5 1984 ;barn.alfred.edu
+/addlp Khavoria 128.193.80.113 3000 ;lab13.math.orst.edu
+/addlp Kingdoms 129.16.117.21 1812 ;gwaihir.dd.chalmers.se
+/addlp KoBra 130.161.144.22 8888 ;duteca4.et.tudelft.nl
+/addlp LOST_MUD 128.83.138.119 6666 ;lovelady.cs.utexas.edu
+/addlp LPC-Centre 138.40.11.1 6999 ;victoria.city.ac.uk
+/addlp LPMudDry 152.13.37.58 2418 ;kittyl.uncg.edu
+/addlp LPSwat 129.186.140.6 2020 ;lpmud.iastate.edu
+/addlp Landslide 128.200.17.3 6000 ;bnext.soceco.uci.edu
+/addlp Loch_Ness 157.161.1.12 2222 ;lochness.imp.ch
+/addlp LooneyMud 192.31.126.2 8888 ;sirius.cp.tn.tudelft.nl
+/addlp Loran 198.64.6.13 7575 ;netport.neosoft.com
+/addlp Lost_Souls 129.7.2.110 3000 ;ux.tcs.uh.edu
+/addlp LustyMud 128.194.9.199 2000 ;lusty.tamu.edu
+;/addlp Marches_of_Antan NA 3000 ;deuterium.ucsd.edu
+/addlp Marches_of_Antan 132.239.68.7 3000 ;chemg.ucsd.edu
+/addlp Mathmud 130.133.4.4 3000 ;medusa.math.fu-berlin.de
+/addlp Midian 128.196.28.8 3456 ;algiers.ece.arizona.edu
+/addlp Midnight_Island 152.66.86.4 6666 ;unicorn.sch.bme.hu
+/addlp Midnight_Sun 130.240.16.23 3000 ;midnight-sun.ludd.luth.se
+/addlp Mirrorearth 131.174.224.74 2222 ;noir.sci.kun.nl
+/addlp Moonstar 192.135.84.5 4321 ;pulsar.hsc.edu
+/addlp MoralDecay 131.247.1.12 2002 ;zeus.csee.usf.edu
+/addlp Moral_Decay 134.3.33.68 2002 ;shag.ssc.gov
+/addlp MorgenGrauen 128.176.121.56 4711 ;pascal.uni-muenster.de
+/addlp Mud 155.198.133.5 4444 ;eecsb.ee.ic.ac.uk
+/addlp Muddog 128.227.168.38 2000 ;mud.math.ufl.edu
+/addlp Muddy_waters 131.215.9.49 3000 ;hot.caltech.edu
+/addlp Mulberry_Mud 128.252.121.25 2000 ;mango.wustl.edu
+/addlp Mystic 129.174.28.200 3000 ;blackplague.gmu.edu
+/addlp NA 143.248.12.82 4444 ;world.kaist.ac.kr
+/addlp Nameless 193.4.210.1 2000 ;complex.is
+/addlp NannyMUD 130.236.254.159 2000 ;birka.lysator.liu.se
+/addlp Nanvaent 130.159.220.8 3000 ;oban.cc.strath.ac.uk
+/addlp NeXT_Mud 152.13.37.8 3000 ;odysseus.uncg.edu
+/addlp Nemesis 131.159.8.67 2000 ;hypercubix.informatik.tu-muenchen.de
+/addlp Newmoon 131.252.21.12 7680 ;jove.cs.pdx.edu
+/addlp NightFall 134.2.62.161 4242 ;nova.tat.physik.uni-tuebingen.de
+/addlp Nightclone 152.66.86.4 6000 ;unicorn.sch.bme.hu
+/addlp Nightmare 162.148.251.220 4000 ;nightmare.connected.com
+/addlp Nirvana 192.41.245.90 3500 ;elof.iit.edu
+/addlp Nm4 162.148.251.220 9999 ;nightmare.connected.com
+/addlp Nuclearwar 130.238.206.10 4080 ;discovery.astrakan.hgs.se
+/addlp NyxMud 130.253.192.68 2000 ;nyx.cs.du.edu
+/addlp Onyx 129.186.3.20 6000 ;stimpy.cs.iastate.edu
+/addlp Order 128.83.135.63 3779 ;sylvester.cc.utexas.edu
+/addlp Orion 134.124.15.10 4000 ;cc10710.umsl.edu
+/addlp Overdrive 141.210.10.109 5195 ;eng3.sequent.com
+/addlp Panacea 138.95.7.14 3000 ;eng3.sequent.com
+/addlp Pangaeamud 134.53.3.230 3000 ;phoenix.aps.muohio.edu
+/addlp Paradigm_Shift 192.239.228.42 2112 ;vespucci.iquest.com
+/addlp Paradox 152.15.10.137 10478 ;adl.uncc.edu
+/addlp Perspective 128.42.65.2 4444 ;comet.rice.edu
+/addlp Phoenix 128.197.74.10 3500 ;albert.bu.edu
+/addlp Pkyipe 132.241.4.205 9876 ;barf.ecst.csuchico.edu
+/addlp Powermud 192.43.199.27 4567 ;elf.etsu.edu
+/addlp Prime_Time 192.98.43.2 3000 ;prime.mdata.fi
+/addlp Prydein 17.127.4.14 4567 ;spock.austin.apple.com
+/addlp Psycho-thriller 192.67.238.48 3000 ;atlantis.jvnc.net
+/addlp Pyromud 140.104.1.100 2222 ;elektra.cc.edu
+/addlp Pyromud_-_2 140.104.1.100 3333 ;elektra.cc.edu
+/addlp QUOVADIS 157.161.1.10 2345 ;nemesis.imp.ch
+/addlp Rasterburn 192.246.51.1 4500 ;cubetech.com
+/addlp Realms_of_Tabor 165.95.7.123 9999 ;penguin.tamucc.edu
+/addlp Realms_of_the_Dragon 141.215.69.7 3000 ;cw-u04.umd.umich.edu
+/addlp Realmsmud 198.3.127.6 1501 ;realms.dorsai.org
+/addlp Refuge 129.30.30.6 4000 ;NA
+/addlp Regula 132.199.30.8 3000 ;rrzc8.rz.uni-regensburg.de
+/addlp Revenge_of_the_End_of_the_Line 36.21.0.99 2010 ;mud.stanford.edu
+/addlp Rhovania 192.160.13.4 4000 ;daemon.rahul.net
+/addlp Rift 128.140.94.33 5000 ;vader.cc.emory.edu
+/addlp Round_Table 152.17.20.15 2222 ;darasia.chem.wfu.edu
+/addlp SA-Lib 130.241.246.10 5555 ;lestat.shv.hb.se
+/addlp STYX 128.123.1.55 3000 ;dreamtime.nmsu.edu
+/addlp Samsara 198.202.199.82 5555 ;pobre.ucsc.edu
+/addlp Sands_of_Time 139.86.224.20 6666 ;NA
+/addlp Savage_Garden 138.237.7.8 9999 ;red.cs.tcu.edu
+/addlp Screwit 147.26.101.20 5555 ;apollo.cs.swt.edu
+/addlp Shadow's_Edge 192.195.202.199 4000 ;NA
+/addlp Shadowriver 162.148.13.44 5000 ;eskinews.eskimo.com
+/addlp Shadows_Of_Reality 131.247.1.58 6969 ;NA
+/addlp SimplexMUD 192.124.156.35 3287 ;simplex.nl
+/addlp SplitSecond 130.241.246.10 3000 ;lestat.shv.hb.se
+/addlp Spud_Mud 129.101.120.78 15000 ;lava.cs.uidaho.edu
+/addlp Squint 198.92.29.50 2222 ;amri.cisco.com
+/addlp Starmud 130.239.220.2 7373 ;krynn.solace.mh.se
+/addlp Stellar_Genesis 162.148.251.252 4040 ;jericho.connected.com
+/addlp StickMUD 130.234.40.2 7680 ;kalikka.jyu.fi
+/addlp SvenskMUD 130.236.254.152 2046 ;svmud.lysator.liu.se
+/addlp Swmud 128.253.60.138 6666 ;server-gw.phy.cornell.edu
+/addlp Synergy 138.95.19.23 2000 ;family.sequent.com
+;/addlp Synergy 138.95.7.14 2000 ;eng3.sequent.com
+/addlp T'mud 131.95.119.2 2222 ;wave.st.usm.edu
+/addlp TMI-2 129.10.114.86 5555 ;kendall.ccs.neu.edu
+/addlp Tickle 134.151.18.23 1973 ;usa.aston.ac.uk
+/addlp Timewarp 192.138.137.39 5150 ;quark.gmi.edu
+/addlp Tirgoviste 134.88.14.65 4000 ;volcans.cis.umassd.edu
+/addlp Tower_of_Darkness 129.252.22.36 3000 ;alice.ece.scarolina.edu
+/addlp Tsunami_V 141.210.10.109 2779 ;castor.acs.oakland.edu
+/addlp TubMUD 130.149.19.20 7680 ;morgen.cs.tu-berlin.de
+/addlp Turnipmud 143.117.30.21 6000 ;NA
+/addlp UNITOPIA 129.69.221.120 3333 ;helpdesk.rus.uni-stuttgart.de
+/addlp Ultim8 152.2.25.2 1984 ;gibbs.oit.unc.edu
+/addlp Ultimate 137.215.18.10 1984 ;rkw-risc.cs.up.ac.za
+/addlp Ultimud 35.8.7.5 5150 ;cxc1.cl.msu.edu
+/addlp Universal_Mud 132.241.7.10 9676 ;chuck.ecst.csuchico.edu
+/addlp University_D'arcane 128.253.158.34 3000 ;pansy.cit.cornell.edu
+/addlp Valhalla 192.187.153.1 2444 ;valhalla.com
+/addlp Vargonmud 128.220.25.66 6000 ;dogsun.dog.jhu.edu
+/addlp VikingMUD 129.241.36.232 2001 ;bigblue.pvv.unit.no
+/addlp Virtual_Realities 128.252.136.100 3019 ;coyote.wustl.edu
+/addlp WanderingMUD 128.46.185.89 1234 ;ewok.ecn.purdue.edu
+/addlp Whatmud 143.117.5.31 6000 ;qe2.declab.cs.qub.ac.uk
+/addlp Wibble 129.10.114.86 6666 ;kendall.ccs.neu.edu
+/addlp Wonderland 192.124.156.36 3000 ;slowdown.bbb.no
+/addlp Wu-power_chat 137.208.8.6 4000 ;obelix.wu-wien.ac.at
+/addlp Xanth 36.73.0.68 7777 ;summit-rs6000.stanford.edu
+/addlp Xenocide 128.250.50.2 2000 ;tauon.ph.unimelb.edu.au
+/addlp Yipe 132.241.7.4 9876 ;phlegm.ecst.csuchico.edu
+;/addlp earthmud 193.78.33.205 2222 ;zone.hacktic.nl
+/addlp flame 130.95.100.3 4242 ;mackerel.gu.uwa.edu.au
+;
+;
+;--------- TYPE mare (1) ---------
+;
+/addtelnet WindsMARE 128.89.2.137 7348 ;musenet.bbn.com
+;
+;
+;--------- TYPE moo (9) ---------
+;
+/addtiny Diversity_University 155.31.1.1 8888 ;erau.db.erau.edu
+/addtiny DragonsFire 162.148.13.44 7777 ;eskinews.eskimo.com
+/addtiny Harper's_Tale_MOO 147.31.1.51 8888 ;netman.widener.edu
+/addtiny InfernoMOO 129.238.20.32 2001 ;ug1.plk.af.mil
+/addtiny LambdaMOO 13.2.116.36 8888 ;lambda.parc.xerox.com
+/addtiny MagicMOO 134.151.18.12 7777 ;panama.aston.ac.uk
+/addtiny OpalMOO 165.106.1.2 7777 ;cc.brynmawr.edu
+/addtiny TechMOOseum 198.92.128.1 8888 ;whyanext.com
+/addtiny ZenMOO 134.69.1.253 7777 ;cheshire.oxy.edu
+;
+;
+;--------- TYPE muck (16) ---------
+;
+/addtiny AfterFive 128.160.24.249 9999 ;af.itd.com
+/addtiny AnimeMUCK 128.95.10.106 2035 ;anime.tcp.com
+/addtiny Brazillian_Dreams 137.190.16.16 6969 ;cs.weber.edu
+/addtiny CaveMUCK 128.95.10.106 2283 ;cave.tcp.com
+/addtiny Divination_Web 137.99.17.5 9393 ;bill.math.uconn.edu
+/addtiny DruidMuck 128.123.1.14 4201 ;scf.nmsu.edu
+/addtiny FurryMUCK 138.74.0.10 8888 ;sncils.snc.edu
+/addtiny HoloMuck 132.206.78.1 5757 ;collatz.mcrcim.mcgill.edu
+/addtiny NAILS 128.6.128.5 5150 ;flounder.rutgers.edu
+/addtiny NonSense_MUCK 143.106.8.131 4201 ;rigel.dsif.fee.unicamp.br
+/addtiny Pegasus 128.255.21.78 4242 ;l_eld08.icaen.uiowa.edu
+/addtiny Quartz_Paradise 128.6.60.6 9999 ;quartz.rutgers.edu
+/addtiny Qwest 128.95.10.119 9999 ;betz.biostr.washington.edu
+/addtiny RealmsMUCK 128.95.10.106 7765 ;cave.tcp.com
+/addtiny ShasMUCK 198.102.68.20 4201 ;seagull.rtd.com
+/addtiny Tapestries_MUCK 128.95.10.106 2069 ;tapestries.tcp.com
+;
+;
+;--------- TYPE mudlist (1) ---------
+;
+/addtelnet mudlist 128.160.24.249 4801 ;pa.itd.com
+;
+;
+;--------- TYPE mudwho (5) ---------
+;
+/addtelnet ACTLab 128.83.194.11 6889 ;actlab.rtf.utexas.edu
+/addtelnet AFserv 128.160.24.249 6889 ;pa.itd.com
+/addtelnet Nova 134.2.62.161 6889 ;nova.tat.physik.uni-tuebingen.de
+/addtelnet mudwho 129.132.57.66 6889 ;dancer.ethz.ch
+/addtelnet okwho 139.78.1.15 6889 ;riemann.math.okstate.edu
+;
+;
+;--------- TYPE mug (1) ---------
+;
+/addtelnet UglyMUG 130.88.241.5 6239 ;els.ee.man.ac.uk
+;
+;
+;--------- TYPE muse (13) ---------
+;
+/addtiny AntiMicroMuse 129.22.244.249 4201 ;b62713.student.cwru.edu
+/addtiny BTech3056 130.18.104.2 3056 ;mccool.cbi.msstate.edu
+/addtiny BattleTech 132.207.4.4 3026 ;von-neumann.info.polymtl.ca
+/addtiny CyberSpace 198.145.8.11 4201 ;cyberspace.com
+/addtiny EarthseaMUSE 137.148.20.5 8826 ;hopper.cba.csuohio.edu
+/addtiny FlatEarth 137.148.20.7 7719 ;cray.cba.csuohio.edu
+/addtiny MicroMUSE 18.43.0.102 4201 ;chezmoto.ai.mit.edu
+/addtiny Rhostshyl 128.253.180.15 4201 ;rhostshyl.cit.cornell.edu
+/addtiny TOS_TrekMuse 36.109.0.64 1701 ;ed-ce-034.stanford.edu
+/addtiny TimeMuse 18.43.0.179 4201 ;murren.ai.mit.edu
+/addtiny TrekMUSE 128.109.178.37 1701 ;grimmy.cnidr.org
+/addtiny VegaMUSE_2 128.153.32.11 2095 ;galileo.sos.clarkson.edu
+/addtiny VegaMuse_II 128.153.32.14 2095 ;planck.sos.clarkson.edu
+;
+;
+;--------- TYPE mush (50) ---------
+;
+/addtiny ApexMUSH 130.63.237.12 4201 ;apex.ccs.yorku.ca
+/addtiny CamelotMUSH 130.64.13.2 4201 ;elena.phy.tufts.edu
+/addtiny City_of_Darkness 130.88.240.110 2000 ;melandra.cs.man.ac.uk
+/addtiny CrystalMUSH 128.123.1.46 6886 ;moink.nmsu.edu
+/addtiny Cybermush 146.227.104.1 6250 ;aether.cms.dmu.ac.uk
+/addtiny DAMNED,_The 128.2.21.7 6250 ;janus.library.cmu.edu
+/addtiny DragonPrince 129.22.8.52 4201 ;adamwest.ins.cwru.edu
+/addtiny Dragon_Dawn 192.41.245.90 2508 ;elof.acc.iit.edu
+/addtiny Dreamlands 162.148.13.44 12057 ;eskinews.eskimo.com
+/addtiny DuneMUSH 128.32.211.5 4201 ;cogsci.berkeley.edu
+/addtiny EleniumMUSH 146.231.128.89 4201 ;clayton.ru.ac.za
+/addtiny Elysium_MUSH 129.24.9.204 1963 ;polaris.unm.edu
+/addtiny Garou 140.174.1.69 7000 ;kyriath.cygnus.com
+/addtiny Global_MUSH 128.151.220.22 4201 ;lancelot.cif.rochester.edu
+/addtiny Hemlock_MUSH 128.2.18.7 1973 ;pelyco.soar.gsia.cmu.edu
+/addtiny ImagECastle 36.22.0.31 4201 ;fogey.stanford.edu
+/addtiny Incarnations 130.157.2.99 4201 ;zippy.sonoma.edu
+/addtiny Kindred_Mush 192.83.251.22 1990 ;dirsvc.xosi.doe.gov
+/addtiny LOTRmush 140.142.113.151 4201 ;foxtrot.cac.washington.edu
+/addtiny LegionMUSH 131.215.67.3 2996 ;arms.gps.caltech.edu
+/addtiny NarniaMush 129.24.9.24 6250 ;argo.unm.edu
+/addtiny NeverEnding_Story 131.252.21.12 9999 ;jove.cs.pdx.edu
+/addtiny Pandemonium 137.113.10.35 6666 ;wlu.edu
+/addtiny PernMUSH 130.43.2.43 4201 ;cesium.clock.org
+/addtiny PosseMUSH 128.153.32.5 4201 ;bohr.sos.clarkson.edu
+/addtiny RealWorld_MUSH 129.8.2.48 4201 ;NA
+/addtiny Robotech_MUSH 128.197.12.202 4201 ;csa.bu.edu
+/addtiny STmush 198.4.75.9 1701 ;mary.iia.org
+/addtiny Shadowrun_MUSH 128.2.116.75 4201 ;yacht.slip.andrew.cmu.edu
+/addtiny Shards 129.24.14.68 7777 ;vesta.unm.edu
+/addtiny SouCon 128.146.132.232 4201 ;sharina.osbc.ohio-state.edu
+/addtiny Space_Madness 139.78.9.1 6250 ;muds.okstate.edu
+/addtiny Sprawl_Prime 130.39.129.221 6250 ;uav.csi.lsu.edu
+/addtiny Star_Wars_MUSH 36.73.0.71 4402 ;techno.stanford.edu
+/addtiny Subterfuge 128.173.208.129 1984 ;hummingbird.campus.vt.edu
+/addtiny SwordsMUSH 192.74.137.5 4201 ;world.std.com
+;/addtiny Taeis 0.0.0.0 6969 ;nomadd.fiu.edu
+/addtiny Tela_Magica 198.151.161.6 6250 ;tela.wizards.com
+/addtiny Temalantuk_Island 36.21.0.154 4201 ;elaine54.stanford.edu
+/addtiny The_Awakening 192.33.116.115 9999 ;cestus.gb.nrao.edu
+/addtiny TinyCWRU 129.22.24.22 4201 ;caisr2.caisr.cwru.edu
+/addtiny TinyMUSH 140.174.103.1 6250 ;xray.mednet.net
+/addtiny TinyTIM 129.200.149.200 5440 ;yay.mdc.com
+/addtiny TolkienMUSH 134.114.64.6 6969 ;ghost.cse.nau.edu
+/addtiny TooMUSH_]I[ 192.33.116.108 7070 ;lodestar.gb.nrao.edu
+/addtiny ToonMUSH_II 18.80.0.213 1941 ;merlin.mit.edu
+/addtiny TrippyMush 128.153.32.6 7567 ;newton.sos.clarkson.edu
+/addtiny Two_Moons 128.138.253.20 4201 ;tsalmoth.colorado.edu
+/addtiny ZorkMush 192.207.245.27 6000 ;duonet.com
+;
+;
+;--------- TYPE oxmud (1) ---------
+;
+/addtelnet Island 129.67.15.204 2093 ;teaching4.physics.ox.ac.uk
+;
+;
+;--------- TYPE talker (7) ---------
+;
+/addtelnet CyberEden 192.68.186.6 5000 ;draco.lnec.pt
+/addtelnet DS9 128.8.11.201 3000 ;rivendel.slip.umd.edu
+/addtelnet Dragon's_Lair 128.8.11.201 7777 ;rivendel.slip.umd.edu
+/addtelnet Foothills 128.197.10.75 2010 ;marble.bu.edu
+/addtelnet Gamma_Quadrant 128.8.11.201 6000 ;rivendel.slip.umd.edu
+/addtelnet Nilex_Talker 134.219.97.17 5000 ;lt7.cs.rhbnc.ac.uk
+/addtelnet Virtual_Campus 158.125.102.4 5000 ;indigo.lut.ac.uk
+;
+;
+;--------- TYPE teeny (1) ---------
+;
+/addtiny EVILMud 198.80.2.35 4201 ;cyber1.gate.net
+;
+;
+;--------- TYPE tinymud (2) ---------
+;
+/addtiny DragonMUD 132.239.1.7 4201 ;satan.ucsd.edu
+/addtiny PRISM 129.31.80.167 4201 ;lister.cc.ic.ac.uk
+;
+;
+;--------- TYPE uber (1) ---------
+;
+/addtelnet Land_of_Drogon 192.131.107.24 6123 ;wiggum.meiko.com
+;
+;
+;--------- TYPE uri (1) ---------
+;
+/addtelnet Darkest_Domain 132.241.7.8 2030 ;spew.ecst.csuchico.edu
+;
+;
+;--------- TYPE yamud (1) ---------
+;
+/addtelnet GooLand_III 129.22.112.27 6715 ;dpbiris.PHOL.CWRU.Edu
+;
+;-----------------------------------
+;
+;Key:
+;
+;? - no successful connect on record - may be removed from future lists
+;* - last successful connect more than 7 days ago
+;# - last successful connect more than 3 days ago
+;
+;-- 
+;        @ a         o y                 i                                 
+;   z   k g l       p l . d     i e     w n                               e
+;a o n a     a y c l     e u   L k   h     d y u g                 i g r m 
+; w   i       x . a                 t e       o   o               f n e    
+;

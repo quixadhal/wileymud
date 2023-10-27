@@ -1,0 +1,15 @@
+/def -p9 -t"*You recieve your share*" autosave = save
+/def -p8 -t"*flies from your hands*" autorewield = get bastard%;wield bastard
+/def -p7 -t"*smashes into you*" autostand = stand
+/def -p2 -t"*R.I.P.*" autograb = get all.gold corpse
+/def -p2 -t"*One miserable gold coin.*" autocoin = get all.gold
+/def -p2 -t"*pile of gold*" autogold = get all.gold
+/def bug = /def bugtarget = %{1-Zar}%;\
+/def -p1 -t"*$bugtarget the*" bug1 = poke $bugtarget%;\
+/def -p1 -t"*$bugtarget shouts*" bug2 = tell $bugtarget Shut the Hell Up!%;\
+/def -p1 -t"*$bugtarget tells you*" bug3 = tell $bugtarget You can tell me all day, but will I listen?%;\
+/def -p1 -t"*$bugtarget says*" bug4 = emote quickly straps duct-tape onto $bugtarget's mouth.%;\
+/def -p1 -t"*$bugtarget utters*" bug5 = slap $bugtarget%;\
+/def -p1 -t"*$bugtarget slaps*" bug6 = glare $bugtarget%;\
+/undef bugtarget
+/def unbug = /undef bug1%;/undef bug2%;/undef bug3%;/undef bug4%;/undef bug5%;/undef bug6

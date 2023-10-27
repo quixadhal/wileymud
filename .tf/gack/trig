@@ -1,0 +1,10 @@
+/loaded wiley/trig
+
+/alias trigon /load ~/.tf/wiley/trig
+/alias trigoff /load ~/.tf/wiley/untrig
+/def -p2 -F -t"flies from your hands" auto__rewield = get %{P1}%;wield %{P1}
+/def -p2 -F -t"smashes into you" auto__stand = stand
+/def -p2 -F -t"^You recieve your share" auto__grab = get all.gold corpse
+/def -p2 -F -t"One miserable gold coin." auto__coin = get all.gold
+/def -p2 -F -t"pile of gold" auto__gold = get all.gold
+;/def -p2 -F -t"^A %{TARGET} " auto__slay = kill %{TARGET}

@@ -1,0 +1,86 @@
+Script started on Sun Aug 25 22:32:32 1996
+3:chris@yakko.ttyp6 22:32:32 ~/.tf/cool$ telnet wakko 6666
+Trying 141.218.40.79...
+Connected to wakko.cs.wmich.edu.
+Escape character is '^]'.
+
+
+                   __ ____  ./|        ./\     ____ ____
+Based on          / __|_/"`/ /|_______/ / |   '"\_|_  @ \       By:
+Envy 2.0        /  /#/      | @/ _@@@@ \ @/          \#\  @ \     The EnvyMud
+( see 'help   / @/##/        \|  .\ @ /. >            \##\  @ \       Staff
+ envy' &    / @ |###|        | < .!| |!.|              |##\   @ \  ( see 'help
+ 'help     | @  |###|        |@ \  \ /  /\             |###|   @@|   wizlist' )
+ MERc' )   |@@  |###_\___    |@| \(o o)/\@\            |###|    @|
+           |@@  .\/'/'/'/\__  \ \_\___/_/\@ \ ________/####|  __@|__
+           |@@  | \_\_\_\   |\ \@\  |   | |\@ \  |    |###/  /     /
+           |@@  |   \)\)\)__|  \\@ \|   | |/\ @@\|    |#/  /     /
+           | @  |  |_____|       \@ |   | |/ \ @@|    | \/     /@|  Mud Version
+            \ @ |   _____|   |\    \|   |  \/ \ /     |      /  @|   2.0.0
+DikuMud       \ |  |_____|__ |  \       |    \/      /      |   @|
+was created    \|           ||    \     |          / |      |\ @@|
+by:  Han Henrik |___________||  ____\___| \______/___|______|@ \@|
+Staerfeldt, Katja    |     \  /     |   | |   |   _     \     @@ \   Kahn,
+Nyboe, Tom Madsen,   |      \/      |   | |   |  | |     |     @@ \   Hatchet,
+Michael Seifert,     |   |\    /|   |   |_|   |  |_|     |      @@ \   and
+and Sebastian Hammer |___| \__/ |___|\_______/|_________/           |   Staff
+( see 'help diku' )			       email: envy@uclink3.berkeley.edu
+	WWW Home Page: http://wakko.cs.wmich.edu/-donald/mud
+					          \_tilde
+State thy name: bugger
+Did I get that right, Bugger (Y/N)? y
+New character.
+Give me a password for Bugger: 
+Please retype password: 
+
+Press Return to continue:
+
+Select a race [Human Elf Halfelf Drow Dwarf Halfdwarf Hobbit Gnome Halfkobold]:  h
+
+HUMANs are the most "neutral" of all races.  They have normal attribute
+levels yet are the most versatile in all the available professions.
+Their strengths are:
+	* Other races view HUMANs neutrally and normally do not attack.
+	* Are equally good in all classes.
+	* Their stature does not make them an easy target to hit.
+Are you sure you want this race?  y
+
+What is your sex (M/F/N)? n
+
+Press Return to continue:
+
+Select a class [Mag Cle Thi War Psi Wmg]: psi
+
+The PSIONICIST class is a 'spellcasting' class similar to Mages and Clerics,
+but with several important differences.  Where a Mage's power comes from
+harnessing external energies present in all matter, and a Cleric's comes from
+his or her deity, the Psionicist derives all of his or her power from within.
+The Psionicist harnesses, shapes, and utilizes the natural forces which infuse
+his or her own being.  As a result, many of the devotions that a Psionicist can
+practice are strictly personal in effect, and cannot be used on other players.
+
+Disclaimer:  Psionicist class was originally developed by Thelonius (EnvyMud)
+from 'The Complete Psionics Handbook' by Steve Winter, published by TSR, Inc.  
+Skills and spells described therein will be quite similar to those here, though
+the interpretation has been changed to coincide with a MERC DIKU MUD.  
+Questions, comments, and suggestions are welcome.
+
+Are you sure you want this class?  ^S^Qy
+
+
+Welcome to The Last Resort.  
+
+
+Welcome to The Last Resort.  May your visit here be ... Fun.
+Entrance to Mud School
+This is the entrance to the Merc Mud School.  Go north to go through mud
+school.  If you have been here before and want to go directly to the arena,
+go south.
+
+<20hp 100m 100mv> quit
+Adde parvum parvo magnus acervus erit.
+[Add little to little and there will be a big pile]
+
+Connection closed by foreign host.
+3:chris@yakko.ttyp6 22:33:33 ~/.tf/cool$ 
+Script done on Sun Aug 25 22:33:34 1996

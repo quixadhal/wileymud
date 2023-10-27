@@ -1,0 +1,78 @@
+/loaded ~/.tf/wiley/main
+
+;
+; This is the base-level macro file for WileyMUD.  It sets up a few essentials
+; and some aliai.  It also invokes the other more specific sneezy.* files.  If
+; you don't want one or more of them, copy this to your own area and comment
+; out the ones you don't like (or copy THEM too and modify them).
+;
+
+;/bind qui = /input q
+;/def reedit = /edit %1 = %-1
+/def append = /edit %1 = $%1$%2
+/def prepend = /edit %1 = %2$%1
+
+/alias ggc get all.gold %{-1-1}.corpse
+/alias gac get all %{-1-1}.corpse
+/alias gc  get %{2-all} %{-2-1}.corpse
+/alias gga /for i 1 %{-1-1} get all.gold %%i.corpse
+/alias gaa /for i 1 %{-1-1} get all %%i.corpse
+
+/alias x exits
+/alias go /walk %{-1}
+
+/alias wk wake%;stand
+/alias dw drink water
+/alias eb eat bread
+
+/alias kz cast 'anim' corpse%;order zombie sleep%;kill zombie
+/alias k kill %{-1}
+/alias ki kick %{-1}
+/alias of order followers %{-1}
+/alias ok order followers kill %{-1}
+/alias owk order followers wake%;order followers stand
+/alias osl order followers sleep
+
+/alias la look %{-1}
+/alias lac look in %{2-1}.corpse
+/alias lab look in %{2-1}.bag
+/alias gab get all %{2-1}.bag
+/alias gb get %{2-all} %{3-1}.bag
+/alias pb put %{2-all} %{3-1}.bag
+/alias ga get all
+/alias wa wear all
+; ext -> extinguish
+; pj  -> party join
+; ps  -> party status
+; pf  -> party follow
+; p'  -> party say        ;; I use psay instead.. more intuitive to me.
+; r   -> report
+;
+; :   -> emote
+; b:  -> bat emote
+; p:  -> party emote
+; m:  -> monk say emote
+; kil -> kill                ;; I got used to WileyMUD's shortened version :)
+;
+
+; A note on highlighting...
+; I am using VLT, a VT100 emulator for the Amiga.  It does a nice job of
+; emulating a VT100 with ANSI colour, but if I set up the default colour
+; ordering to match a "real" ANSI terminal, my default text is red. :(
+; Since that is horribly gaudy, I mixed up the colours to look decent, but
+; they are non-standard now.
+; Just to warn you, the highlighting in here is set for MY terminal at
+; home, so it will look weird anywhere else.  Change it if you want.
+;
+; Here is a mapping from the standard ANSI colours to my own...
+; 000->000, F00->777, 0F0->060, FF0->A4D, 00F->B00, 0FF->007, FFF->CCC
+
+/require ~/.tf/wiley/combat
+/require ~/.tf/wiley/inform
+/require ~/.tf/wiley/paths
+/require ~/.tf/wiley/spells
+/require ~/.tf/wiley/emote
+;/require ~/.tf/wiley/trig
+;/kecho on
+;/mecho on
+

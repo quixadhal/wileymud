@@ -1,0 +1,12 @@
+/def -ag -hSEND -t"cd ~/*" = /send cd ~/%*%;/lcd /home/sol1/wmu/cclub/games/mud/lib/tmi/u/q/quixadhal/%*
+/def -ag -hSEND -t"cd /*" = /send cd /%*%;/lcd /home/sol1/wmu/cclub/games/mud/lib/tmi/%*
+/def -ag -hSEND -t"cd *" = /send cd %*%;/lcd %*
+/def -ag -hSEND -t"cd" = /send cd ~%;/lcd /home/sol1/wmu/cclub/games/mud/lib/tmi/u/q/quixadhal
+;/alias dir /quote -0 /echo /sh ls -AlCFg %*
+;/def -ag -hSEND -t"vi ~/*" = !vi /home/sol1/wmu/cclub/games/mud/lib/tmi/u/q/quixadhal/%*
+;/def -ag -hSEND -t"vi /*" = !vi /home/sol1/wmu/cclub/games/mud/lib/tmi/%*
+;/def -ag -hSEND -t"vi *" = !vi %*
+;/def -ag -hSEND -t"m ~/*" = !m /home/sol1/wmu/cclub/games/mud/lib/tmi/u/q/quixadhal/%*
+;/def -ag -hSEND -t"m /*" = !m /home/sol1/wmu/cclub/games/mud/lib/tmi/%*
+;/def -ag -hSEND -t"m *" = !m %*
+;/send cd ~

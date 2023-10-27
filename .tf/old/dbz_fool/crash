@@ -1,0 +1,14 @@
+#!/bin/sh
+touch verify.boom
+while [ -r verify.boom ]; do
+  WORD=`./randline words`
+  echo Making $WORD...
+  date
+  sed "s/NAME/$WORD/" <bug.master >bug.copy 2>/dev/null
+  tf -n -f./bug.copy >verify.boom 2>&1
+  echo BOOM
+  date
+  date >>crash.log
+  tail -8 verify.boom | head -4 | tee -a crash.log
+  sleep 44
+done

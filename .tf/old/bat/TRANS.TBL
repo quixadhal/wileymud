@@ -1,0 +1,16 @@
+F COMBAT.;1                             	combat
+F EMOTE.;1                              	emote
+F INFORM.;1                             	inform
+F INIT.;1                               	init
+F MAIN.;1                               	main
+F NAMES.;1                              	names
+F NEWLOG.941;1                          	newlog.941117
+F NEWLOG2.941;1                         	newlog2.941117
+F PATHS.;1                              	paths
+F SPELLS.;1                             	spells
+F STATS.;1                              	stats
+F STATUS.;1                             	status
+F TESTING.BAT;1                         	testing.batmud
+F TRIG.;1                               	trig
+F UNTRIG.;1                             	untrig
+F WHO.;1                                	who

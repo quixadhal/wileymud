@@ -1,0 +1,25 @@
+; This file contains functions which generate statistics using the
+; new tf variable functions.
+
+/~loaded bat/stats
+
+/test neardeath := 0
+/test fumbles := 0
+/test flees := 0
+/test kills := 0
+/test crits := 0
+/test battlelen := 0
+/test lastbattlelen := 0
+
+/red "^You are about to die!$" neardeathcnt = /test neardeath := neardeath + 1
+/red "^Whoops, " fumble1cnt = /test fumbles := fumbles + 1
+/red "^You accidentally hit " fumble2cnt = /test fumbles := fumbles + 1
+/red "^You flee in terror!$" fleecnt = /test flees := flees + 1
+
+/green " is DEAD, R\.I\.P\.$" killcnt = /test kills := kills + 1%;/test lastbattlelen := battlelen%;/test battlelen := 0
+/green "^You score a CRITICAL hit!\.$" critcnt = /test crits = crits + 1
+
+/def -i -ag "^\*\*\[NEW ROUND\]\*\*$" battlecnt = /test battlelen := battlelen + 1
+
+/def stats = /echo Stats for this session:%;/echo Kills = %kills%;/echo Critical hits = %crits%;/echo Fumbles = %fumbles%;/echo Flee Count = %flees%;/echo Near Deaths = %neardeath%;/echo Last Battle lasted %lastbattlelen rounds.
+

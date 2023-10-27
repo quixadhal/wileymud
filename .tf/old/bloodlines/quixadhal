@@ -1,0 +1,8 @@
+/loaded wiley/quixadhal
+/set MYSELF quixadhal
+/irequire wiley/main
+
+/def follow = \
+  /def -mregexp -p2 -t"%{1} leaves ([a-z]*)" do_follow = %%P1
+
+;/def -ag -h"PROMPT ^.*>\s" catch_prompt = /test prompt({*})

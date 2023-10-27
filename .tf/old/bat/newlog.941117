@@ -1,0 +1,1476 @@
+<>--3
+Please enter your choice or name: Ask your system administrator to run identd. This allows us to nail
+down possible troublemakers, instead of having to close a whole site!
+
+BOONS AND BANES ARE NOW FULLY FUNCTIONAL.  TEST PERIOD IS OVER.
+
+Donations are once again accepted.  Contact Zonni for more information.
+
+NEW TP RATES, DO HELP DONATE!!          //Zonni
+
+Remember read: help multiple characters
+<>--Thrym
+Unimplemented version.
+
+Disclaimer: This service is free and without warranty or guarantee of
+             accuracy, reliability or security.
+
+You have new news in groups inform, general, flame, test, race, leader and
+ guilds.
+You may now either enter the game as an visitor or if you feel like
+creating a real character you can create one. You should use a visitor
+character until you know what kind of a character you wish to play.
+The best way to learn about BatMUD is to ask other players. The 'help'
+command is rather useful too, try 'help' and 'help topics'.
+Obvious exits are: church and creation.
+Ilke the Visitor
+Nahka [sales]: *2 *3 sold
+Richard [bat]: Keller, forget lq15... theres one monster worth of 100k, which
+ you have to kill to get that lq done
+Cail [chat]: Bye all!
+<>--creation
+Type: 'church' to enter the city church as a visitor
+In here you can select the kind of background your character has.
+This affects your characters skills and spells in the beginning.
+Later on it affects the ways you can join guilds.  There are four
+backgrounds to choose from, and they are:
+  nomad, magical, religious and civilized
+To get information about a certain background you should type:
+  info <background>
+Once you have decided what you want to be you should type:
+  select <background>
+There are no obvious exits.
+Tomba [wanted]: Reinc, please!
+Keller [bat]: RICHARD: Nice...
+<>--info nomad
+Name: Nomad background
+Command: nomad
+Creators: Anipa, Digga, Argon and franco
+Maximum level: 15
+
+Description:
+You have spent your entire life travelling the world with your parents and
+it shows in everything you do.  The nomad way of life has become yours and
+you wouldn't have it any other way.  Everything you know you have learned
+from your parents as your family wandered the surrounding areas.  Your
+skills are somewhat limited to the knowledge of your parents and their
+ability to train you in what you need to know to survive in the nomad way
+of life.  Your first 15 levels symbolize these days of teaching by your parents
+so you can better learn what guild(s) you want to join.
+
+Abilities gained when joining:
+Ergor [wanted]: book of tarmalen
+<>--
+ Skill Attack to 20%
+ Skill Hunting to 5%
+ Skill Weapon skill bludgeon to 5%
+ Skill Weapon skill axe to 5%
+
+Abilities and requirements at each level:
+ Level 2:
+  Abilities:
+   Skill Fresh pants to 10%
+   Skill Weapon skill bludgeon to 10%
+   Skill Weapon skill 2h bludgeon to 5%
+   Skill Plant lore to 10%
+ Level 3:
+  Abilities:
+   Skill Camping to 5%
+   Skill Weapon skill 2h axe to 5%
+<>--
+   Skill Weapon skill axe to 10%
+ Level 4:
+  Abilities:
+   Skill Camping to 10%
+   Skill Stargazing to 10%
+   Skill Hunting to 10%
+   Skill Consider to 10%
+   Skill Plant lore to 15%
+   Skill Weapon skill bludgeon to 15%
+ Level 5:
+  Abilities:
+   Skill Torch creation to 15%
+   Skill Weapon skill 2h bludgeon to 10%
+ Level 6:
+  Abilities:
+   Skill Hunting to 15%
+<>--
+Yanafal [alert]: IS THIS LOW LEVEL COST SOMEKINDA EVENT???
+   Skill Finish to 5%
+   Skill Plant lore to 17%
+   Skill Weapon skill axe to 15%
+ Level 7:
+  Abilities:
+   Skill Attack to 25%
+   Skill Stargazing to 25%
+   Skill Weapon skill bludgeon to 20%
+   Skill Weapon skill 2h axe to 10%
+ Level 8:
+  Abilities:
+   Skill Weapon skill bludgeon to 25%
+   Skill Weapon skill staff to 5%
+ Level 9:
+  Abilities:
+   Skill Camping to 15%
+<>--
+Arduin [sales]: demo.. i think it is rather a rare ring.. so sell it to some
+ collector with a higher price :)
+   Skill Weapon skill axe to 20%
+   Skill Weapon skill 2h bludgeon to 15%
+ Level 10:
+  Abilities:
+   Skill Fire building to 5%
+   Skill Attack to 30%
+   Skill Plant lore to 20%
+   Skill Weapon skill 2h axe to 15%
+ Level 11:
+  Abilities:
+   Skill Fire building to 10%
+   Skill Dodge to 5%
+   Skill Weapon skill staff to 10%
+ Level 12:
+  Abilities:
+   Skill Finish to 10%
+<>--
+   Skill Weapon skill bludgeon to 30%
+ Level 13:
+  Abilities:
+   Skill Fire building to 15%
+   Skill Weapon skill 2h bludgeon to 20%
+   Skill Weapon skill axe to 25%
+ Level 14:
+  Abilities:
+   Skill Finish to 10%
+   Skill Plant lore to 25%
+   Skill Weapon skill 2h axe to 20%
+ Level 15:
+  Abilities:
+   Skill Dodge to 10%
+   Skill Stargazing to 30%
+   Skill Parry to 5%
+<>--
+   Skill Weapon skill 2h staff to 5%
+
+
+Keller [alert]: LOW?
+You sizzle with magical energy.
+<>--info magical
+Name: Magical background
+Command: magical
+Creators: Anipa, Durand and Jobber
+Maximum level: 15
+
+Description:
+The magical background indicates that your parents are from a magical
+culture.  The skills and spells that you learn during the first 15 levels
+symbolize things what you would learn from your parents.  You can't choose
+what you are taught.
+
+Abilities gained when joining:
+ Spell Magic missile to 15%
+
+Abilities and requirements at each level:
+ Level 2:
+Zim [bat]: why the mudwho never gets connect...?
+<>--
+  Abilities:
+   Skill Skill that saves sp to 10%
+   Spell Light to 10%
+ Level 3:
+  Abilities:
+   Spell Magic missile to 20%
+   Spell Darkness to 10%
+ Level 4:
+  Abilities:
+   Spell Moon sense to 10%
+ Level 5:
+  Abilities:
+   Skill Skill that saves sp to 15%
+   Spell Mirror image to 5%
+ Level 6:
+  Abilities:
+<>--
+Schnucki [alert]: ?
+Swift [alert]: yeah lower for level 20 -33 :)
+   Skill Cast generic to 10%
+   Skill Stargazing to 10%
+   Spell Acid arrow to 15%
+   Skill Essence eye to 5%
+ Level 7:
+  Abilities:
+   Spell Magic missile to 25%
+   Skill Skill that saves sp to 20%
+   Spell Mirror image to 10%
+ Level 8:
+  Abilities:
+   Spell Acid arrow to 25%
+ Level 9:
+  Abilities:
+   Spell Floating disc to 10%
+ Level 10:
+<>--
+  Abilities:
+   Spell Floating letters to 25%
+ Level 11:
+  Abilities:
+   Spell Magic missile to 30%
+ Level 12:
+  Abilities:
+   Skill Cast generic to 20%
+   Skill Stargazing to 25%
+   Skill Essence eye to 25%
+   Spell Floating disc to 20%
+ Level 13:
+  Abilities:
+   Spell Lightning bolt to 10%
+ Level 14:
+  Abilities:
+<>--
+   Spell Mirror image to 20%
+ Level 15:
+  Abilities:
+   Spell Feather weight to 10%
+
+
+<>--info religious
+Name: Religious background
+Command: religious
+Creators: Anipa, Gem, Seance, Arakorni and Argon
+Maximum level: 15
+
+Description:
+When you were young you were taught the differences between evil and good.
+Your parents told you lots of stories about the gods that are living in
+heaven, sometimes fighting against each other, but enjoying peaceful
+time periods as well. You learned how to pray to your God to get blessings
+for your everyday work and to cure the wounds you had gotten when playing
+with your friends. But most importantly you learned that your life has a
+great purpose, to spread the word of your God.
+
+Abilities gained when joining:
+ Skill Ceremony to 5%
+<>--
+ Spell Cure serious wounds to 5%
+ Spell Cure light wounds to 10%
+
+Abilities and requirements at each level:
+ Level 2:
+  Abilities:
+   Skill Bless to 5%
+   Spell Cure light wounds to 15%
+   Skill Cast generic to 5%
+ Level 3:
+  Abilities:
+   Skill Attack to 5%
+   Spell Cure serious wounds to 10%
+   Spell Cause light wounds to 5%
+ Level 4:
+  Abilities:
+<>--
+   Skill Ceremony to 10%
+   Spell Cause light wounds to 15%
+ Level 5:
+  Abilities:
+   Skill Attack to 10%
+   Skill Bless to 10%
+ Level 6:
+  Abilities:
+   Skill Cast generic to 10%
+   Spell Cure light wounds to 20%
+   Skill Bless to 15%
+ Level 7:
+  Abilities:
+   Spell Cure critical wounds to 5%
+   Spell Cause serious wounds to 5%
+ Level 8:
+Tomba [bat]: Anybody reinc me, please?
+Swift [wanted]: the day the levelcosts changed ?
+<>--
+  Abilities:
+   Spell Cure serious wounds to 15%
+   Spell Create food to 10%
+ Level 9:
+  Abilities:
+   Spell Cure light wounds to 25%
+   Spell Cause light wounds to 20%
+   Skill Attack to 15%
+ Level 10:
+  Abilities:
+   Skill Ceremony to 15%
+   Skill Weapon skill bludgeon to 5%
+   Skill Weapon skill staff to 5%
+ Level 11:
+  Abilities:
+   Spell Cure critical wounds to 10%
+<>--
+Frog shouts 'Xorp should stick to PIGEONS! I want a tougher challenge!'
+   Spell Create food to 30%
+ Level 12:
+  Abilities:
+   Skill Cast generic to 15%
+   Skill Weapon skill 2h bludgeon to 5%
+   Skill Weapon skill 2h staff to 5%
+ Level 13:
+  Abilities:
+   Spell Cure light wounds to 30%
+   Spell Cure serious wounds to 20%
+   Spell Cause serious wounds to 10%
+ Level 14:
+  Abilities:
+   Spell Cure light wounds to 35%
+   Skill Bless to 20%
+ Level 15:
+Vorth <bat>: players/vorth/teststuff/funscores.c: Variable ob not declared !
+ line 85
+<>--
+  Abilities:
+   Skill Ceremony to 20%
+   Spell Cause serious wounds to 15%
+
+
+Vorth <bat>: (repeat half a dozen times for lines 86-93 inclusive)
+Vorth <bat>: oops.
+<>--info civilized
+Name: Civilized background
+Command: civilized
+Creators: Anipa and Blowfish
+Maximum level: 15
+
+Description:
+The civilized background indicates that your parents are from a civilized
+culture.  Unlike the barbaric Nomads, or the cloistered Religous folk, you
+have been raised with refinement.  You understand commerce and trade, as
+has been passed on from your parents and their parents before them. You
+prefer a town to a wilderness, and aren't afraid to take what you need, if
+you choose.  The skills and spells you learn during your first 15 levels 
+symbolize the things your parents have taught you: useful tools for 
+survival and the tools of commerce and trade. You can't choose what you
+are taught, but those skills and spells will be yours throughout your 
+adventurous life and the basis of all you learn in the future.
+<>--
+Radagast [bat]: players/vorth.c: Variable intelligence not declared ! line 1
+
+Abilities gained when joining:
+ Skill Attack to 5%
+ Skill Bargain to 5%
+
+Abilities and requirements at each level:
+ Level 2:
+  Abilities:
+   Skill Consider to 10%
+   Spell Darkness to 10%
+   Spell Light to 10%
+   Spell Magic missile to 10%
+ Level 3:
+  Abilities:
+   Skill Fresh pants to 5%
+   Skill Compare to 10%
+<>--
+   Spell Preserve corpse to 10%
+   Spell Create food to 10%
+ Level 4:
+  Abilities:
+   Skill Swim to 25%
+   Spell Detect alignment to 15%
+   Spell Cause light wounds to 10%
+ Level 5:
+  Abilities:
+   Skill Fresh pants to 10%
+   Skill Consider to 15%
+   Spell Darkness to 20%
+   Spell Light to 20%
+ Level 6:
+  Abilities:
+   Spell Create food to 10%
+Loudness [bat]: i love the 'oops' part
+<>--
+   Skill Attack to 10%
+   Spell Create money to 15%
+ Level 7:
+  Abilities:
+   Skill Bargain to 10%
+   Spell Preserve corpse to 15%
+ Level 8:
+  Abilities:
+   Skill Compare to 20%
+ Level 9:
+  Abilities:
+   Skill Fresh pants to 15%
+   Skill Attack to 15%
+   Skill Blacksmithing to 10%
+   Spell Magic missile to 15%
+ Level 10:
+<>--
+  Abilities:
+   Spell Darkness to 30%
+   Spell Light to 30%
+ Level 11:
+  Abilities:
+   Skill Consider to 20%
+   Skill Bargain to 15%
+ Level 12:
+  Abilities:
+   Skill Cast generic to 10%
+   Skill Weapon skill dagger to 10%
+   Skill Weapon skill sword to 10%
+   Spell Preserve corpse to 20%
+ Level 13:
+  Abilities:
+   Skill Fresh pants to 20%
+<>--
+Ako [chat]: is there any beginners clearing where I beat up some animals?
+   Skill Blacksmithing to 15%
+   Spell Detect alignment to 10%
+   Spell Magic missile to 20%
+ Level 14:
+  Abilities:
+   Spell Create food to 10%
+   Skill Attack to 20%
+   Spell Create money to 20%
+ Level 15:
+  Abilities:
+   Skill Compare to 30%
+   Skill Blacksmithing to 20%
+   Skill Dodge to 5%
+   Spell Quicksilver to 5%
+
+
+Xorp [chat]: no - they beat you
+<>--select religious
+You choose religious to be your background.  You automatically learn
+some skills and spells.  For more information type 'religious help'.
+To see what skills and spells you have you should use the 'show'
+command.
+Now you can select a race.  This affects most of your abilities.  You
+should pick your race carefully.  You can change your race during game
+play, but changing the race has its drawbacks.  Only the races suitable
+for your background are listed.  There are also some races that are not
+available to all players.
+  races          - list of available races
+  info <race>    - information about a race
+  select <race>  - to select a race and continue with character creation
+There are no obvious exits.
+Armourer shouts 'The sale is over for now.'
+<>--races
+Ako [chat]: well where are they?
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+<>--info duck
+Vorth <bat>: woo woo to yoo too. :P
+Swift [chat]: where are you ?
+The Duck race
+General description:
+  Ducks are humanoids that vaguely resemble humans in their appearance,
+  but their build is lighter, their face is shaped oddly, they have
+  beaks and feathers. It has been said that they are the final stage of
+  evolution in the birds. But this is said mostly by those who think
+  that humanoid shape equals intelligence. On the ecology of ducks is
+  said that they prefer to live near rivers and lakes. They like
+  swimming, and quite many of them feel adventurous. And many of the
+  less adventurous ducks earn their living as an acrobat or a clown.
+
+Stats:
+Strength: low                      Dexterity: below average
+Intelligence: excellent            Wisdom: good
+Constitution: below average        Size: average
+
+<>--
+Other features:
+They regenerate magic points very fast. They are superior to humans and
+therefore need more experience points. Even the most difficult arcane powers
+can be mastered by them. They can fly above water. They are sensitive to their
+surroundings. They are too small to use two handed weapons. They have a faster
+than normal heart beat.
+
+Vorth <bat>: btw: hiya Rad :)
+<>--info ent
+The Ent race
+General description:
+  Ents are also known as the treemen. No one is sure if they are
+  ancestors of the trees or if they have evolved from the trees or if
+  they are totally separate. The saying 'slow as an ent' has only
+  little basis in the nature. The basis that exists is more on the
+  thinking process of the ents. They consider everything at least a few
+  times but when aroused an ent can act fast enough to destroy whole
+  castles in less than one night. The life of an adventuring ent is full
+  of odd and unique dangers. It haven't been few times when the
+  strongest ent of the party has died at a young and almost
+  nondangerous little firelizard because the ent was set afire. Ents
+  tend to be mages or more often druids or priests but their slow
+  thinking process makes them more scholars than dangerous wielders of
+  arcane powers.
+
+<>--
+Stats:
+Strength: above average            Dexterity: extremely poor
+Intelligence: below average        Wisdom: superb
+Constitution: average              Size: large
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate magic
+points very fast. They are superior to humans and therefore need more
+experience points. Arcane powers are easy for them to master. They adapt well
+to the most complicated skills. Even the most difficult arcane powers can be
+mastered by them. They heal faster when in water. They regenerate only in lit
+places. They can suck nutrition out of the ground. They can use two handed
+weapons with one hand.
+
+They know the following spell automatically:
+ Light                          30%
+<>--
+
+Radagast [bat]: ah heya Vorthless :)
+Lucidahopo shouts 'Excellent set of wands for sale!'
+Poet [alert]: mc demon stole 5k from me
+Ako [chat]: I think I am in the alter, if that helps
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+Radagast [alert]: cool
+Tomba [wanted]: Would somebody reinc me, please?
+Poet [alert]: somebody go kill that mc demon
+<>--info thrikhren
+The Thrikhren race
+General description:
+  Thrikhrens are a race of very intelligent largish insectoids. They
+  are often referred as Mantis' warriors but this is a mistake.
+  Thrikrens are mostly equal to humans in strenght and endurance, their
+  major area of specialty is the mind, both mental control and
+  discipline of magic. Some of the most proficient mages and psions are
+  thrikhrens. But this doesn't mean that a thrikhren is in need of help
+  in physical combat, their chitinious shells and sharp claws allow them
+  decent fighting capabilities. In adventuring life thrikhrens are
+  valued and accepted members of many parties, it's not even uncommon
+  that they are at high position in the party.
+
+Stats:
+Strength: poor                     Dexterity: poor
+Intelligence: superb               Wisdom: average
+Radagast [alert]: that's bloodmoney it got
+<>--
+Demo [wanted]: Book of tarmalen :)
+Constitution: low                  Size: average
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate damage
+very slowly. They regenerate magic points very fast. They are superior to
+humans and therefore need more experience points. Arcane powers are easy for
+them to master. Even the most difficult arcane powers can be mastered by them.
+They can see in the dark. They can detect magic on things. They have a faster
+than normal heart beat.
+
+They know the following spells automatically:
+ Magic missile                  60%
+ Invisibility                   10%
+
+Shialla [chat]: two east then portal
+Radagast [alert]: serves you right :)
+<>--info devil
+The Devil race
+General description:
+  Devils are mystical creatures from the lower planes of hell. Devils
+  are Satans minons, sent forth on this plane to cause havoc, and chaos
+  where it shall reign. Devils must stay evil, or their stats will be
+  halved. Devils therefore have many mystical racial abilites.
+
+Stats:
+Strength: very good                Dexterity: above average
+Intelligence: good                 Wisdom: above average
+Constitution: average              Size: average
+
+Other features:
+They regenerate damage fast. They regenerate magic points very fast. They are
+superior to humans and therefore need more experience points. They adapt well
+to the most complicated skills. Even the most difficult arcane powers can be
+<>--
+mastered by them. They are allergic to water. They can see in the dark. They
+can eat corpses. They can not eat normal food. They can sometimes escape
+death. They can detect magic on things. They have a faster than normal heart
+beat. They have half dex, con and str if they become good. This race can only
+be joined if you have an invitation from a member of this race.
+
+They know the following spell automatically:
+ Flame arrow                    30%
+
+<>--races
+Poet [alert]: nahhhh thats my grandmothers pension money
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+<>--info elf
+The Elf race
+General description:
+  Elves are thought to be closely related to humans. They are not as
+  common or as numerous as humans, but they are thought to be one of the
+  major races. The wit and charm of long-living, dextrous elves is well
+  known, as well as their continuous warfare with the goblinoids. The
+  greatest drawback in elven race is thought and said to be their low
+  interest in physical work, elves are mainly scholars and artists.
+
+Stats:
+Strength: below average            Dexterity: above average
+Intelligence: good                 Wisdom: average
+Constitution: below average        Size: average
+
+Other features:
+They regenerate magic points very fast. They are superior to humans and
+Ergor [wanted]: book of tarmalen
+<>--
+therefore need more experience points. They adapt well to the most complicated
+skills. Even the most difficult arcane powers can be mastered by them. They
+can see in the dark.
+
+They know the following spells automatically:
+ See invisible                  40%
+ See magic                      40%
+
+Skogen [alert]: mc demon stole a pool of blood :(
+Deer shouts 'Moraf is a LOSER!'
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+Schnucki [alert]: that's MY gramma's pension money!
+<>--info gnome
+The Gnome race
+General description:
+  Gnomes are a race of small humanoids that are related to dwarves.
+  Gnomes are different from dwarves mainly in their habitat and habits.
+  They live mainly in forests and sometimes build their homes into
+  underground mines. The gnomes don't rely on physical work as much as
+  their cousins dwarves since they feel themselves comfortable with and
+  around magical phenomens. Some gnomes make up the best adventuring
+  mages and illusionists.
+
+Stats:
+Strength: low                      Dexterity: average
+Intelligence: average              Wisdom: above average
+Constitution: below average        Size: average
+
+Other features:
+<>--
+They regenerate magic points very fast. They are inferior to humans and
+therefore need less experience points. Even the most difficult arcane powers
+can be mastered by them. They can see in the dark. They have a faster than
+normal heart beat.
+
+They know the following spell automatically:
+ Create money                   20%
+
+<>--info human
+Vorth <bat>: whee. that was fun :)
+The Human race
+General description:
+  Humans are the most common of the numerous intelligent races that roam
+  the world of BatMud. They are so common and numerous that they are
+  thought as the scale for other races. There can be some unique
+  examples of extraordinary appearance but mostly humans are
+  unpredictable as for what their area of keen interest is.
+
+Stats:
+Strength: average                  Dexterity: average
+Intelligence: average              Wisdom: average
+Constitution: average              Size: average
+
+Other features:
+They regenerate magic points very fast. They adapt well to the most
+complicated skills. Even the most difficult arcane powers can be mastered by
+<>--
+Ralgar [wanted]: a deal on a CHEST
+them.
+
+<>--info leech
+The Leech race
+General description:
+  Leeches are two-three centimeters long worms that use their mental 
+powers as their weapons. Their tendency is to leech experience points 
+from nearby persons when hungry. They are green. 
+
+Stats:
+Strength: very poor                Dexterity: superb
+Intelligence: average              Wisdom: low
+Constitution: poor                 Size: small
+
+Other features:
+They regenerate damage very slowly. They regenerate magic points very fast.
+They are superior to humans and therefore need more experience points. Arcane
+powers are easy for them to master. They can not eat normal food. They are too
+small to use two handed weapons. They have a faster than normal heart beat.
+<>--
+
+They know the following spells automatically:
+ Energy drain                   20%
+ Mana leech                     30%
+
+Vorth <bat>: GD informs you: Error in loading object etc etc etc.
+Sepe shouts 'SEPE IS AT 218th at total xp map... AND RISING :).'
+Ile [chat]: Byu
+Poet [alert]: i hate mc demon
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+Vorth <bat>: and it was all Zibelius' fault :)
+<>--info merfolk
+The Merfolk race
+General description:
+  Merfolks are the only race that can swim the rough seas of batmud.
+  They are generally considered underwater creatures, but they can
+  breathe on dry land too. Merfolk aren't too popular as adventurers.
+  They are mainly used to entertain male humans.
+
+Stats:
+Strength: low                      Dexterity: low
+Intelligence: above average        Wisdom: above average
+Constitution: average              Size: average
+
+Other features:
+They regenerate magic points very fast. They are inferior to humans and
+therefore need less experience points. They adapt well to the most complicated
+skills. Even the most difficult arcane powers can be mastered by them. They
+<>--
+can fly above water. They heal faster when in water.
+
+Poet [bat]: how that?
+Tomba [bat]: Is there anybody who would reinc me? I can pay if you want!
+<>--info satyr
+The Satyr race
+General description:
+  Satyrs are small creatures that resemble a crossbreed of a goat and a
+  smallish humanoid. They have the hindlegs of a goat and the upper
+  torso of a small human. Merry, singing, dextrous, always having fun
+  time. This is what most of the other races think about satyrs and this
+  is quite much true and since almost all satyrs show an aptitude on
+  music they tend to become wandering bards or minstrels. All satyrs
+  are supposed to be able to use at least minor spells but not all of
+  them pick up the trade of magic and if they do they don't usually turn
+  out as mages but more as bards. The common lot for a satyr in a party
+  of adventurers is to use their magic to help others in battle and
+  after the battle to sing about it. In an adventuring party a satyr has
+  an unending ability to end up with more than his or her lot of the
+  loot but no one cares about it because a satyr always has a good story
+  or two to be told to the inquirer.
+<>--
+
+Stats:
+Strength: poor                     Dexterity: average
+Intelligence: above average        Wisdom: above average
+Constitution: average              Size: average
+
+Other features:
+They regenerate magic points very fast. They are superior to humans and
+therefore need more experience points. Even the most difficult arcane powers
+can be mastered by them. They are sensitive to their surroundings. They can
+detect magic on things.
+
+They know the following spells automatically:
+ A kings feast                  20%
+ Hallucination                  50%
+
+<>--info sprite
+The Sprite race
+General description:
+  Sprites are small creatures from the fairy world who have moved to the
+  World of Batmud. There they make their living as scouts, messengers
+  and even spies. Their small size and weak physical appearance hides
+  great talent in magic and ever astonishing dextrous abilities. The
+  flying ability of sprites has been only rumored of and this far the
+  sightings of a flying sprite have been ended with a dispell magic
+  spell. This suggests that the wings of the sprites, and their cousins
+  cokes, aren't meant for flying.
+
+Stats:
+Strength: poor                     Dexterity: superb
+Intelligence: average              Wisdom: average
+Constitution: poor                 Size: small
+
+<>--
+Formse [sales]: Anyone got a ring of barbarian friedship to sell?
+Other features:
+They regenerate magic points very fast. They are superior to humans and
+therefore need more experience points. Arcane powers are easy for them to
+master. They adapt well to the most complicated skills. Even the most
+difficult arcane powers can be mastered by them. They can fly above water.
+They can see in the dark. They are too small to use two handed weapons. They
+can detect magic on things. They can see invisible things. They have a faster
+than normal heart beat. They glow in the dark.
+
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+Vorth <bat>: he fingered me ;)
+Abgal [wanted]: Khopesh of destruction
+<>--info vampire
+The Vampire race
+General description:
+  The vampires are the lords of the dark. They are known for their
+  strange eating habits and highly magical nature. The vampires are pale
+  in skin color and one is seldomly seen in the light. Even with the
+  severe limitations they have they are still considered a powerfull
+  race. Most adventuring parties accept vampires because of their
+  excellent abilities in both arcane and normal skills.
+
+Stats:
+Strength: above average            Dexterity: above average
+Intelligence: good                 Wisdom: below average
+Constitution: above average        Size: average
+
+Other features:
+They regenerate damage very fast. They regenerate magic points very fast. They
+<>--
+are superior to humans and therefore need more experience points. They adapt
+well to the most complicated skills. Even the most difficult arcane powers can
+be mastered by them. They can see in the dark. They do not regenerate in lit
+places. They can not eat normal food. They can sometimes escape death. This
+race can only be joined if you have an invitation from a member of this race.
+
+They know the following spells automatically:
+ Energy drain                   60%
+ Darkness                       60%
+
+<>--info zombie
+The Zombie race
+General description:
+  Zombie is an alien life form that has got its name from the outlook
+  that they share with the class of undead monsters named zombies. The
+  race of zombies is different from the undead monster in it that they
+  are more intelligent and very magical in nature. This far no one has
+  ever managed to find out if the clothy wrapping that surrouds the
+  zombi is their skin or some sort of protective dress and there is no
+  knowledge about the internal biologics of a zombie. The zombi are
+  most often the mightiest wielders of arcane powers and it is said that
+  they can use spells no other mortal is able to access. To cause more
+  confusion some of the zombi choose necromancy as their speciality and
+  surround themselves with the undead zombies.
+
+Stats:
+Strength: below average            Dexterity: very poor
+<>--
+Intelligence: low                  Wisdom: very good
+Constitution: superb               Size: average
+
+Other features:
+They regenerate damage very slowly. They regenerate magic points very fast.
+They are superior to humans and therefore need more experience points. Arcane
+powers are easy for them to master. Even the most difficult arcane powers can
+be mastered by them. They can see in the dark. They can detect magic on
+things. They can see invisible things.
+
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+<>--info catfolk
+The Catfolk race
+General description:
+The catfolk are a breed of bipedal felines whos true origins are
+shrouded in the blurry mists of what is unknown.  They are quiet and
+strong warriors, silent in their stalk. They are of many types and
+breeds, all great cats. In the night it is said that they gather
+together and delve into the arts of the arcane, but no one who has
+dared to intrude upon them has ever lived to tell their tale.
+
+Stats:
+Strength: average                  Dexterity: good
+Intelligence: below average        Wisdom: below average
+Constitution: low                  Size: average
+
+Other features:
+They regenerate damage fast. They regenerate magic points very fast. They are
+<>--
+superior to humans and therefore need more experience points. They adapt well
+to the most complicated skills. Even the most difficult arcane powers can be
+mastered by them. They can see in the dark.
+
+Cleric shouts 'Goldy was just DOGMEAT, who is next?'
+<>--info draconian
+The Draconian race
+General description:
+  Draconians are said to be the cross breed of salamanders and humans.
+  They are an ancient race of fierce fighters. They are considered enemies
+  of humans, but some outcasts have joined human settlements. Individual
+  draconians are not considered a threat, but groups of draconians are
+  treated with hostility. Draconians are equal to humans in most ways,
+  except for their naturally tough skin. This added to their sharp
+  senses makes them hard to kill even if attacked when sleeping.
+
+Stats:
+Strength: above average            Dexterity: average
+Intelligence: below average        Wisdom: average
+Constitution: average              Size: average
+
+Other features:
+<>--
+They have a thick skin. They have good natural weapons. They regenerate magic
+points very fast. They are superior to humans and therefore need more
+experience points. They adapt well to the most complicated skills. Even the
+most difficult arcane powers can be mastered by them. They can eat corpses.
+
+<>--info dwarf
+The Dwarf race
+General description:
+  Never let dwarves' small size fool you to lower your protection when
+  dueling one. Even if he isn't as big as you he can have more raw
+  physical power than the strongest human warrior. Dwarves resemble
+  humans in many ways in their habits, but they are not degenerated
+  humans as some scholars have claimed. Dwarves are their own race on
+  their own right. Most dwarves sport thick and long beards despite
+  their gender. Dwarves aren't afraid of physical work and their skills
+  as miners is well known.
+
+Stats:
+Strength: above average            Dexterity: average
+Intelligence: below average        Wisdom: average
+Constitution: above average        Size: average
+
+<>--
+Other features:
+They regenerate damage very fast. They regenerate magic points fast. They are
+quick learners of skills. They adapt well to the most complicated skills. They
+can see in the dark.
+
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+Ghost of Goldy [ghost]: doh :)
+<>--info gnoll
+You feel fully recovered.
+The Gnoll race
+General description:
+  Gnolls are one of the goblin races. Gnolls are the most powerful of
+  the races and they are the most intelligent of them. They tend to rule
+  the tribes of the lesser races in their racefamily with quile and
+  trickery. Gnolls haven't overpowered other races because of their
+  small numbers in this world, but they are more dangerous opponents in
+  war than are the orcs because, due their greater intelligence and the
+  use of other races as their armies. If a gnoll picks up the career of
+  adventuring he or she automatically becomes an outcast of clan it
+  lived in. The adventuring life is tought too dangerous and too
+  uncomfortable by the majority of gnolls so they shun it and those of
+  their race who enjoy it.
+
+Stats:
+Strength: average                  Dexterity: below average
+<>--
+Intelligence: below average        Wisdom: average
+Constitution: average              Size: average
+
+Other features:
+They regenerate damage fast. They regenerate magic points fast. They are
+inferior to humans and therefore need less experience points. They adapt well
+to the most complicated skills. They can see in the dark. They have a faster
+than normal heart beat.
+
+<>--info hobbit
+The Hobbit race
+General description:
+  Hobbit is a race of small humanoid creatures, quite similar to the
+  human child in appearance. They are quite resistant to poisons, very
+  agile and quite fast. Their nimbleness has given their race a reputation
+  of being a race of thieves. This view is quite widespread despite the
+  fact that most hobbits are honorable peasants and labourers. Hobbits
+  love simple joys and generally shun adventuring and the troubles it
+  causes.  Every now and then one or two of them step down on the road
+  of adventure and prove again their races natural adeptness in the hard
+  life.
+
+Stats:
+Strength: below average            Dexterity: excellent
+Intelligence: above average        Wisdom: average
+Constitution: average              Size: small
+Ghost of Goldy [ghost]: any ressers?
+<>--
+
+Other features:
+They regenerate damage fast. They regenerate magic points very fast. They
+adapt well to the most complicated skills. They can see in the dark.
+
+They know the following spell automatically:
+ Create food                    40%
+
+Ceridwen [ghost]: ya didnt get pf'ed fast enough =(
+Formse [ghost]: anyone reincing?
+Acidboy [wanted]: Healer party!!!!
+<>--info kobold
+Poet [ghost]: why yess i am a resser
+The Kobold race
+General description:
+  Kobolds are distant relatives of the orcs. Some rumors claim that they
+  are offspring of an orc mating with a hyena. These rumors get more
+  basis when one sees his first kobold. These small humanoids have the
+  head of a hyena or a head that resembles the one of a hyena. Most
+  kobolds commit acts of bandits and robbery. Rare are the parties that
+  admit a kobold as their member, but most kobolds who pick up the
+  adventuring career are outcasts who have learned some manners from
+  other creatures. Kobolds main advantage is their smallish size. They
+  can get to places their larger friends can't access. Kobolds have
+
+Stats:
+Strength: low                      Dexterity: below average
+Intelligence: average              Wisdom: below average
+Constitution: below average        Size: average
+<>--
+Ghost of Goldy [ghost]: nod
+Ralgar [sales]: anyone got a deal on a chest
+
+Other features:
+They regenerate damage very slowly. They regenerate magic points very fast.
+They are inferior to humans and therefore need less experience points. Even
+the most difficult arcane powers can be mastered by them. They can see in the
+dark. They can eat corpses. They have a faster than normal heart beat.
+
+Vorth <bat>: hrm it appears it works now :)
+Poet [ghost]: why yes i can reinc you
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+<>--info minotaur
+The Minotaur race
+General description:
+  Minotaurs are a race of bullheaded, ogresized humanoids both strong
+  and durable. Their origins are clouded in mystery. Some scholars claim
+  that minotaurs were ogrish shamans that revered highly the bull god
+  and were given the shape of minotaur as a gift. Whatever the cause
+  they are all worshippers of the bull god and quite a power to reckon
+  in physical battle. The horns of a minotaur are not just a decoration
+  but an effective weapon that comes with the package. Most minotaurs
+  are quite skilled in the art of physical warfare but they don't trust
+  magic or practitioners thereof.
+
+Stats:
+Strength: good                     Dexterity: average
+Intelligence: poor                 Wisdom: poor
+Constitution: above average        Size: large
+<>--
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate damage
+very fast. They regenerate magic points very fast. They are superior to humans
+and therefore need more experience points. They are quick learners of skills.
+They adapt well to the most complicated skills. They are sensitive to their
+surroundings.
+
+<>--info ogre
+Ghost of Goldy [ghost]: ress..
+The Ogre race
+General description:
+  Ogres are a race of large-sized, strong humanoids. They are quite
+  capable of facing natural hazards and wounds. They are not very bright
+  though. The closest ogres get to genius is when they cook a genius of
+  an another race. This happens very rarely though because the
+  stupidness of ogres lets a succesful genius to fool his way out of
+  their stewing pot. All ogres aren't that evil though. And most of the
+  more adventurous ogres tend to care for their smaller friends. And
+  there are many succesful adventuring bands that have enlisted a
+  friendly and helpful ogre as their battering ram.
+
+Stats:
+Strength: very good                Dexterity: below average
+Intelligence: low                  Wisdom: low
+Constitution: above average        Size: large
+<>--
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate damage
+fast. They regenerate magic points very slowly. They are superior to humans
+and therefore need more experience points. They adapt well to the most
+complicated skills.
+
+Formse [ghost]: got from sepe
+Trey {alert}: anyone seen MC demon in last min or so?
+<>--info orc
+The Orc race
+General description:
+  Orc is a race of small, usually green-skinned humanoids with misshapen
+  bodies, elongated arms and twisted legs. They have a short lifespan
+  and aren't bright. Their main reason to live is to collect earthly
+  possessions. It is thought that orcs are warped elves but no one is
+  sure who did warp them and why. There are rumors of few orcs who have
+  picked up the unusual career of adventuring but to date these rumors
+  have not been verified. If the adventuring orc exists he has to
+  overcome both his physical hindrances and the prejudices of the World.
+
+Stats:
+Strength: above average            Dexterity: above average
+Intelligence: poor                 Wisdom: low
+Constitution: above average        Size: average
+
+<>--
+Other features:
+They regenerate damage fast. They regenerate magic points fast. They are
+inferior to humans and therefore need less experience points. They adapt well
+to the most complicated skills. They can see in the dark. They have half dex,
+con and str in lit outdoor locations. They can eat corpses.
+
+Poet [alert]: i have
+<>--races
+Weaponsmith shouts 'I am now selling my wares at only 93% of their normal
+ prize! This offer is available for a limited time, be quick!'
+Poet [alert]: tell it to give me my 5k back
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+<>--info tinmen
+The Tinmen race
+General description:
+The tinmen are said to be creations of powerfull magicians.
+Not very much is known on how they function and where they
+come from. Some storytellers say that tinmen have no heart,
+but their 'skin' is said to be extremely tough.
+
+Stats:
+Strength: average                  Dexterity: above average
+Intelligence: above average        Wisdom: very poor
+Constitution: below average        Size: average
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate damage
+fast. They regenerate magic points very fast. They are superior to humans and
+therefore need more experience points. They adapt well to the most complicated
+<>--
+skills. Even the most difficult arcane powers can be mastered by them. They
+are allergic to water. They can see in the dark. They can eat corpses. They
+can detect magic on things.
+
+Abgal [alert]: type 'where demon' to see where it is!
+<>--info wolfman
+The Wolfman race
+General description:
+  Wolfman is a race of humanoids that have the head and paws of wolf.
+  They are still partly human in appearance and this is said to suggest
+  their origin as either cursed humans or a result of the magical
+  experiments of some mad mage.  Wolfmen have been subjected to many
+  prejudicies. Their state has been said to be a punishment for their
+  sins unspeakable, but this statement has been dropped after the great
+  elf/orc war during which the wolfmen aided elves by tracking down and
+  terminating many orcish raiding parties. After the war wolfmen have
+  been generally accepted in adventuring parties even though they aren't
+  trusted with the leadership of parties.
+
+Stats:
+Strength: average                  Dexterity: average
+Intelligence: below average        Wisdom: below average
+Vorth <bat>: okay fire away ppl..... destructive test time ;)
+<>--
+Constitution: average              Size: average
+
+Other features:
+They regenerate damage fast. They regenerate magic points very fast. They
+adapt well to the most complicated skills. They can see in the dark. They can
+sometimes escape death.
+
+<>--races
+,---------------------------------------------------------------------.
+| Best Suited | Recommended | Not Suited  | Invalid     | Special     |
+|=============|=============|=============|=============|=============|
+| Duck        | Devil       | Catfolk     | Cromagnon   | Valar       |
+| Ent         | Elf         | Draconian   | Cyclops     |             |
+| Thrikhren   | Gnome       | Dwarf       | Giant       |             |
+|             | Human       | Gnoll       | Troll       |             |
+|             | Leech       | Hobbit      |             |             |
+|             | Merfolk     | Kobold      |             |             |
+|             | Satyr       | Minotaur    |             |             |
+|             | Sprite      | Ogre        |             |             |
+|             | Vampire     | Orc         |             |             |
+|             | Zombie      | Tinmen      |             |             |
+|             |             | Wolfman     |             |             |
+`---------------------------------------------------------------------'
+Trey {alert}: DOH he teleports so not always on the city streets
+Zim shouts 'boldor is a fucker who tries to kill newbies...'
+Ghost of Goldy [ghost]: poet or sepe could i get a ress :)
+HappyLagBall(tm)
+<>--info cromagnon
+Poet [bat]: vorth any particular reason my happyfunball never hits anyone?
+The Cromagnon race
+General description:
+  Cromagnons are a living relic from the early dawn of human history.
+  They are living ancestors of humans and they are thought as humans by
+  most. Cromagnons have some advantages over the humans though. Their
+  harder life has given them more physical power and better grasp of the
+  basic skills but they lack the arts of magic completely because of
+  their underdeveloped brains. Mostly it is safe to presume that a
+  cromagnon behaves like a human would. Adventuring cromagnons are
+  usually those who do the hard work in the party, they do so on choice
+  not because they are forced to it.
+
+Stats:
+Strength: good                     Dexterity: above average
+Intelligence: poor                 Wisdom: poor
+Constitution: above average        Size: average
+<>--
+
+Other features:
+They regenerate damage very fast. They are superior to humans and therefore
+need more experience points. They are quick learners of skills. They adapt
+well to the most complicated skills.
+
+<>--info cyclops
+The Cyclops race
+General description:
+  Cyclops are quite similar to their cousins giants and they are thought
+  to be a mutated subrace of the giant, but there is no difficulty to
+  notice the subtle difference between a giant and a cyclops because
+  cyclops are much more awkward and clumsier than giants. The single eye
+  of a cyclops doesn't render it helpless though. A cyclops warrior is
+  one of the most formidable forces in a melee battle. The cyclops
+  usually work as mercenaries like the giants. Their neverending desire
+  to eat lambs sometimes gets them to trouble with local farmers.
+
+Stats:
+Strength: superb                   Dexterity: average
+Intelligence: very poor            Wisdom: very poor
+Constitution: good                 Size: large
+
+Vorth <bat>: you suck? ;)
+<>--
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate damage
+very fast. They regenerate magic points very slowly. They are superior to
+humans and therefore need more experience points. They can use two handed
+weapons with one hand.
+
+Winged warrior shouts 'Formse, I rather enjoyed killing you!
+<>--info giant
+Derrick [wanted]: a chest
+Boldor shouts 'no .. zim is loser who is dead soon.'
+Radagast [bat]: yes and you swallow
+The Giant race
+General description:
+  Giant is  a race of huge and strong but stupid humanoids. Their
+  strenght is unparalled in this world. They share the title of
+  strongest known creatures with the oldest and largest of dragons.
+  Giants are known for their optidy in opening new doors. Giants aren't
+  common in adventuring bands because they don't usually mix well with
+  their smaller companions. Often a party will hire a mercenary giant
+  though. Especially when planning to face odds that favor their
+  opponents. There are few occasions of a regular giant in a party but
+  these giants have either received their rank as member by hard work or
+  great sacrifices.
+
+Stats:
+Strength: superb                   Dexterity: low
+Intelligence: very poor            Wisdom: very poor
+Aran [bat]: DEX...poet
+<>--
+Constitution: excellent            Size: large
+
+Other features:
+They have a thick skin. They have good natural weapons. They regenerate damage
+very fast. They regenerate magic points very slowly. They are superior to
+humans and therefore need more experience points. They can use two handed
+weapons with one hand.
+
+Lazz [alert]: demon in mithil
+Sepe [ghost]: last time ! i only reinc ! reinc and REINC ! i dont have ress
+ skill or spell !
+<>--info troll
+The Troll race
+General description:
+  Trolls are a race of larger-than-human humanoids but not as large or
+  powerful as ogres. The metabolism of a troll is faster than that of
+  any other creature, mythical or not. The killing of a troll is said to
+  be almost impossible, if they are going to be killed by physical damage.
+  The trolls' hasted metabolism allows them to regenerate lost body
+  parts in a matter of days and the damage they take is often regenerated
+  during battle. Thanks to their large size, physical strength, endurance
+  and the gift of regeneration most trolls make excellent warriors.
+  Also as they aren't as stupid as the giants they are generally accepted
+  in adventuring parties.
+
+Stats:
+Strength: good                     Dexterity: below average
+Intelligence: poor                 Wisdom: low
+<>--
+Constitution: good                 Size: average
+
+Other features:
+They have good natural weapons. They regenerate damage very fast. They
+regenerate magic points fast. They are superior to humans and therefore need
+more experience points. They adapt well to the most complicated skills. They
+are allergic to water. They can see in the dark. They have half dex, con and
+str in lit outdoor locations. They can sometimes escape death.
+
+Poet [bat]: ahhh i see now thanks! Get off it man
+Ghost of Formse [ghost]: Go for it
+<>--info valar
+Guest-30 [bat]: WIBBLE
+Ghost of Goldy [ghost]: nod :)
+The Valar race
+General description:
+  The Valar are the direct children of the Creator, Eru. It is there place in
+ the Universe to sing the song of creation.  This makes them very powerful
+ beings indeed yet this also makes it difficult for them to change. Their
+ numbers are in some ways limited but there are the lesser Maiar that also
+ play a small part in the song.
+
+Stats:
+Strength: good                     Dexterity: above average
+Intelligence: average              Wisdom: good
+Constitution: below average        Size: large
+
+Other features:
+They regenerate damage fast. They regenerate magic points very fast. They are
+superior to humans and therefore need more experience points. They are quick
+Apocalypse [ghost]: was that for your reinc formse?
+Vorth <bat>: only for you, dearie. :)
+Aran [bat]: :)
+<>--
+learners of skills. They adapt well to the most complicated skills. Even the
+most difficult arcane powers can be mastered by them. They can see in the
+dark. They can use two handed weapons with one hand. They have half int, wis,
+dex, con and str if they become evil. This race can only be joined by
+invitation from Tulkas.
+
+Ako shouts 'I love this mud!!!'
+Formse [ghost]: yes I'm being reinced now
+Andhri shouts 'You're not the only one, Ako....'
+Poet [bat]: gee thanks i feel really good today
+Vorth <bat>: hrm bit of a prob w/ the status flag *sigh*
+<>--score
+Apocalypse [ghost]: good luck :)
+Name: Thrym the Visitor.
+Lvl: 0, Exp: 0, Mny: 0.00, Bank: 0.00, TP: 0, E%: 0
+Str: 1    Dex: 1    Con: 1    Int: 0    Wis: 0    Cha: 50   Siz: 0    
+Points: hit 18/0, spell 10/0, endurance 152/152.
+Your ability to avoid hits is very little.
+You feel neutral, hungry, very young and brave.
+Guest leads the visitor race.
+Formse [ghost]: thanks
+Formse arrives.
+Greyhame {bat}: this rock 142 players, only 12 above level 50
+Frith [sales]: 5k on the ring..
+Formse turns into a Cyclops.
+Poet [bat]: radagast, two words, PISS OFF
+Zapp [chat]: voitsisitteko lopettaa jutun pingviineista
+Abgal [wanted]: Khopesh Of Destruction
+Greyhame {bat}: only 17 above level 40
+<>--quit
+Character not saved (Visitors don't get saved).
+% Connection to bat closed by foreign host.
+---- No world ----
+<>--/quit

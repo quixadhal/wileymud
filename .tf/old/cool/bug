@@ -1,0 +1,20 @@
+/set redef=1
+/set matching=2
+/set catch_ctrls=2
+/set oldslash=0
+/set wrap=off
+/set quitdone=1
+
+/adddiku bugger 141.218.40.35 6666
+/world bugger
+/repeat -04 1 /send hidenot
+/repeat -05 1 /send y
+/repeat -06 1 /send loser
+/repeat -07 1 /send loser
+/repeat -08 1 /send N
+/repeat -09 1 /send 7
+/repeat -10 1 /send 3
+/repeat -11 1 /send ""
+/repeat -13 1 /send yell But I don't LIKE Spam!
+/repeat -15 1 /quit
+
