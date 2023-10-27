@@ -2082,3 +2082,217 @@ openssh (1:9.0p1-1) unstable; urgency=medium
         systemctl start wileymud
         xz -9v backup_15.sql
 
+----- This is where we start migrating to a new VM -----
+
+2023-10-18
+    OK, had to install Debian 12.2 STABLE to get vbox addons to work,
+    as Debian still hasn't fixed DKMS, whcih the tools require to build
+    the kernal modules.
+
+    bridged adapter, MAC 080027C16FD8
+    root: FuckYouHax0rZ9001
+
+    /sbin/usermod -a -G sudo wiley
+    /sbin/usermod -a -G vboxsf wiley
+    -- reboot to ensure GDM and friends all get updated info
+
+    dpkg-reconfigure tzdata
+    -- Americas/Los Angelos
+    -- Otherwise, it will somehow forget what you said and fall back to UTC
+
+    apt install build-essential module-assistant
+    m-a prepare
+    mount /media/cdrom
+    bash VBoxLinuxAdditions.run
+
+    -- reboot again, and at least mouse cut/paste works with Gnome.
+
+    Setup .ssh stuff and we're ready to begin
+
+    Let's repeat history and follow my old HACKLOG for the physical machine
+    going back in time to 2019-01-07
+
+    apt install sudo
+    apt install dkms build-essential linux-headers-amd64
+    apt install git git-doc
+    apt install vim-nox vim-doc
+    apt install clang
+
+    Copied .inputrc, .vimrc, .vim/ from my home directory to both wiley and root
+    Without doing this, cut/paste behavior via Putty was weird.
+
+    apt install libssl-dev libssl-doc
+    apt install libpcre3-dev libpcre3-dbg sqlite3-pcre
+
+    Chagned /etc/ssh/sshd_config to allow logins without an X11 login already established.
+        # Yes this is old and evil, but putty needs it.
+        HostkeyAlgorithms +ssh-rsa
+        PubkeyAcceptedAlgorithms +ssh-rsa
+
+        PubkeyAuthentication yes
+        PasswordAuthentication yes
+        PermitEmptyPasswords yes
+        KbdInteractiveAuthentication yes
+        ChallengeResponseAuthentication yes
+        UsePAM yes
+        AllowTcpForwarding yes
+        X11Forwarding yes
+        PermitTTY yes
+        PrintMotd no
+        TCPKeepAlive no
+
+    Added the old fix for ssh hanging, which may not apply to a VM but can't hurt.
+    /etc/default/grub
+        GRUB_CMDLINE_LINUX_DEFAULT="quiet random.trust_cpu=on"
+        GRUB_CMDLINE_LINUX="random.trust_cpu=on"
+
+    /etc/default/grub
+        GRUB_BACKGROUND="/boot/foxgirl.png"
+
+    apt install git
+
+    NOW, at this point, we're ready to mass re-install the packages we had
+    before, so i pawed through my old HACKLOG and found all the apt install
+    lines, did some sorting/uniqing, replaced a few packages that got
+    renamed or reversioned, and have a shell script to run
+
+        . ./install_stuff.sh
+
+    If all goes well, this will install a LOT of packages at once, the
+    simulated version worked OK, so I guess we'll give it a shot while I
+    make dinner.
+
+    It appers to have worked, but for some reason it installed apache...
+        apt purge apache2 apache2-utils libapache2-mod-php8.2
+                  libapache2-mod-dnssd apache2-data
+    We can't remove apache2-bin, because GNOME relies on it???
+
+
+    /etc/gdm3/greeter.dconf-defaults
+        [org/gnome/settings-daemon/plugins/power]
+        sleep-inactive-ac-timeout=600
+        sleep-inactive-ac-type='blank'
+        # This correctly puts the monitor to sleep after 10 minutes.
+
+    git clone --depth=1 https://github.com/realmazharhussain/gdm-tools.git gdm-tools
+    cd gdm-tools
+    ./install.sh
+
+    set-gdm-theme backup update
+    set-gdm-theme list
+    set-gdm-theme set -b /boot/catgirl.png
+
+    It appears that while /etc/gdm3/greeter.dconf-defaults is used
+    by systemctl restart gdm3 initially, once you do a reboot, that file
+    is no longer used as there's ANOTHER copy in /usr/share/gdm/greeter.dconf-defaults
+    and THAT gets compiled into a binary version called greeter-dconf-defaults.
+
+    So, for your changes to stick, you have to edit both of them to make them in
+    sync, and then dpkg-reconfigure gdm3
+
+2023-10-19
+    cpan
+        install File::SAUCE
+        install File::Spec
+        install utf8::all
+        install YAML
+        install Time::HiRes
+        install Digest::MD5
+        install Bundle::CPAN
+        install CPAN::DistnameInfo
+        install CPAN::DistnameInfo
+        install HTML::FromANSI
+        install Archive::Extract File::HomeDir File::ShareDir File::ShareDir::Install
+        install GooCanvas2 JSON Net::OpenSSH Path::Tiny Regexp::IPv6 X11::WMCtrl
+        install Time::HiRes
+        install Log::Log4perl
+        install Image::Size
+        install Image::MetaData::JPEG
+        install Sort::Naturally::ICU
+        install Try::Tiny::SmartCatch
+        install Proc::ProcessTable
+        install forks
+        install Config::Tiny
+        install Imager::QRCode
+        install pQuery
+        install File::Random
+        install Chart::Pie
+        install POE::Component::Log4perl
+        install Config::Tiny
+        install Config::Tiny::Ordered
+        install Module::Build
+        install XSLoader
+        install AnyEvent
+        install AnyEvent::Gearman::Client
+        install Class::XSAccessor
+        install Compress::Raw::Zlib
+        install Cache::Memcached::Fast
+        install Log::Log4perl
+        install Devel::Size
+        install Test::Differences
+        install Devel::NYTProf
+        install Text::CSV_XS
+        install Time::Out
+        install Log::Dispatch::FileRotate
+        install Sort::Key::Natural
+        install IO::Socket::Telnet
+    cpan install Devel::Modlist
+    cpan install Module::ExtractUse
+
+        install HTML::FormatText::Lynx HTML::FormatText::Html2text
+        o conf lynx /usr/bin/lynx
+        o conf commit
+
+
+    Now that the pre-reqs are done, we can hand-install Image::ANSI, since
+    the author removed it from CPAN to push his newer version, which simply doesn't
+    work the same way.
+
+    apt-file update
+    . /etc/cron.daily/locate
+
+    copied wileymud nginx site files into place at /etc/nginx/sites-available
+    and also copied it over default, to avoid future issues.
+
+    Restored pg_dumpall from version 15, a few months ago.  If this becomes
+    the main system again, we will have to upgrade postgres to version 16, or
+    figure out how to back it up for restore to version 15 from the live system.
+
+    Adjusted /etc/postgresql/11/main/pg_hba.conf
+        local   all             wiley                                   md5
+
+    Copies over a bunch of apt keyrings and whatnot to avoid having to jump
+    through all the hoops again for docker/vscode/speetest/etc.
+
+        The file apt_stuff.tar.xz should be unpacked as root in /etc/apt/
+
+    apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin
+        docker-compose-plugin
+    apt install code
+    apt install dotnet-sdk-6.0 dotnet-sdk-5.0 dotnet-sdk-3.1
+
+2023-10-26
+
+    Added i3logbackup to git
+
+    cd /home/www/log/data
+    chgrp www-data .
+    chmod g+w .
+    chgrp www-data autoplaylist* video_list.tar.xz
+    chmod g+w autoplaylist* video_list.tar.xz
+
+    Not a big deal, but allows the web server video page to update stuff
+    directly, if anyone happens to use it.
+
+2023-10-27
+    Installed local /etc/hosts aliai
+
+        # Local shortcuts
+        45.64.56.66     kelly-old.themud.org        kelly-old
+        112.213.38.109  kelly.themud.org            kelly
+        97.107.133.86   dalet.themud.org            dalet
+        #192.168.0.12    wileymud3.awasteoftime.net  wileymud3
+        192.168.0.16    lenin.awasteoftime.net      lenin
+
+    Screwed around with ssh keys and recompiling tinyfugue.
+
