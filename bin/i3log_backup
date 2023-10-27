@@ -1,0 +1,15 @@
+#!/bin/bash
+
+PG_DUMP=/usr/bin/pg_dump
+TARGET_DIR=/home/www/log/data
+
+/usr/bin/echo -en "Starting database backup..."
+
+for DB in wileymud speedtest logfile i3log; do
+    /usr/bin/echo -en "$DB..."
+    PGPASSWORD=tardis69 $PG_DUMP --clean --if-exists --no-owner $DB \
+        | /usr/bin/xz -cq -T0 >$TARGET_DIR/$DB.sql.xz
+done
+
+/usr/bin/echo -en "done.\n"
+
