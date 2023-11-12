@@ -1,3 +1,78 @@
+20171028    Quixadhal
+    0601    Started HACKLOG, had already copied over config files for bash and vim
+            Got ssh access configured and setup for wiley's github
+    0615    changed default /etc/apt/sources.list
+
+                deb http://security.debian.org/ stretch/updates main non-free contrib
+                deb-src http://security.debian.org/ stretch/updates main non-free contrib
+
+                deb http://mirror.aarnet.edu.au/debian stretch main non-free contrib
+                deb-src http://mirror.aarnet.edu.au/debian stretch main non-free contrib
+
+    0631    apt-get install git
+    0852    apt-get install python3 python3-pip
+            apt-get install clang clang-3.8-doc llvm-3.8-doc
+            apt-get install manpages manpages-dev manpages-posix manpages-posix-dev man-db
+            apt-get install locales
+            dpkg-reconfigure locales
+                set up en.US, en.AU, and jp UTF-8 languages
+                set en.US-utf8 as the default
+
+    0903    apt-get install sqlite3 sqlite3-doc sqlite3-pcre libsqlite3-dev
+            apt-get install libpcre2-dev libpcre3-dev
+                Oddly, pcre2 is the newer version, but wiley used the older one.
+
+    1208    cpan
+                autoconfigure
+
+            cpan > install CPAN
+
+    1212    apt-get install readline-common readline-doc libreadline-dev
+            apt-get install traceroute mtr-tiny
+
+            cpan > install Term::ReadLine::Gnu
+            cpan > install HTTP::Request
+            cpan > install HTML::Entities
+            cpan > install LWP::UserAgent
+            cpan > install WWW::Shorten::TinyURL
+    1626    cpan > install DBI DBD::SQLite
+            cpan > install JSON
+    1643    cpan > install Rose::DB::SQLite
+    1939    cpan > install Pod::POM
+    1948    apt-get install perl-doc
+            cpan > install Lingua::EN::Numbers::Ordinate
+            cpan > install Rose::DB::Object
+    2012    cpan > install CGI
+
+20171031    Quixadhal
+    0131    apt-get install bc
+
+20171101    Quixadhal
+    0722    apt-get install curl libcurl3-dev
+    0749    cpan > install YAML
+            apt-get install libssl-dev
+            apt-get install zlib1g zlib1g-dev
+            cpan > install LWP::Protocol::https
+    0900    Added backup host IP to Google's API key registry so it can use it
+
+20171130    Quixadhal
+    1800    Added mssql apt source, for amusement.
+            apt-get install apt-transport-https
+            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+
+20171226    Wiley
+    1454    Installed screen
+
+20180108    Wiley
+    1728    Installed nmap
+            apt install postgresql locales-all postgresql-doc libdbd-pg-perl
+
+20180202    Quixadhal
+    1212    dpkg --add-architecture i386
+
+---- Here ends the HACKLOG from my remote installation ---
+---- From here on is my local installation ----
+
 2019-01-07
 
 Installed Debian buster with Gnome desktop
