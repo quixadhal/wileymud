@@ -180,9 +180,9 @@ my $PG_DB           = 'speedtest';
 # These are actually symbolic links to a samba share of my windows box
 #   /share/leninbackup/speedtest*.json
 # The web services see them as /home/www/log/data/*
-my $LINUX_FILE      = '/share/leninbackup/speedtest_wifi.json';
-my $WINDOWS_FILE    = '/share/leninbackup/speedtest.json';
-my $AVERAGE_FILE    = '/share/leninbackup/speedtest_avg.json';
+my $LINUX_FILE      = '/home/www/log/data/speedtest_linux.json';
+my $WINDOWS_FILE    = '/home/www/log/data/speedtest_windows.json';
+my $AVERAGE_FILE    = '/home/www/log/data/speedtest_avg.json';
 my $DATABASE        = open_postgres_db($PG_DB);
 
 upload_results($DATABASE, $LINUX_FILE);
