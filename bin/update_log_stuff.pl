@@ -32,6 +32,8 @@ my $NEW_DATE_CACHE      = "$LOG_DIR/date_counts.json";
 my $NEW_PINKFISH_CACHE  = "$LOG_DIR/pinkfish.json";
 my $NEW_PIE_CACHE       = "$LOG_DIR/pie.json";
 my $MUD_SPEAKER_FILE    = "$LOG_DIR/i3.speakers";
+my $HACKLOG             = "/home/wiley/HACKLOG";
+my $REV_HACKLOG         = "$LOG_DIR/HACKLOG.rev";
 
 sub open_postgres_db {
     my $DB_NAME = shift;
@@ -547,6 +549,32 @@ sub dump_speakers {
     print "done.\n";
 }
 
+sub reverse_hacklog {
+    local $| = 1;
+    print "Reversing HACKLOG for web interface...";
+
+    my $entries = {};
+    my $current = undef;
+
+    open FP, $HACKLOG or die "Cannot open $HACKLOG: $!";
+    while (<FP>) {
+        chomp;
+        if (/^\d\d\d\d\-\d\d\-\d\d$/) {
+            $current = $_;
+            $entries->{$current} = [$current];
+            next;
+        }
+        next if !defined $current;
+        push @{ $entries->{$current} }, $_;
+    }
+    close FP;
+
+    open FP, ">$REV_HACKLOG" or die "Cannot open $REV_HACKLOG: $!";
+    print FP join "\n", @{ $entries->{$_} } foreach reverse sort keys %{ $entries };
+    close FP;
+    print "done.\n";
+}
+
 sub main {
     print "Initializing...\n";
 
@@ -570,6 +598,7 @@ sub main {
     generate_pie_stuff($DATABASE);                              # $NEW_PIE_CACHE
 
     dump_speakers($speakers);                                   # Mud file i3.speakers
+    reverse_hacklog();
 
     print "Done!\n";
 }
