@@ -1,6 +1,6 @@
-20171028    Quixadhal
-    0601    Started HACKLOG, had already copied over config files for bash and vim
-            Got ssh access configured and setup for wiley's github
+2017-10-28
+    0601    Started HACKLOG, had already copied over config files for bash and
+            vim Got ssh access configured and setup for wiley's github
     0615    changed default /etc/apt/sources.list
 
                 deb http://security.debian.org/ stretch/updates main non-free contrib
@@ -12,7 +12,8 @@
     0631    apt-get install git
     0852    apt-get install python3 python3-pip
             apt-get install clang clang-3.8-doc llvm-3.8-doc
-            apt-get install manpages manpages-dev manpages-posix manpages-posix-dev man-db
+            apt-get install manpages manpages-dev manpages-posix
+                            manpages-posix-dev man-db
             apt-get install locales
             dpkg-reconfigure locales
                 set up en.US, en.AU, and jp UTF-8 languages
@@ -44,10 +45,10 @@
             cpan > install Rose::DB::Object
     2012    cpan > install CGI
 
-20171031    Quixadhal
+2017-10-31
     0131    apt-get install bc
 
-20171101    Quixadhal
+2017-11-01
     0722    apt-get install curl libcurl3-dev
     0749    cpan > install YAML
             apt-get install libssl-dev
@@ -55,514 +56,522 @@
             cpan > install LWP::Protocol::https
     0900    Added backup host IP to Google's API key registry so it can use it
 
-20171130    Quixadhal
+2017-11-30
     1800    Added mssql apt source, for amusement.
             apt-get install apt-transport-https
-            curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+            curl https://packages.microsoft.com/keys/microsoft.asc \
+            | sudo apt-key add -
 
-20171226    Wiley
+2017-12-26
     1454    Installed screen
 
-20180108    Wiley
+2018-01-08
     1728    Installed nmap
             apt install postgresql locales-all postgresql-doc libdbd-pg-perl
 
-20180202    Quixadhal
+2018-02-02
     1212    dpkg --add-architecture i386
 
----- Here ends the HACKLOG from my remote installation ---
----- From here on is my local installation ----
+    ---- Here ends the HACKLOG from my remote installation ---
+    ---- From here on is my local installation ----
 
 2019-01-07
 
-Installed Debian buster with Gnome desktop
-added contrib and non-free to apt sources.list
-
-apt install sudo
-apt install dkms build-essential linux-headers-amd64
-apt install git git-doc
-apt install vim-nox vim-doc
-
-Ugh... stupid nanny state politics...
-	To enable root logins from the X11 display manager (gdm)
-	edit /etc/gdm3/daemon.conf
-	add AllowRoot = true to the [Security] section
-	edit /etc/pam.d/gdm-password
-	comment out auth required pam_succeed_if.so user != root quiet_success
-
-apt install clang
-apt install manpages-posix
-
-Copied .inputrc, .vimrc, .vim/ from my home directory to both wiley and root
-Without doing this, cut/paste behavior via Putty was weird.
-
-apt install sqlite3 libsqlite3-dev libdbd-sqlite3-perl sqlite3-doc
-apt install libssl-dev libssl-doc
-apt install libpcre3-dev libpcre3-dbg sqlite3-pcre
-
-Chagned /etc/ssh/sshd_config to allow logins without an X11 login already established.
-    PubkeyAuthentication yes
-    PasswordAuthentication yes
-    PermitEmptyPasswords yes
-    ChallengeResponseAuthentication yes
-    UsePAM yes
-    AllowTcpForwarding yes
-    X11Forwarding yes
-    PermitTTY yes
-    PrintMotd no
-    TCPKeepAlive yes
-
-OK, this is weird... sshd refused connections for FOUR MINUTES after a reboot?  WTF???
-Why would it not start immediately, even before X11 was finished setting itself up?
-
-https://daniel-lange.com/archives/152-Openssh-taking-minutes-to-become-available,-booting-takes-half-an-hour-...-because-your-server-waits-for-a-few-bytes-of-randomness.html
-
-That's why.  Hell.
-
-Well, the "fix" for this is to edit /etc/default/grub
-
-    GRUB_CMDLINE_LINUX_DEFAULT="quiet random.trust_cpu=on"
-    GRUB_CMDLINE_LINUX="random.trust_cpu=on"
-
-apt install flex bison autoconf automake libtool binutils
-apt install gnu-standards autoconf-doc gettext bison-doc flex-doc libtool-doc
-apt install m4-doc autoconf-archive doc-base gettext-doc
-apt install zlib1g-dev
-apt install libwww-shorten-perl
-apt install liblog-log4perl-perl
-apt install readline-doc libterm-readline-gnu-perl
-apt install libjson-perl
-
-More weirdness with sshd...
-    Had to disable keepalive, as it prevented more than a single SSH session from working.
-
-apt install php php-pear
-apt install php-mbstring
-apt install libdate-manip-perl
-apt install libnet-telnet-perl
-apt install libcgi-pm-perl
-cpan
-    install HTML::FromANSI
-apt install libhtml-tableextract-perl
-apt install libgd-perl libgd-dev
-apt install libclass-accessor-perl
-cpan
-    install File::SAUCE
-
-Now that the pre-reqs are done, we can hand-install Image::ANSI, since
-the author removed it from CPAN to push his newer version, which simply doesn't
-work the same way.
-
-Should we ever lose the tarball of this module, we'll have to rewrite our perl
-code, which will be a PITA.
-
-apt install libparallel-forkmanager-perl
-apt install subversion cvs
-
-apt install mtr
-
-apt install ipset
-
-iptables-persistent apparently does NOTHING, or at least does it wrong...
-apt remove iptables-persistent
-
-    *sigh*
-    Fine.  To configure ipset, creat a blacklist table and then add all the entries to it.
-        create blacklist hash:ip family inet hashsize 4096 maxelem 65536
-        add blacklist 211.159.155.202
-        add blacklist 150.109.73.131
-        add blacklist 118.25.236.78
-        add blacklist 118.89.161.221
-        add blacklist 103.60.222.49
-        add blacklist 132.232.142.195
-        add blacklist 190.85.81.27
-    Then, do ipset save blacklist >/etc/iptables/ipset.blacklist
-
-    Once the blacklist exists, do this:
-
-        iptables -I INPUT -m set --match-set blacklist src -j DROP
-        iptables -I FORWARD -m set --match-set blacklist src -j DROP
-
-    and then iptables-save > /etc/iptables/rules.v4
-
-    NOW, to restore the rules at boot time (more-or-less), we hack 
-        /etc/network/if-up.d/ and make a new script called ipset-restore
-
-        #!/bin/sh
-
-        # This is a kludge to make ipset and iptables restore their rulesets
-        # at boot time.
-
-        # We pin this to loopback, as normally that interface should always
-        # come up AND isn't likely to go down, thus it should only happen once
-        # per boot cycle.
-
-        if [ "$IFACE" == "lo" ]; then
-            if [ "$ADDRFAM" == "inet" ]; then
-                ipset restore < /etc/iptables/ipset.blacklist
-                iptables-restore < /etc/iptables/rules.v4
-            fi
-        fi
-
-    and hopefully, this gets run after loopback comes up.  It would be ideal to have it
-    only run after ALL network interfaces are up, but systemd makes this extremely hard
-    to do.
-
-Hippy linux freaks.... a VM has no need to "suspend" or "hibernate"...
-    systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
-
-Restore crontab for mudlist generation:
-    0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-
-apt install rsync
-
-Damnit, stop re-enablng ipv6 when it's not going to work anyways...
-
-/etc/sysctl.conf:
-    net.ipv6.conf.all.disable_ipv6 = 1
-    net.ipv6.conf.default.disable_ipv6 = 1
-    net.ipv6.conf.lo.disable_ipv6 = 1
-
-/etc/ssh/sshd_conf:
-    AddressFamily inet
-
-/etc/postfix/main.cf:
-    inet_interfaces = 127.0.0.1
-
-apt install samba
-smbpasswd -a wiley
-
-Made some changes to /etc/samba/smb.conf
-    # Samba versions
-    # NT1 -- old CIFS version
-    # SMB2 -- updated for vista and windows 7
-    # SMB3 -- updated for windows 8
-
-    client min protocol = SMB3
-    client max protocol = SMB3
-    server min protocol = SMB3
-    server max protocol = SMB3
-    socket options = TCP_NODELAY
-    #security = user
-    server signing = auto
-    client signing = auto
-    local master = no
-    domain master = no
-    preferred master = no
-    os level = 10
-
-    [homes]
-       comment = Home Directories
-       browseable = no
-       read only = no
-       create mask = 0755
-       directory mask = 0755
-
-    [tmp]
-        comment = Temporary Stuff
-        read only = no
-        locking = no
-        path = /tmp
-        guest ok = yes
-
-And even MORE hippy crap....
-    root@wileymud3:/home/wiley# su - Debian-gdm -s /bin/bash
-    Debian-gdm@wileymud3:~$ dbus-launch gsettings range org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
-    enum
-    'blank'
-    'suspend'
-    'shutdown'
-    'hibernate'
-    'interactive'
-    'nothing'
-    'logout'
-    Debian-gdm@wileymud3:~$ dbus-launch gsettings get org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
-    'suspend'
-    Debian-gdm@wileymud3:~$ dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
-    Debian-gdm@wileymud3:~$ logout
-
-No, seriously.. it's a virtual machine.
-There will be NO hugging of trees by making it "suspend".
-
-crontab now:
-    # m h  dom mon dow   command
-    0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-    25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
-    30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
-
-apt install perl-doc
-apt install python3-pip python3-twisted python-attr-doc python-crypto-doc python-openssl-doc
-    python-secretstorage-doc python-setuptools-doc python3-examples fonts-roboto
-    python-openssl python3-pampy python-cryptography-doc python-enum34-doc
-
-apt install default-jre default-jdk
-    ant jython antlr javacc ant-doc libregexp-java liblog4j2-java libjsch-java
-    javacc-doc junit-doc jython-doc libpostgresql-jdbc-java libcommons-logging-java-doc
-    openjdk-11-source libcompress-lzf-java liblog4j2-java-doc
-    libcommons-net-java libcommons-net-java-doc liboro-java
-
-apt install libdata-serializer-perl
-apt install libdate-calc-perl
-
-apt install php-sqlite3
-
-updated crontab:
-    # m h  dom mon dow   command
-    1 3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-    25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
-    30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
-    5 1,7,13,19 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --no-pause >/dev/null 2>&1 &
-
-OK, undid all my anti-IPv6 changes (see above), since at Adam's prodding, I got my network
-working with IPv6, as my ISP does support it.
-
-For posterity, the main change in the router (beyond re-enabling it) was to tell it to
-get an IPv6 address via SLAAC... it defaulted to DHCPv6, which does NOT work.  Once that was
-done, I tweaked Windows 10 to "Prefer IPv6 over IPv4", rebooted everything, and it appears
-to be functional.
-
-It does seem slightly snappier, although it's hard to say if that's just from the fresh reboot
-or because we're no longer using some transparent proxy 6to4 tunnel for everything.  Time
-will tell, I guess.
-
-I must say though,  172.92.143.166 is MUCH easier to remember than
-2604:4080:1311:b8e1:c5e4:30cb:4f15:fdcc.  Whomever dreamed up that numbering system
-needs to be forced to type it as a data entry clerk in hell for all eternity, with
-lashings every time they make a typo.
-
-apt install postgresql postgresql-doc libpostgresql-jdbc-java libpostgresql-jdbc-java-doc
-    libdbd-pg-perl postgresql-plperl postgresql-plpython3 php-pgsql
-
-apt install apt-file
-    apt-file update
-
-apt install whois
-
-Adjusted /etc/postgresql/11/main/pg_hba.conf
-    local   all             wiley                                   md5
-
-apt install libpq-dev libpqtypes-dev libpqxx-dev libpq5 libpqxx-doc
-
-updated crontab:
-    # m h  dom mon dow   command
-    1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-    25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
-    30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
-    5 1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
-    #0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
-    20 2 * * * (cd /home/wiley/public_html && /usr/bin/tar -cf logdata.tar logdata) >/dev/null 2>&1 &
-    10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
-    5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
-
-apt install ffmpeg
-
-updated crontab:
-    # m h  dom mon dow   command
-    1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-    5 0,1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
-    0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
-    5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
-    10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
-    25 2 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logdata.tar.xz logdata) >/dev/null 2>&1 &
-    35 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
-    10 3 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logpages.tar.xz logpages) >/dev/null 2>&1 &
-    30 3 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
-
-apt install atop nethogs pgtop kerneltop
-apt install gdb
-
-apt install figlet php-text-figlet toilet toilet-fonts
-
-apt install build-essential libgtk3-perl libgoocanvas-2.0-dev wmctrl libsox-fmt-all timidity
-cpan
-    install Archive::Extract File::HomeDir File::ShareDir File::ShareDir::Install
-    install GooCanvas2 JSON Net::OpenSSH Path::Tiny Regexp::IPv6 X11::WMCtrl
-
-apt install locate
-    . /etc/cron.daily/locate
-
-cpan
-    install Bundle::CPAN
-    install Time::HiRes
-    install Log::Log4perl
-
-apt install libmoose-perl libmoosex-types-perl libmoosex-getopt-perl
-    libmoosex-log-log4perl-perl libmoosex-nonmoose-perl libmoosex-singleton-perl
-    libmoosex-role-timer-perl libmoosex-storage-perl libmoosex-util-perl
-    libmoosex-async-perl libmoosex-undeftolerant-perl libcurses-perl
-    libio-pty-perl libsocket-getaddrinfo-perl libsocket6-perl libterm-readkey-perl
-
-apt install libmoosex-strictconstructor-perl libmoosex-params-validate-perl
-    libmoosex-types-structured-perl libmoosex-classattribute-perl
-    libmoosex-daemonize-perl
-
-apt install libelf-dev
-
-apt install default-libmysqlclient-dev
-
-#   For the old hardware ONLY...
-    apt install firmware-misc-nonfree
-    apt install r8168-dkms
-
-apt install fping
-
-apt install libboost-dev
-
-cpan
-    install Image::Size
-
-apt install libapache2-mod-bw
-
-cpan
-    install Image::MetaData::JPEG
-
----- Only for the VM ----
-Upgraded virtualbox to 6.x
-Installed guest tools
-setup shared folders for the pictures and videos from my desktop
-so they can be accessed "directly" without needing to go through samba
-
-usermod -a -G vboxsf wiley
-
-apt install minidlna
-edit /etc/minidlna.conf
-    media_dir=P,/media/sf_Pictures
-    media_dir=V,/media/sf_Videos
-    db_dir=/var/cache/minidlna
-    log_dir=/var/log
-    friendly_name=WileyMUD
-
-usermod -a -G vboxsf minidlna
-
-also, when upgrading kernels, and especially when upgrading versions of
-VirtualBox, you must re-install/rebuild the kernel modules for the
-extensions to work properly.
-
-apt install build-essential module-assistant
-m-a prepare
-
-Click on "install guest additions" from the VM's devices menu
-mount /media/cdrom
-
-bash VBoxLinuxAdditions.run
-
----- Only for the VM ----
-
-apt install cdparanoia flac lame vorbis-tools
-
---- To upgrade postgresql (forgot to add this earlier)
-
-apt install postgresql-plperl-12
-pg_dropcluster --stop 12 main
-systemctl daemon-reload
-pg_upgradecluster 11 main
-systemctl daemon-reload
-
-apt install libimage-exiftool-perl libencode-hanextra-perl
-apt install rtorrent
-
-apt install build-essential bison libevent-dev libjemalloc-dev libpcre3-dev
-    libpq-dev libsqlite3-dev libssl-dev libz-dev cmake cmake-doc libmariadb-dev
-
-cpan
-    install Sort::Naturally::ICU
-
-cpan
-    install CPAN::DistnameInfo
-
-apt install libcrypt-ssleay-perl libnet-ssleay-perl libnet-server-perl
-
-apt install libio-aio-perl libio-event-perl
-
-apt install lynx
-cpan
-    install HTML::FormatText::Lynx HTML::FormatText::Html2text
-    o conf lynx /usr/bin/lynx
-    o conf commit
-    install  POE::Component::Log4perl
-
-apt install mercurial
-
-apt install python3-pep8 python3-flake8 python3-autopep8
-
-cpan
-    install Try::Tiny::SmartCatch
-
-  490  apt install kodi-repository-kodi
-  493  apt install kodi kodi-addons-dev libkodiplatform-dev
-
-cpan
-    install Proc::ProcessTable
-    install forks
-
-cpan
-    install Config::Tiny
-
-apt install units
-
-cpan
-    install Imager::QRCode
-
-apt install curl
-
-A recent update broke python 2 by removing the soft-link to it, so...
-    sudo -s
-    cd /usr/bin
-    ln -s python2 python
-
-
---- To upgrade postgresql (forgot to add this earlier)
---- Interestingly, pg_dump sticks to the old version, so you can't
-    do a backup of the freshly installed (and empty) cluster before
-    nuking it?
-
-    Ahhhh, sneaky.  pg_dump and friends are all actually links to
-    a pg_wrapper script which has its own man page, and has an
-    option --cluster, which is not documented in the man pages of
-    the actual tools.  Nice...
-
-    So anyways, here's the process.
-
-    crontab -e # edit out all the cron entries that update things db related
-    systemctl stop apache2
-    systemctl stop diskworld
-    systemctl stop wileymud
-
-    apt install postgresql-plperl-13
-
-    sudo -s
-    su - postgres
-
-    pg_dumpall --cluster 13/main >new_13.sql
-    pg_dumpall --cluster 12/main >backup_12.sql
-
---- Oh yeah, don't forget to apt install postgresql-plperl-13
-
-    pg_dropcluster --stop 13 main
-    systemctl daemon-reload
-    pg_upgradecluster 12 main
-    systemctl daemon-reload
-
-    systemctl start apache2
-    systemctl start wileymud
-    systemctl start diskworld
-    crontab -e # restore the commented out entries
-
---- Fun huh?  Well, it seems to have worked.
-
-    Probably go bzip2 the backup and keep it around for a bit...
-
---- New stuff to prep for VM conversion back to this hardware.
-
-    apt install broadcom-sta-dkms
-    apt install mutt
+    Installed Debian buster with Gnome desktop
+    added contrib and non-free to apt sources.list
+
+    apt install sudo
+    apt install dkms build-essential linux-headers-amd64
+    apt install git git-doc
+    apt install vim-nox vim-doc
+
+    Ugh... stupid nanny state politics...
+            To enable root logins from the X11 display manager (gdm)
+            edit /etc/gdm3/daemon.conf
+            add AllowRoot = true to the [Security] section
+            edit /etc/pam.d/gdm-password
+            comment out auth required pam_succeed_if.so user != root quiet_success
+
+    apt install clang
+    apt install manpages-posix
+
+    Copied .inputrc, .vimrc, .vim/ from my home directory to both wiley and root
+    Without doing this, cut/paste behavior via Putty was weird.
+
+    apt install sqlite3 libsqlite3-dev libdbd-sqlite3-perl sqlite3-doc
+    apt install libssl-dev libssl-doc
+    apt install libpcre3-dev libpcre3-dbg sqlite3-pcre
+
+    Chagned /etc/ssh/sshd_config to allow logins without an X11 login already
+    established.
+        PubkeyAuthentication yes
+        PasswordAuthentication yes
+        PermitEmptyPasswords yes
+        ChallengeResponseAuthentication yes
+        UsePAM yes
+        AllowTcpForwarding yes
+        X11Forwarding yes
+        PermitTTY yes
+        PrintMotd no
+        TCPKeepAlive yes
+
+    OK, this is weird... sshd refused connections for FOUR MINUTES after
+    a reboot?  WTF???  Why would it not start immediately, even before X11
+    was finished setting itself up?
+
+    https://daniel-lange.com/archives/152-Openssh-taking-minutes-to-become-available,-booting-takes-half-an-hour-...-because-your-server-waits-for-a-few-bytes-of-randomness.html
+
+    That's why.  Hell.
+
+    Well, the "fix" for this is to edit /etc/default/grub
+
+        GRUB_CMDLINE_LINUX_DEFAULT="quiet random.trust_cpu=on"
+        GRUB_CMDLINE_LINUX="random.trust_cpu=on"
+
+    apt install flex bison autoconf automake libtool binutils
+    apt install gnu-standards autoconf-doc gettext bison-doc flex-doc libtool-doc
+    apt install m4-doc autoconf-archive doc-base gettext-doc
+    apt install zlib1g-dev
+    apt install libwww-shorten-perl
+    apt install liblog-log4perl-perl
+    apt install readline-doc libterm-readline-gnu-perl
+    apt install libjson-perl
+
+    More weirdness with sshd...
+        Had to disable keepalive, as it prevented more than a single SSH session
+        from working.
+
+    apt install php php-pear
+    apt install php-mbstring
+    apt install libdate-manip-perl
+    apt install libnet-telnet-perl
+    apt install libcgi-pm-perl
     cpan
-        install pQuery
-        install File::Random
-        install Chart::Pie
+        install HTML::FromANSI
+    apt install libhtml-tableextract-perl
+    apt install libgd-perl libgd-dev
+    apt install libclass-accessor-perl
+    cpan
+        install File::SAUCE
+
+    Now that the pre-reqs are done, we can hand-install Image::ANSI, since
+    the author removed it from CPAN to push his newer version, which simply
+    doesn't work the same way.
+
+    Should we ever lose the tarball of this module, we'll have to rewrite our perl
+    code, which will be a PITA.
+
+    apt install libparallel-forkmanager-perl
+    apt install subversion cvs
+
+    apt install mtr
+
+    apt install ipset
+
+    iptables-persistent apparently does NOTHING, or at least does it wrong...
+    apt remove iptables-persistent
+
+        *sigh*
+        Fine.  To configure ipset, creat a blacklist table and then add all
+        the entries to it.
+            create blacklist hash:ip family inet hashsize 4096 maxelem 65536
+            add blacklist 211.159.155.202
+            add blacklist 150.109.73.131
+            add blacklist 118.25.236.78
+            add blacklist 118.89.161.221
+            add blacklist 103.60.222.49
+            add blacklist 132.232.142.195
+            add blacklist 190.85.81.27
+        Then, do ipset save blacklist >/etc/iptables/ipset.blacklist
+
+        Once the blacklist exists, do this:
+
+            iptables -I INPUT -m set --match-set blacklist src -j DROP
+            iptables -I FORWARD -m set --match-set blacklist src -j DROP
+
+        and then iptables-save > /etc/iptables/rules.v4
+
+        NOW, to restore the rules at boot time (more-or-less), we hack 
+            /etc/network/if-up.d/ and make a new script called ipset-restore
+
+            #!/bin/sh
+
+            # This is a kludge to make ipset and iptables restore their rulesets
+            # at boot time.
+
+            # We pin this to loopback, as normally that interface should always
+            # come up AND isn't likely to go down, thus it should only happen once
+            # per boot cycle.
+
+            if [ "$IFACE" == "lo" ]; then
+                if [ "$ADDRFAM" == "inet" ]; then
+                    ipset restore < /etc/iptables/ipset.blacklist
+                    iptables-restore < /etc/iptables/rules.v4
+                fi
+            fi
+
+        and hopefully, this gets run after loopback comes up.  It would be ideal
+        to have it only run after ALL network interfaces are up, but systemd makes
+        this extremely hard to do.
+
+    Hippy linux freaks.... a VM has no need to "suspend" or "hibernate"...
+        systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+
+    Restore crontab for mudlist generation:
+        0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+
+    apt install rsync
+
+    Damnit, stop re-enablng ipv6 when it's not going to work anyways...
+
+    /etc/sysctl.conf:
+        net.ipv6.conf.all.disable_ipv6 = 1
+        net.ipv6.conf.default.disable_ipv6 = 1
+        net.ipv6.conf.lo.disable_ipv6 = 1
+
+    /etc/ssh/sshd_conf:
+        AddressFamily inet
+
+    /etc/postfix/main.cf:
+        inet_interfaces = 127.0.0.1
+
+    apt install samba
+    smbpasswd -a wiley
+
+    Made some changes to /etc/samba/smb.conf
+        # Samba versions
+        # NT1 -- old CIFS version
+        # SMB2 -- updated for vista and windows 7
+        # SMB3 -- updated for windows 8
+
+        client min protocol = SMB3
+        client max protocol = SMB3
+        server min protocol = SMB3
+        server max protocol = SMB3
+        socket options = TCP_NODELAY
+        #security = user
+        server signing = auto
+        client signing = auto
+        local master = no
+        domain master = no
+        preferred master = no
+        os level = 10
+
+        [homes]
+           comment = Home Directories
+           browseable = no
+           read only = no
+           create mask = 0755
+           directory mask = 0755
+
+        [tmp]
+            comment = Temporary Stuff
+            read only = no
+            locking = no
+            path = /tmp
+            guest ok = yes
+
+    And even MORE hippy crap....
+        root@wileymud3:/home/wiley# su - Debian-gdm -s /bin/bash
+        Debian-gdm@wileymud3:~$ dbus-launch gsettings range org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type
+        enum
+        'blank'
+        'suspend'
+        'shutdown'
+        'hibernate'
+        'interactive'
+        'nothing'
+        'logout'
+        Debian-gdm@wileymud3:~$ dbus-launch gsettings get org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'suspend'
+        Debian-gdm@wileymud3:~$ dbus-launch gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-type 'nothing'
+        Debian-gdm@wileymud3:~$ logout
+
+    No, seriously.. it's a virtual machine.
+    There will be NO hugging of trees by making it "suspend".
+
+    crontab now:
+        # m h  dom mon dow   command
+        0 3,11,19 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+        25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+        30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+
+    apt install perl-doc
+    apt install python3-pip python3-twisted python-attr-doc python-crypto-doc 
+        python-openssl-doc python-secretstorage-doc python-setuptools-doc
+        python3-examples fonts-roboto python-openssl python3-pampy
+        python-cryptography-doc python-enum34-doc
+
+    apt install default-jre default-jdk
+        ant jython antlr javacc ant-doc libregexp-java liblog4j2-java libjsch-java
+        javacc-doc junit-doc jython-doc libpostgresql-jdbc-java
+        libcommons-logging-java-doc openjdk-11-source libcompress-lzf-java
+        liblog4j2-java-doc libcommons-net-java libcommons-net-java-doc liboro-java
+
+    apt install libdata-serializer-perl
+    apt install libdate-calc-perl
+
+    apt install php-sqlite3
+
+    updated crontab:
+        # m h  dom mon dow   command
+        1 3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+        25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+        30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+        5 1,7,13,19 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --no-pause >/dev/null 2>&1 &
+
+    OK, undid all my anti-IPv6 changes (see above), since at Adam's prodding, I
+    got my network working with IPv6, as my ISP does support it.
+
+    For posterity, the main change in the router (beyond re-enabling it) was to
+    tell it to get an IPv6 address via SLAAC... it defaulted to DHCPv6, which does
+    NOT work.  Once that was done, I tweaked Windows 10 to "Prefer IPv6 over IPv4",
+    rebooted everything, and it appears to be functional.
+
+    It does seem slightly snappier, although it's hard to say if that's just
+    from the fresh reboot or because we're no longer using some transparent proxy
+    6to4 tunnel for everything.  Time will tell, I guess.
+
+    I must say though,  172.92.143.166 is MUCH easier to remember than
+    2604:4080:1311:b8e1:c5e4:30cb:4f15:fdcc.  Whomever dreamed up that numbering
+    system needs to be forced to type it as a data entry clerk in hell for all
+    eternity, with lashings every time they make a typo.
+
+    apt install postgresql postgresql-doc libpostgresql-jdbc-java
+        libpostgresql-jdbc-java-doc libdbd-pg-perl postgresql-plperl
+        postgresql-plpython3 php-pgsql
+
+    apt install apt-file
+        apt-file update
+
+    apt install whois
+
+    Adjusted /etc/postgresql/11/main/pg_hba.conf
+        local   all             wiley                                   md5
+
+    apt install libpq-dev libpqtypes-dev libpqxx-dev libpq5 libpqxx-doc
+
+    updated crontab:
+        # m h  dom mon dow   command
+        1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+        25 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+        30 2 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+        5 1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
+        #0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
+        20 2 * * * (cd /home/wiley/public_html && /usr/bin/tar -cf logdata.tar logdata) >/dev/null 2>&1 &
+        10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
+        5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
+
+    apt install ffmpeg
+
+    updated crontab:
+        # m h  dom mon dow   command
+        1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+        5 0,1,4,7,10,13,16,19,22 * * * /home/wiley/bin/mklogpages.pl --overwrite --debug --start -3 --live --json --no-pause >/dev/null 2>&1 &
+        0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --no-pages --no-speakers --no-update --debug --live --no-json --no-pause >/dev/null 2>&1 &
+        5 2 * * * /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
+        10 2 * * * (cd /home/wiley/public_html && PGPASSWORD=tardis69 /usr/bin/pg_dump --clean --if-exists --no-owner i3log | /usr/bin/xz -9ceq -T0 >i3log.sql.xz) >/dev/null 2>&1 &
+        25 2 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logdata.tar.xz logdata) >/dev/null 2>&1 &
+        35 2 * * * /home/wiley/bin/cleanlogs >/dev/null 2>&1 &
+        10 3 * * * (cd /home/wiley/public_html && /usr/bin/tar -Jcf logpages.tar.xz logpages) >/dev/null 2>&1 &
+        30 3 * * * /home/wiley/bin/remote-backup >/dev/null 2>&1 &
+
+    apt install atop nethogs pgtop kerneltop
+    apt install gdb
+
+    apt install figlet php-text-figlet toilet toilet-fonts
+
+    apt install build-essential libgtk3-perl libgoocanvas-2.0-dev wmctrl
+        libsox-fmt-all timidity
+    cpan
+        install Archive::Extract File::HomeDir File::ShareDir File::ShareDir::Install
+        install GooCanvas2 JSON Net::OpenSSH Path::Tiny Regexp::IPv6 X11::WMCtrl
+
+    apt install locate
+        . /etc/cron.daily/locate
+
+    cpan
+        install Bundle::CPAN
+        install Time::HiRes
+        install Log::Log4perl
+
+    apt install libmoose-perl libmoosex-types-perl libmoosex-getopt-perl
+        libmoosex-log-log4perl-perl libmoosex-nonmoose-perl libmoosex-singleton-perl
+        libmoosex-role-timer-perl libmoosex-storage-perl libmoosex-util-perl
+        libmoosex-async-perl libmoosex-undeftolerant-perl libcurses-perl
+        libio-pty-perl libsocket-getaddrinfo-perl libsocket6-perl
+        libterm-readkey-perl
+
+    apt install libmoosex-strictconstructor-perl libmoosex-params-validate-perl
+        libmoosex-types-structured-perl libmoosex-classattribute-perl
+        libmoosex-daemonize-perl
+
+    apt install libelf-dev
+
+    apt install default-libmysqlclient-dev
+
+    #   For the old hardware ONLY...
+        apt install firmware-misc-nonfree
+        apt install r8168-dkms
+
+    apt install fping
+
+    apt install libboost-dev
+
+    cpan
+        install Image::Size
+
+    apt install libapache2-mod-bw
+
+    cpan
+        install Image::MetaData::JPEG
+
+    ---- Only for the VM ----
+    Upgraded virtualbox to 6.x
+    Installed guest tools
+    setup shared folders for the pictures and videos from my desktop
+    so they can be accessed "directly" without needing to go through samba
+
+    usermod -a -G vboxsf wiley
+
+    apt install minidlna
+    edit /etc/minidlna.conf
+        media_dir=P,/media/sf_Pictures
+        media_dir=V,/media/sf_Videos
+        db_dir=/var/cache/minidlna
+        log_dir=/var/log
+        friendly_name=WileyMUD
+
+    usermod -a -G vboxsf minidlna
+
+    also, when upgrading kernels, and especially when upgrading versions of
+    VirtualBox, you must re-install/rebuild the kernel modules for the
+    extensions to work properly.
+
+    apt install build-essential module-assistant
+    m-a prepare
+
+    Click on "install guest additions" from the VM's devices menu
+    mount /media/cdrom
+
+    bash VBoxLinuxAdditions.run
+
+    ---- Only for the VM ----
+
+    apt install cdparanoia flac lame vorbis-tools
+
+    --- To upgrade postgresql (forgot to add this earlier)
+
+    apt install postgresql-plperl-12
+    pg_dropcluster --stop 12 main
+    systemctl daemon-reload
+    pg_upgradecluster 11 main
+    systemctl daemon-reload
+
+    apt install libimage-exiftool-perl libencode-hanextra-perl
+    apt install rtorrent
+
+    apt install build-essential bison libevent-dev libjemalloc-dev libpcre3-dev
+        libpq-dev libsqlite3-dev libssl-dev libz-dev cmake cmake-doc libmariadb-dev
+
+    cpan
+        install Sort::Naturally::ICU
+
+    cpan
+        install CPAN::DistnameInfo
+
+    apt install libcrypt-ssleay-perl libnet-ssleay-perl libnet-server-perl
+
+    apt install libio-aio-perl libio-event-perl
+
+    apt install lynx
+    cpan
+        install HTML::FormatText::Lynx HTML::FormatText::Html2text
+        o conf lynx /usr/bin/lynx
+        o conf commit
+        install  POE::Component::Log4perl
+
+    apt install mercurial
+
+    apt install python3-pep8 python3-flake8 python3-autopep8
+
+    cpan
+        install Try::Tiny::SmartCatch
+
+      490  apt install kodi-repository-kodi
+      493  apt install kodi kodi-addons-dev libkodiplatform-dev
+
+    cpan
+        install Proc::ProcessTable
+        install forks
+
+    cpan
+        install Config::Tiny
+
+    apt install units
+
+    cpan
+        install Imager::QRCode
+
+    apt install curl
+
+    A recent update broke python 2 by removing the soft-link to it, so...
+        sudo -s
+        cd /usr/bin
+        ln -s python2 python
+
+
+    --- To upgrade postgresql (forgot to add this earlier)
+    --- Interestingly, pg_dump sticks to the old version, so you can't
+        do a backup of the freshly installed (and empty) cluster before
+        nuking it?
+
+        Ahhhh, sneaky.  pg_dump and friends are all actually links to
+        a pg_wrapper script which has its own man page, and has an
+        option --cluster, which is not documented in the man pages of
+        the actual tools.  Nice...
+
+        So anyways, here's the process.
+
+        crontab -e # edit out all the cron entries that update things db related
+        systemctl stop apache2
+        systemctl stop diskworld
+        systemctl stop wileymud
+
+        apt install postgresql-plperl-13
+
+        sudo -s
+        su - postgres
+
+        pg_dumpall --cluster 13/main >new_13.sql
+        pg_dumpall --cluster 12/main >backup_12.sql
+
+    --- Oh yeah, don't forget to apt install postgresql-plperl-13
+
+        pg_dropcluster --stop 13 main
+        systemctl daemon-reload
+        pg_upgradecluster 12 main
+        systemctl daemon-reload
+
+        systemctl start apache2
+        systemctl start wileymud
+        systemctl start diskworld
+        crontab -e # restore the commented out entries
+
+    --- Fun huh?  Well, it seems to have worked.
+
+        Probably go bzip2 the backup and keep it around for a bit...
+
+    --- New stuff to prep for VM conversion back to this hardware.
+
+        apt install broadcom-sta-dkms
+        apt install mutt
+        cpan
+            install pQuery
+            install File::Random
+            install Chart::Pie
 
 2020-12-24
----- This is the point where the VM HACKLOG cuts off
+    ---- This is the point where the VM HACKLOG cuts off
 
     Oh yeah, systemd...
         systemctl enable wileymud (or the path to the unit file)
@@ -584,50 +593,52 @@ A recent update broke python 2 by removing the soft-link to it, so...
         sudo apt-get install gnupg1 apt-transport-https dirmngr
         export INSTALL_KEY=379CE192D401AB61
         sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
-        echo "deb https://ookla.bintray.com/debian generic main" | sudo tee  /etc/apt/sources.list.d/speedtest.list
+        echo "deb https://ookla.bintray.com/debian generic main" \
+        | sudo tee  /etc/apt/sources.list.d/speedtest.list
         sudo apt-get update
         # Other non-official binaries will conflict with Speedtest CLI
         # Example how to remove using apt-get
         # sudo apt-get remove speedtest-cli
         sudo apt-get install speedtest
 
-To prioritize 5GHz over 2.4GHz...
-    sudo nmcli connection modify Dread_5748 connection.autoconnect-priority 10
+    To prioritize 5GHz over 2.4GHz...
+        sudo nmcli connection modify Dread_5748 connection.autoconnect-priority 10
 
-    This rewrite parts of /etc/NetworkManager/system-connections/...
+        This rewrite parts of /etc/NetworkManager/system-connections/...
 
-    root@lenin:/home/wiley# nmcli -f 'NAME,UUID,AUTOCONNECT,AUTOCONNECT-PRIORITY'
-    NAME                UUID                                  AUTOCONNECT  PRI
-    Dread_5748          5a704699-a2c6-44f7-b768-97feda5e22da  yes          10
-    Dread_2748          21b25bc1-97aa-4c39-8d44-f991435d1921  yes          0
-    Wired connection 1  6311c04f-8177-4d8f-a0d0-9fe12626df6f  yes          20
+        root@lenin:/home/wiley# nmcli -f 'NAME,UUID,AUTOCONNECT,AUTOCONNECT-PRIORITY'
+        NAME                UUID                                  AUTOCONNECT  PRI
+        Dread_5748          5a704699-a2c6-44f7-b768-97feda5e22da  yes          10
+        Dread_2748          21b25bc1-97aa-4c39-8d44-f991435d1921  yes          0
+        Wired connection 1  6311c04f-8177-4d8f-a0d0-9fe12626df6f  yes          20
 
-Heh, forgot to restore root's crontab entry for the banhammer.
-Also, tweaked that stuff to be a bit more reliable.
-(It now "forgives" people who got banned if they stop being naughty
-long enough to fall off the apache error logs)
+    Heh, forgot to restore root's crontab entry for the banhammer.
+    Also, tweaked that stuff to be a bit more reliable.
+    (It now "forgives" people who got banned if they stop being naughty
+    long enough to fall off the apache error logs)
 
-Did some more tweaking of the speedtest stuff.
+    Did some more tweaking of the speedtest stuff.
 
-We run speedtest CLI from cron to get the wifi speed, but... we also want
-the real network speed (wired).  To do that, we've set up a batch file on
-my windows desktop using Task Scheduler and symlinks from the web directory
-to our samba-mounted lenin backup directory.
+    We run speedtest CLI from cron to get the wifi speed, but... we also want
+    the real network speed (wired).  To do that, we've set up a batch file on
+    my windows desktop using Task Scheduler and symlinks from the web directory
+    to our samba-mounted lenin backup directory.
 
-    # m h  dom mon dow   command
-    1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-    0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1 &
-    1,5,10 0 * * * /home/wiley/bin/mklogpages.pl --no-pages --censor --no-json --no-pause >/dev/null 2>&1 &
-    0 2 * * *   /usr/bin/speedtest -s 6199 -uMbps -fjson-pretty >/home/wiley/public_html/speedtest_wifi.json 2>&1 &
-    3 1 * * *   /home/wiley/bin/do_backup >/dev/null 2>&1
+        # m h  dom mon dow   command
+        1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+        0,15,30,45 * * * * /home/wiley/bin/mklogpages.pl --overwrite --start -3 --json --censor --no-pause >/dev/null 2>&1 &
+        1,5,10 0 * * * /home/wiley/bin/mklogpages.pl --no-pages --censor --no-json --no-pause >/dev/null 2>&1 &
+        0 2 * * *   /usr/bin/speedtest -s 6199 -uMbps -fjson-pretty >/home/wiley/public_html/speedtest_wifi.json 2>&1 &
+        3 1 * * *   /home/wiley/bin/do_backup >/dev/null 2>&1
 
-and the batch file:
+    and the batch file:
 
-    C:\speedtest\speedtest.exe -s 6199 -uMbps -fjson-pretty >E:\Lenin\speedtest.json
+        C:\speedtest\speedtest.exe -s 6199 -uMbps -fjson-pretty >E:\Lenin\speedtest.json
 
-Set to run once per day at 2pm via Task Scheduler as a Basic Task, with highest privs,
-and run even if no user is logged in (but using my login credentials)
-I did set it to NOT run if we don't think we have a network connection...
+    Set to run once per day at 2pm via Task Scheduler as a Basic Task, with
+    highest privs, and run even if no user is logged in (but using my login
+    credentials) I did set it to NOT run if we don't think we have a network
+    connection...
 
 2021-01-06
     For amusement, changed the main site "page" to redirect to something more fun
@@ -635,9 +646,9 @@ I did set it to NOT run if we don't think we have a network connection...
 
         META HTTP-EQUIV="Refresh" Content="0; URL=http://wileymud.themud.org/~wiley/random_video.php"
 
-    ROFLMAO!  So, including this file in my server page causes any HTML that was in it to be included...
-    not a huge surprise, and normally not an issue since it's inside pre tags, right?  Well...
-    META header stuff still works.
+    ROFLMAO!  So, including this file in my server page causes any HTML that
+    was in it to be included...  not a huge surprise, and normally not an issue
+    since it's inside pre tags, right?  Well...  META header stuff still works.
 
     So the page was randomly redirecting itself to the commented example above.
 
@@ -670,7 +681,8 @@ I did set it to NOT run if we don't think we have a network connection...
 
 2021-02-04
     apt install libgpg-error-dev libgpgme-dev
-    pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip3 install -U
+    pip3 list --outdated --format=freeze | grep -v '^\-e' \
+        | cut -d = -f 1  | xargs -n1 pip3 install -U
     pip3 install -U python-dotenv discord.py
 
 2021-02-06
@@ -697,7 +709,8 @@ I did set it to NOT run if we don't think we have a network connection...
     apt update
     apt install steamcmd -y
     ln -s /usr/games/steamcmd /usr/bin/steamcmd
-    steamcmd +force_install_dir /usr/games/valheim +login anonymous +app_update 896660 validate +quit
+    steamcmd +force_install_dir /usr/games/valheim \
+        +login anonymous +app_update 896660 validate +quit
     apt install htop
 
 2021-04-09
@@ -793,8 +806,8 @@ I did set it to NOT run if we don't think we have a network connection...
     run a little cooler... and no worries about spilling coffee into it now.
 
 2021-09-10
-----    Booting the VM up to update it to to roughy match our
-        live machine, and thus be a semi-portable backup.
+    ----    Booting the VM up to update it to to roughy match our
+            live machine, and thus be a semi-portable backup.
 
     First step, apt update and apt dist-upgrade, then convert to newer debian version
     like we did for the live version a few weeks ago.
@@ -1132,37 +1145,37 @@ I did set it to NOT run if we don't think we have a network connection...
 2022-04-16
     Yay, open source breaking my stuff again for no real reason....
 
-openssh (1:9.0p1-1) unstable; urgency=medium
+    openssh (1:9.0p1-1) unstable; urgency=medium
 
-  OpenSSH 9.0 includes a number of changes that may affect existing
-  configurations:
+      OpenSSH 9.0 includes a number of changes that may affect existing
+      configurations:
 
-   * This release switches scp(1) from using the legacy scp/rcp protocol to
-     using the SFTP protocol by default.
+       * This release switches scp(1) from using the legacy scp/rcp protocol to
+         using the SFTP protocol by default.
 
-     Legacy scp/rcp performs wildcard expansion of remote filenames (e.g.
-     "scp host:* .") through the remote shell. This has the side effect of
-     requiring double quoting of shell meta-characters in file names
-     included on scp(1) command-lines, otherwise they could be interpreted
-     as shell commands on the remote side.
+         Legacy scp/rcp performs wildcard expansion of remote filenames (e.g.
+         "scp host:* .") through the remote shell. This has the side effect of
+         requiring double quoting of shell meta-characters in file names
+         included on scp(1) command-lines, otherwise they could be interpreted
+         as shell commands on the remote side.
 
-     This creates one area of potential incompatibility: scp(1) when using
-     the SFTP protocol no longer requires this finicky and brittle quoting,
-     and attempts to use it may cause transfers to fail. We consider the
-     removal of the need for double-quoting shell characters in file names
-     to be a benefit and do not intend to introduce bug-compatibility for
-     legacy scp/rcp in scp(1) when using the SFTP protocol.
+         This creates one area of potential incompatibility: scp(1) when using
+         the SFTP protocol no longer requires this finicky and brittle quoting,
+         and attempts to use it may cause transfers to fail. We consider the
+         removal of the need for double-quoting shell characters in file names
+         to be a benefit and do not intend to introduce bug-compatibility for
+         legacy scp/rcp in scp(1) when using the SFTP protocol.
 
-     Another area of potential incompatibility relates to the use of remote
-     paths relative to other user's home directories, for example - "scp
-     host:~user/file /tmp". The SFTP protocol has no native way to expand a
-     ~user path. However, sftp-server(8) in OpenSSH 8.7 and later support a
-     protocol extension "expand-path@openssh.com" to support this.
+         Another area of potential incompatibility relates to the use of remote
+         paths relative to other user's home directories, for example - "scp
+         host:~user/file /tmp". The SFTP protocol has no native way to expand a
+         ~user path. However, sftp-server(8) in OpenSSH 8.7 and later support a
+         protocol extension "expand-path@openssh.com" to support this.
 
-     In case of incompatibility, the scp(1) client may be instructed to use
-     the legacy scp/rcp using the -O flag.
+         In case of incompatibility, the scp(1) client may be instructed to use
+         the legacy scp/rcp using the -O flag.
 
- -- Colin Watson <cjwatson@debian.org>  Sat, 09 Apr 2022 14:14:10 +0100
+     -- Colin Watson <cjwatson@debian.org>  Sat, 09 Apr 2022 14:14:10 +0100
 
 2022-05-06
     Yet more annoyances with modern Linux...
@@ -1738,12 +1751,12 @@ openssh (1:9.0p1-1) unstable; urgency=medium
     See "systemctl status nginx.service" and "journalctl -xeu nginx.service" for details.
     invoke-rc.d: initscript nginx, action "restart" failed.
     × nginx.service - A high performance web server and a reverse proxy server
-	 Loaded: loaded (/lib/systemd/system/nginx.service; enabled; preset: enabled)
-	 Active: failed (Result: exit-code) since Wed 2023-02-15 00:04:40 PST; 10ms ago
+         Loaded: loaded (/lib/systemd/system/nginx.service; enabled; preset: enabled)
+         Active: failed (Result: exit-code) since Wed 2023-02-15 00:04:40 PST; 10ms ago
        Duration: 2w 6d 4h 50min 29.781s
-	   Docs: man:nginx(8)
-	Process: 1063623 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=1/FAILURE)
-	    CPU: 27ms
+           Docs: man:nginx(8)
+        Process: 1063623 ExecStartPre=/usr/sbin/nginx -t -q -g daemon on; master_process on; (code=exited, status=1/FAILURE)
+            CPU: 27ms
 
     Feb 15 00:04:40 lenin systemd[1]: Starting nginx.service - A high performance web server and a reverse proxy server...
     Feb 15 00:04:40 lenin nginx[1063623]: 2023/02/15 00:04:40 [emerg] 1063623#1063623: a duplicate default server for 0.0.0.0:80 in /etc/nginx/sites-enabled/wileymud:127
@@ -2157,7 +2170,7 @@ openssh (1:9.0p1-1) unstable; urgency=medium
         systemctl start wileymud
         xz -9v backup_15.sql
 
------ This is where we start migrating to a new VM -----
+    ----- This is where we start migrating to a new VM -----
 
 2023-10-18
     OK, had to install Debian 12.2 STABLE to get vbox addons to work,
