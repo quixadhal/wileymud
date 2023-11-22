@@ -2371,3 +2371,53 @@ openssh (1:9.0p1-1) unstable; urgency=medium
 
     Screwed around with ssh keys and recompiling tinyfugue.
 
+2023-11-12
+    apt install speedtest
+
+2023-11-18
+    cpan
+        install HTML::BBReverse
+
+2023-11-21
+    So, since someone asked, I figured I'd look at making a test copy of
+    the WileyMUD VM so I could fiddle with it and make it bring things up
+    in a way that won't collide with the actual running/production version.
+
+    First thing to note, just unpacking the VM backup and adding it fails.
+    So, you basically have to make a new VM with a new name and give it the
+    same basic paramaters.  I probably could have edited things, but...
+    bear with me.
+
+    Once done, go into the network adapter settings and give it a new
+    randomized MAC address, so it can pull a different IP.
+
+    THEN the fun part, you can't add the .vdi image as your hard disk,
+    because virtualbox tracks hard drives by UUID and even if you rename
+    the file, it knows that disk belongs to the real VM.
+
+    But there's a nice command you can do...
+
+    $ /c/Program\ Files/Oracle/VirtualBox/VBoxManage.exe
+        internalcommands sethduuid WileyMUD-Test.vdi
+
+    UUID changed to: 9ced3ce0-d195-4dbc-8130-a6d7945da382
+
+    That assigns a new randomized UUID to the disk image file, so
+    you can now reuse it.
+
+    This is where I felt like stoping for now, as my back hurts... but
+    the next step would be to disable the network adapter so it CANNOT
+    jump out and try to get onto I3 or discord, as we don't want it to
+    collide with the real one.
+
+    Next steps will be to rename the MUD so I3 will see it as a test
+    version, and change the discord information so it doesn't double-post
+    there either.
+
+    Finally, remove my .git authenticaiton stuff and anything else that
+    would let the person who grabs the test copy become ME, and it should
+    be good to go.
+
+    That way, I can let people screw around with it as they like, and only
+    take over when I'm at the point where I'm forced to fully give it up.
+
