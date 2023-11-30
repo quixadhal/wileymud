@@ -2437,3 +2437,9 @@
     Last entry of the day, created a reversed version of this HACKLOG
     for the web interface, since anyone browsing it probably wants to see
     recent things, not what I did in 2017 3 virtual machines ago...
+
+2023-11-30
+    Pro-tip:  Upgrading the video drivers on the host causes VirtualBox
+    to crash, likely because it keeps hooks to the .DLLs of the driver
+    for the host/guest integration.  So, make sure you suspend or shutdown
+    any VMs first.
