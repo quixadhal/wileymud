@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 16.0 (Debian 16.0-2)
--- Dumped by pg_dump version 16.0 (Debian 16.0-2)
+-- Dumped from database version 15.5 (Debian 15.5-0+deb12u1)
+-- Dumped by pg_dump version 15.5 (Debian 15.5-0+deb12u1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -72,11 +72,11 @@ CREATE TABLE public.logfile (
 --
 
 CREATE VIEW public.logtail AS
- SELECT to_char(created, 'YYYY-MM-DD HH24:MI:SS'::text) AS created,
-    logtype,
-    message
+ SELECT to_char(logfile.created, 'YYYY-MM-DD HH24:MI:SS'::text) AS created,
+    logfile.logtype,
+    logfile.message
    FROM public.logfile
-  ORDER BY (to_char(created, 'YYYY-MM-DD HH24:MI:SS'::text))
+  ORDER BY (to_char(logfile.created, 'YYYY-MM-DD HH24:MI:SS'::text))
  OFFSET (( SELECT count(*) AS count
            FROM public.logfile logfile_1) - 20);
 
