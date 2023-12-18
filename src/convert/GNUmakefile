@@ -6,6 +6,7 @@ MACHINE     = #-mcpu=pentium2 -march=pentium2
 NEED_CRYPT  = -lcrypt #Linux needs this
 #NEED_COMPAT = -lcompat #BSD needs this
 NEED_SSL	= -lcrypto #MD5 checksum code
+OLD_MD5         = -DOPENSSL_API_COMPAT=10101
 
 W_FORMAT    = -Wformat -Wformat-security #-Wmissing-format-attribute
 W_NITPICK   = -Wpointer-arith -Winline
@@ -17,12 +18,13 @@ W_C_ONLY    = -Wmissing-declarations -Wimplicit-int -Wimplicit-function-declarat
 W_ANSI      = #-pedantic
 W_UBER      = -Wall #-W
 W_ERROR     = #-Werror
+W_DEPREC    = -Wno-deprecated-declarations
 
-W_ALL       = $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR)
+W_ALL       = $(W_ANSI) $(W_UBER) $(W_FORMAT) $(W_MESSY) $(W_FUNC) $(W_TYPE) $(W_EXTRA) $(W_NITPICK) $(W_ERROR) $(W_DEPREC)
 W_CLANG     = $(W_C_ONLY)
 
 #W_FLAGS     = $(W_ALL) $(W_CLANG)
-W_FLAGS		= -Werror -Wall # -Weverything
+W_FLAGS		= -Werror -Wall -Wno-deprecated-declarations # -Weverything
 
 OPT_FLAG    = -O0 #-pipe -O3 #-Wuninitialized
 
@@ -52,7 +54,7 @@ HDRS =	bug.h utils.h make_index.h main.h formats.h getopt.h \
 	dump_nightmare.h dump_ds.h dump_newmap.h \
 	dump_json.h json_room.h json_mob.h json_obj.h
 HDR =	$(addprefix include/, $(HDRS))
-LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(NEED_SSL) $(EFENCE) $(CJSON)
+LIB =	$(NEED_CRYPT) $(NEED_COMPAT) $(NEED_SSL) $(OLD_MD5) $(EFENCE) $(CJSON)
 AUX = GNUmakefile
 
 all : tests
@@ -76,7 +78,10 @@ run.log : convert
 	@date >>run.log
 	@echo Completed at `date`
 
-convert : $(OBJ)
+obj :
+	-@mkdir obj
+
+convert : obj $(OBJ)
 	$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIB)
 
 $(OBJ) : obj/%o : %c
