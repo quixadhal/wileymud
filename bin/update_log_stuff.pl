@@ -571,6 +571,7 @@ sub reverse_hacklog {
 
     open FP, ">$REV_HACKLOG" or die "Cannot open $REV_HACKLOG: $!";
     print FP join "\n", @{ $entries->{$_} } foreach reverse sort keys %{ $entries };
+    print FP "\n";
     close FP;
     print "done.\n";
 }

@@ -164,4 +164,4 @@ alias pip3b='/usr/bin/pip3 --break-system-packages'
 alias ipaddr="ip addr show dev wlp1s0 scope global | grep inet | awk '{print $2}'"
 
 alias yt='/home/wiley/bin/youtube-dl'
-alias ytm='/home/wiley/bin/youtube-dl -o "/home/www/stuff/%(title)s.%(ext)s"'
+alias ytm='/home/wiley/bin/youtube-dl -o "/home/www/stuff/Music/%(title)s.%(ext)s"'

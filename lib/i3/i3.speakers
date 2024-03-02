@@ -1,5 +1,5 @@
 #COUNT
-Count   3098
+Count   3117
 End
 
 #SPEAKER
@@ -280,6 +280,11 @@ End
 #SPEAKER
 Name   rhgh
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   carnage
+Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -2783,6 +2788,11 @@ Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
+Name   mxdnxss
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a presence
 Color  %^BLACK%^%^B_CYAN%^
 End
@@ -2880,6 +2890,11 @@ End
 #SPEAKER
 Name   drek
 Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   mateo
+Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
@@ -3040,6 +3055,21 @@ End
 #SPEAKER
 Name   marigold
 Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   ?
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   boco
+Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   soultune
+Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
@@ -4488,6 +4518,11 @@ Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
+Name   haar
+Color  %^MAGENTA%^
+End
+
+#SPEAKER
 Name   annabeth
 Color  %^BLACK%^%^B_GREEN%^
 End
@@ -4900,6 +4935,11 @@ End
 #SPEAKER
 Name   aiasa
 Color  %^GREEN%^
+End
+
+#SPEAKER
+Name   duzchip
+Color  %^RED%^
 End
 
 #SPEAKER
@@ -6428,6 +6468,11 @@ Color  %^MAGENTA%^
 End
 
 #SPEAKER
+Name   morris the mousse
+Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a chicken
 Color  %^WHITE%^%^B_MAGENTA%^
 End
@@ -6750,6 +6795,11 @@ End
 #SPEAKER
 Name   doom
 Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   majere_draven
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
@@ -8773,6 +8823,11 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   grimm
+Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
 Name   aammfdjagil
 Color  %^BLACK%^%^B_RED%^
 End
@@ -9100,6 +9155,11 @@ End
 #SPEAKER
 Name   folly
 Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   cyberpunker
+Color  %^YELLOW%^
 End
 
 #SPEAKER
@@ -9543,6 +9603,11 @@ Color  %^CYAN%^
 End
 
 #SPEAKER
+Name   talon ?
+Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
 Name   a hat
 Color  %^BLACK%^%^B_YELLOW%^
 End
@@ -9873,6 +9938,16 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   muffled
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   themadscripter
+Color  %^CYAN%^
+End
+
+#SPEAKER
 Name   acantha
 Color  %^GREEN%^%^BOLD%^
 End
@@ -10153,6 +10228,11 @@ Color  %^RED%^
 End
 
 #SPEAKER
+Name   goop
+Color  %^GREEN%^
+End
+
+#SPEAKER
 Name   ajhk
 Color  %^BLUE%^%^BOLD%^
 End
@@ -10340,6 +10420,11 @@ End
 #SPEAKER
 Name   oblisgr
 Color  %^RED%^%^BOLD%^
+End
+
+#SPEAKER
+Name   zemmi
+Color  %^ORANGE%^
 End
 
 #SPEAKER
@@ -14573,6 +14658,11 @@ Color  %^ORANGE%^
 End
 
 #SPEAKER
+Name   ginkeo
+Color  %^YELLOW%^
+End
+
+#SPEAKER
 Name   artanis
 Color  %^BLACK%^%^B_MAGENTA%^
 End
@@ -15210,6 +15300,11 @@ End
 #SPEAKER
 Name   gordov
 Color  %^MAGENTA%^%^BOLD%^
+End
+
+#SPEAKER
+Name   christophe
+Color  %^WHITE%^
 End
 
 #SPEAKER

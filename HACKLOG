@@ -2443,3 +2443,14 @@
     to crash, likely because it keeps hooks to the .DLLs of the driver
     for the host/guest integration.  So, make sure you suspend or shutdown
     any VMs first.
+
+2024-01-02
+    apt install ncal
+
+    -- might not apply to us?
+    libssl3 (3.1.4-2) unstable; urgency=medium
+
+      TLSv1.0, TLSv1.1 and DTLS 1.0 work only at security level 0 (it was
+      previously allowed at security level 0). If you are still using them, you
+      need lower security level (via CipherString = DEFAULT:@SECLEVEL=0)
+      additionally to the MinProtocol setting.

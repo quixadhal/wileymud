@@ -6,15 +6,15 @@ PreTitle           ~
 Title              the Human Supplicant/Believer/Swordpupil~
 Description
 ~
-LastSite           adork@d50-92-168-159.bchsia.telus.net~
-LastLogin          1344683590
+LastSite           adork@d99-199-165-46.bchsia.telus.net~
+LastLogin          1700762833
 Birth              1228495531
-Played             111
+Played             1083
 Sex                1
 Race               1
 Class              7
 Alignment          0
-Exp                13
+Exp                41
 Level              mage 1
 Level              cleric 1
 Level              warrior 1
@@ -26,11 +26,11 @@ PoofIn             ~
 PoofOut            ~
 AbilityScores      15 0 14 12 14 16
 AbilityPad         0 0 0 0
-HpManaMove         23 20 102 0 193 210
+HpManaMove         20 20 102 0 239 0
 AC                 100
 ToHitDamage        0 0
 SaveApply          0 0 0 0 0
-Conditions         0 23 23 0 0 0
+Conditions         0 12 8 0 0 0
 PointsPad1         0 0 0
 PointsPad2         0 0 0 0
 PointsPad3         0 0 0
@@ -38,7 +38,7 @@ ShortSavePad       0 0 0 0
 SavePad            0 0 0 0
 Pracs              9
 SkillsToLearn      0
-NamedSkill         1 0 0 armour~
+NamedSkill         1 0 0 armor~
 NamedSkill         2 0 0 teleport~
 NamedSkill         3 0 0 bless~
 NamedSkill         4 0 0 blindness~
@@ -182,7 +182,7 @@ NamedSkill         182 0 0 disarm trap~
 NamedSkill         183 0 0 disarm~
 NamedSkill         184 0 0 shield bash~
 NamedSkill         185 0 0 riding~
-ActFlags           0 0
+ActFlags           0 80
 Affect             0 0 0 0 0 0 0
 Affect             1 0 0 0 0 0 0
 Affect             2 0 0 0 0 0 0
@@ -208,9 +208,7 @@ Affect             21 0 0 0 0 0 0
 Affect             22 0 0 0 0 0 0
 Affect             23 0 0 0 0 0 0
 Affect             24 0 0 0 0 0 0
-i3perm       2
+i3perm       1
 i3flags      256
 i3listen     wiley
-IMCPerm      0
-IMCFlags     256
 End
