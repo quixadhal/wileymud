@@ -22377,7 +22377,7 @@ void i3_daily_summary()
         }
         PQclear(res);
 
-        snprintf(output, MAX_STRING_LENGTH, "I3 Activity on %s: %d messages from %d speakers.  Logs and MUD-list at %s",
+        snprintf(output, MAX_STRING_LENGTH, "I3 activity seen on %s: %d messages from %d speakers.  Logs and MUD-list at %s",
                  yesterday, messages, speakers, yesterurl);
         // The last parameter is the URL to link.  logpage_url is "now" and never changes,
         // yesterurl is the date matching the activity, and will change each day.

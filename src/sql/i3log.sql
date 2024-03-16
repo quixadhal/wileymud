@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 15.5 (Debian 15.5-0+deb12u1)
--- Dumped by pg_dump version 15.5 (Debian 15.5-0+deb12u1)
+-- Dumped from database version 15.6 (Debian 15.6-0+deb12u1)
+-- Dumped by pg_dump version 15.6 (Debian 15.6-0+deb12u1)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -3890,6 +3890,39 @@ carnage	%^GREEN%^%^BOLD%^
 carnage (neonmoo in gv)	%^BLACK%^%^B_YELLOW%^
 ginkeo	%^YELLOW%^
 mateo	%^MAGENTA%^%^BOLD%^
+muffled	%^BLUE%^%^BOLD%^
+muffled (apotheosis in gv)	%^GREEN%^
+mxdnxss	%^CYAN%^%^BOLD%^
+?	%^WHITE%^%^BOLD%^
+talon ?	%^BLACK%^%^BOLD%^
+? (mongoose in gv)	%^CYAN%^
+talon ? (mongoose in gv)	%^WHITE%^
+外国人	%^RED%^%^BOLD%^
+grinch	%^GREEN%^%^BOLD%^
+duzchip	%^RED%^
+goop	%^GREEN%^
+goop (elvindir in gv)	%^BLUE%^%^BOLD%^
+zemmi	%^ORANGE%^
+zemmi (mongoose in gv)	%^WHITE%^%^BOLD%^
+boco	%^BLUE%^
+haar	%^MAGENTA%^
+themadscripter	%^CYAN%^
+the mad scripter	%^WHITE%^%^B_MAGENTA%^
+christophe	%^WHITE%^
+christophe (neonmoo in gv)	%^BLACK%^%^B_GREEN%^
+majere_draven	%^RED%^%^BOLD%^
+soultune	%^GREEN%^%^BOLD%^
+cyberpunker	%^YELLOW%^
+cyberpunker (sindome in gv)	%^BLACK%^%^B_WHITE%^
+majere_draven (sindome in gv)	%^BLACK%^%^BOLD%^
+soultune (sindome in gv)	%^RED%^
+morris the mousse	%^MAGENTA%^%^BOLD%^
+morris the mousse (mongoose in gv)	%^ORANGE%^
+eggsaresides	%^BLUE%^%^BOLD%^
+eggsaresides (sindome in gv)	%^MAGENTA%^
+ominous	%^CYAN%^%^BOLD%^
+shamoly	%^WHITE%^%^BOLD%^
+tinsch	%^BLACK%^%^BOLD%^
 \.
 
 
