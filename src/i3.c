@@ -3045,7 +3045,9 @@ void allchan_log(int is_emote, char *channel, char *speaker, char *username, cha
         I3FCLOSE(fp);
     }
     allchan_sql(is_emote, channel, speaker, username, mud, str);
+#ifdef DISCORD
     allchan_discord(is_emote, channel, speaker, username, mud, str);
+#endif
 }
 
 char *color_time(struct tm *local)
