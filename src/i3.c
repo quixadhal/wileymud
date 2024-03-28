@@ -17958,7 +17958,9 @@ void i3_loop(void)
         time_to_taunt = getTimestamp() + I3_TAUNT_DELAY;
         i3_do_ping("Cron", "intergossip", "Dead Souls Dev");
         // This seems like a good time to check the I3 statistics too.
+#ifdef I3_DAILY
         i3_daily_summary();
+#endif
         //piss_off_shentino();
         log_info("Next ping in %s", stringTimestamp(time_to_taunt - getTimestamp()));
     }
