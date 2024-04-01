@@ -21,16 +21,16 @@ logger = logging.getLogger("lifx_packet_tools")
 
 MY_BULBS = (80, 81, 82, 83, 84, 85)
 BULB_NAMES = {
-        "all"           : (80, 81, 82, 83, 84, 85),
-        "front"         : (81, 82),
-        "back"          : (83, 84),
-        "others"        : (80, 85),
-        "frontleft"     : (81),
-        "frontright"    : (82),
-        "backright"     : (83),
-        "backleft"      : (84),
-        "kitchen"       : (80),
-        "bathroom"      : (85),
+        "all"           : [80, 81, 82, 83, 84, 85],
+        "front"         : [81, 82],
+        "back"          : [83, 84],
+        "others"        : [80, 85],
+        "frontleft"     : [81],
+        "frontright"    : [82],
+        "backright"     : [83],
+        "backleft"      : [84],
+        "kitchen"       : [80],
+        "bathroom"      : [85],
         }
 
 RETRIES = 5
