@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 
 """
-LiFX packet generator
+LiFX bulb control
 
-Simple implementation of colour-sending functionality,
-without the ACK/retry functionality. Send only, no listen.
-
-Author: Petr Klus
+Inspiried by the example from Petr Klus, whose packet
+code I am using almost verbatum.
 """
 
 import socket
@@ -16,6 +14,7 @@ import random
 from struct import pack, unpack
 import logging
 from textwrap import wrap
+import argparse
 
 logger = logging.getLogger("lifx_packet_tools")
 
@@ -31,6 +30,32 @@ BULB_NAMES = {
         "backleft"      : [84],
         "kitchen"       : [80],
         "bathroom"      : [85],
+        }
+COLORS = {
+        "red" : {
+            "hue" : 0,
+            "sat" : 100,
+            },
+        "green" : {
+            "hue" : 0,
+            "sat" : 100,
+            },
+        "blue" : {
+            "hue" : 0,
+            "sat" : 100,
+            },
+        "cyan" : {
+            "hue" : 0,
+            "sat" : 100,
+            },
+        "purple" : {
+            "hue" : 0,
+            "sat" : 100,
+            },
+        "yellow" : {
+            "hue" : 0,
+            "sat" : 100,
+            },
         }
 
 RETRIES = 5
@@ -181,98 +206,199 @@ def get_colour_zones_packet(start_index, end_index,
 
 
 def set_HSBK(bulb_ip, hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, dur=DURATION):
-    print(f"Sending {hue} {sat} {bri} {kel} {dur} => {bulb_ip}")
+    logger.warning(f"Sending {hue} {sat} {bri} {kel} {dur} => {bulb_ip}")
     for _ in range(RETRIES):
         sock.sendto(gen_packet(hue, sat, bri, kel, dur, SEQ_NUM),
                     (bulb_ip, UDP_PORT))
         #time.sleep(DELAY)
 
+
+class _CLI_ErrorParser(argparse.ArgumentParser):
+    """
+    The _CLI_ErrorParser is a subclass of argparse for the sole purpose of
+    allowing us to route error messages to the standard logging system.
+
+    :return: An object to handle argparse error output
+    :rtype: object
+    """
+
+    def error(self, message):
+        logger.fatal(message)
+        sys.exit(2)
+
+
+class _CLI_Args(object):
+    """
+    The _CLI_Args class is just a data holder so we can nicely use
+    the member notation to get at the values.  This is actually what
+    we return when someone tries to make a new instance of CLI_Args.
+
+    :return: An object holding the CLI argument values
+    :rtype: object
+    """
+
+    def __init__(self):
+        self.target = None
+        self.ipv4 = None
+        self.color = None
+        self.hue = None
+        self.saturation = None
+        self.value = None
+        self.kelvin = None
+        self.transition = None
+        self.test = None
+
+    def __str__(self):
+        return ', '.join([ '='.join([k,str(v)]) for k,v in self.__dict__.items() ])
+
+
+class _Arg_Range(argparse.Action):
+    def __init__(self, min=None, max=None, *args, **kwargs):
+        self.min = min
+        self.max = max
+        #kwargs["metavar"] = "%s [%d-%d]" % (kwargs['dest'], self.min, self.max)
+        super(_Arg_Range, self).__init__(*args, **kwargs)
+
+    def __call__(self, parser, namespace, value, option_string=None):
+        if not (self.min <= value <= self.max):
+            msg = 'invalid %s number: %r (choose from [%d-%d])' % \
+                (self.dest, value, self.min, self.max)
+            raise argparse.ArgumentError(self, msg)
+        setattr(namespace, self.dest, value)
+
+
+class CLI_Args(object):
+    """
+    The CLI_Args class uses argparse to pick apart command line arguments
+    and stores the results in the object.  It will then allow the arguments
+    passed to be queried.
+
+    :return: CLI argument values
+    :rtype: object
+    """
+
+    __instance = None       # There can only be one
+
+
+    def __new__(cls):
+        if cls.__instance is None:
+            parser = _CLI_ErrorParser(description='LiFX bulb control')
+            parser.add_argument('--target',
+                                choices=['all', 'front', 'back', 'others',
+                                         'frontleft', 'frontright',
+                                         'backright', 'backleft',
+                                         'kitchen', 'bathroom'],
+                                help='name for bulb set to adjust')
+            parser.add_argument('--ip',
+                                dest='ipv4', type=str,
+                                help='IPv4 address of target bulb')
+            parser.add_argument('--color',
+                                choices=['red', 'green', 'blue'],
+                                help='preset color to change bulb to')
+            parser.add_argument('--hue',
+                                nargs='?', type=int, action=_Arg_Range,
+                                default=HUE, min=0, max=360,
+                                help='Color hue [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--sat',
+                                dest='saturation',
+                                nargs='?', type=int, action=_Arg_Range,
+                                default=SATURATION, min=0, max=100,
+                                help='Color saturation [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--value',
+                                nargs='?', type=int, action=_Arg_Range,
+                                default=VALUE, min=0, max=100,
+                                help='Color brightness [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--kelvin',
+                                nargs='?', type=int, action=_Arg_Range,
+                                default=KELVIN, min=2500, max=9000,
+                                help='Kelvin base temperature [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--test',
+                                action='store_true',
+                                help='Do a test sequence for all bulbs')
+            args = parser.parse_args()
+            cls.__instance = _CLI_Args()
+            cls.__instance.target = args.target
+            cls.__instance.ipv4 = args.ipv4
+            cls.__instance.color = args.color
+            cls.__instance.hue = args.hue
+            cls.__instance.saturation = args.saturation
+            cls.__instance.value = args.value
+            cls.__instance.kelvin = args.kelvin
+            cls.__instance.test = args.test
+        return cls.__instance
+
+
 if __name__ == "__main__":
-    print(sys.argv)
+    args = CLI_Args()
 
-    # different for each execution
-
-    #print("Using sequence number:", SEQ_NUM)
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
-
-    arg_len = len(sys.argv)
-    if arg_len < 2:
-        print("Usage: " + sys.argv[0] + " <bulb IP> <hue> <saturation> <value> <kelvin> <transition>")
-        print("       <bulb IP> can be an IPv4 address or one of these names:")
-        print("       " + "\n       ".join(wrap(", ".join(BULB_NAMES.keys()))))
-        sys.exit()
-
-    bulb_ip = sys.argv[1]
-
-    if sys.argv[1] == "help":
-        print("Usage: " + sys.argv[0] + " <bulb IP> <hue> <saturation> <value> <kelvin> <transition>")
-        print("       <bulb IP> can be an IPv4 address or one of these names:")
-        print("       " + "\n       ".join(wrap(", ".join(BULB_NAMES.keys()))))
-        sys.exit()
-    elif sys.argv[1] == "test":
-        print("Testing H")
+    if args.test is True:
+        logger.setLevel(logging.ERROR)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
+        # 3500 was used in the original test case
+        logger.error("Testing Hue")
         for x in range(80):
             for b in MY_BULBS:
                 bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, 360/80*x, 100, 100, 3500, 100)
-            time.sleep(0.1)
-        print("Testing S")
+                set_HSBK(bulb_ip, 360/80*x, SATURATION, VALUE, KELVIN, DURATION)
+            time.sleep(0.25)
+        logger.error("Testing Saturation")
         for x in range(21):
             for b in MY_BULBS:
                 bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, 120, x*5, 100, 3500, 100)
-            time.sleep(0.1)
-        print("Testing B")
+                set_HSBK(bulb_ip, HUE, x*5, VALUE, KELVIN, DURATION)
+            time.sleep(0.5)
+        logger.error("Testing Value")
         for x in range(11):
             for b in MY_BULBS:
                 bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, 360, 100, x*10, 3500, 100)
-            time.sleep(0.1)
-        print("Testing K")
+                set_HSBK(bulb_ip, HUE, SATURATION, x*10, KELVIN, DURATION)
+            time.sleep(1.0)
+        logger.error("Testing Kelvin")
         for x in range(10):
             for b in MY_BULBS:
                 bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, 360, 0, 100, 6500/10*x+2500, 100)
-            time.sleep(0.3)
+                set_HSBK(bulb_ip, 360, 0, 100, 6500/10*x+2500, DURATION)
+            time.sleep(1.0)
+        logger.error("All done!")
+        for b in MY_BULBS:
+            bulb_ip = f"192.168.0.{b}"
+            set_HSBK(bulb_ip, 275, SATURATION, VALUE, KELVIN, DURATION)
+        sys.exit(1)
+
+    if args.target is None and args.ipv4 is None:
+        logger.fatal("You must specify a target, either by name or by IP address")
+        sys.exit(2)
+
+    if args.color is not None:
+        logger.fatal(f"color names are not yet supported, but you chose {args.color}")
+        sys.exit(2)
+
+    hue=HUE
+    sat=SATURATION
+    bri=VALUE
+    kel=KELVIN
+    dur=DURATION
+    bulb_ip = []
+
+    if args.target is not None:
+        for b in BULB_NAMES[args.target]:
+            bulb_ip += [f"192.168.0.{b}"]
     else:
-        hue=HUE
-        sat=SATURATION
-        bri=VALUE
-        kel=KELVIN
-        dur=DURATION
+        bulb_ip = [args.ipv4]
 
-        if arg_len > 2:
-            hue = int(sys.argv[2])
+    if args.hue is not None:
+        hue = args.hue
 
-        if arg_len > 3:
-            sat = int(sys.argv[3])
+    if args.saturation is not None:
+        sat = args.saturation
 
-        if arg_len > 4:
-            bri = int(sys.argv[4])
+    if args.value is not None:
+        bri = args.value
 
-        if arg_len > 5:
-            kel = int(sys.argv[5])
+    if args.kelvin is not None:
+        kelvin = args.kelvin
 
-        if arg_len > 6:
-            dur = int(sys.argv[6])
-
-        #hue, sat, bri, kel, dur = map(int, sys.argv[2:])
-
-        found = False
-        for k,v in BULB_NAMES.items():
-            if sys.argv[1] == k:
-                found = True
-                for b in v:
-                    bulb_ip = f"192.168.0.{b}"
-                    set_HSBK(bulb_ip, hue, sat, bri, kel, dur)
-
-        if not found:
-            set_HSBK(bulb_ip, hue, sat, bri, kel, dur)
-
-        #if sys.argv[1] == "all":
-        #    for b in MY_BULBS:
-        #        bulb_ip = f"192.168.0.{b}"
-        #        set_HSBK(bulb_ip, hue, sat, bri, kel, dur)
-        #else:
-        #    set_HSBK(bulb_ip, hue, sat, bri, kel, dur)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
+    for b in bulb_ip:
+        set_HSBK(b, hue, sat, bri, kel, dur)
 
