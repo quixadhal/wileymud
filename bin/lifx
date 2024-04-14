@@ -362,7 +362,7 @@ if __name__ == "__main__":
         logger.error("All done!")
         for b in MY_BULBS:
             bulb_ip = f"192.168.0.{b}"
-            set_HSBK(bulb_ip, 275, SATURATION, VALUE, KELVIN, DURATION)
+            set_HSBK(bulb_ip, 250, SATURATION, 25, KELVIN, DURATION)
         sys.exit(1)
 
     if args.target is None and args.ipv4 is None:

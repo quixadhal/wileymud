@@ -150,6 +150,7 @@ if [ -z `echo $PATH | grep "$HOME/.cargo/bin"` ]; then
 fi
 
 export PGPASSWORD=tardis69
+export DISPLAY=192.168.0.10:0
 
 alias wificonfig='sudo /sbin/iwconfig wlp1s0'
 alias wifi='sudo nmcli -f "CHAN,BARS,SIGNAL,SECURITY,FREQ,RATE,SSID" dev wifi'

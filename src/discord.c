@@ -411,6 +411,8 @@ void allchan_discord(int is_emote, const char *channel, const char *speaker,
     char *stripped = NULL;
     const char *match = NULL;
 
+    log_info("Discord processing: %s", message);
+
     markdown_channel = escape_discord_markdown(channel);
     markdown_speaker = escape_discord_markdown(speaker);
     markdown_mud = escape_discord_markdown(mud);

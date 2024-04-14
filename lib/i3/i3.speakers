@@ -1,5 +1,5 @@
 #COUNT
-Count   3117
+Count   3123
 End
 
 #SPEAKER
@@ -6003,6 +6003,11 @@ Color  %^GREEN%^
 End
 
 #SPEAKER
+Name   eggsaresides
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   araltaln
 Color  %^RED%^
 End
@@ -8980,6 +8985,16 @@ End
 #SPEAKER
 Name   courier
 Color  %^YELLOW%^
+End
+
+#SPEAKER
+Name   shamoly
+Color  %^WHITE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   tinsch
+Color  %^BLACK%^%^BOLD%^
 End
 
 #SPEAKER
@@ -11983,6 +11998,11 @@ Color  %^WHITE%^
 End
 
 #SPEAKER
+Name   judith
+Color  %^GREEN%^
+End
+
+#SPEAKER
 Name   a perched chicken
 Color  %^WHITE%^%^B_BLUE%^
 End
@@ -13005,6 +13025,16 @@ End
 #SPEAKER
 Name   terin
 Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   ominous
+Color  %^CYAN%^%^BOLD%^
+End
+
+#SPEAKER
+Name   miles
+Color  %^RED%^
 End
 
 #SPEAKER
