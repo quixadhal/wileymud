@@ -134,14 +134,21 @@ def gen_packet(hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, duration=DURATION
         return int(bri / 100.0 * 65535)  # percentage
 
     payload = b"\x00"
-    payload += pack("<H", calc_hue(hue))
-    payload += pack("<H", calc_sat(sat))
-    payload += pack("<H", calc_bri(bri))
-    payload += pack("<H", int(kel))
+    adjusted_hue = calc_hue(hue)
+    adjusted_sat = calc_sat(sat)
+    adjusted_bri = calc_bri(bri)
+    adjusted_kel = int(kel)
+    adjusted_dur = int(dur)
 
-    transition_time = pack("<L", DURATION)
+    payload += pack("<H", adjusted_hue)
+    payload += pack("<H", adjusted_sat)
+    payload += pack("<H", adjusted_bri)
+    payload += pack("<H", adjusted_kel)
+
+    transition_time = pack("<L", adjusted_dur)
     payload += transition_time
 
+    logger.debug(f"Sending {adjusted_hue} {adjusted_sat} {adjusted_bri} {adjusted_kel} {adjusted_dur} {seq_num} => {bulb_ip}")
     return gen_packet_universal(seq_num, MESSAGE_SET_COLOR, payload)
 
 
@@ -206,7 +213,7 @@ def get_colour_zones_packet(start_index, end_index,
 
 
 def set_HSBK(bulb_ip, hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, dur=DURATION):
-    logger.warning(f"Sending {hue} {sat} {bri} {kel} {dur} => {bulb_ip}")
+    logger.debug(f"Sending {hue} {sat} {bri} {kel} {dur} => {bulb_ip}")
     for _ in range(RETRIES):
         sock.sendto(gen_packet(hue, sat, bri, kel, dur, SEQ_NUM),
                     (bulb_ip, UDP_PORT))
@@ -242,8 +249,11 @@ class _CLI_Args(object):
         self.ipv4 = None
         self.color = None
         self.hue = None
+        self.target_hue = None
         self.saturation = None
+        self.target_saturation = None
         self.value = None
+        self.target_value = None
         self.kelvin = None
         self.transition = None
         self.test = None
@@ -296,20 +306,35 @@ class CLI_Args(object):
                                 choices=['red', 'green', 'blue'],
                                 help='preset color to change bulb to')
             parser.add_argument('--hue',
-                                nargs='?', type=int, action=_Arg_Range,
+                                nargs='?', type=float, action=_Arg_Range,
                                 default=HUE, min=0, max=360,
+                                help='Color hue [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--target-hue',
+                                dest='target_hue',
+                                nargs='?', type=float, action=_Arg_Range,
+                                default=None, min=0, max=360,
                                 help='Color hue [%(min)d-%(max)d] for bulb')
             parser.add_argument('--sat',
                                 dest='saturation',
-                                nargs='?', type=int, action=_Arg_Range,
+                                nargs='?', type=float, action=_Arg_Range,
                                 default=SATURATION, min=0, max=100,
                                 help='Color saturation [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--target-sat',
+                                dest='target_saturation',
+                                nargs='?', type=float, action=_Arg_Range,
+                                default=None, min=0, max=100,
+                                help='Color saturation [%(min)d-%(max)d] for bulb')
             parser.add_argument('--value',
-                                nargs='?', type=int, action=_Arg_Range,
+                                nargs='?', type=float, action=_Arg_Range,
                                 default=VALUE, min=0, max=100,
                                 help='Color brightness [%(min)d-%(max)d] for bulb')
+            parser.add_argument('--target-value',
+                                dest='target_value',
+                                nargs='?', type=float, action=_Arg_Range,
+                                default=None, min=0, max=100,
+                                help='Color brightness [%(min)d-%(max)d] for bulb')
             parser.add_argument('--kelvin',
-                                nargs='?', type=int, action=_Arg_Range,
+                                nargs='?', type=float, action=_Arg_Range,
                                 default=KELVIN, min=2500, max=9000,
                                 help='Kelvin base temperature [%(min)d-%(max)d] for bulb')
             parser.add_argument('--test',
@@ -321,8 +346,11 @@ class CLI_Args(object):
             cls.__instance.ipv4 = args.ipv4
             cls.__instance.color = args.color
             cls.__instance.hue = args.hue
+            cls.__instance.target_hue = args.target_hue
             cls.__instance.saturation = args.saturation
+            cls.__instance.target_saturation = args.target_saturation
             cls.__instance.value = args.value
+            cls.__instance.target_value = args.target_value
             cls.__instance.kelvin = args.kelvin
             cls.__instance.test = args.test
         return cls.__instance
@@ -374,6 +402,7 @@ if __name__ == "__main__":
         sys.exit(2)
 
     hue=HUE
+    target_hue = None
     sat=SATURATION
     bri=VALUE
     kel=KELVIN
@@ -389,6 +418,9 @@ if __name__ == "__main__":
     if args.hue is not None:
         hue = args.hue
 
+    if args.target_hue is not None:
+        target_hue = args.target_hue
+
     if args.saturation is not None:
         sat = args.saturation
 
@@ -399,6 +431,25 @@ if __name__ == "__main__":
         kelvin = args.kelvin
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
-    for b in bulb_ip:
-        set_HSBK(b, hue, sat, bri, kel, dur)
+
+    # To properly do target_sat and target_value as well, we need
+    # to calculate the three values in a single loop and then pass
+    # then along, rather than just a range() over each or one.
+
+    if target_hue is not None:
+        if target_hue > hue:
+            for h in range(int(hue*10), int(target_hue*10), 1):
+                for b in bulb_ip:
+                    set_HSBK(b, float(h/10.0), sat, bri, kel, dur)
+                    time.sleep(0.01)
+            set_HSBK(b, target_hue, sat, bri, kel, dur)
+        else:
+            for h in range(int(hue*10), int(target_hue*10), -1):
+                for b in bulb_ip:
+                    set_HSBK(b, float(h/10.0), sat, bri, kel, dur)
+                    time.sleep(0.01)
+            set_HSBK(b, target_hue, sat, bri, kel, dur)
+    else:
+        for b in bulb_ip:
+            set_HSBK(b, hue, sat, bri, kel, dur)
 
