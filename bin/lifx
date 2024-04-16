@@ -5,6 +5,9 @@ LiFX bulb control
 
 Inspiried by the example from Petr Klus, whose packet
 code I am using almost verbatum.
+
+Example: lifx --target all --hue 0 --target-hue 240 --brightness 40
+              --target-brightness 10 --time 60
 """
 
 import socket
