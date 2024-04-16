@@ -252,11 +252,12 @@ class _CLI_Args(object):
         self.target_hue = None
         self.saturation = None
         self.target_saturation = None
-        self.value = None
-        self.target_value = None
+        self.brightness = None
+        self.target_brightness = None
         self.kelvin = None
         self.transition = None
         self.test = None
+        self.time = None
 
     def __str__(self):
         return ', '.join([ '='.join([k,str(v)]) for k,v in self.__dict__.items() ])
@@ -324,12 +325,12 @@ class CLI_Args(object):
                                 nargs='?', type=float, action=_Arg_Range,
                                 default=None, min=0, max=100,
                                 help='Color saturation [%(min)d-%(max)d] for bulb')
-            parser.add_argument('--value',
+            parser.add_argument('--brightness',
                                 nargs='?', type=float, action=_Arg_Range,
                                 default=VALUE, min=0, max=100,
                                 help='Color brightness [%(min)d-%(max)d] for bulb')
-            parser.add_argument('--target-value',
-                                dest='target_value',
+            parser.add_argument('--target-brightness',
+                                dest='target_brightness',
                                 nargs='?', type=float, action=_Arg_Range,
                                 default=None, min=0, max=100,
                                 help='Color brightness [%(min)d-%(max)d] for bulb')
@@ -340,6 +341,10 @@ class CLI_Args(object):
             parser.add_argument('--test',
                                 action='store_true',
                                 help='Do a test sequence for all bulbs')
+            parser.add_argument('--time',
+                                nargs='?', type=float, action=_Arg_Range,
+                                default=None, min=0.5, max=900,
+                                help='Seconds to change bulb color for ranges [%(min)d-%(max)d]')
             args = parser.parse_args()
             cls.__instance = _CLI_Args()
             cls.__instance.target = args.target
@@ -349,10 +354,11 @@ class CLI_Args(object):
             cls.__instance.target_hue = args.target_hue
             cls.__instance.saturation = args.saturation
             cls.__instance.target_saturation = args.target_saturation
-            cls.__instance.value = args.value
-            cls.__instance.target_value = args.target_value
+            cls.__instance.brightness = args.brightness
+            cls.__instance.target_brightness = args.target_brightness
             cls.__instance.kelvin = args.kelvin
             cls.__instance.test = args.test
+            cls.__instance.time = args.time
         return cls.__instance
 
 
@@ -404,10 +410,13 @@ if __name__ == "__main__":
     hue=HUE
     target_hue = None
     sat=SATURATION
+    target_sat = None
     bri=VALUE
+    target_bri = None
     kel=KELVIN
     dur=DURATION
     bulb_ip = []
+    time_range = None
 
     if args.target is not None:
         for b in BULB_NAMES[args.target]:
@@ -424,32 +433,97 @@ if __name__ == "__main__":
     if args.saturation is not None:
         sat = args.saturation
 
-    if args.value is not None:
-        bri = args.value
+    if args.target_saturation is not None:
+        target_sat = args.target_saturation
+
+    if args.brightness is not None:
+        bri = args.brightness
+
+    if args.target_brightness is not None:
+        target_bri = args.target_brightness
 
     if args.kelvin is not None:
         kelvin = args.kelvin
 
+    if args.time is not None:
+        if target_hue is None and target_sat is None and target_bri is None:
+            logger.fatal("You must have a range to transition across!")
+            sys.exit(2)
+        time_range = args.time
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
 
-    # To properly do target_sat and target_value as well, we need
+    # To properly do target_sat and target_brightness as well, we need
     # to calculate the three values in a single loop and then pass
     # then along, rather than just a range() over each or one.
 
-    if target_hue is not None:
-        if target_hue > hue:
-            for h in range(int(hue*10), int(target_hue*10), 1):
-                for b in bulb_ip:
-                    set_HSBK(b, float(h/10.0), sat, bri, kel, dur)
-                    time.sleep(0.01)
-            set_HSBK(b, target_hue, sat, bri, kel, dur)
-        else:
-            for h in range(int(hue*10), int(target_hue*10), -1):
-                for b in bulb_ip:
-                    set_HSBK(b, float(h/10.0), sat, bri, kel, dur)
-                    time.sleep(0.01)
-            set_HSBK(b, target_hue, sat, bri, kel, dur)
+    diff_hue_dir = 1
+    diff_sat_dir = 1
+    diff_bri_dir = 1
+
+    if target_hue is not None and target_hue < hue:
+        diff_hue_dir = -1
+
+    if target_sat is not None and target_sat < sat:
+        diff_sat_dir = -1
+
+    if target_bri is not None and target_bri < bri:
+        diff_bri_dir = -1
+
+    if time_range is not None:
+        steps = int(time_range * 100) # sleep 0.01
+        hue_step = []
+        sat_step = []
+        bri_step = []
+
+        if target_hue is None:
+            target_hue = hue
+        n = hue
+        d = abs(target_hue - hue)
+        for x in range(0, steps):
+            n = n + (d / steps * diff_hue_dir)
+            hue_step.append(n)
+
+        if target_sat is None:
+            target_sat = sat
+        n = sat
+        d = abs(target_sat - sat)
+        for x in range(0, steps):
+            n = n + (d / steps * diff_sat_dir)
+            sat_step.append(n)
+
+        if target_bri is None:
+            target_bri = bri
+        n = bri
+        d = abs(target_bri - bri)
+        for x in range(0, steps):
+            n = n + (d / steps * diff_bri_dir)
+            bri_step.append(n)
+
+        for s in range(0, steps):
+            for b in bulb_ip:
+                set_HSBK(b, hue_step[s], sat_step[s], bri_step[s], kel, dur)
+            time.sleep(0.01)
+        set_HSBK(b, target_hue, target_sat, target_bri, kel, dur)
     else:
         for b in bulb_ip:
             set_HSBK(b, hue, sat, bri, kel, dur)
+        
+
+#    if target_hue is not None:
+#        if target_hue > hue:
+#            for h in range(int(hue*10), int(target_hue*10), 1):
+#                for b in bulb_ip:
+#                    set_HSBK(b, float(h/10.0), sat, bri, kel, dur)
+#                    time.sleep(0.01)
+#            set_HSBK(b, target_hue, sat, bri, kel, dur)
+#        else:
+#            for h in range(int(hue*10), int(target_hue*10), -1):
+#                for b in bulb_ip:
+#                    set_HSBK(b, float(h/10.0), sat, bri, kel, dur)
+#                    time.sleep(0.01)
+#            set_HSBK(b, target_hue, sat, bri, kel, dur)
+#    else:
+#        for b in bulb_ip:
+#            set_HSBK(b, hue, sat, bri, kel, dur)
 
