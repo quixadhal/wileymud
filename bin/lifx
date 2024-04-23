@@ -66,28 +66,41 @@ THEMES = {
                     "hue" : 0,
                     "sat" : 100,
                     "bri" : 10,
+                    "kel" : 9000,
+                },
+            },
+            "day" : {
+                "all" : {
+                    "hue" : 0,
+                    "sat" : 0,
+                    "bri" : 40,
+                    "kel" : 3200,
                 },
             },
             "claris" : {
                 "front" : {
                     "hue" : 210,
-                    "sat" : 60,
-                    "bri" : 30,
+                    "sat" : 70,
+                    "bri" : 25,
+                    "kel" : 9000,
                 },
                 "back" : {
                     "hue" : 308,
                     "sat" : 40,
                     "bri" : 25,
+                    "kel" : 9000,
                 },
                 "kitchen" : {
                     "hue" : 210,
-                    "sat" : 50,
-                    "bri" : 40,
+                    "sat" : 60,
+                    "bri" : 35,
+                    "kel" : 9000,
                 },
                 "bathroom" : {
                     "hue" : 308,
                     "sat" : 40,
-                    "bri" : 40,
+                    "bri" : 35,
+                    "kel" : 9000,
                 },
             },
         }
@@ -382,7 +395,7 @@ class CLI_Args(object):
                                 default=None, min=0.5, max=900,
                                 help='Seconds to change bulb color for ranges [%(min)d-%(max)d]')
             parser.add_argument('--theme',
-                                choices=['night', 'claris'],
+                                choices=['night', 'day', 'claris'],
                                 help='preset themes for bulb groups')
             args = parser.parse_args()
             cls.__instance = _CLI_Args()
@@ -448,9 +461,9 @@ if __name__ == "__main__":
             hue = THEMES[args.theme][k]["hue"];
             sat = THEMES[args.theme][k]["sat"];
             bri = THEMES[args.theme][k]["bri"];
-            kel=KELVIN
+            kel = THEMES[args.theme][k]["kel"];
             dur=DURATION
-            print(f"bulb: {k} -> {hue} {sat} {bri}");
+            print(f"bulb: {k} -> {hue} {sat} {bri} {kel}");
             for b in bulb_ip:
                 set_HSBK(b, hue, sat, bri, kel, dur)
         sys.exit(1)
