@@ -60,6 +60,38 @@ COLORS = {
             "sat" : 100,
             },
         }
+THEMES = {
+            "night" : {
+                "all" : {
+                    "hue" : 0,
+                    "sat" : 100,
+                    "bri" : 10,
+                },
+            },
+            "claris" : {
+                "front" : {
+                    "hue" : 210,
+                    "sat" : 60,
+                    "bri" : 30,
+                },
+                "back" : {
+                    "hue" : 308,
+                    "sat" : 40,
+                    "bri" : 25,
+                },
+                "kitchen" : {
+                    "hue" : 210,
+                    "sat" : 50,
+                    "bri" : 40,
+                },
+                "bathroom" : {
+                    "hue" : 308,
+                    "sat" : 40,
+                    "bri" : 40,
+                },
+            },
+        }
+
 
 RETRIES = 5
 DELAY = 0.05
@@ -261,6 +293,7 @@ class _CLI_Args(object):
         self.transition = None
         self.test = None
         self.time = None
+        self.theme = None
 
     def __str__(self):
         return ', '.join([ '='.join([k,str(v)]) for k,v in self.__dict__.items() ])
@@ -348,6 +381,9 @@ class CLI_Args(object):
                                 nargs='?', type=float, action=_Arg_Range,
                                 default=None, min=0.5, max=900,
                                 help='Seconds to change bulb color for ranges [%(min)d-%(max)d]')
+            parser.add_argument('--theme',
+                                choices=['night', 'claris'],
+                                help='preset themes for bulb groups')
             args = parser.parse_args()
             cls.__instance = _CLI_Args()
             cls.__instance.target = args.target
@@ -362,6 +398,7 @@ class CLI_Args(object):
             cls.__instance.kelvin = args.kelvin
             cls.__instance.test = args.test
             cls.__instance.time = args.time
+            cls.__instance.theme = args.theme
         return cls.__instance
 
 
@@ -400,6 +437,22 @@ if __name__ == "__main__":
         for b in MY_BULBS:
             bulb_ip = f"192.168.0.{b}"
             set_HSBK(bulb_ip, 250, SATURATION, 25, KELVIN, DURATION)
+        sys.exit(1)
+
+    if args.theme is not None:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
+        for k in THEMES[args.theme].keys():
+            bulb_ip = []
+            for b in BULB_NAMES[k]:
+                bulb_ip += [f"192.168.0.{b}"]
+            hue = THEMES[args.theme][k]["hue"];
+            sat = THEMES[args.theme][k]["sat"];
+            bri = THEMES[args.theme][k]["bri"];
+            kel=KELVIN
+            dur=DURATION
+            print(f"bulb: {k} -> {hue} {sat} {bri}");
+            for b in bulb_ip:
+                set_HSBK(b, hue, sat, bri, kel, dur)
         sys.exit(1)
 
     if args.target is None and args.ipv4 is None:
