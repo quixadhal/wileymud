@@ -65,7 +65,7 @@ THEMES = {
                 "all" : {
                     "hue" : 0,
                     "sat" : 100,
-                    "bri" : 10,
+                    "bri" : 15,
                     "kel" : 9000,
                 },
             },
@@ -80,7 +80,7 @@ THEMES = {
             "claris" : {
                 "front" : {
                     "hue" : 210,
-                    "sat" : 70,
+                    "sat" : 75,
                     "bri" : 25,
                     "kel" : 9000,
                 },
@@ -92,7 +92,7 @@ THEMES = {
                 },
                 "kitchen" : {
                     "hue" : 210,
-                    "sat" : 60,
+                    "sat" : 65,
                     "bri" : 35,
                     "kel" : 9000,
                 },
@@ -119,6 +119,7 @@ VALUE = 50
 
 MESSAGE_SET_COLOR = 102
 MESSAGE_SET_POWER = 117
+MESSAGE_GET_COLOR = 101
 
 MESSAGE_SET_COLOR_ZONES = 501
 
@@ -268,6 +269,18 @@ def set_HSBK(bulb_ip, hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, dur=DURATI
         #time.sleep(DELAY)
 
 
+def get_color_info(bulb_ip):
+    payload = b""
+    buf = b""
+    packet = gen_packet_universal(SEQ_NUM, MESSAGE_GET_COLOR, payload)
+    sock.sendto(packet, (bulb_ip, UDP_PORT))
+    buf, addr = listen_sock.recvfrom(1024)
+    if buf is not None:
+        # We got data back
+        (hue, sat, bri, kel, pow, lab) = unpack("<H<H<H<H<2x<H<32s", buf)
+        print(f"GOT: {hue} {sat} {bri} {kel} {pow} {lab}", hue, sat, bri, kel, pow, lab)
+
+
 class _CLI_ErrorParser(argparse.ArgumentParser):
     """
     The _CLI_ErrorParser is a subclass of argparse for the sole purpose of
@@ -307,6 +320,7 @@ class _CLI_Args(object):
         self.test = None
         self.time = None
         self.theme = None
+        self.query = None
 
     def __str__(self):
         return ', '.join([ '='.join([k,str(v)]) for k,v in self.__dict__.items() ])
@@ -397,6 +411,9 @@ class CLI_Args(object):
             parser.add_argument('--theme',
                                 choices=['night', 'day', 'claris'],
                                 help='preset themes for bulb groups')
+            parser.add_argument('--query',
+                                type=str,
+                                help='IPv4 address of target bulb')
             args = parser.parse_args()
             cls.__instance = _CLI_Args()
             cls.__instance.target = args.target
@@ -412,15 +429,19 @@ class CLI_Args(object):
             cls.__instance.test = args.test
             cls.__instance.time = args.time
             cls.__instance.theme = args.theme
+            cls.__instance.query = args.query
         return cls.__instance
 
 
 if __name__ == "__main__":
     args = CLI_Args()
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
+    listen_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
+    listen_sock.bind(('', UDP_PORT))
+    listen_sock.settimeout(1)
 
     if args.test is True:
         logger.setLevel(logging.ERROR)
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
         # 3500 was used in the original test case
         logger.error("Testing Hue")
         for x in range(80):
@@ -453,7 +474,6 @@ if __name__ == "__main__":
         sys.exit(1)
 
     if args.theme is not None:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
         for k in THEMES[args.theme].keys():
             bulb_ip = []
             for b in BULB_NAMES[k]:
@@ -466,6 +486,10 @@ if __name__ == "__main__":
             print(f"bulb: {k} -> {hue} {sat} {bri} {kel}");
             for b in bulb_ip:
                 set_HSBK(b, hue, sat, bri, kel, dur)
+        sys.exit(1)
+
+    if args.query is not None:
+        get_color_info(args.query)
         sys.exit(1)
 
     if args.target is None and args.ipv4 is None:
@@ -519,8 +543,6 @@ if __name__ == "__main__":
             logger.fatal("You must have a range to transition across!")
             sys.exit(2)
         time_range = args.time
-
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
 
     # To properly do target_sat and target_brightness as well, we need
     # to calculate the three values in a single loop and then pass
@@ -595,4 +617,19 @@ if __name__ == "__main__":
 #    else:
 #        for b in bulb_ip:
 #            set_HSBK(b, hue, sat, bri, kel, dur)
+
+
+# Set a Get message, with res_required set to 0
+
+# GetColor Packet 101 -> LightState(107) response packet
+
+# LightState(107):
+# hue: uint16
+# sat: uint16
+# bri: uint16
+# kel: uint16
+# res: 2 bytes
+# pow: uint16
+# lab: 32 bytes (str)
+# res: 8 bytes
 
