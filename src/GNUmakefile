@@ -150,7 +150,7 @@ version :
 	@echo '#define _VERSION_H' >> $(VER)
 	@echo '' >> $(VER)
 	@echo "#define VERSION_STR \\\\" >> $(VER)
-	@echo "\"\\\\r\\\\n*** Welcome to WileyMUD III, Quixadhal's Version 2.$(VERSION)w3-gamma ($(DATESTAMP)) ***\\\\r\\\\n\"" >> $(VER)
+	@echo "\"\\\\r\\\\n*** Welcome to WileyMUD III, Salius's Version 2.$(VERSION)w3-gamma ($(DATESTAMP)) ***\\\\r\\\\n\"" >> $(VER)
 	@echo "#define VERSION_BASE \"WileyMUD III\"" >> $(VER)
 	@echo "#define VERSION_BUILD \"2.$(VERSION)g\"" >> $(VER)
 	@echo "#define VERSION_DATE \"$(DATESTAMP)\"" >> $(VER)
