@@ -1,6 +1,6 @@
 . $HOME/.bashrc
 umask 022
-SSHIP=`echo $SSH_CONNECTION | awk '{print $1}'`
+export SSHIP=`echo $SSH_CONNECTION | awk '{print $1}'`
 NSLOOKUPIP=` nslookup wileymud.themud.org | grep Address | grep -v '192.168' | awk '{print $2}'`
 if [ "$SSHIP" = "$NSLOOKUPIP" -o "$SSHIP" = "104.156.100.167" -o "$SSHIP" = "192.168.0.10" ]; then
     screen -dUR
