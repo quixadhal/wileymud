@@ -69,6 +69,32 @@ THEMES = {
                     "kel" : 9000,
                 },
             },
+            "morning" : {
+                "front" : {
+                    "hue" : 55,
+                    "sat" : 80,
+                    "bri" : 20,
+                    "kel" : 9000,
+                },
+                "back" : {
+                    "hue" : 30,
+                    "sat" : 90,
+                    "bri" : 20,
+                    "kel" : 9000,
+                },
+                "kitchen" : {
+                    "hue" : 55,
+                    "sat" : 90,
+                    "bri" : 20,
+                    "kel" : 9000,
+                },
+                "bathroom" : {
+                    "hue" : 30,
+                    "sat" : 80,
+                    "bri" : 20,
+                    "kel" : 9000,
+                },
+            },
             "day" : {
                 "all" : {
                     "hue" : 0,
@@ -419,7 +445,7 @@ class CLI_Args(object):
                                 default=None, min=0.5, max=900,
                                 help='Seconds to change bulb color for ranges [%(min)d-%(max)d]')
             parser.add_argument('--theme',
-                                choices=['night', 'day', 'claris'],
+                                choices=['night', 'morning', 'day', 'claris'],
                                 help='preset themes for bulb groups')
             parser.add_argument('--query',
                                 type=str,
