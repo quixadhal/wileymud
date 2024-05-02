@@ -85,13 +85,13 @@ THEMES = {
                 "kitchen" : {
                     "hue" : 55,
                     "sat" : 90,
-                    "bri" : 20,
+                    "bri" : 30,
                     "kel" : 9000,
                 },
                 "bathroom" : {
                     "hue" : 30,
                     "sat" : 80,
-                    "bri" : 20,
+                    "bri" : 30,
                     "kel" : 9000,
                 },
             },
@@ -126,6 +126,32 @@ THEMES = {
                     "hue" : 308,
                     "sat" : 40,
                     "bri" : 35,
+                    "kel" : 9000,
+                },
+            },
+            "evening" : {
+                "front" : {
+                    "hue" : 250,
+                    "sat" : 80,
+                    "bri" : 20,
+                    "kel" : 9000,
+                },
+                "back" : {
+                    "hue" : 125,
+                    "sat" : 90,
+                    "bri" : 15,
+                    "kel" : 9000,
+                },
+                "kitchen" : {
+                    "hue" : 250,
+                    "sat" : 90,
+                    "bri" : 30,
+                    "kel" : 9000,
+                },
+                "bathroom" : {
+                    "hue" : 125,
+                    "sat" : 80,
+                    "bri" : 30,
                     "kel" : 9000,
                 },
             },
@@ -445,7 +471,7 @@ class CLI_Args(object):
                                 default=None, min=0.5, max=900,
                                 help='Seconds to change bulb color for ranges [%(min)d-%(max)d]')
             parser.add_argument('--theme',
-                                choices=['night', 'morning', 'day', 'claris'],
+                                choices=['night', 'morning', 'day', 'claris', 'evening'],
                                 help='preset themes for bulb groups')
             parser.add_argument('--query',
                                 type=str,

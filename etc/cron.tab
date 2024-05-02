@@ -25,13 +25,13 @@
 #1,5,10 0 * * *              /home/wiley/bin/mklogpages.pl --no-pages --censor --no-json --no-pause >/dev/null 2>&1 &
 #3 1 * * *                   /home/wiley/bin/do_backup >/home/wiley/backup.log 2>&1
 
-0,15,30,45 * * * *          /home/wiley/bin/update_log_stuff.pl >/dev/null 2>&1 &
-2,5,10,20,25 0 * * *        /home/wiley/bin/update_log_stuff.pl >/dev/null 2>&1 &
-1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
-4,19,34,49 * * * *          /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
+#0,15,30,45 * * * *          /home/wiley/bin/update_log_stuff.pl >/dev/null 2>&1 &
+#2,5,10,20,25 0 * * *        /home/wiley/bin/update_log_stuff.pl >/dev/null 2>&1 &
+#1 0,3,6,9,12,15,18,21 * * * /home/wiley/bin/mkmudlist.pl >/dev/null 2>&1 &
+#4,19,34,49 * * * *          /home/wiley/bin/untiny sql --mark >/dev/null 2>&1 &
 
 # This removes last year's Easter holiday links and adds this year's ones.
-0 0 1 3 *                   /home/wiley/bin/easter.pl >/dev/null 2>&1 &
+#0 0 1 3 *                   /home/wiley/bin/easter.pl >/dev/null 2>&1 &
 
 # 36480  City of Bellevue               Bellevue, WA         United States
 # 35180  Ziply Fiber                    Seattle, WA          United States
@@ -43,18 +43,6 @@
 # 22168  Whitesky Communications LLC    Seattle, WA          United States
 #  1782  Comcast                        Seattle, WA          United States
 # 52029  CenturyLink, Inc.              Seattle, WA          United States
-# -----
-# 52743  Interserver.Net                Secaucus, NJ         United States
-# 38461  PVDataNet                      New York, NY         United States
-# 51171  WebNX Inc                      New York, NY         United States
-# 36817  Surfshark Ltd                  New York, NY         United States
-# 22069  TeleBermuda International Limited New York, NY         United States
-# 49834  Nitel                          New York, NY         United States
-# 13098  Pilot Fiber                    New York, NY         United States
-# 28032  Windstream                     New York, NY         United States
-# 16976  Spectrum                       New York, NY         United States
-# 30514  Optimum Online                 New York, NY         United States
-# 46120  GSL Networks                   New York, NY         United States
 
 #10 16 * * *                  /usr/bin/speedtest -s1782 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
 #10 5 * * *                  /usr/bin/speedtest -s35180 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
@@ -63,14 +51,18 @@
                             # pin comcast (1782) as other servers give invalid upload data
                             # netprotect (37495) and nitel (12192) both seem reasonable
 # cmd.exe /c "C:\speedtest\do_speedtest.bat"
-
-
-10 16 * * *                  /usr/bin/speedtest -s16976 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
-15 16,17 * * *              /home/wiley/bin/upload_speedtest.pl >/dev/null 2>&1 &
-7 */2 * * *                 /usr/bin/mtr -c 10 -r -w kelly >/home/www/log/data/kelly.mtr 2>/dev/null &
-9 */2 * * *                 /usr/bin/mtr -c 10 -r -w dalet >/home/www/log/data/dalet.mtr 2>/dev/null &
+#15 16,17 * * *              /home/wiley/bin/upload_speedtest.pl >/dev/null 2>&1 &
+#7 */2 * * *                 /usr/bin/mtr -c 10 -r -w kelly >/home/www/log/data/kelly.mtr 2>/dev/null &
+#9 */2 * * *                 /usr/bin/mtr -c 10 -r -w dalet >/home/www/log/data/dalet.mtr 2>/dev/null &
 #*/5 * * * *                 /home/wiley/bin/ping_sites.pl >/dev/null 2>&1 &
 
-3 1 * * *                   /home/wiley/bin/backupmudsql >/dev/null 2>&1 &
-7 1 * * *                   /home/wiley/bin/i3log_backup >/dev/null 2>&1 &
+#3 1 * * *                   /home/wiley/bin/backupmudsql >/dev/null 2>&1 &
+#7 1 * * *                   /home/wiley/bin/i3log_backup >/dev/null 2>&1 &
+
+0 0 * * *           /home/wiley/bin/lifx --theme night >/dev/null 2>&1 &
+0 5 * * *           /home/wiley/bin/lifx --theme morning >/dev/null 2>&1 &
+0 8 * * *           /home/wiley/bin/lifx --theme claris >/dev/null 2>&1 &
+0 12 * * *          /home/wiley/bin/lifx --theme day >/dev/null 2>&1 &
+0 17 * * *          /home/wiley/bin/lifx --theme claris >/dev/null 2>&1 &
+0 21 * * *          /home/wiley/bin/lifx --theme evening >/dev/null 2>&1 &
 
