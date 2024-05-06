@@ -221,7 +221,7 @@ def gen_packet_universal(seq_num, message_type, payload):
     return packet
 
 
-def gen_packet(hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, duration=DURATION, seq_num=1):
+def gen_packet(hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, dur=DURATION, seq_num=1):
     if hue < 0 or hue > 360:
         raise Exception("Invalid hue: 0-360")
     if sat < 0 or sat > 100:
@@ -255,7 +255,7 @@ def gen_packet(hue=HUE, sat=SATURATION, bri=VALUE, kel=KELVIN, duration=DURATION
     transition_time = pack("<L", adjusted_dur)
     payload += transition_time
 
-    logger.debug(f"Sending {adjusted_hue} {adjusted_sat} {adjusted_bri} {adjusted_kel} {adjusted_dur} {seq_num} => {bulb_ip}")
+    logger.debug(f"Packet {adjusted_hue} {adjusted_sat} {adjusted_bri} {adjusted_kel} {adjusted_dur} {seq_num}")
     return gen_packet_universal(seq_num, MESSAGE_SET_COLOR, payload)
 
 
@@ -382,6 +382,7 @@ class _CLI_Args(object):
         self.test = None
         self.time = None
         self.theme = None
+        self.target_theme = None
         self.query = None
 
     def __str__(self):
@@ -473,6 +474,10 @@ class CLI_Args(object):
             parser.add_argument('--theme',
                                 choices=['night', 'morning', 'day', 'claris', 'evening'],
                                 help='preset themes for bulb groups')
+            parser.add_argument('--target-theme',
+                                dest='target_theme',
+                                choices=['night', 'morning', 'day', 'claris', 'evening'],
+                                help='preset themes for bulb groups')
             parser.add_argument('--query',
                                 type=str,
                                 help='IPv4 address of target bulb')
@@ -491,8 +496,73 @@ class CLI_Args(object):
             cls.__instance.test = args.test
             cls.__instance.time = args.time
             cls.__instance.theme = args.theme
+            cls.__instance.target_theme = args.target_theme
             cls.__instance.query = args.query
         return cls.__instance
+
+def do_test():
+    logger.setLevel(logging.ERROR)
+    # 3500 was used in the original test case
+    logger.error("Testing Hue")
+    for x in range(80):
+        for b in MY_BULBS:
+            bulb_ip = f"192.168.0.{b}"
+            set_HSBK(bulb_ip, 360/80*x, SATURATION, VALUE, KELVIN, DURATION)
+        time.sleep(0.25)
+    logger.error("Testing Saturation")
+    for x in range(21):
+        for b in MY_BULBS:
+            bulb_ip = f"192.168.0.{b}"
+            set_HSBK(bulb_ip, HUE, x*5, VALUE, KELVIN, DURATION)
+        time.sleep(0.5)
+    logger.error("Testing Value")
+    for x in range(11):
+        for b in MY_BULBS:
+            bulb_ip = f"192.168.0.{b}"
+            set_HSBK(bulb_ip, HUE, SATURATION, x*10, KELVIN, DURATION)
+        time.sleep(1.0)
+    logger.error("Testing Kelvin")
+    for x in range(10):
+        for b in MY_BULBS:
+            bulb_ip = f"192.168.0.{b}"
+            set_HSBK(bulb_ip, 360, 0, 100, 6500/10*x+2500, DURATION)
+        time.sleep(1.0)
+    logger.error("All done!")
+    for b in MY_BULBS:
+        bulb_ip = f"192.168.0.{b}"
+        set_HSBK(bulb_ip, 250, SATURATION, 25, KELVIN, DURATION)
+
+
+def set_theme(theme):
+    for k in THEMES[theme].keys():
+        bulb_ip = []
+        for b in BULB_NAMES[k]:
+            bulb_ip += [f"192.168.0.{b}"]
+        hue = THEMES[args.theme][k]["hue"]
+        sat = THEMES[args.theme][k]["sat"]
+        bri = THEMES[args.theme][k]["bri"]
+        kel = THEMES[args.theme][k]["kel"]
+        dur = DURATION
+        print(f"bulb: {k} -> {hue} {sat} {bri} {kel} {dur}");
+        for b in bulb_ip:
+            set_HSBK(b, hue, sat, bri, kel, dur)
+
+
+def transition_themes(source, dest, time_range):
+    source_bulbs  = []
+    dest_bulbs = []
+
+    for k in THEMES[source].keys():
+        for b in BULB_NAMES[k]:
+            source_bulbs += [f"192.168.0.{b}"]
+
+    for k in THEMES[dest].keys():
+        for b in BULB_NAMES[k]:
+            dest_bulbs += [f"192.168.0.{b}"]
+
+    if set(source_bulbs) != set(dest_bulbs):
+        logger.fatal("Incompatible themes.")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -503,52 +573,23 @@ if __name__ == "__main__":
     listen_sock.settimeout(1)
 
     if args.test is True:
-        logger.setLevel(logging.ERROR)
-        # 3500 was used in the original test case
-        logger.error("Testing Hue")
-        for x in range(80):
-            for b in MY_BULBS:
-                bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, 360/80*x, SATURATION, VALUE, KELVIN, DURATION)
-            time.sleep(0.25)
-        logger.error("Testing Saturation")
-        for x in range(21):
-            for b in MY_BULBS:
-                bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, HUE, x*5, VALUE, KELVIN, DURATION)
-            time.sleep(0.5)
-        logger.error("Testing Value")
-        for x in range(11):
-            for b in MY_BULBS:
-                bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, HUE, SATURATION, x*10, KELVIN, DURATION)
-            time.sleep(1.0)
-        logger.error("Testing Kelvin")
-        for x in range(10):
-            for b in MY_BULBS:
-                bulb_ip = f"192.168.0.{b}"
-                set_HSBK(bulb_ip, 360, 0, 100, 6500/10*x+2500, DURATION)
-            time.sleep(1.0)
-        logger.error("All done!")
-        for b in MY_BULBS:
-            bulb_ip = f"192.168.0.{b}"
-            set_HSBK(bulb_ip, 250, SATURATION, 25, KELVIN, DURATION)
+        do_test()
         sys.exit(1)
 
-    if args.theme is not None:
-        for k in THEMES[args.theme].keys():
-            bulb_ip = []
-            for b in BULB_NAMES[k]:
-                bulb_ip += [f"192.168.0.{b}"]
-            hue = THEMES[args.theme][k]["hue"];
-            sat = THEMES[args.theme][k]["sat"];
-            bri = THEMES[args.theme][k]["bri"];
-            kel = THEMES[args.theme][k]["kel"];
-            dur=DURATION
-            print(f"bulb: {k} -> {hue} {sat} {bri} {kel}");
-            for b in bulb_ip:
-                set_HSBK(b, hue, sat, bri, kel, dur)
+    if args.theme is not None and args.target_theme is None:
+        # Just one theme, so do it.
+        set_theme(args.theme)
         sys.exit(1)
+
+    if args.theme is not None and args.target_theme is not None:
+        # To do this, we need to make sure both sides have the same
+        # sets of bulb ip addresses, and if the source side missed
+        # some, it has to be filled with dummy entries from the target
+        # side.. and visa-versa.
+        #logger.fatal("Theme to theme transitions are not implemented yet")
+        transition_themes(args.theme, args.target_theme, args.time)
+        logger.fatal("Theme to theme transitions are not fully implemented yet")
+        sys.exit(2)
 
     if args.query is not None:
         get_color_info(args.query)
