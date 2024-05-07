@@ -2462,3 +2462,25 @@
     Move to Saliland completed, speedtest updated to use nearby server.
     At this point, stuff should keep running on auto-pilot for the
     foreseeable future.
+
+2024-05-06
+    Did one final update of the system software and a few little tweaks
+    here and there.  Assuming this comes back up after a reboot, it will
+    probably be the last thing I do.  I'll be losing internet access at
+    some point between May 10th and May 21st, depending on how long of a
+    grace period the ISP has for not paying them.  After the 21st, I won't
+    have an ISP anymore, so that won't matter.
+
+    It's been fun.  Kinda neat to keep something quasi-alive for 30 years.
+    If anyone else wants to work on it, hopefully you can see where I was
+    going... my ultimate goal was to move ALL data into SQL, which would
+    have made it easier to work on game balance, and even new content if
+    anyone cared enough to do so.  Even a silly web interface for the kids
+    who can't type anymore.
+
+    So long and thanks for all the fish!
+
+    永遠にさようなら
+
+    -Quix.
+
