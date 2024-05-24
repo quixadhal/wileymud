@@ -381,8 +381,8 @@ const char *discord_find_channel(const char *i3_channel) {
         return "1074652451766026250";
     else if(!strcmp(i3_channel, "dchat"))
         return "1079142483969200148";
-    //else if(!strcmp(i3_channel, "ds"))
-    //    return "1079142576831090718";
+    else if(!strcmp(i3_channel, "ds"))
+        return "1079142576831090718";
     else if(!strcmp(i3_channel, "free_speech"))
         return "1074652631886217226";
     else if(!strcmp(i3_channel, "intercre"))
