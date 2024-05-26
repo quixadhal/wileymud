@@ -463,10 +463,10 @@ End
 #I3CHAN
 ChanName   lima
 ChanMud    Dragonfire
-ChanLocal  (null)
-ChanLayM   [%s] %s@%s: %%^RESET%%^%s
-ChanLayE   [%s] %%^RESET%%^%s
-ChanLevel  0
+ChanLocal  lima
+ChanLayM   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%%^BOLD%%^%s@%s: %%^CYAN%%^%s
+ChanLayE   %%^RED%%^%%^BOLD%%^[%%^WHITE%%^%%^BOLD%%^%s%%^RED%%^%%^BOLD%%^] %%^CYAN%%^%s
+ChanLevel  2
 ChanStatus 0
 ChanFlags  0
 End

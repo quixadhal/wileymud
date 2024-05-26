@@ -1,5 +1,5 @@
 #COUNT
-Count   3123
+Count   3133
 End
 
 #SPEAKER
@@ -783,6 +783,11 @@ Color  %^RED%^
 End
 
 #SPEAKER
+Name   adamblue9000
+Color  %^CYAN%^
+End
+
+#SPEAKER
 Name   acerr
 Color  %^WHITE%^%^B_BLUE%^
 End
@@ -1498,6 +1503,16 @@ Color  %^GREEN%^
 End
 
 #SPEAKER
+Name   ro
+Color  %^ORANGE%^
+End
+
+#SPEAKER
+Name   kael
+Color  %^GREEN%^%^BOLD%^
+End
+
+#SPEAKER
 Name   alessandra
 Color  %^BLUE%^
 End
@@ -2135,6 +2150,11 @@ End
 #SPEAKER
 Name   aloha
 Color  %^BLACK%^%^BOLD%^
+End
+
+#SPEAKER
+Name   jaaylive
+Color  %^MAGENTA%^
 End
 
 #SPEAKER
@@ -4208,6 +4228,11 @@ Color  %^BLUE%^%^BOLD%^
 End
 
 #SPEAKER
+Name   asmalldeer
+Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
 Name   adam
 Color  %^GREEN%^%^BOLD%^
 End
@@ -4610,6 +4635,11 @@ End
 #SPEAKER
 Name   dex
 Color  %^GREEN%^
+End
+
+#SPEAKER
+Name   thurtea
+Color  %^YELLOW%^
 End
 
 #SPEAKER
@@ -5383,6 +5413,11 @@ Color  %^GREEN%^%^BOLD%^
 End
 
 #SPEAKER
+Name   vsilverhand
+Color  %^WHITE%^
+End
+
+#SPEAKER
 Name   asteris
 Color  %^BLUE%^%^BOLD%^
 End
@@ -6005,6 +6040,11 @@ End
 #SPEAKER
 Name   eggsaresides
 Color  %^BLUE%^%^BOLD%^
+End
+
+#SPEAKER
+Name   boris the bus
+Color  %^RED%^%^BOLD%^
 End
 
 #SPEAKER
@@ -7374,6 +7414,11 @@ End
 
 #SPEAKER
 Name   p-butter
+Color  %^BLUE%^
+End
+
+#SPEAKER
+Name   meat
 Color  %^BLUE%^
 End
 
@@ -10580,6 +10625,11 @@ End
 #SPEAKER
 Name   parx
 Color  %^RED%^
+End
+
+#SPEAKER
+Name   denning
+Color  %^MAGENTA%^%^BOLD%^
 End
 
 #SPEAKER
