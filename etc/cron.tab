@@ -78,7 +78,8 @@
 
 
 #10 16 * * *                  /usr/bin/speedtest -s16976 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
-10 16 * * *                  /usr/bin/speedtest -s43121 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
+#10 16 * * *                  /usr/bin/speedtest -s43121 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
+10 16 * * *                  /usr/bin/speedtest -s64135 -uMbps -fjson-pretty >/home/www/log/data/speedtest_linux.json 2>/dev/null &
 15 16,17 * * *              /home/wiley/bin/upload_speedtest.pl >/dev/null 2>&1 &
 7 */2 * * *                 /usr/bin/mtr -c 10 -r -w kelly >/home/www/log/data/kelly.mtr 2>/dev/null &
 9 */2 * * *                 /usr/bin/mtr -c 10 -r -w dalet >/home/www/log/data/dalet.mtr 2>/dev/null &
