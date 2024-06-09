@@ -61,11 +61,31 @@ COLORS = {
             },
         }
 THEMES = {
+            "xbox" : {
+                "front" : {
+                    "hue" : 125,
+                    "sat" : 100,
+                    "bri" : 20,
+                    "kel" : 9000,
+                },
+                "back" : {
+                    "hue" : 125,
+                    "sat" : 100,
+                    "bri" : 10,
+                    "kel" : 9000,
+                },
+                "others" : {
+                    "hue" : 0,
+                    "sat" : 0,
+                    "bri" : 17.5,
+                    "kel" : 9000,
+                },
+            },
             "night" : {
                 "all" : {
                     "hue" : 0,
                     "sat" : 100,
-                    "bri" : 15,
+                    "bri" : 20,
                     "kel" : 9000,
                 },
             },
@@ -472,11 +492,11 @@ class CLI_Args(object):
                                 default=None, min=0.5, max=900,
                                 help='Seconds to change bulb color for ranges [%(min)d-%(max)d]')
             parser.add_argument('--theme',
-                                choices=['night', 'morning', 'day', 'claris', 'evening'],
+                                choices=['xbox', 'night', 'morning', 'day', 'claris', 'evening'],
                                 help='preset themes for bulb groups')
             parser.add_argument('--target-theme',
                                 dest='target_theme',
-                                choices=['night', 'morning', 'day', 'claris', 'evening'],
+                                choices=['xbox', 'night', 'morning', 'day', 'claris', 'evening'],
                                 help='preset themes for bulb groups')
             parser.add_argument('--query',
                                 type=str,
