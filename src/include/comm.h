@@ -18,7 +18,8 @@
 #define DFLT_PORT 3000
 
 #define MUD_REBOOT 0
-#define MUD_HALT 42
+//#define MUD_HALT 42
+#define MUD_HALT 0  // This is because nobody will be at the helm anymore.
 
 #define MAX_NAME_LENGTH 15
 #define MAX_HOSTNAME 256
