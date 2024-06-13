@@ -65,7 +65,7 @@ THEMES = {
                 "front" : {
                     "hue" : 125,
                     "sat" : 100,
-                    "bri" : 20,
+                    "bri" : 25,
                     "kel" : 9000,
                 },
                 "back" : {
@@ -77,7 +77,7 @@ THEMES = {
                 "others" : {
                     "hue" : 0,
                     "sat" : 0,
-                    "bri" : 17.5,
+                    "bri" : 15,
                     "kel" : 9000,
                 },
             },
@@ -95,10 +95,10 @@ THEMES = {
                     "kel" : 9000,
                 },
                 "others" : {
-                    "hue" : 55,
+                    "hue" : 0,
                     "sat" : 0,
-                    "bri" : 10,
-                    "kel" : 9000,
+                    "bri" : 15,
+                    "kel" : 3200,
                 },
             },
             "night" : {
@@ -408,6 +408,7 @@ class _CLI_Args(object):
     """
 
     def __init__(self):
+        self.parser = None
         self.target = None
         self.ipv4 = None
         self.color = None
@@ -492,6 +493,7 @@ class CLI_Args(object):
                                 default=None, min=0, max=100,
                                 help='Color saturation [%(min)d-%(max)d] for bulb')
             parser.add_argument('--brightness',
+                                dest='brightness',
                                 nargs='?', type=float, action=_Arg_Range,
                                 default=VALUE, min=0, max=100,
                                 help='Color brightness [%(min)d-%(max)d] for bulb')
@@ -501,6 +503,7 @@ class CLI_Args(object):
                                 default=None, min=0, max=100,
                                 help='Color brightness [%(min)d-%(max)d] for bulb')
             parser.add_argument('--kelvin',
+                                dest='kelvin',
                                 nargs='?', type=float, action=_Arg_Range,
                                 default=KELVIN, min=2500, max=9000,
                                 help='Kelvin base temperature [%(min)d-%(max)d] for bulb')
@@ -523,6 +526,7 @@ class CLI_Args(object):
                                 help='IPv4 address of target bulb')
             args = parser.parse_args()
             cls.__instance = _CLI_Args()
+            cls.__instance.parser = parser
             cls.__instance.target = args.target
             cls.__instance.ipv4 = args.ipv4
             cls.__instance.color = args.color
@@ -607,6 +611,10 @@ def transition_themes(source, dest, time_range):
 
 if __name__ == "__main__":
     args = CLI_Args()
+    if len(sys.argv) < 2:
+        args.parser.print_help()
+        sys.exit(1)
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
     listen_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
     listen_sock.bind(('', UDP_PORT))
@@ -679,7 +687,7 @@ if __name__ == "__main__":
         target_bri = args.target_brightness
 
     if args.kelvin is not None:
-        kelvin = args.kelvin
+        kel = args.kelvin
 
     if args.time is not None:
         if target_hue is None and target_sat is None and target_bri is None:
